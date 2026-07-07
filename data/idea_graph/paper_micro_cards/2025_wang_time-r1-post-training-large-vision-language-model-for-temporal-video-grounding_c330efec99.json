@@ -1,0 +1,797 @@
+{
+  "paper_id": "2025_wang_time-r1-post-training-large-vision-language-model-for-temporal-video-grounding_c330efec99",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_wang_time-r1-post-training-large-vision-language-model-for-temporal-video-grounding_c330efec99",
+  "title": "Time-R1: Post-Training Large Vision Language Model for Temporal Video Grounding",
+  "year": 2025,
+  "venue_or_source": "NeurIPS 2025",
+  "authors": [
+    "Ye Wang",
+    "Ziheng Wang",
+    "Boshen Xu",
+    "Yang Du",
+    "Kejun Lin",
+    "Zihan Xiao",
+    "Zihao Yue",
+    "Jianzhong Ju",
+    "Liang Zhang",
+    "Dingyi Yang",
+    "Xiangnan Fang",
+    "Zewen He",
+    "Zhenbo Luo",
+    "Wenxuan Wang",
+    "Junqi Lin",
+    "Jian Luan",
+    "Qin Jin"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal Video Grounding (TVG), the task of locating specific video segments based on language queries, is a core challenge in long-form video understanding.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Understanding long-form videos has long been a core ambition in computer vision .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Understanding long-form videos has long been a core ambition in computer vision [14, 25, 9].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "A critical step toward this goal is Temporal Video Grounding (TVG) , which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "A critical step toward this goal is Temporal Video Grounding (TVG) [15, 66], which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Such capability is fundamental for real-world applications, including smart home assistants and video retrieval systems on online platforms .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Such capability is fundamental for real-world applications, including smart home assistants [60, 16, 49] and video retrieval systems on online platforms [5, 3].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP , I3D ) extract text and video features, followed by task-specific grounding models .",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP [45], I3D [6]) extract text and video features, followed by task-specific grounding models [31, 23, 30].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these methods suffer from error accumulation due to imperfect pretrained features.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "However, these methods suffer from error accumulation due to imperfect pretrained features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) [47, 65], which directly process long-form videos and text queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks [49], LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters [23]).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "A critical step toward this goal is Temporal Video Grounding (TVG) , which enables models...",
+        "scenario": "A critical step toward this goal is Temporal Video Grounding (TVG) , which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "A critical step toward this goal is Temporal Video Grounding (TVG) [15, 66], which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g.,...",
+        "scenario": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP , I3D ) extract text and video features, followed by task-specific grounding models .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP [45], I3D [6]) extract text and video features, followed by task-specific grounding models [31, 23, 30].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs...",
+        "scenario": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks [49], LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters [23]).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Ground Truth 13.5s 18.1s Gemini-2.5-Pro 15.0s 16.0s VideoChat-Flash 16.4s 19.2s Trace...",
+        "scenario": "Ground Truth 13.5s 18.1s Gemini-2.5-Pro 15.0s 16.0s VideoChat-Flash 16.4s 19.2s Trace 15.0s 20.0s 23.0s Time-R1 (ours) 13.4s 18.2s 20.0s 23.0s TimeSuite video length query center +query video domain Figure 1: Our contributions include a novel post-training framework for LVLMs via reinforcement...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Ground Truth 13.5s 18.1s Gemini-2.5-Pro 15.0s 16.0s VideoChat-Flash 16.4s 19.2s Trace 15.0s 20.0s 23.0s Time-R1 (ours) 13.4s 18.2s 20.0s 23.0s TimeSuite video length query center +query video domain Figure 1: Our contributions include a novel post-training framework for LVLMs via reinforcement learning, Time-R1; an RL fine-tuning strategy along with its associated training dataset, TimeRFT; and a new benchmark, TVGBench, for evaluating LVLMs on the TVG task.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) [47, 65], which directly process long-form videos and text queries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks [49], LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters [23]).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods suffer from error accumulation due to imperfect pretrained features?",
+      "failure_mode": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "root_cause": "imperfect pretrained features.",
+      "why_existing_methods_fail": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "affected_scenario": "A critical step toward this goal is Temporal Video Grounding (TVG) , which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "However, these methods suffer from error accumulation due to imperfect pretrained features.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries?",
+      "failure_mode": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+      "root_cause": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "why_existing_methods_fail": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+      "affected_scenario": "A critical step toward this goal is Temporal Video Grounding (TVG) , which enables models to localize video segments corresponding to natural language queries (e.g., “Find the segment where a person walks into the living room.\").",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) [47, 65], which directly process long-form videos and text queries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that lVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters )?",
+      "failure_mode": "LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+      "root_cause": "To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries.",
+      "why_existing_methods_fail": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+      "affected_scenario": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP , I3D ) extract text and video features, followed by task-specific grounding models .",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks [49], LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters [23]).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "fail to excel on TVG?",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that fail to excel on TVG??",
+      "failure_mode": "fail to excel on TVG?",
+      "root_cause": "Despite being pretrained on datasets 100× larger than domain-specific benchmarks , LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ).",
+      "why_existing_methods_fail": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+      "affected_scenario": "Traditional TVG approaches adopt a feature-based paradigm, where pretrained models (e.g., CLIP , I3D ) extract text and video features, followed by task-specific grounding models .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "This raises a critical question: Why do LVLMs, despite their vast pretrained knowledge, fail to excel on TVG?",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT)?",
+      "failure_mode": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+      "root_cause": "Our Time-R1 model not only achieves SoTA TVG performance, but also enhances performance on both short- and long-form multi-choice video question answering tasks.",
+      "why_existing_methods_fail": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+      "affected_scenario": "Ground Truth 13.5s 18.1s Gemini-2.5-Pro 15.0s 16.0s VideoChat-Flash 16.4s 19.2s Trace 15.0s 20.0s 23.0s Time-R1 (ours) 13.4s 18.2s 20.0s 23.0s TimeSuite video length query center +query video domain Figure 1: Our contributions include a novel post-training framework for LVLMs via reinforcement...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "RL-based framework Time-R1",
+      "method_core_mechanism": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+      "method_components": [
+        "RL",
+        "TVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and",
+      "method_core_mechanism": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+      "method_components": [
+        "RL",
+        "LVLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "RL-based framework Time-R1 targets these methods suffer from error accumulation due to imperfect pretrained features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and targets these methods suffer from error accumulation due to imperfect pretrained features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "RL-based framework Time-R1 targets To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and targets To overcome these limitations, recent efforts have shifted toward end-to-end Large Vision- Language Models (LVLMs) , which directly process long-form videos and text queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "RL-based framework Time-R1 targets LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and targets LVLMs (with 7B+ parameters) often underperform compared to much smaller feature-based models (e.g., 9M parameters ). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "RL-based framework Time-R1 targets fail to excel on TVG? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and targets fail to excel on TVG? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0104",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "RL-based framework Time-R1 targets We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and targets We attribute the suboptimal performance of LVLMs to over-penalization of false negatives during supervised fine-tuning (SFT). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "RL-based framework Time-R1",
+      "compared_to": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "why_it_matters": "It directly targets these methods suffer from error accumulation due to imperfect pretrained features.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and",
+      "compared_to": "these methods suffer from error accumulation due to imperfect pretrained features.",
+      "why_it_matters": "It directly targets these methods suffer from error accumulation due to imperfect pretrained features.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "RL-based framework Time-R1",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this work, we present an RL-based framework Time-R1 that effectively post-trains LVLMs for TVG and pushes the performance frontier.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "We introduce Time-R1, a reasoningenhanced post-training framework via RL with verifiable rewards, where the LVLM first generates chain-of-thought descriptions and then predicts timestamps.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for RL-based framework Time-R1",
+      "baseline": "Time-R1: Post-Training Large Vision Language Model for Temporal Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "RL-based framework Time-R1",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these methods suffer from error accumulation due to imperfect pretrained features.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_wang_time-r1-post-training-large-vision-language-model-for-temporal-video-grounding_c330efec99\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_wang_time-r1-post-training-large-vision-language-model-for-temporal-video-grounding_c330efec99\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,912 @@
+{
+  "paper_id": "2023_jung_background-aware-moment-detection-for-video-moment-retrieval_86f759fb7f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jung_background-aware-moment-detection-for-video-moment-retrieval_86f759fb7f",
+  "title": "Background-aware Moment Detection for Video Moment Retrieval",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Minjoon Jung",
+    "Youwon Jang",
+    "Seong‐Ho Choi",
+    "Joo Chan Kim",
+    "Jin-Hwa Kim",
+    "Byoung‐Tak Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Action Localization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Action Localization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "In contrast to traditional action localization tasks [39, 48] that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video moment retrieval (VMR) retrieves the target moment in an untrimmed video corresponding to a natural language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment retrieval (VMR) [10] retrieves the target moment in an untrimmed video corresponding to a natural language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "A successful VMR model requires a comprehensive understanding of videos, language queries, and correlations to predict relevant moments precisely.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "A successful VMR model requires a comprehensive understanding of videos, language queries, and correlations to predict relevant moments precisely.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In contrast to traditional action localization tasks [39, 48] that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "A video is typically composed of short video clips, where query sentences describe each clip.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "A video is typically composed of short video clips, where query sentences describe each clip.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In contrast to traditional action localization tasks [39, 48] that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "However, query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Negative queries from random videos used to have semantic overlap, making them false negatives, while negative moments also likely are false negatives due to the sparse annotation.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Negative queries from random videos used to have semantic overlap, making them false negatives, while negative moments also likely are false negatives due to the sparse annotation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned...",
+        "scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "In contrast to previous approaches, which relied on a single query with complex...",
+        "scenario": "In contrast to previous approaches, which relied on a single query with complex multimodal reasoning or mining a multitude of negative moments with high cost, our model can attend to the target moment and be aware of the contextual meanings throughout the video, as shown in Figure 1 (bottom).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "In contrast to previous approaches, which relied on a single query with complex multimodal reasoning or mining a multitude of negative moments with high cost, our model can attend to the target moment and be aware of the contextual meanings throughout the video, as shown in Figure 1 (bottom).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "A video is typically composed of short video clips, where query sentences describe each clip.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "A video is typically composed of short video clips, where query sentences describe each clip.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "press the events occurring within the matching moment, and boundary annotations might include frames unrelated to the query sentences .",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "press the events occurring within the matching moment, and boundary annotations might include frames unrelated to the query sentences [15, 59].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture .",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language?",
+      "failure_mode": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "root_cause": "A successful VMR model requires a comprehensive understanding of videos, language queries, and correlations to predict relevant moments precisely.",
+      "why_existing_methods_fail": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "affected_scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "In contrast to traditional action localization tasks [39, 48] that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that query sentences are often ambiguous as to whether they fully ex- * Corresponding authors?",
+      "failure_mode": "query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+      "root_cause": "to whether they fully ex- * Corresponding authors.",
+      "why_existing_methods_fail": "query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+      "affected_scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "However, query sentences are often ambiguous as to whether they fully ex- * Corresponding authors.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely?",
+      "failure_mode": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+      "root_cause": "Furthermore, queries like “Person sitting on the sofa eating out of a dish” may confuse the model, as the actions “sitting” and the object “sofa” overlap throughout the video.",
+      "why_existing_methods_fail": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+      "affected_scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical?",
+      "failure_mode": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+      "root_cause": "These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely.",
+      "why_existing_methods_fail": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+      "affected_scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem?",
+      "failure_mode": "solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+      "root_cause": "the weak alignment problem.",
+      "why_existing_methods_fail": "solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+      "affected_scenario": "As shown in Figure 1 (top), the moment prediction can be imprecise and weakly aligned with annotations.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture",
+      "method_core_mechanism": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture .",
+      "method_components": [
+        "Background-aware Moment DEtection TRansformer (BM-DETR)",
+        "Background-aware Moment DEtection TRansformer",
+        "BM",
+        "DETR",
+        "we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture ."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0098"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "temporal shifting as an auxiliary",
+      "method_core_mechanism": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+      "method_components": [
+        "temporal shifting as an auxiliary"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0148"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations",
+      "method_core_mechanism": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+      "method_components": [
+        "is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0221"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "Background-aware Moment DEtection TRansformer (BM-DETR)",
+      "method_core_mechanism": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+      "method_components": [
+        "Background-aware Moment DEtection TRansformer (BM-DETR)",
+        "Background-aware Moment DEtection TRansformer",
+        "BM",
+        "DETR",
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0098"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture targets In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal shifting as an auxiliary targets In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0148",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture targets query sentences are often ambiguous as to whether they fully ex- * Corresponding authors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal shifting as an auxiliary targets query sentences are often ambiguous as to whether they fully ex- * Corresponding authors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0148",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture targets These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal shifting as an auxiliary targets These ambiguities and weak alignments pose challenges for models in predicting specific video moments precisely. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0148",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture targets While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal shifting as an auxiliary targets While one might consider improving dataset quality by collecting meticulously curated video-query pairs, such approaches are often prohibitively expensive and impractical. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0148",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture targets solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal shifting as an auxiliary targets solely relying on a single query may learn only local-level alignment and hinder achieving successful VMR due to the weak alignment problem. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0033",
+      "micro_method_cluster_id": "MM0148",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture",
+      "compared_to": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "why_it_matters": "It directly targets In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "temporal shifting as an auxiliary",
+      "compared_to": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "why_it_matters": "It directly targets In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations",
+      "compared_to": "In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.",
+      "why_it_matters": "It directly targets In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture .",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture [43].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "temporal shifting as an auxiliary",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In addition, we develop the temporal shifting as an auxiliary to improve the model’s robustness.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Moreover, our method is simple and more efficient than previous contrastive methods by eliminating dense moment features and reducing redundant computations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Background-aware Moment DEtection TRansformer (BM-DETR)",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions can be summarized as follows: • We propose a Background-aware Moment DEtection TRansformer (BM-DETR) to enable robust moment detection, addressing VMR challenges.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture",
+      "baseline": "Background-aware Moment Detection for Video Moment Retrieval",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "novel Background-aware Moment DEtection TRansformer (BM-DETR) based on the transformer encoder-decoder architecture",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting In contrast to traditional action localization tasks that predict a fixed set of actions like “throwing” or “jumping,” VMR is a more difficult task requiring joint comprehension of semantic meanings in video and language.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jung_background-aware-moment-detection-for-video-moment-retrieval_86f759fb7f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jung_background-aware-moment-detection-for-video-moment-retrieval_86f759fb7f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

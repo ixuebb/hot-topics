@@ -1,0 +1,927 @@
+{
+  "paper_id": "2021_nan_interventional-video-grounding-with-dual-contrastive-learning_64946bb1da",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_nan_interventional-video-grounding-with-dual-contrastive-learning_64946bb1da",
+  "title": "Interventional Video Grounding With Dual Contrastive Learning",
+  "year": 2021,
+  "venue_or_source": "CVPR 2021",
+  "authors": [
+    "Guoshun Nan",
+    "Rui Qiao",
+    "Yao Xiao",
+    "Jun Liu",
+    "Sicong Leng",
+    "Hao Zhang",
+    "Wei Lu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video grounding aims to localize a moment from an untrimmed video for a given textual query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding , which aims to automatically locate the temporal boundaries of the target video span for a given textual description, is a challenging multimedia information retrieval task due to the ﬂexibility and complexity of text...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding [3, 24], which aims to automatically locate the temporal boundaries of the target video span for a given textual description, is a challenging multimedia information retrieval task due to the ﬂexibility and complexity of text descriptions and video content.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014 \u00033HRSOH\u0003DUH\u0003KROGLQJ\u0003D\u0003YDFXXP\u0011 «\u0003\u0011\u0011\u0011 4XHU\\\u0015 \u00033HRSOH\u0003DUH\u0003IL[LQJ\u0003D\u0003YDFXXP\u0011 +LJK\u0003&RUUHODWLRQ 7UDLQ +ROG\u00109DFXXP\u0003 FRUUHODWLRQ /RZ\u0003&RUUHODWLRQ 7UDLQ )L[\u00109DFXXP\u0003 FRUUHODWLRQ Figure 1: (a) Illustration of video grounding. (b) Spurious correlations between object “people” and “vacuum” and the activity “people are holding a vacuum” in the Charades- TA [24] dataset. in many applications, such as video question answering [40] and video summarization [74].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As shown in Figure 1 (a), the query “People are shown throwing ping pong balls into beer-ﬁlled cups” involves two actions “shown” and “throwing”, one role “people”, and three objects “ping pong balls”, “beer” and “cups”, which will be located in the video...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (a), the query “People are shown throwing ping pong balls into beer-ﬁlled cups” involves two actions “shown” and “throwing”, one role “people”, and three objects “ping pong balls”, “beer” and “cups”, which will be located in the video with a start time (61.4s) and an end time (64.5s).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To retrieve the most relevant segment, a model needs to well understand the complex interactions among these actions and objects from both language and video context, and then properly align the two sides semantic information for a prediction.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To retrieve the most relevant segment, a model needs to well understand the complex interactions among these actions and objects from both language and video context, and then properly align the two sides semantic information for a prediction.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS .",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA [24] and TACoS [57].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, these re-sampling [18] and reweighting [47] methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, as highlighted by Zhang et al. [84], the pre-trained models, such as BERT [20] and ResNET [32], may still suffer from the biased issue.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite these success, directly applying these causal methods to the video grounding task may not yield good results, due to the more complex interactions for moment retrieval compared with the image-based bi-modal alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Despite these success, directly applying these causal methods to the video grounding task may not yield good results, due to the more complex interactions for moment retrieval compared with the image-based bi-modal alignment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The main challenge here is to get the unobserved confounders Z that inﬂuences both bi-modal representations and the predictions, leading to the unexpected correlations between language and video features by only learning from the likelihood P(Y |X).",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "The main challenge here is to get the unobserved confounders Z that inﬂuences both bi-modal representations and the predictions, leading to the unexpected correlations between language and video features by only learning from the likelihood P(Y |X).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "It has been widely used *Equally contributed †Work done during internship at StatNLP...",
+        "scenario": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014 \u00033HRSOH\u0003DUH\u0003KROGLQJ\u0003D\u0003YDFXXP\u0011 «\u0003\u0011\u0011\u0011 4XHU\\\u0015...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014 \u00033HRSOH\u0003DUH\u0003KROGLQJ\u0003D\u0003YDFXXP\u0011 «\u0003\u0011\u0011\u0011 4XHU\\\u0015 \u00033HRSOH\u0003DUH\u0003IL[LQJ\u0003D\u0003YDFXXP\u0011 +LJK\u0003&RUUHODWLRQ 7UDLQ +ROG\u00109DFXXP\u0003 FRUUHODWLRQ /RZ\u0003&RUUHODWLRQ 7UDLQ )L[\u00109DFXXP\u0003 FRUUHODWLRQ Figure 1: (a) Illustration of video grounding. (b) Spurious correlations between object “people” and “vacuum” and the activity “people are holding a vacuum” in the Charades- TA [24] dataset. in many applications, such as video question answering [40] and video summarization [74].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Figure 1 (a), the query “People are shown throwing ping pong balls into...",
+        "scenario": "As shown in Figure 1 (a), the query “People are shown throwing ping pong balls into beer-ﬁlled cups” involves two actions “shown” and “throwing”, one role “people”, and three objects “ping pong balls”, “beer” and “cups”, which will be located in the video with a start time (61.4s) and an end time...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (a), the query “People are shown throwing ping pong balls into beer-ﬁlled cups” involves two actions “shown” and “throwing”, one role “people”, and three objects “ping pong balls”, “beer” and “cups”, which will be located in the video with a start time (61.4s) and an end time (64.5s).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some...",
+        "scenario": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Many methods attempt to address the above issue.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "One may also consider that pre-trained knowledge is immune to the issue as they are learned from large-scale datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "One may also consider that pre-trained knowledge is immune to the issue as they are learned from large-scale datasets.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Many methods attempt to address the above issue.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the perspective of causal inference.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM [54] from the perspective of causal inference.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target moment and other clips in the video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a dual contrastive learning method DCL based on MI maximization to learn more informative feature representations in an unsupervised manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "• We propose a dual contrastive learning method DCL based on MI maximization to learn more informative feature representations in an unsupervised manner.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset?",
+      "failure_mode": "we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "root_cause": "the selection bias of the dataset.",
+      "why_existing_methods_fail": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "affected_scenario": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS ?",
+      "failure_mode": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS .",
+      "root_cause": "Charades-STA and TACoS .",
+      "why_existing_methods_fail": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS .",
+      "affected_scenario": "As shown in Figure 1 (b), a dataset involves many relevant training instances for some queries that contain the action description word “hold” and two objects “people” and “vacuum’.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "We observe that such biased distributions commonly exist in many datasets, such as Charades-STA [24] and TACoS [57].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization?",
+      "failure_mode": "these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+      "root_cause": "Many methods attempt to address the above issue.",
+      "why_existing_methods_fail": "these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+      "affected_scenario": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014 \u00033HRSOH\u0003DUH\u0003KROGLQJ\u0003D\u0003YDFXXP\u0011 «\u0003\u0011\u0011\u0011 4XHU\\\u0015...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, these re-sampling [18] and reweighting [47] methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue?",
+      "failure_mode": "as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue.",
+      "root_cause": "highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue.",
+      "why_existing_methods_fail": "as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue.",
+      "affected_scenario": "It has been widely used *Equally contributed †Work done during internship at StatNLP group, SUTD ‡Corresponding Authors 6WDUW\u00037LPH \u0003\u0019\u0014\u0011\u0017V (QG\u00037LPH \u0003\u0019\u0017\u0011\u0018V 4XHU\\ \u00033HRSOH\u0003DUH\u0003VKRZQ\u0003WKURZLQJ\u0003SLQJ\u0003SRQJ\u0003EDOOV\u0003LQWR\u0003EHHU\u0003ILOOHG\u0003FXSV\u0011 D E 4XHU\\\u0014 \u00033HRSOH\u0003DUH\u0003KROGLQJ\u0003D\u0003YDFXXP\u0011 «\u0003\u0011\u0011\u0011 4XHU\\\u0015...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, as highlighted by Zhang et al. [84], the pre-trained models, such as BERT [20] and ResNET [32], may still suffer from the biased issue.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Many methods attempt to address the above issue.",
+      "method_core_mechanism": "Many methods attempt to address the above issue.",
+      "method_components": [
+        "Many methods attempt to address the above issue."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0004"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the...",
+      "method_core_mechanism": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the perspective of causal inference.",
+      "method_components": [
+        "IVG",
+        "SCM"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM [54] from the perspective of causal inference.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0007"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X))",
+      "method_core_mechanism": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+      "method_components": [
+        "simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X))"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0005"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better a",
+      "method_core_mechanism": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target moment and other clips in the video.",
+      "method_components": [
+        "DCL",
+        "MI"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "clip features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target moment and other clips in the video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset",
+      "method_core_mechanism": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+      "method_components": [
+        "IVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0007"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU5",
+      "solves_how": "IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset targets we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0007",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Many methods attempt to address the above issue. targets we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset targets We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS . by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0007",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Many methods attempt to address the above issue. targets We observe that such biased distributions commonly exist in many datasets, such as Charades-STA and TACoS . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Many methods attempt to address the above issue. targets these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the... targets these re-sampling and reweighting methods are mainly designed for the classiﬁcation tasks, and it can be difﬁcult for them to be applied to temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM [54] from the perspective of causal inference.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0007",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU5",
+      "solves_how": "IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset targets as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0007",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Many methods attempt to address the above issue. targets as highlighted by Zhang et al. , the pre-trained models, such as BERT and ResNET , may still suffer from the biased issue. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Many methods attempt to address the above issue.",
+      "compared_to": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "why_it_matters": "It directly targets we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the...",
+      "compared_to": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "why_it_matters": "It directly targets we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X))",
+      "compared_to": "Despite the enormous success of the current neural models, we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.",
+      "why_it_matters": "It directly targets we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Many methods attempt to address the above issue.",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Many methods attempt to address the above issue.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Many methods [47, 18, 69, 90] attempt to address the above issue.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the...",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM from the perspective of causal inference.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To address the above problem, this paper presents a novel paradigm named interventional video grounding (IVG) based on Pear’s SCM [54] from the perspective of causal inference.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X))",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "We propose a simple yet effective method to approximate the prior P(Z) and then obtain P(Y |do(X)).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better a",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target moment and other clips in the video.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Meanwhile, we introduce a dual contrastive learning method (DCL) to learn more informative visual representations by maximizing the MI between query and video clips to better align the bi-modal features, and the MI between the start/end time of the target moment and other clips in the video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+      "can_transfer_to": [
+        "bias",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our main contributions are: • We propose IVG, a novel model for video grounding by introducing causal interventions P(Y |do(X)) to mitigate the spurious correlations from the dataset.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Many methods attempt to address the above issue.",
+      "baseline": "Interventional Video Grounding With Dual Contrastive Learning",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "Many methods attempt to address the above issue.",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting we argue that these approaches may suffer from the spurious correlations between textual and visual features due to the selection bias of the dataset.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_nan_interventional-video-grounding-with-dual-contrastive-learning_64946bb1da\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_nan_interventional-video-grounding-with-dual-contrastive-learning_64946bb1da\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

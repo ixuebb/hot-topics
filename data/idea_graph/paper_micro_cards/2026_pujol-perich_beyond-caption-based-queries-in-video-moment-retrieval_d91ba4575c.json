@@ -1,0 +1,656 @@
+{
+  "paper_id": "2026_pujol-perich_beyond-caption-based-queries-in-video-moment-retrieval_d91ba4575c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_pujol-perich_beyond-caption-based-queries-in-video-moment-retrieval_d91ba4575c",
+  "title": "Beyond Caption-Based Queries in Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "David Pujol-Perich",
+    "Albert Clapés",
+    "Dima Damen",
+    "Sergio Escalera",
+    "Michael Wray"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Current Video Moment Retrieval (VMR) models are trained on videos paired with captions, which are written by annotators after watching the videos.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) aims to localize temporal segments in a video given a user-defined textual query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) aims to localize temporal segments in a video given a user-defined textual query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In contrast, real users interact *Work partially completed whilst at University of Bristol.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In contrast, real users interact *Work partially completed whilst at University of Bristol.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "atch the videos. These captions, which we name caption-based queries, induce a visual...",
+        "scenario": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV901",
+            "section": "Introduction",
+            "quote": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write detailed, visually-informed captions that map to a single GT moment. However, at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments. through search queries, often formulated without watching the video, which can be of a more general and underspecified nature [31]. For instance, while an annotator might formulate a caption-based query “a ma",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "through search queries, often formulated without watching the video, which can be of a more general and underspecified nature .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "through search queries, often formulated without watching the video, which can be of a more general and underspecified nature [31].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We instead repurpose existing datasets—which include paired videos and captions—by proposing a pipeline that under-specifies captions.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "We instead repurpose existing datasets—which include paired videos and captions—by proposing a pipeline that under-specifies captions.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+        "evidence": [
+          {
+            "evidence_id": "EV005",
+            "section": "Abstract",
+            "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Abstract",
+            "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments?",
+      "failure_mode": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+      "root_cause": "After watching a video, annotators write detailed, visually-informed captions that map to a single GT moment.",
+      "why_existing_methods_fail": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+      "affected_scenario": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write...",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "hieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that hieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos?",
+      "failure_mode": "hieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+      "root_cause": "# Introduction Video Moment Retrieval (VMR) aims to localize temporal segments in a video given a user-defined textual query.",
+      "why_existing_methods_fail": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+      "affected_scenario": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "While current models achieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner?",
+      "failure_mode": "collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+      "root_cause": "it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+      "why_existing_methods_fail": "collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+      "affected_scenario": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets?",
+      "failure_mode": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+      "root_cause": "In this paper, we quantify the impact of both the language and multi-moment gaps, and particularly address the former by proposing architecture modifications including the removal of self-attention mechanisms and the addition of a decoder-query dropout...",
+      "why_existing_methods_fail": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+      "affected_scenario": "atch the videos. These captions, which we name caption-based queries, induce a visual bias—overly descriptive visuallyinformed textual annotations. In contrast, real users interact *Work partially completed whilst at University of Bristol. Figure 1. After watching a video, annotators write...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "three benchmarks by modifying the textual queries in three public VMR datasets---i",
+      "method_core_mechanism": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+      "method_components": [
+        "VMR",
+        "HD",
+        "EPIC"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV005"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0070"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "improves performance on search queries by up to 14",
+      "method_core_mechanism": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+      "method_components": [
+        "improves performance on search queries by up to 14"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0040"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "improves performance on search queries by up to 14 targets at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "three benchmarks by modifying the textual queries in three public VMR datasets---i targets at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0070",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "improves performance on search queries by up to 14 targets hieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "three benchmarks by modifying the textual queries in three public VMR datasets---i targets hieve remarkable success on existing benchmarks, in this work we raise awareness of a key limitation of VMR datasets: text queries are defined using the annotated captions, written after annotators watch the videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0070",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "three benchmarks by modifying the textual queries in three public VMR datasets---i targets collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0070",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "improves performance on search queries by up to 14 targets collecting new search-query datasets remains an open challenge, as it is unclear how text annotation and video observation can be decoupled in a feasible manner. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "three benchmarks by modifying the textual queries in three public VMR datasets---i targets These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0070",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "improves performance on search queries by up to 14 targets These modifications improve generalization to search queries without the expensive task of re-annotating VMR training sets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0145",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "three benchmarks by modifying the textual queries in three public VMR datasets---i",
+      "compared_to": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+      "why_it_matters": "It directly targets at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "improves performance on search queries by up to 14",
+      "compared_to": "at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.",
+      "why_it_matters": "It directly targets at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "three benchmarks by modifying the textual queries in three public VMR datasets---i",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "For this, we introduce three benchmarks by modifying the textual queries in three public VMR datasets---i.e., HD-EPIC, YouCook2 and ActivityNet-Captions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "improves performance on search queries by up to 14",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "Extensive experiments demonstrate that our approach improves performance on search queries by up to 14.82% mAP_m, and up to 21.83% mAP_m on multi-moment search queries.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for three benchmarks by modifying the textual queries in three public VMR datasets---i",
+      "baseline": "Beyond Caption-Based Queries in Video Moment Retrieval",
+      "dataset": "ActivityNet, YouCook",
+      "module_to_modify": "three benchmarks by modifying the textual queries in three public VMR datasets---i",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting at inference time, users formulate less detailed, visuallyuninformed search queries that often map to multiple GT moments.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "YouCook"
+  ],
+  "metrics": [
+    "HD",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_pujol-perich_beyond-caption-based-queries-in-video-moment-retrieval_d91ba4575c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_pujol-perich_beyond-caption-based-queries-in-video-moment-retrieval_d91ba4575c\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

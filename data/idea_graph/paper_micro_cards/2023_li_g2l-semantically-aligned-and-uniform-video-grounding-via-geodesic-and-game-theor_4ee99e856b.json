@@ -1,0 +1,819 @@
+{
+  "paper_id": "2023_li_g2l-semantically-aligned-and-uniform-video-grounding-via-geodesic-and-game-theor_4ee99e856b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_g2l-semantically-aligned-and-uniform-video-grounding-via-geodesic-and-game-theor_4ee99e856b",
+  "title": "G2L: Semantically Aligned and Uniform Video Grounding via Geodesic and Game Theory",
+  "year": 2023,
+  "venue_or_source": "ICCV 2023",
+  "authors": [
+    "Hongxiang Li",
+    "Meng Cao",
+    "Xuxin Cheng",
+    "Yaowei Li",
+    "Zhihong Zhu",
+    "Yuexian Zou"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract The recent video grounding works attempt to introduce vanilla contrastive learning into video grounding.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding aims to identify the timestamps semantically corresponding to a given query within an untrimmed video, which is a challenging multimedia retrieval task due to ﬂexibility and complexity of the query and video content.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding [18, 59, 36, 45, 17, 75, 8, 69, 72, 67, 6, 25] aims to identify the timestamps semantically corresponding to a given query within an untrimmed video, which is a challenging multimedia retrieval task due to ﬂexibility and complexity of the query and video content.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The video grounding model needs well to model the complex cross-modal correlations and semantic information.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "The video grounding model needs well to model the complex cross-modal correlations and semantic information.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "† Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "† Corresponding author.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "(a) Query Video ݉ଵ ݉ଶ ݉ଷ ݉ସ ݉ହ ݉଺ GT ݍ: The person sharpens the blade on the second belt.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "(a) Query Video ݉ଵ ݉ଶ ݉ଷ ݉ସ ݉ହ ݉଺ GT ݍ: The person sharpens the blade on the second belt.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This naive solution, however, achieves sub-optimum performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "This naive solution, however, achieves sub-optimum performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This strict scheme, however, ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "This strict scheme, however, ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "However, computing the exact Shapley interaction for all players is an NP-hard problem [41] and is difﬁcult to achieve solutions in the video grounding setting.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "(c) (b) ݉ଷ ݉ଶ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Geodesic ݉ଷ ݉ଶ ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Shapley Interaction Pull close...",
+        "scenario": "(c) (b) ݉ଷ ݉ଶ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Geodesic ݉ଷ ݉ଶ ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Shapley Interaction Pull close Moment Push away Query Positive Negative Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "(c) (b) ݉ଷ ݉ଶ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Geodesic ݉ଷ ݉ଶ ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Shapley Interaction Pull close Moment Push away Query Positive Negative Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Figure 1(a), the entity of ‘person’, ‘blade’ and ‘belt’ appear in both...",
+        "scenario": "As shown in Figure 1(a), the entity of ‘person’, ‘blade’ and ‘belt’ appear in both ground-truth moment m4 and others.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a), the entity of ‘person’, ‘blade’ and ‘belt’ appear in both ground-truth moment m4 and others.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As shown in Figure 1(a)(b), the moment m1 of “sharpen the blade on the first belt” only...",
+        "scenario": "As shown in Figure 1(a)(b), the moment m1 of “sharpen the blade on the first belt” only differs from target moment m4 in the ‘second’ order.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a)(b), the moment m1 of “sharpen the blade on the first belt” only differs from target moment m4 in the ‘second’ order.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For example in Figure 1(b), wrong results always exist when encountering these...",
+        "scenario": "For example in Figure 1(b), wrong results always exist when encountering these unannotated moments (e.g., m1).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "For example in Figure 1(b), wrong results always exist when encountering these unannotated moments (e.g., m1).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Generally, contrastive learning requires two key properties : alignment and uniformity.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Generally, contrastive learning requires two key properties [58]: alignment and uniformity.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As shown in Figure 1(a)(b), the moment m1 of “sharpen the blade on the first belt” only differs from target moment m4 in the ‘second’ order.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a)(b), the moment m1 of “sharpen the blade on the first belt” only differs from target moment m4 in the ‘second’ order.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, we further propose a semantic Shapley interaction module, which samples similar intravideo moments by geodesic distance with a focus on their nuances.",
+        "evidence": [
+          {
+            "evidence_id": "EV056",
+            "section": "Introduction",
+            "quote": "Therefore, we further propose a semantic Shapley interaction module, which samples similar intravideo moments by geodesic distance with a focus on their nuances.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose to measure the similarity according to the geodesic distance between two video moments along the manifold.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "We propose to measure the similarity according to the geodesic distance [29] between two video moments along the manifold.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+        "evidence": [
+          {
+            "evidence_id": "EV059",
+            "section": "Introduction",
+            "quote": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "achieves sub-optimum performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that achieves sub-optimum performance?",
+      "failure_mode": "achieves sub-optimum performance.",
+      "root_cause": "propose a dual contrast learning to learn more informative feature representations by maximizing the mutual information between the query and the corresponding video clips.",
+      "why_existing_methods_fail": "This naive solution, however, achieves sub-optimum performance.",
+      "affected_scenario": "(c) (b) ݉ଷ ݉ଶ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Geodesic ݉ଷ ݉ଶ ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Shapley Interaction Pull close Moment Push away Query Positive Negative Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "This naive solution, however, achieves sub-optimum performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations?",
+      "failure_mode": "ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+      "root_cause": "Since there exist no classiﬁcation labels in video grounding, previous methods distinguish positive and negative samples only based on the annotated moments.",
+      "why_existing_methods_fail": "This strict scheme, however, ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+      "affected_scenario": "As shown in Figure 1(a), the entity of ‘person’, ‘blade’ and ‘belt’ appear in both ground-truth moment m4 and others.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "This strict scheme, however, ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0122"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting?",
+      "failure_mode": "computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting.",
+      "root_cause": "Through this, we evaluate the marginal contributions of each ﬁne-grained component, which leads to a more accurate division.",
+      "why_existing_methods_fail": "computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting.",
+      "affected_scenario": "(c) (b) ݉ଷ ݉ଶ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Geodesic ݉ଷ ݉ଶ ݉ଵ ݉ହ ݉଺ ݉ସ ݍ Shapley Interaction Pull close Moment Push away Query Positive Negative Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV055"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "However, computing the exact Shapley interaction for all players is an NP-hard problem [41] and is difﬁcult to achieve solutions in the video grounding setting.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c)",
+      "method_core_mechanism": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+      "method_components": [
+        "Game Localization (G2L)",
+        "Game Localization"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0122"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to measure the similarity according to the geodesic distance between two video moments along the manifold",
+      "method_core_mechanism": "We propose to measure the similarity according to the geodesic distance between two video moments along the manifold.",
+      "method_components": [
+        "to measure the similarity according to the geodesic distance between two video moments along the manifold"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "similarity",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose to measure the similarity according to the geodesic distance [29] between two video moments along the manifold.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0030"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "G2L",
+      "method_core_mechanism": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+      "method_components": [
+        "G2L"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0122"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel geodesic-guided contrastive learning scheme",
+      "method_core_mechanism": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+      "method_components": [
+        "novel geodesic-guided contrastive learning scheme"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV058"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0037"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "effective semantic Shapley interaction strategy based on geodesic distance",
+      "method_core_mechanism": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+      "method_components": [
+        "effective semantic Shapley interaction strategy based on geodesic distance"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV059"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0189"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c) targets achieves sub-optimum performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0122",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to measure the similarity according to the geodesic distance between two video moments along the manifold targets achieves sub-optimum performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose to measure the similarity according to the geodesic distance [29] between two video moments along the manifold.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c) targets ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0122",
+      "micro_method_cluster_id": "MM0122",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to measure the similarity according to the geodesic distance between two video moments along the manifold targets ignores the semantic overlapping among video moments, which leads to the contradiction in feature representations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose to measure the similarity according to the geodesic distance [29] between two video moments along the manifold.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0122",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "G2L targets computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0122",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "novel geodesic-guided contrastive learning scheme targets computing the exact Shapley interaction for all players is an NP-hard problem and is difﬁcult to achieve solutions in the video grounding setting. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0037",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c)",
+      "compared_to": "This naive solution, however, achieves sub-optimum performance.",
+      "why_it_matters": "It directly targets achieves sub-optimum performance.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to measure the similarity according to the geodesic distance between two video moments along the manifold",
+      "compared_to": "This naive solution, however, achieves sub-optimum performance.",
+      "why_it_matters": "It directly targets achieves sub-optimum performance.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "G2L",
+      "compared_to": "This naive solution, however, achieves sub-optimum performance.",
+      "why_it_matters": "It directly targets achieves sub-optimum performance.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To address the issues mentioned above, we propose a novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to measure the similarity according to the geodesic distance between two video moments along the manifold",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We propose to measure the similarity according to the geodesic distance between two video moments along the manifold.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose to measure the similarity according to the geodesic distance [29] between two video moments along the manifold.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "G2L",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "In sum, our contributions are summarized as follows: • We present G2L which introduces geodesic and game theory to learn the semantic alignment and uniformity between video and query for video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel geodesic-guided contrastive learning scheme",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "• We propose a novel geodesic-guided contrastive learning scheme that considers the correct semantics of all moments in the video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "effective semantic Shapley interaction strategy based on geodesic distance",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "• We introduce an effective semantic Shapley interaction strategy based on geodesic distance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c)",
+      "baseline": "G2L: Semantically Aligned and Uniform Video Grounding via Geodesic and Game Theory",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel Geodesic and Game Localization (G2L), a semantically aligned and uniform video grounding framework as shown in Figure 1(c)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting achieves sub-optimum performance.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_g2l-semantically-aligned-and-uniform-video-grounding-via-geodesic-and-game-theor_4ee99e856b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_g2l-semantically-aligned-and-uniform-video-grounding-via-geodesic-and-game-theor_4ee99e856b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

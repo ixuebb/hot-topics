@@ -1,0 +1,692 @@
+{
+  "paper_id": "2023_pan_scanning-only-once-an-end-to-end-framework-for-fast-temporal-grounding-in-long-v_dce4ea99b0",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_pan_scanning-only-once-an-end-to-end-framework-for-fast-temporal-grounding-in-long-v_dce4ea99b0",
+  "title": "Scanning Only Once: An End-to-end Framework for Fast Temporal Grounding in Long Videos",
+  "year": 2023,
+  "venue_or_source": "ICCV 2023",
+  "authors": [
+    "Yulin Pan",
+    "Xiangteng He",
+    "Biao Gong",
+    "Yiliang Lv",
+    "Yujun Shen",
+    "Yuxin Peng",
+    "Deli Zhao"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding aims to pinpoint a video segment that matches the query description.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding , which aims to localize a specific moment in the video corresponding to a natural language description, has found its applications in many real-world scenarios, such as video retrieval , video highlight detection , and...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding [5, 6, 13, 18, 19, 29, 31, 32], which aims to localize a specific moment in the video corresponding to a natural language description, has found its applications in many real-world scenarios, such as video retrieval [11, 22], video highlight detection [23, 24], and video question answering [9, 26].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "When it comes to the case of long-form video temporal grounding (LVTG) , however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "When it comes to the case of long-form video temporal grounding (LVTG) [6, 18], however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation [6].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "such a solution as shown in the top half of Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, such a solution as shown in the top half of Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can...",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Pre-ranking Re-ranking Regression Figure 1.",
+        "scenario": "Pre-ranking Re-ranking Regression Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Pre-ranking Re-ranking Regression Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "videos (e.g., in minutes) and characterize the input video with a small number of frames...",
+        "scenario": "videos (e.g., in minutes) and characterize the input video with a small number of frames (e.g., 128) .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "videos (e.g., in minutes) and characterize the input video with a small number of frames (e.g., 128) [19, 27, 29, 30, 31, 32].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "When it comes to the case of long-form video temporal grounding (LVTG) , however,...",
+        "scenario": "When it comes to the case of long-form video temporal grounding (LVTG) , however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "When it comes to the case of long-form video temporal grounding (LVTG) [6, 18], however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation [6].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Besides, the large amounts of highly overlapped predictions cause post-processing (e.g.,...",
+        "scenario": "Besides, the large amounts of highly overlapped predictions cause post-processing (e.g., nonmaximum suppression) time-consuming.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Besides, the large amounts of highly overlapped predictions cause post-processing (e.g., nonmaximum suppression) time-consuming.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Query: Mum hangs up the laundry outside the farmhouse.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Query: Mum hangs up the laundry outside the farmhouse.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "A straightforward solution is to reorganize a long video to a sequence of short videos using a sliding window and perform temporal grounding within each window .",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "A straightforward solution is to reorganize a long video to a sequence of short videos using a sliding window and perform temporal grounding within each window [6, 8, 18].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "1 has three main drawbacks.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "1 has three main drawbacks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation?",
+      "failure_mode": "liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.",
+      "root_cause": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+      "why_existing_methods_fail": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can only scan the video contents within a local time range at...",
+      "affected_scenario": "Besides, the large amounts of highly overlapped predictions cause post-processing (e.g., nonmaximum suppression) time-consuming.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "existing methods for temporal grounding usually target short-form *Corresponding authors.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for temporal grounding usually target short-form *Corresponding authors?",
+      "failure_mode": "existing methods for temporal grounding usually target short-form *Corresponding authors.",
+      "root_cause": "# Introduction Video temporal grounding , which aims to localize a specific moment in the video corresponding to a natural language description, has found its applications in many real-world scenarios, such as video retrieval , video highlight detection , and...",
+      "why_existing_methods_fail": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+      "affected_scenario": "Pre-ranking Re-ranking Regression Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "Despite the rapid advance in recent years, existing methods for temporal grounding usually target short-form *Corresponding authors.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0021"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation ?",
+      "failure_mode": "temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation .",
+      "root_cause": "videos (e.g., in minutes) and characterize the input video with a small number of frames (e.g., 128) .",
+      "why_existing_methods_fail": "When it comes to the case of long-form video temporal grounding (LVTG) , however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation .",
+      "affected_scenario": "videos (e.g., in minutes) and characterize the input video with a small number of frames (e.g., 128) .",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "When it comes to the case of long-form video temporal grounding (LVTG) [6, 18], however, temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation [6].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "such a solution as shown in the top half of Fig.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such a solution as shown in the top half of Fig?",
+      "failure_mode": "such a solution as shown in the top half of Fig.",
+      "root_cause": "shown in the top half of Fig.",
+      "why_existing_methods_fail": "such a solution as shown in the top half of Fig.",
+      "affected_scenario": "videos (e.g., in minutes) and characterize the input video with a small number of frames (e.g., 128) .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, such a solution as shown in the top half of Fig.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "anchor-based end-to-end framework, termed as SOONet",
+      "method_core_mechanism": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+      "method_components": [
+        "Only Once",
+        "LVTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0227"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "significantly outperforms state-of-the-arts, and achieves 14",
+      "method_core_mechanism": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+      "method_components": [
+        "significantly outperforms state-of-the-arts, and achieves 14"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "anchor-based end-to-end framework, termed as SOONet targets liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0227",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "significantly outperforms state-of-the-arts, and achieves 14 targets liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "anchor-based end-to-end framework, termed as SOONet targets existing methods for temporal grounding usually target short-form *Corresponding authors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0021",
+      "micro_method_cluster_id": "MM0227",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "significantly outperforms state-of-the-arts, and achieves 14 targets existing methods for temporal grounding usually target short-form *Corresponding authors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0021",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "anchor-based end-to-end framework, termed as SOONet targets temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071",
+      "micro_method_cluster_id": "MM0227",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "significantly outperforms state-of-the-arts, and achieves 14 targets temporally downsampling a video (e.g., in hours) to so few frames could cause severe information loss and further result in drastic performance degradation . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "anchor-based end-to-end framework, termed as SOONet targets such a solution as shown in the top half of Fig. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071",
+      "micro_method_cluster_id": "MM0227",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "significantly outperforms state-of-the-arts, and achieves 14 targets such a solution as shown in the top half of Fig. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0071",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "anchor-based end-to-end framework, termed as SOONet",
+      "compared_to": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can only scan the video contents within a local time range at...",
+      "why_it_matters": "It directly targets liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "significantly outperforms state-of-the-arts, and achieves 14",
+      "compared_to": "13767 --- Page 2 --model efficiency, which considers the total execution time from data input to final results output, including data preprocessing, model forward running and post-processing.1 (2) Training insufficiency: The network with a sliding window can only scan the video contents within a local time range at...",
+      "why_it_matters": "It directly targets liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "anchor-based end-to-end framework, termed as SOONet",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this work, we propose an anchor-based end-to-end framework, termed as SOONet, which facilitates efficient and accurate LVTG by Scanning a long-form video Only Once.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "significantly outperforms state-of-the-arts, and achieves 14",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method significantly outperforms state-of-the-arts, and achieves 14.6× / 102.8× higher pipeline efficiency, which demonstrate the effectiveness.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for anchor-based end-to-end framework, termed as SOONet",
+      "baseline": "Scanning Only Once: An End-to-end Framework for Fast Temporal Grounding in Long Videos",
+      "dataset": "Ego4D, MAD",
+      "module_to_modify": "anchor-based end-to-end framework, termed as SOONet",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting liding window can only scan the video contents within a local time range at one time, yet ignore the long-range temporal correlation.."
+    }
+  ],
+  "datasets": [
+    "Ego4D",
+    "MAD"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_pan_scanning-only-once-an-end-to-end-framework-for-fast-temporal-grounding-in-long-v_dce4ea99b0\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_pan_scanning-only-once-an-end-to-end-framework-for-fast-temporal-grounding-in-long-v_dce4ea99b0\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

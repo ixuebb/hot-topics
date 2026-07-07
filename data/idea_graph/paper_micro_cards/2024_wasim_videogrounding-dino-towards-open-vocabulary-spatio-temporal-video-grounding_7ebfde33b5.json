@@ -1,0 +1,749 @@
+{
+  "paper_id": "2024_wasim_videogrounding-dino-towards-open-vocabulary-spatio-temporal-video-grounding_7ebfde33b5",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wasim_videogrounding-dino-towards-open-vocabulary-spatio-temporal-video-grounding_7ebfde33b5",
+  "title": "VideoGrounding-DINO: Towards Open-Vocabulary Spatio-Temporal Video Grounding",
+  "year": 2024,
+  "venue_or_source": "CVPR 2024",
+  "authors": [
+    "Syed Talal Wasim",
+    "Muzammal Naseer",
+    "Salman Khan",
+    "Ming-Hsuan Yang",
+    "Fahad Shahbaz Khan"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "This paper addresses a critical limitation in current video grounding methodologies by introducing an Open-Vocabulary Spatio-Temporal Video Grounding task.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-temporal video grounding is pivotal in linking visual content with natural language descriptions, thus facilitating semantics interpretation within visual data.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-temporal video grounding is pivotal in linking visual content with natural language descriptions, thus facilitating semantics interpretation within visual data.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Prevailing approaches in video grounding such as TubeDETR , STCAT , and STVGFormer focus mainly on supervised closed-set settings, where models are trained on specific datasets with predefined vocabulary and meticulously annotated data.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Prevailing approaches in video grounding such as TubeDETR [28], STCAT [9], and STVGFormer [11] focus mainly on supervised closed-set settings, where models are trained on specific datasets [24, 32] with predefined vocabulary and meticulously annotated data.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the-art methods excel in closed-set settings on datasets like VidSTG and HC-STVG , their limited generalization beyond training dataset distributions poses a significant challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "the-art methods excel in closed-set settings on datasets like VidSTG [32] and HC-STVG [24], their limited generalization beyond training dataset distributions poses a significant challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "video grounding datasets are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, video grounding datasets [24, 32] are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "While these current state-of- Figure 1.",
+        "scenario": "While these current state-of- Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While these current state-of- Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "video grounding datasets are quite limited in scale, e.g., VidSTG has only 5.4k training...",
+        "scenario": "video grounding datasets are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, video grounding datasets [24, 32] are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "The relatively small scale and restricted sample variety in existing video datasets hinder models from adapting to unseen scenarios effectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "The relatively small scale and restricted sample variety in existing video datasets hinder models from adapting to unseen scenarios effectively.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The goal is to train on a set of base categories and generalize to unseen objects/actions based on the openvocabulary nature of backbone models.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "The goal is to train on a set of base categories and generalize to unseen objects/actions based on the openvocabulary nature of backbone models.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We compare our approach with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) , VidSTG...",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": ", their limited generalization beyond training dataset distributions poses a significant challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that , their limited generalization beyond training dataset distributions poses a significant challenge?",
+      "failure_mode": ", their limited generalization beyond training dataset distributions poses a significant challenge.",
+      "root_cause": "We compare our approach with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions datasets.",
+      "why_existing_methods_fail": "the-art methods excel in closed-set settings on datasets like VidSTG and HC-STVG , their limited generalization beyond training dataset distributions poses a significant challenge.",
+      "affected_scenario": "While these current state-of- Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "the-art methods excel in closed-set settings on datasets like VidSTG [32] and HC-STVG [24], their limited generalization beyond training dataset distributions poses a significant challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0141"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding?",
+      "failure_mode": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+      "root_cause": "The relatively small scale and restricted sample variety in existing video datasets hinder models from adapting to unseen scenarios effectively.",
+      "why_existing_methods_fail": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+      "affected_scenario": "While these current state-of- Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild?",
+      "failure_mode": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+      "root_cause": "Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding.",
+      "why_existing_methods_fail": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+      "affected_scenario": "While these current state-of- Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding?",
+      "failure_mode": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+      "root_cause": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+      "why_existing_methods_fail": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+      "affected_scenario": "video grounding datasets are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations?",
+      "failure_mode": "training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+      "root_cause": "18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding.",
+      "why_existing_methods_fail": "training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+      "affected_scenario": "video grounding datasets are quite limited in scale, e.g., VidSTG has only 5.4k training videos with 80.6k distinct sentences.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V",
+      "method_core_mechanism": "We compare our approach with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions datasets.",
+      "method_components": [
+        "STCAT",
+        "HC",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i",
+      "method_core_mechanism": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) , VidSTG (Interrogative) , HC-STVG V1 and HC-STVG V2 .",
+      "method_components": [
+        "HC",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V targets , their limited generalization beyond training dataset distributions poses a significant challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0141",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i targets , their limited generalization beyond training dataset distributions poses a significant challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0141",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V targets Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i targets Motivated by the inherent limitation of supervised closed-set approaches in terms of their restricted vocabulary, this paper investigates Open-Vocabulary Spatio- Temporal Video Grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V targets Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i targets Unlike conventional methodologies, this paradigm addresses challenges posed by the unrestricted diversity of language and visual concepts in the wild. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V targets 18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i targets 18909 --- Page 2 --plores the challenges and opportunities inherent in openvocabulary video grounding, laying the groundwork for more robust and versatile video understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V targets training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i targets training an effective open-vocabulary video grounding model would require a large enough dataset with a rich set of natural language expressions and corresponding spatio-temporal localizations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0002",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V",
+      "compared_to": "the-art methods excel in closed-set settings on datasets like VidSTG and HC-STVG , their limited generalization beyond training dataset distributions poses a significant challenge.",
+      "why_it_matters": "It directly targets , their limited generalization beyond training dataset distributions poses a significant challenge.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i",
+      "compared_to": "the-art methods excel in closed-set settings on datasets like VidSTG and HC-STVG , their limited generalization beyond training dataset distributions poses a significant challenge.",
+      "why_it_matters": "It directly targets , their limited generalization beyond training dataset distributions poses a significant challenge.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We compare our approach with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions datasets.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "We compare our approach with TubeDETR [28] and STCAT [9] in supervised setting for VidSTG [32] declarative/interrogative and HC-STVG V1 [24], along with open-vocabulary evaluation on HC-STVG V1 and YouCook-Interactions [23] datasets.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) , VidSTG (Interrogative) , HC-STVG V1 and HC-STVG V2 .",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "• By combining the strengths of spatial grounding models with complementary video-specific adapters, our approach consistently outperforms the previous state-ofthe-art in closed-set setting on four benchmarks, i.e., VidSTG (Declarative) [32], VidSTG (Interrogative) [32], HC-STVG V1 [24] and HC-STVG V2 [24].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V",
+      "baseline": "VideoGrounding-DINO: Towards Open-Vocabulary Spatio-Temporal Video Grounding",
+      "dataset": "YouCook",
+      "module_to_modify": "with TubeDETR and STCAT in supervised setting for VidSTG declarative/interrogative and HC-STVG V1 , along with open-vocabulary evaluation on HC-STVG V",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting , their limited generalization beyond training dataset distributions poses a significant challenge.."
+    }
+  ],
+  "datasets": [
+    "YouCook"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wasim_videogrounding-dino-towards-open-vocabulary-spatio-temporal-video-grounding_7ebfde33b5\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wasim_videogrounding-dino-towards-open-vocabulary-spatio-temporal-video-grounding_7ebfde33b5\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

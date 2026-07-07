@@ -1,0 +1,855 @@
+{
+  "paper_id": "2024_nguyen_multi-scale-contrastive-learning-for-video-temporal-grounding_27aaaced69",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_nguyen_multi-scale-contrastive-learning-for-video-temporal-grounding_27aaaced69",
+  "title": "Multi-Scale Contrastive Learning for Video Temporal Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Thong Thanh Nguyen",
+    "Bin Yi",
+    "Xiaobao Wu",
+    "Zhiyuan Hu",
+    "Cong-Duy T Nguyen",
+    "See-Kiong Ng",
+    "Anh Tuan Luu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Temporal video grounding aims to localize moments of interest in an untrimmed video given a free-form textual description.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Temporal video grounding aims to localize moments of interest in an untrimmed video given a free-form textual description.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It is a challenging multimodal task since it involves understanding temporal information in videos and reasoning about their connections to semantic information in texts.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "It is a challenging multimodal task since it involves understanding temporal information in videos and reasoning about their connections to semantic information in texts.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To capture moments at different temporal scales without enlarging the window size of the local self-attention, recent methods need to combine several Transformer blocks with downsampling between every two blocks, resulting in a feature pyramid of moment...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To capture moments at different temporal scales without enlarging the window size of the local self-attention, recent methods (Zhang, Wu, and Li 2022; Mu, Mo, and Li 2024) need to combine several Transformer blocks with downsampling between every two blocks, resulting in a feature pyramid of moment representations, as illustrated in Figure 1 (left).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s Ego4D-NLQ, EgoVLP, Video id: 245f3b76-ef46-48d1-b37c-afe73efbf1cf Video input: Video input: 152.28s 93.33s 146.11s Figure 1: (Left) Illustration of feature pyramid to encode...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s Ego4D-NLQ, EgoVLP, Video id: 245f3b76-ef46-48d1-b37c-afe73efbf1cf Video input: Video input: 152.28s 93.33s 146.11s Figure 1: (Left) Illustration of feature pyramid to encode video moments of different lengths; (Right) An example where recent method SnAG (Mu, Mo, and Li 2024) accurately localizes short video moment but fails on long moment.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "2022) of baseline SnAG and our model.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "2022) of baseline SnAG (Mu, Mo, and Li 2024) and our model.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "2013) datasets of baseline SnAG and our model.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "2013) datasets of baseline SnAG (Mu, Mo, and Li 2024) and our model.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "recently the growing availability of long videos, e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, recently the growing availability of long videos, e.g.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "However, such approach might not be suitable for the latest scalable video-centric approach (Zhang, Wu, and Li 2022; Mu, Mo, and Li 2024), in which multiple textual queries are related to one video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "However, because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "recently the growing availability of long videos, e.g.",
+        "scenario": "recently the growing availability of long videos, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, recently the growing availability of long videos, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To capture moments at different temporal scales without enlarging the window size of the...",
+        "scenario": "To capture moments at different temporal scales without enlarging the window size of the local self-attention, recent methods need to combine several Transformer blocks with downsampling between every two blocks, resulting in a feature pyramid of moment representations, as illustrated in Figure 1...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To capture moments at different temporal scales without enlarging the window size of the local self-attention, recent methods (Zhang, Wu, and Li 2022; Mu, Mo, and Li 2024) need to combine several Transformer blocks with downsampling between every two blocks, resulting in a feature pyramid of moment representations, as illustrated in Figure 1 (left).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "This could explain why performance of these methods tends to degrade as the duration of...",
+        "scenario": "This could explain why performance of these methods tends to degrade as the duration of target moments increase, as shown in Figure 1 (right) and statistically shown with Intersection-over-Union (IoU) results in Figure 2, respectively.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "This could explain why performance of these methods tends to degrade as the duration of target moments increase, as shown in Figure 1 (right) and statistically shown with Intersection-over-Union (IoU) results in Figure 2, respectively.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s...",
+        "scenario": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s Ego4D-NLQ, EgoVLP, Video id: 245f3b76-ef46-48d1-b37c-afe73efbf1cf Video input: Video input: 152.28s 93.33s 146.11s Figure 1: (Left) Illustration of feature pyramid to encode video moments of different lengths;...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s Ego4D-NLQ, EgoVLP, Video id: 245f3b76-ef46-48d1-b37c-afe73efbf1cf Video input: Video input: 152.28s 93.33s 146.11s Figure 1: (Left) Illustration of feature pyramid to encode video moments of different lengths; (Right) An example where recent method SnAG (Mu, Mo, and Li 2024) accurately localizes short video moment but fails on long moment.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "on streaming platforms, and demands to query their rich content have necessitated productive grounding of large volumes of queries in long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "on streaming platforms, and demands to query their rich content have necessitated productive grounding of large volumes of queries in long videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, if the grounding of two textual queries results in temporal overlapping, there might be a conflict in compact moment representations (",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Therefore, if the grounding of two textual queries results in temporal overlapping, there might be a conflict in compact moment representations (An et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Another common approach is to introduce a memory bank to store positive or negative samples’ representations, which are created by aggregating input representations iteratively during training (",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Another common approach is to introduce a memory bank to store positive or negative samples’ representations, which are created by aggregating input representations iteratively during training (Panta et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (Kim et al.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, our contributions are the following: • We propose a multi-scale contrastive framework that focuses on moment-moment relations to mitigate informational degradation in video moment representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV063",
+            "section": "Introduction",
+            "quote": "To sum up, our contributions are the following: • We propose a multi-scale contrastive framework that focuses on moment-moment relations to mitigate informational degradation in video moment representations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "recently the growing availability of long videos, e.g.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that recently the growing availability of long videos, e.g?",
+      "failure_mode": "recently the growing availability of long videos, e.g.",
+      "root_cause": "All rights reserved.",
+      "why_existing_methods_fail": "recently the growing availability of long videos, e.g.",
+      "affected_scenario": "recently the growing availability of long videos, e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, recently the growing availability of long videos, e.g.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P09",
+      "legacy_macro_problem_name": "Scalability and Corpus-Level Retrieval",
+      "micro_problem_name": "such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video?",
+      "failure_mode": "such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video.",
+      "root_cause": "These works mainly involve query-moment pairs in which queries relate to video moments of distinct videos, hence the learned semantics among moment representations would be independent from each other.",
+      "why_existing_methods_fail": "such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video.",
+      "affected_scenario": "Groundtruth (1s): 336.01s 337.01s SnAG: Our model: 335.69s 336.82s 335.86s 337.13s Ego4D-NLQ, EgoVLP, Video id: 245f3b76-ef46-48d1-b37c-afe73efbf1cf Video input: Video input: 152.28s 93.33s 146.11s Figure 1: (Left) Illustration of feature pyramid to encode video moments of different lengths;...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "However, such approach might not be suitable for the latest scalable video-centric approach (Zhang, Wu, and Li 2022; Mu, Mo, and Li 2024), in which multiple textual queries are related to one video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0031"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step?",
+      "failure_mode": "because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+      "root_cause": "most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+      "why_existing_methods_fail": "because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+      "affected_scenario": "recently the growing availability of long videos, e.g.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV052"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "However, because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "multi-scale contrastive learning framework for multi-scale temporal grounding",
+      "method_core_mechanism": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+      "method_components": [
+        "multi-scale contrastive learning framework for multi-scale temporal grounding"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0037"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+      "method_core_mechanism": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+      "method_components": [
+        "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0030"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "query-centric contrastive approach",
+      "method_core_mechanism": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+      "method_components": [
+        "query-centric contrastive approach"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0042"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "is the creation of positive and negative video moment samples",
+      "method_core_mechanism": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (",
+      "method_components": [
+        "is the creation of positive and negative video moment samples"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV050"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (Kim et al.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0088"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning",
+      "method_core_mechanism": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+      "method_components": [
+        "within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV058"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0037"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "multi-scale contrastive learning framework for multi-scale temporal grounding targets recently the growing availability of long videos, e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0037",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments. targets recently the growing availability of long videos, e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "multi-scale contrastive learning framework for multi-scale temporal grounding targets such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0031",
+      "micro_method_cluster_id": "MM0037",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments. targets such approach might not be suitable for the latest scalable video-centric approach , in which multiple textual queries are related to one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0031",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "is the creation of positive and negative video moment samples targets because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step. by operating on augmentation.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (Kim et al.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0088",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "query-centric contrastive approach targets because most long-form videos consist of a high volume of video moments, choosing an appropriate augmentation strategy that suits every moment is a non-trivial and lengthy tuning step. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "multi-scale contrastive learning framework for multi-scale temporal grounding",
+      "compared_to": "recently the growing availability of long videos, e.g.",
+      "why_it_matters": "It directly targets recently the growing availability of long videos, e.g.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+      "compared_to": "recently the growing availability of long videos, e.g.",
+      "why_it_matters": "It directly targets recently the growing availability of long videos, e.g.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "query-centric contrastive approach",
+      "compared_to": "recently the growing availability of long videos, e.g.",
+      "why_it_matters": "It directly targets recently the growing availability of long videos, e.g.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "multi-scale contrastive learning framework for multi-scale temporal grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To resolve the above issues, in this paper, we propose a multi-scale contrastive learning framework for multi-scale temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our framework, instead of leveraging moment-query relationships, we utilize the association among video moments.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "query-centric contrastive approach",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "Particularly, to avoid representation conflict among video moments, we introduce a query-centric contrastive approach that draws temporally separate video moments corresponding to a common textual query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is the creation of positive and negative video moment samples",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (",
+      "can_transfer_to": [
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "A central component of our framework is the creation of positive and negative video moment samples, which previous works primarily apply data augmentation (Kim et al.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "Accordingly, we introduce a within-scale and cross-scale approach to create positive and negative moment samples for contrastive learning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for multi-scale contrastive learning framework for multi-scale temporal grounding",
+      "baseline": "Multi-Scale Contrastive Learning for Video Temporal Grounding",
+      "dataset": "Ego4D, TACoS",
+      "module_to_modify": "multi-scale contrastive learning framework for multi-scale temporal grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting recently the growing availability of long videos, e.g.."
+    }
+  ],
+  "datasets": [
+    "Ego4D",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_nguyen_multi-scale-contrastive-learning-for-video-temporal-grounding_27aaaced69\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_nguyen_multi-scale-contrastive-learning-for-video-temporal-grounding_27aaaced69\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

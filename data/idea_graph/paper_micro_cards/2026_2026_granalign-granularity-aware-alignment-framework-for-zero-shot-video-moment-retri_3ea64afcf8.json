@@ -1,0 +1,923 @@
+{
+  "paper_id": "2026_2026_granalign-granularity-aware-alignment-framework-for-zero-shot-video-moment-retri_3ea64afcf8",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_granalign-granularity-aware-alignment-framework-for-zero-shot-video-moment-retri_3ea64afcf8",
+  "title": "GranAlign: Granularity-Aware Alignment Framework for Zero-shot Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Association for Artificial Intelligence 2026",
+    "Mingyu Jeon",
+    "Junyeong Kim",
+    "Jonghee Kim",
+    "Sunjae Yoon"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Zero-shot video moment retrieval (ZVMR) is the task of localizing a temporal moment within an untrimmed video using a natural language query without relying on task-specific training data.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video Moment Retrieval (VMR)–the task of localizing a segment from a video via a language query–is crucial for efficient video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Video Moment Retrieval (VMR)–the task of localizing a segment from a video via a language query–is crucial for efficient video understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method...",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The root cause of this problem is that existing methods treat queries monolithically.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "The root cause of this problem is that existing methods treat queries monolithically.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "An intuitive solution might be to expand the original query with various rephrases, a strategy employed by several prior works as depicted in Figure 3 (a).",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "An intuitive solution might be to expand the original query with various rephrases, a strategy employed by several prior works as depicted in Figure 3 (a).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite its success, the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Despite its success, the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from poor coverage if subtle details do not perfectly align.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This limitation is not merely anecdotal.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "This limitation is not merely anecdotal.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Prevailing methods, even when armed with high-quality pretrained knowledge in a joint space, fundamentally fail to resolve this trade-off because they lack an explicit mechanism for granularity-aware alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Prevailing methods, even when armed with high-quality pretrained knowledge in a joint space, fundamentally fail to resolve this trade-off because they lack an explicit mechanism for granularity-aware alignment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2...",
+        "scenario": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A cute dog : A baby Golden Retriever walking A baby golden dog is walking around High Coverage, Too General Granular Query (simplified & detailed) (query-agnostic & aware) Granular Caption High Precision, Too Specific A baby golden dog is walking around pred GT pred : [2, 10] pred : [2, 4] pred : [2, 4], [6, 8] 2 4 2 4 𝑄𝑠 𝑄𝑑 𝑄𝑠 𝑄𝑑 (a) Failure case1 (b) Failure case2 (c) GranAlign (Ours) Figure 1: An il",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1,...",
+        "scenario": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from poor coverage if subtle details do not perfectly align.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To overcome this dependency, zero-shot VMR (ZVMR) has emerged as a powerful and successful paradigm, with its feasibility greatly enhanced by recent advances in Vision-Language Models (VLMs) and Large Language Models (LLMs).",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "To overcome this dependency, zero-shot VMR (ZVMR) has emerged as a powerful and successful paradigm, with its feasibility greatly enhanced by recent advances in Vision-Language Models (VLMs) and Large Language Models (LLMs).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This issue arises because a user might describe the same event at varying levels of detail, from a general phrase like “a cute dog” to a spe- Copyright © 2026, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "This issue arises because a user might describe the same event at varying levels of detail, from a general phrase like “a cute dog” to a spe- Copyright © 2026, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In contrast, our proposed GranAlign (c) integrates both granular levels, achieving both high precision and high coverage to correctly localize all target moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "In contrast, our proposed GranAlign (c) integrates both granular levels, achieving both high precision and high coverage to correctly localize all target moments.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method...",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets?",
+      "failure_mode": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "root_cause": "Video Moment Retrieval (VMR)–the task of localizing a segment from a video via a language query–is crucial for efficient video understanding.",
+      "why_existing_methods_fail": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "affected_scenario": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content?",
+      "failure_mode": "the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+      "root_cause": "To overcome this dependency, zero-shot VMR (ZVMR) has emerged as a powerful and successful paradigm, with its feasibility greatly enhanced by recent advances in Vision-Language Models (VLMs) and Large Language Models (LLMs).",
+      "why_existing_methods_fail": "Despite its success, the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+      "affected_scenario": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Despite its success, the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively?",
+      "failure_mode": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+      "root_cause": "a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+      "why_existing_methods_fail": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+      "affected_scenario": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a?",
+      "failure_mode": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a...",
+      "root_cause": "illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from poor coverage if subtle...",
+      "why_existing_methods_fail": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from poor coverage if...",
+      "affected_scenario": "High Precision, High Coverage Detailed Query Query-Agnostic Caption 0 6 8 10 0 6 8 10 0 2 4 6 8 10 Query-Aware Caption Simplified Query : A puppy is walking around A cute dog Input Raw Query : Baby Golden Retriever is walking around : A baby Golden Retriever walking : A puppy is walking around A...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from poor coverage if subtle details do not perfectly align.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This limitation is not merely anecdotal.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that limitation is not merely anecdotal?",
+      "failure_mode": "This limitation is not merely anecdotal.",
+      "root_cause": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query...",
+      "why_existing_methods_fail": "This limitation is not merely anecdotal.",
+      "affected_scenario": "cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a specific query offers high precision but often suffers from...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "This limitation is not merely anecdotal.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t",
+      "method_core_mechanism": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation...",
+      "method_components": [
+        "Error Simple Detail",
+        "IOU"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0092"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework",
+      "method_core_mechanism": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+      "method_components": [
+        "Granularity- Aware Alignment"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0029"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison",
+      "method_core_mechanism": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+      "method_components": [
+        "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption",
+        "Rephrased Query Simplified Query Detailed Query",
+        "Query Video Model Query Video",
+        "Previous Method",
+        "Our Method Model",
+        "Conceptual Framework Comparison"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0007"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with...",
+      "method_core_mechanism": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+      "method_components": [
+        "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0007"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t targets traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework targets traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t targets the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework targets the ZVMR paradigm faces a new, fundamental challenge: the ‘Granularity Mismatch’ between the language query and the visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t targets The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework targets The (a) and (b) fail to localize all moments due to a mismatch in semantic granularity, resulting in low precision and low coverage, respectively. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t targets cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework targets cific one like “a baby Golden Retriever is walking around.” As illustrated in Figure 1, this mismatch creates an inevitable trade-off: a general query may achieve high coverage but lacks the precision to pinpoint the exact moment, while a... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t targets This limitation is not merely anecdotal. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework targets This limitation is not merely anecdotal. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0083",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t",
+      "compared_to": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "why_it_matters": "It directly targets traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework",
+      "compared_to": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "why_it_matters": "It directly targets traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison",
+      "compared_to": "traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.",
+      "why_it_matters": "It directly targets traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation...",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our quantitative analy 50.76 48.43 60.72 51.28 55.78 51.57 Error Simple Detail R@1, IOU=0.5 (a) w/o considering granularity (b) Considering granularity (Ours) 50 65 70 45.85 65.55 Else +5.43% +5.02% +4.83% 55 60 45 +3.14% Figure 2: Comparison of our method (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query type (see Section 4.3 for categorization criteria).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Granularity- Aware Alignment (GranAlign), a novel, training-free framework",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce Granularity- Aware Alignment (GranAlign), a novel, training-free framework that models and aligns queries and video content at complementary levels of granularity.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Query-Aware Caption Query-Agnostic Caption Query-Agnostic Caption Rephrased Query Simplified Query Detailed Query Query Video Model Query Video [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] (a) Previous Method (b) Our Method Model [𝑡𝑠𝑡𝑎𝑟𝑡, 𝑡𝑒𝑛𝑑] Figure 3: Conceptual Framework Comparison.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with...",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "(b) Our method, GranAlign, employs a dualpath framework, decomposing the query into Simplified and Detailed versions and aligning them with Query-Agnostic and Query-Aware captions, respectively.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for (b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t",
+      "baseline": "GranAlign: Granularity-Aware Alignment Framework for Zero-shot Video Moment Retrieval",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "(b) against a baseline (a) (without considering the granularity of query and video content) on the QVHighlights validation set, categorized by query t",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting traditional supervised approaches are fundamentally limited by their reliance on large, costly annotated datasets.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "MAD",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R@1",
+    "Recall",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_granalign-granularity-aware-alignment-framework-for-zero-shot-video-moment-retri_3ea64afcf8\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_granalign-granularity-aware-alignment-framework-for-zero-shot-video-moment-retri_3ea64afcf8\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

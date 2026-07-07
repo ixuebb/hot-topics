@@ -1,0 +1,407 @@
+{
+  "paper_id": "2021_cao_on-pursuit-of-designing-multi-modal-transformer-for-video-grounding_d2c8bc182a",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_cao_on-pursuit-of-designing-multi-modal-transformer-for-video-grounding_d2c8bc182a",
+  "title": "On Pursuit of Designing Multi-modal Transformer for Video Grounding",
+  "year": 2021,
+  "venue_or_source": "Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing",
+  "authors": [
+    "Meng Cao",
+    "Long Chen",
+    "Mike Zheng Shou",
+    "Can Zhang",
+    "Yuexian Zou"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video grounding aims to localize the temporal segment corresponding to a sentence query from an untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding is a fundamental while challenging task for video understanding and has recently attracted unprecedented research attention .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding is a fundamental while challenging task for video understanding and has recently attracted unprecedented research attention (Chen et al., 2018, 2019b,a; Zhang et al., 2019a; Liu et al., 2018a; Yuan et al., 2021).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Formally, it aims to identify the two temporal boundaries of the moment of interest based on an input untrimmed video and a ∗Work started when Long Chen at Tencent AI Lab. †Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Formally, it aims to identify the two temporal boundaries of the moment of interest based on an input untrimmed video and a ∗Work started when Long Chen at Tencent AI Lab. †Corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "5 × faster 4.9% better Figure 1: Performance comparisons on TACoS in terms of R@1, IoU@0.5 and Query Per Second (the number of queries that are retrieved each second during inference).",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "5 × faster 4.9% better Figure 1: Performance comparisons on TACoS in terms of R@1, IoU@0.5 and Query Per Second (the number of queries that are retrieved each second during inference).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Marker sizes are proportional to the model size.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Marker sizes are proportional to the model size.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "5 × faster 4.9% better Figure 1: Performance comparisons on TACoS in terms of R@1,...",
+        "scenario": "5 × faster 4.9% better Figure 1: Performance comparisons on TACoS in terms of R@1, IoU@0.5 and Query Per Second (the number of queries that are retrieved each second during inference).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "5 × faster 4.9% better Figure 1: Performance comparisons on TACoS in terms of R@1, IoU@0.5 and Query Per Second (the number of queries that are retrieved each second during inference).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Correspondingly, some time-consuming post-processing steps (e.g., non-maximum...",
+        "scenario": "Correspondingly, some time-consuming post-processing steps (e.g., non-maximum suppression, NMS) are introduced to eliminate redundancy, which makes the matching process inefﬁcient (cf.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Correspondingly, some time-consuming post-processing steps (e.g., non-maximum suppression, NMS) are introduced to eliminate redundancy, which makes the matching process inefﬁcient (cf.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Meanwhile, the whole inference stage is computation-intensive for densely placed candidates.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Meanwhile, the whole inference stage is computation-intensive for densely placed candidates.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters?",
+      "failure_mode": "progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+      "root_cause": "Similarly, they need post-processing steps to group or aggregate all frame-wise predictions.",
+      "why_existing_methods_fail": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+      "affected_scenario": "Correspondingly, some time-consuming post-processing steps (e.g., non-maximum suppression, NMS) are introduced to eliminate redundancy, which makes the matching process inefﬁcient (cf.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms: Modal / Fusion",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly",
+      "method_core_mechanism": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+      "method_components": [
+        "We propose six types of multi-modal fusion mechanisms",
+        "and compare their performance and computation cost thoroughly. (c) Decoder design principles."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0011"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "ﬁrst end-to-end model GTR for video grounding",
+      "method_core_mechanism": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+      "method_components": [
+        "GTR"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0007"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly targets progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0011",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "ﬁrst end-to-end model GTR for video grounding targets progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0007",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly",
+      "compared_to": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+      "why_it_matters": "It directly targets progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "ﬁrst end-to-end model GTR for video grounding",
+      "compared_to": "Although these two types of methods have realized impressive progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.",
+      "why_it_matters": "It directly targets progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We propose six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly. (c) Decoder design principles.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "ﬁrst end-to-end model GTR for video grounding",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose the ﬁrst end-to-end model GTR for video grounding, which is inherently efﬁcient with extremely fast inference speed.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly",
+      "baseline": "On Pursuit of Designing Multi-modal Transformer for Video Grounding",
+      "dataset": "TACoS",
+      "module_to_modify": "six types of multi-modal fusion mechanisms, and compare their performance and computation cost thoroughly",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting progress in video grounding, it is worth noting that they still suffer several notorious limitations: 1) For top-down methods, the heuristic proposal generation process introduces a series of hyper-parameters.."
+    }
+  ],
+  "datasets": [
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "R@1",
+    "Recall"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_cao_on-pursuit-of-designing-multi-modal-transformer-for-video-grounding_d2c8bc182a\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_cao_on-pursuit-of-designing-multi-modal-transformer-for-video-grounding_d2c8bc182a\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

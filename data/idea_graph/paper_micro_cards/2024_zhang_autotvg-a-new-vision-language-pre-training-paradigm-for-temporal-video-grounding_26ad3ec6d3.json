@@ -1,0 +1,858 @@
+{
+  "paper_id": "2024_zhang_autotvg-a-new-vision-language-pre-training-paradigm-for-temporal-video-grounding_26ad3ec6d3",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zhang_autotvg-a-new-vision-language-pre-training-paradigm-for-temporal-video-grounding_26ad3ec6d3",
+  "title": "AutoTVG: A New Vision-language Pre-training Paradigm for Temporal Video Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Xing Zhang",
+    "Jiaxi Gu",
+    "Haoyu Zhao",
+    "Shicong Wang",
+    "Hang Xu",
+    "Renjing Pei",
+    "Songcen Xu",
+    "Zuxuan Wu",
+    "Yu–Gang Jiang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal Video Grounding (TVG) aims to localize a moment from an untrimmed video given the language description.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Temporal Video Grounding (TVG) aims to localize a temporal segment from an untrimmed video, which is most related to the given query .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Temporal Video Grounding (TVG) aims to localize a temporal segment from an untrimmed video, which is most related to the given query [6, 8, 24, 34, 45, 46, 53, 54, 56, 57].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To this end, researchers devote themselves to developing TVG systems with less supervision, such as weakly-supervised TVG which removes the timestamps of captions and zero-shot TVG which only utilizes videos for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "To this end, researchers devote themselves to developing TVG systems with less supervision, such as weakly-supervised TVG [9, 14, 18, 29, 31, 40] which removes the timestamps of captions and zero-shot TVG [35, 44] which only utilizes videos for training.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "LocVTP proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "LocVTP [5] proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative representations; 2) low...",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative representations; 2) low fine-grained alignment: the caption for a short video may be an overall summary which is related to each frame, so that makes it hard to construct positive and negative samples for mining fine-grained alignment with frame-by-word comparison.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• Despite the training data being out-of-distribution from testing data, the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "• Despite the training data being out-of-distribution from testing data, the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text...",
+        "scenario": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For instance, CLIP [36] (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed video Captions Vision Encoder Text Encoder TVG Model Prediction (s, e) Frozen Vision Encoder Text Encoder Self-supervised Loss Pseudo Captions Generation TVG Model Figure 1: Comparisons of the traditional “pre-training + finetuning” paradigm and the proposed AutoTVG.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "LocVTP proposes the first pre-training framework to solve TVG and temporal action...",
+        "scenario": "LocVTP proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "LocVTP [5] proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed...",
+        "scenario": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed short-range videos while the videos from TVG datasets are untrimmed long-range videos, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed short-range videos while the videos from TVG datasets are untrimmed long-range videos, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As Figure 1 shows, we utilize untrimmed videos with automatically generated annotations...",
+        "scenario": "As Figure 1 shows, we utilize untrimmed videos with automatically generated annotations (i.e., subtitles and timestamps) as raw input, then a novel Captioned Moment Generation (CMG) module is applied to generate candidate moments from videos and captions from subtitles, in which a CLIP model is...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "As Figure 1 shows, we utilize untrimmed videos with automatically generated annotations (i.e., subtitles and timestamps) as raw input, then a novel Captioned Moment Generation (CMG) module is applied to generate candidate moments from videos and captions from subtitles, in which a CLIP model is used to retrieve nouns and verbs that best match video moments.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To this end, researchers devote themselves to developing TVG systems with less supervision, such as weakly-supervised TVG which removes the timestamps of captions and zero-shot TVG which only utilizes videos for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "To this end, researchers devote themselves to developing TVG systems with less supervision, such as weakly-supervised TVG [9, 14, 18, 29, 31, 40] which removes the timestamps of captions and zero-shot TVG [35, 44] which only utilizes videos for training.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In the past few years, the pre-training technique has raised much attention from both academia and industry, and is regarded as a potential way of saving manual labeling.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In the past few years, the pre-training technique has raised much attention from both academia and industry, and is regarded as a potential way of saving manual labeling.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed short-range videos while the videos from TVG datasets are untrimmed long-range videos, e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed short-range videos while the videos from TVG datasets are untrimmed long-range videos, e.g.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios?",
+      "failure_mode": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "root_cause": "# Introduction Temporal Video Grounding (TVG) aims to localize a temporal segment from an untrimmed video, which is most related to the given query .",
+      "why_existing_methods_fail": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "affected_scenario": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "However, the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "e urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that e urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address?",
+      "failure_mode": "e urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+      "root_cause": "To this end, researchers devote themselves to developing TVG systems with less supervision, such as weakly-supervised TVG which removes the timestamps of captions and zero-shot TVG which only utilizes videos for training.",
+      "why_existing_methods_fail": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+      "affected_scenario": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "To meet the urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG?",
+      "failure_mode": "the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+      "root_cause": "some obvious drawbacks to TVG.",
+      "why_existing_methods_fail": "LocVTP proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+      "affected_scenario": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "LocVTP [5] proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that activityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative?",
+      "failure_mode": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative...",
+      "root_cause": "Firstly, the typical pre-training --- Page 2 --video dataset consists of trimmed short-range videos while the videos from TVG datasets are untrimmed long-range videos, e.g.",
+      "why_existing_methods_fail": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative representations; 2) low fine-grained alignment: the caption for a short video may be...",
+      "affected_scenario": "LocVTP proposes the first pre-training framework to solve TVG and temporal action localization, however, the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative representations; 2) low fine-grained alignment: the caption for a short video may be an overall summary which is related to each frame, so that makes it hard to construct positive and negative samples for mining fine-grained alignment with frame-by-word comparison.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions?",
+      "failure_mode": "the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions.",
+      "root_cause": "• We provide an effective Captioned Moment Generation module to generate captioned video moments from the visionlanguage pre-training model, extensive experiments illustrate the diversity of nouns and verbs of training data can provide strong generalization...",
+      "why_existing_methods_fail": "• Despite the training data being out-of-distribution from testing data, the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions.",
+      "affected_scenario": "For instance, CLIP (a) Pre-training + Fine-tuning Paradigm (b) AutoTVG Trimmed video Text Traditional Pre-training Untrimmed video Text Fine-tuning Vision Encoder Text Encoder Prediction (s, e) TVG Model Untrimmed video Wild Annotations Pre-training Vision Encoder Text Encoder Inference Untrimmed...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• Despite the training data being out-of-distribution from testing data, the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new paradigm of pre-training for TVG",
+      "method_core_mechanism": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+      "method_components": [
+        "TVG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0118"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can",
+      "method_core_mechanism": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+      "method_components": [
+        "TVG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0118"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves better performance with much less training data",
+      "method_core_mechanism": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+      "method_components": [
+        "achieves better performance with much less training data"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0009"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new paradigm of pre-training for TVG targets the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can targets the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new paradigm of pre-training for TVG targets e urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can targets e urgent need of TVG from the industry, reducing annotation costs is by no means a worthy challenge to address. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new paradigm of pre-training for TVG targets the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can targets the traditional “pre-training + fine-tuning” paradigm (see Figure 1) has some obvious drawbacks to TVG. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can targets ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative... by operating on backbone_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "new paradigm of pre-training for TVG targets ActivityNet, which would result in two major limitations in the pre-training process: 1) poor temporal modeling: the lack of motion dynamics in trimmed videos are unlikely to make the pre-trained model obtain temporal discriminative... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "achieves better performance with much less training data targets the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0009",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can targets the proposed method achieves highly comparable results with existing in-distribution zero-shot methods or even surpasses some weakly-supervised methods on two standard TVG datasets including Charades-STA and ActivityNet Captions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0118",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "new paradigm of pre-training for TVG",
+      "compared_to": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "why_it_matters": "It directly targets the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can",
+      "compared_to": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "why_it_matters": "It directly targets the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "achieves better performance with much less training data",
+      "compared_to": "the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.",
+      "why_it_matters": "It directly targets the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new paradigm of pre-training for TVG",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In order to take full advantage of pre-training models’ merits, we propose a new paradigm of pre-training for TVG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+      "can_transfer_to": [
+        "backbone_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are as follows: • We propose an effective pre-training framework to tackle temporal video grounding, with generated captioned moments from untrimmed videos, the pre-trained model can perform zero-shot testing on downstream TVG datasets.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves better performance with much less training data",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Compared to the pre-training method for temporal video grounding, our framework achieves better performance with much less training data.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new paradigm of pre-training for TVG",
+      "baseline": "AutoTVG: A New Vision-language Pre-training Paradigm for Temporal Video Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "new paradigm of pre-training for TVG",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the laborintensive annotation process of captions and timestamps makes TVG not applicable to real-world scenarios.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zhang_autotvg-a-new-vision-language-pre-training-paradigm-for-temporal-video-grounding_26ad3ec6d3\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zhang_autotvg-a-new-vision-language-pre-training-paradigm-for-temporal-video-grounding_26ad3ec6d3\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

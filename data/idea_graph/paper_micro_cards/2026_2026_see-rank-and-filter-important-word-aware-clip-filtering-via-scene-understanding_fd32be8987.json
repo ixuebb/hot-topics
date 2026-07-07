@@ -1,0 +1,823 @@
+{
+  "paper_id": "2026_2026_see-rank-and-filter-important-word-aware-clip-filtering-via-scene-understanding_fd32be8987",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_see-rank-and-filter-important-word-aware-clip-filtering-via-scene-understanding_fd32be8987",
+  "title": "See, Rank, and Filter: Important Word-Aware Clip Filtering via Scene Understanding for Moment Retrieval and Highlight Detection",
+  "year": 2026,
+  "venue_or_source": "Underline Science Inc.",
+  "authors": [
+    "Association for Artificial Intelligence 2026",
+    "Yueun Lee",
+    "Jung Uk Kim"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval (MR) and highlight detection (HD) with natural language queries aim to localize relevant moments and key highlights in a video clips.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The expansion of digital devices and internet platforms has sparked growing interest in video content, resulting in exponential growth in both its volume and diversity (",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction The expansion of digital devices and internet platforms has sparked growing interest in video content, resulting in exponential growth in both its volume and diversity (Apostolidis et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "2021;",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "2021; Foo et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "However, existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "However, existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important...",
+        "scenario": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "First, for the aspects of the text query, according to , given a query like ‘Man is...",
+        "scenario": "First, for the aspects of the text query, according to , given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video (Figure 1(a)).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "First, for the aspects of the text query, according to (Just and Carpenter 1980), given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video (Figure 1(a)).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "After that, we filter the video clips related to these prioritized important words to...",
+        "scenario": "After that, we filter the video clips related to these prioritized important words to effectively identify the clips that The Fortieth AAAI Conference on Artificial Intelligence (AAAI-26) 5936 --- Page 2 --align with the query (Figure 1(b)).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "After that, we filter the video clips related to these prioritized important words to effectively identify the clips that The Fortieth AAAI Conference on Artificial Intelligence (AAAI-26) 5936 --- Page 2 --align with the query (Figure 1(b)).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "First, for the aspects of the text query, according to , given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video...",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "First, for the aspects of the text query, according to (Just and Carpenter 1980), given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video (Figure 1(a)).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Second, for the aspect of the video clips, we not only interpret the visual content itself but also leverage scene understanding information (",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Second, for the aspect of the video clips, we not only interpret the visual content itself but also leverage scene understanding information (Vo et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the...",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a ranking-based filtering module (RFM) that iteratively refines video clips by filtering clips based on the relevance of prioritized important words, improving moment retrieval and highlight detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "• We introduce a ranking-based filtering module (RFM) that iteratively refines video clips by filtering clips based on the relevance of prioritized important words, improving moment retrieval and highlight detection.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks?",
+      "failure_mode": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "root_cause": "While recent studies have achieved significant improvements in MR and HD considering task similarities and differences, their performance is still limited due to underutilization of the unique characteristics of text queries and video clips.",
+      "why_existing_methods_fail": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "affected_scenario": "First, for the aspects of the text query, according to , given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video (Figure 1(a)).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query?",
+      "failure_mode": "existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+      "root_cause": "a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+      "why_existing_methods_fail": "existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+      "affected_scenario": "First, for the aspects of the text query, according to , given a query like ‘Man is holding a duck on the bus’, we naturally pre-identify important words (e.g., ‘man,’ ‘duck,’ ‘bus,’ ‘hold’) and prioritize these important words before analyzing the video (Figure 1(a)).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "However, existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query?",
+      "failure_mode": "existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+      "root_cause": "By doing so, we gain a deeper scene understanding, which helps us find the video clip segments that are most relevant to the text query.",
+      "why_existing_methods_fail": "existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+      "affected_scenario": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "However, existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth...",
+      "method_core_mechanism": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+      "method_components": [
+        "Bus Man",
+        "Duck Hand Man",
+        "Important Word",
+        "Filtering Nth Filtering Nth Important Word",
+        "Bus Prioritized Important Words",
+        "Man Nth",
+        "Prioritizing Important Words"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0150"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "novel approach",
+      "method_core_mechanism": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+      "method_components": [
+        "novel approach"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "text features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0042"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "feature enhancement module (FEM) to identify and prioritize the important words given a text query",
+      "method_core_mechanism": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+      "method_components": [
+        "FEM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0150"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "rankingbased filtering module (RFM)",
+      "method_core_mechanism": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+      "method_components": [
+        "RFM",
+        "we propose a rankingbased filtering module (RFM) that refines video clips"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "clip features"
+      ],
+      "output_or_supervision": "ranking",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0150"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "feature enhancement module (FEM)",
+      "method_core_mechanism": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+      "method_components": [
+        "FEM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0150"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth... targets To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0150",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel approach targets To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel approach targets existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "feature enhancement module (FEM) to identify and prioritize the important words given a text query targets existing methods treat the processing of the query text and video clip as a black-box, failing to prioritize the important words and thereby lacking a sufficient understanding of the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0150",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel approach targets existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "feature enhancement module (FEM) to identify and prioritize the important words given a text query targets existing methods rely mainly on raw visual content, limiting their ability to fully capture the scene context and properly align it with the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0150",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Query-Conditioned Frame/Clip Selection",
+      "what_is_new": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth...",
+      "compared_to": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "why_it_matters": "It directly targets To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "novel approach",
+      "compared_to": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "why_it_matters": "It directly targets To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "feature enhancement module (FEM) to identify and prioritize the important words given a text query",
+      "compared_to": "To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.",
+      "why_it_matters": "It directly targets To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth...",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth Important Word: Bus Prioritized Important Words 1st: Man Nth: Bus 2nd: Duck ⋯ Query: Man is holding a duck on the bus (1) Finding and (2) Prioritizing Important Words (a) Figure 1: Conceptual illustration of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel approach",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In this paper, building on these insights, we propose a novel approach that enables more fine-grained clip filtering related to the text query by fully leveraging image-text scene understanding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "feature enhancement module (FEM) to identify and prioritize the important words given a text query",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "First, to address the issue (i), we introduce a feature enhancement module (FEM) to identify and prioritize the important words given a text query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "rankingbased filtering module (RFM)",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+      "can_transfer_to": [
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Second, to address the issue (ii), we propose a rankingbased filtering module (RFM) that refines video clips, based on the relevance of the prioritized important word.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "feature enhancement module (FEM)",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "The major contributions of our paper are summarized as: • We propose a feature enhancement module (FEM) that identifies and prioritizes important words in text queries, while enhancing detailed scene understanding through the utilization of MLLMs.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for (b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth...",
+      "baseline": "See, Rank, and Filter: Important Word-Aware Clip Filtering via Scene Understanding for Moment Retrieval and Highlight Detection",
+      "dataset": "QVHighlights",
+      "module_to_modify": "(b) Man, Bus Man, Duck Hand Man, Duck, Bus Man 1st Important Word: Man 2nd Important Word: Duck ⋯ 1st Filtering 2nd Filtering Nth Filtering Nth...",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting To address this limitation, we draw inspiration from how humans utilize both modalities for MR and HD tasks.."
+    }
+  ],
+  "datasets": [
+    "QVHighlights"
+  ],
+  "metrics": [
+    "HD",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_see-rank-and-filter-important-word-aware-clip-filtering-via-scene-understanding_fd32be8987\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_2026_see-rank-and-filter-important-word-aware-clip-filtering-via-scene-understanding_fd32be8987\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

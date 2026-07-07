@@ -1,0 +1,1011 @@
+{
+  "paper_id": "2024_fang_fewer-steps-better-performance-efficient-cross-modal-clip-trimming-for-video-mom_4550718b93",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_fewer-steps-better-performance-efficient-cross-modal-clip-trimming-for-video-mom_4550718b93",
+  "title": "Fewer Steps, Better Performance: Efficient Cross-Modal Clip Trimming for Video Moment Retrieval Using Language",
+  "year": 2024,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Xiang Fang",
+    "Daizong Liu",
+    "Wanlong Fang",
+    "Pan Zhou",
+    "Zichuan Xu",
+    "Wenzheng Xu",
+    "Junyang Chen",
+    "Renfu Li"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Given an untrimmed video and a sentence query, video moment retrieval using language (VMR) aims to locate a target query-relevant moment.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction As an emerging and challenging cross-modal task, video moment retrieval using language (VMR) (Anne",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction As an emerging and challenging cross-modal task, video moment retrieval using language (VMR) (Anne Hendricks et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "2017;",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "2017; Gao et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "2017) has drawn increasing attention in recent years due to its various applications, such as *These authors contributed equally.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "2017) has drawn increasing attention in recent years due to its various applications, such as *These authors contributed equally.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "†Corresponding Author.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "†Corresponding Author.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most computational cost of a VMR...",
+        "evidence": [
+          {
+            "evidence_id": "EV063",
+            "section": "Introduction",
+            "quote": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most computational cost of a VMR model.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+        "evidence": [
+          {
+            "evidence_id": "EV066",
+            "section": "Introduction",
+            "quote": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV067",
+            "section": "Introduction",
+            "quote": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV104",
+            "section": "Introduction",
+            "quote": "However, the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "previous efficient video recognition methods only capture the objectlevel appearance feature based on the pretrained ImageNet, and often ignore the background information and motion feature, which is insufficient for our challenging VMR task.",
+        "evidence": [
+          {
+            "evidence_id": "EV125",
+            "section": "Introduction",
+            "quote": "However, previous efficient video recognition methods only capture the objectlevel appearance feature based on the pretrained ImageNet, and often ignore the background information and motion feature, which is insufficient for our challenging VMR task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "0 2k 4k 6k 8k 25 35 45 55 Query Per Second (QPS) R@1, IoU=0.5 CTRL 2D-TAN VIDTR Ours MMN...",
+        "scenario": "0 2k 4k 6k 8k 25 35 45 55 Query Per Second (QPS) R@1, IoU=0.5 CTRL 2D-TAN VIDTR Ours MMN CTRL 2D-TAN MMN VIDTR 0 2k 4k 6k QPS 65 CTRL 2D-TAN MMN VIDTR 20 40 60 R@1, IoU=0.5 Cross-modal interaction Retrieval head Boundary Query Full video Cheap clip selection Selective cross-modal interaction...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "0 2k 4k 6k 8k 25 35 45 55 Query Per Second (QPS) R@1, IoU=0.5 CTRL 2D-TAN VIDTR Ours MMN CTRL 2D-TAN MMN VIDTR 0 2k 4k 6k QPS 65 CTRL 2D-TAN MMN VIDTR 20 40 60 R@1, IoU=0.5 Cross-modal interaction Retrieval head Boundary Query Full video Cheap clip selection Selective cross-modal interaction Retrieval head Boundary Efficient framework Origin Ours Origin Ours Origin Ours Origin Ours 30 40 50 60 70 Figure 1: (a) Example of the VMR task, where GT means the ground-truth boundary.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Figure 1(a), the VMR task targets locating a video The Thirty-Eighth AAAI...",
+        "scenario": "As shown in Figure 1(a), the VMR task targets locating a video The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 1735 --- Page 2 --moment that semantically corresponds to a given language query from a long untrimmed video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a), the VMR task targets locating a video The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 1735 --- Page 2 --moment that semantically corresponds to a given language query from a long untrimmed video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Moreover, all this must be done in a scalable manner, given that a long untrimmed video...",
+        "scenario": "Moreover, all this must be done in a scalable manner, given that a long untrimmed video (e.g., surveillance video and live video) will ultimately span hours, days or more.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Moreover, all this must be done in a scalable manner, given that a long untrimmed video (e.g., surveillance video and live video) will ultimately span hours, days or more.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For example, given a query (“A person is hitting the sides of their bed with the palm of...",
+        "scenario": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV066",
+            "section": "Introduction",
+            "quote": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "These fully-supervised approaches can be divided into two categories: 1) Top-down approaches (Anne",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "These fully-supervised approaches can be divided into two categories: 1) Top-down approaches (Anne Hendricks et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Such a timeconsuming approach becomes intractable as the video duration grows, especially for real-time applications like surveillance video and live video, where the constrained on-board computation severely limits the applications of previous heavy-weight...",
+        "evidence": [
+          {
+            "evidence_id": "EV064",
+            "section": "Introduction",
+            "quote": "Such a timeconsuming approach becomes intractable as the video duration grows, especially for real-time applications like surveillance video and live video, where the constrained on-board computation severely limits the applications of previous heavy-weight models.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV067",
+            "section": "Introduction",
+            "quote": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(b) Pipeline comparison between previous methods and our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "(b) Pipeline comparison between previous methods and our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(c) Performance comparison between previous methods and our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "(c) Performance comparison between previous methods and our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+        "evidence": [
+          {
+            "evidence_id": "EV079",
+            "section": "Introduction",
+            "quote": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• Our experiments on three popular yet challenging benchmarks demonstrate that our approach is more effective and efficient than state-of-the-art methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV081",
+            "section": "Introduction",
+            "quote": "• Our experiments on three popular yet challenging benchmarks demonstrate that our approach is more effective and efficient than state-of-the-art methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries?",
+      "failure_mode": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "root_cause": "2023b, 2021, 2023a) are under fully-supervised setting, where each frame is manually labeled as queryrelevant or not.",
+      "why_existing_methods_fail": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "affected_scenario": "0 2k 4k 6k 8k 25 35 45 55 Query Per Second (QPS) R@1, IoU=0.5 CTRL 2D-TAN VIDTR Ours MMN CTRL 2D-TAN MMN VIDTR 0 2k 4k 6k QPS 65 CTRL 2D-TAN MMN VIDTR 20 40 60 R@1, IoU=0.5 Cross-modal interaction Retrieval head Boundary Query Full video Cheap clip selection Selective cross-modal interaction...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most?",
+      "failure_mode": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most...",
+      "root_cause": "Although the above two types of works have achieved significant performances, they still suffer from the redundant proposal generation/matching process (top-down) and complex postprocessing steps (bottom-up) to refine the grounding results.",
+      "why_existing_methods_fail": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most computational cost of a VMR model.",
+      "affected_scenario": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV063"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV063",
+          "section": "Introduction",
+          "quote": "Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most computational cost of a VMR model.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom?",
+      "failure_mode": "query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "root_cause": "Fortunately, we can notice that (i) not all parts of the video are useful for reasoning about a given query, and (ii) there are high-level visual semantics about objects and activities that could steer our attention toward where to retrieve.",
+      "why_existing_methods_fail": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "affected_scenario": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV066"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV066",
+          "section": "Introduction",
+          "quote": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "given the free-form nature of the queries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that given the free-form nature of the queries?",
+      "failure_mode": "given the free-form nature of the queries.",
+      "root_cause": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "why_existing_methods_fail": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+      "affected_scenario": "For example, given a query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV067"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV067",
+          "section": "Introduction",
+          "quote": "Notably, these associations cannot be neatly enumerated, however, given the free-form nature of the queries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the above methods heavily rely on the datasets that require numerous manually labelled annotations for training?",
+      "failure_mode": "the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+      "root_cause": "Compared with the proposal-based methods, proposal-free methods are more efficient.",
+      "why_existing_methods_fail": "the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+      "affected_scenario": "0 2k 4k 6k 8k 25 35 45 55 Query Per Second (QPS) R@1, IoU=0.5 CTRL 2D-TAN VIDTR Ours MMN CTRL 2D-TAN MMN VIDTR 0 2k 4k 6k QPS 65 CTRL 2D-TAN MMN VIDTR 20 40 60 R@1, IoU=0.5 Cross-modal interaction Retrieval head Boundary Query Full video Cheap clip selection Selective cross-modal interaction...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV104"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV104",
+          "section": "Introduction",
+          "quote": "However, the above methods heavily rely on the datasets that require numerous manually labelled annotations for training.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Video: GT: 0 5",
+      "method_core_mechanism": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+      "method_components": [
+        "Query Time-consuming",
+        "Our Method Video",
+        "GT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0199"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "(b) Pipeline comparison between previous methods and our method.",
+      "method_core_mechanism": "(b) Pipeline comparison between previous methods and our method.",
+      "method_components": [
+        "(b) Pipeline comparison between previous methods and our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0078"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "(c) Performance comparison between previous methods and our method.",
+      "method_core_mechanism": "(c) Performance comparison between previous methods and our method.",
+      "method_components": [
+        "(c) Performance comparison between previous methods and our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "(c) Performance comparison between previous methods and our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0078"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "efficient clip selection approach",
+      "method_core_mechanism": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "effective clip selection module by designing three high-level features (BAM features) as the semantic indexer",
+      "method_core_mechanism": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+      "method_components": [
+        "BAM"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV079"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV079",
+          "section": "Introduction",
+          "quote": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0063"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Video: GT: 0 5 targets Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "(b) Pipeline comparison between previous methods and our method. targets Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Video: GT: 0 5 targets Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "(b) Pipeline comparison between previous methods and our method. targets Although the above VMR methods have made exciting headway, they neglect the practical scaling issue: they extract expensive spatio-temporal visual features for densely sampled clips throughout the long video, which spends the most... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Video: GT: 0 5 targets query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "(b) Pipeline comparison between previous methods and our method. targets query (“A person is hitting the sides of their bed with the palm of their hand.”), we can ignore video clips recorded in some irrelevant scenes other than the bedroom. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Video: GT: 0 5 targets given the free-form nature of the queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "(b) Pipeline comparison between previous methods and our method. targets given the free-form nature of the queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0133",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "Video: GT: 0 5 targets the above methods heavily rely on the datasets that require numerous manually labelled annotations for training. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "(b) Pipeline comparison between previous methods and our method. targets the above methods heavily rely on the datasets that require numerous manually labelled annotations for training. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0049",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Video: GT: 0 5",
+      "compared_to": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "why_it_matters": "It directly targets Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "(b) Pipeline comparison between previous methods and our method.",
+      "compared_to": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "why_it_matters": "It directly targets Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "(c) Performance comparison between previous methods and our method.",
+      "compared_to": "Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.",
+      "why_it_matters": "It directly targets Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Video: GT: 0 5",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Current models Query Time-consuming framework Our Method Video: GT: 0 5.07s Full video (a) Illustration of video moment retrieval using language.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "(b) Pipeline comparison between previous methods and our method.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "(b) Pipeline comparison between previous methods and our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) Pipeline comparison between previous methods and our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "(c) Performance comparison between previous methods and our method.",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(c) Performance comparison between previous methods and our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "(c) Performance comparison between previous methods and our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "efficient clip selection approach",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+      "can_transfer_to": [
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose an efficient clip selection approach that adaptively spots query-relevant clips quickly, and selectively processes these clips to serve as inputs to the VMR model.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "effective clip selection module by designing three high-level features (BAM features) as the semantic indexer",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+      "can_transfer_to": [
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV079",
+          "section": "Introduction",
+          "quote": "• We propose an effective clip selection module by designing three high-level features (BAM features) as the semantic indexer.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Video: GT: 0 5",
+      "baseline": "Fewer Steps, Better Performance: Efficient Cross-Modal Clip Trimming for Video Moment Retrieval Using Language",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "Video: GT: 0 5",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Therefore, the main challenge in such a setting is how to align multi-modal features well to predict precise moment boundaries.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R@1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_fewer-steps-better-performance-efficient-cross-modal-clip-trimming-for-video-mom_4550718b93\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_fewer-steps-better-performance-efficient-cross-modal-clip-trimming-for-video-mom_4550718b93\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

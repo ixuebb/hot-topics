@@ -1,0 +1,758 @@
+{
+  "paper_id": "2021_chen_end-to-end-multi-modal-video-temporal-grounding_4caa460769",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_chen_end-to-end-multi-modal-video-temporal-grounding_4caa460769",
+  "title": "End-to-end Multi-modal Video Temporal Grounding",
+  "year": 2021,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Yiwen Chen",
+    "Yi‐Hsuan Tsai",
+    "Ming–Hsuan Yang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract We address the problem of text-guided video temporal grounding, which aims to identify the time interval of a certain event based on a natural language description.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the rapid growth of video data in our daily lives, video understanding has become an ever increasingly important task in computer vision.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction With the rapid growth of video data in our daily lives, video understanding has become an ever increasingly important task in computer vision.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Research involving other modalities such as text and speech has also drawn much attention in recent years, e.g., video captioning , and video question answering .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Research involving other modalities such as text and speech has also drawn much attention in recent years, e.g., video captioning [17, 23], and video question answering [18, 16].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Existing methods usually consider only RGB images as visual cues, which are less effective for recognizing objects and actions in videos with complex backgrounds.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Existing methods [34, 26, 33, 22] usually consider only RGB images as visual cues, which are less effective for recognizing objects and actions in videos with complex backgrounds.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Finally, we show state-of-the-art performance for video temporal grounding against existing methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Finally, we show state-of-the-art performance for video temporal grounding against existing methods.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Research involving other modalities such as text and speech has also drawn much attention...",
+        "scenario": "Research involving other modalities such as text and speech has also drawn much attention in recent years, e.g., video captioning , and video question answering .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Research involving other modalities such as text and speech has also drawn much attention in recent years, e.g., video captioning [17, 23], and video question answering [18, 16].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, since the query text descriptions usually involve moving objects such as...",
+        "scenario": "For example, since the query text descriptions usually involve moving objects such as “Closing a door” or “Throwing a pillow”, using optical ﬂow as input is able to identify such actions with large motion.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For example, since the query text descriptions usually involve moving objects such as “Closing a door” or “Throwing a pillow”, using optical ﬂow as input is able to identify such actions with large motion.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, actions such as “Sitting in a bed” or “Working at a table” are not easily...",
+        "scenario": "For example, actions such as “Sitting in a bed” or “Working at a table” are not easily recognized by optical ﬂow due to small motion, but depth can provide structural information to assist the learning process.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "For example, actions such as “Sitting in a bed” or “Working at a table” are not easily recognized by optical ﬂow due to small motion, but depth can provide structural information to assist the learning process.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "we ﬁnd that this scheme is less effective due to the lack of communication across...",
+        "scenario": "we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For example, since the query text descriptions usually involve moving objects such as “Closing a door” or “Throwing a pillow”, using optical ﬂow as input is able to identify such actions with large motion.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For example, since the query text descriptions usually involve moving objects such as “Closing a door” or “Throwing a pillow”, using optical ﬂow as input is able to identify such actions with large motion.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning .",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning [7, 15].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We conduct extensive experiments on the Charades-STA and ActivityNet Captions datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query,...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "We conduct extensive experiments on the Charades-STA [10] and ActivityNet Captions [17] datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query, and name our method as DRFT.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The main contributions of this work are summarized as follows: 1) We propose a multi-modal framework for text-guided video temporal grounding by extracting complementary information from RGB, optical ﬂow and depth features.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "The main contributions of this work are summarized as follows: 1) We propose a multi-modal framework for text-guided video temporal grounding by extracting complementary information from RGB, optical ﬂow and depth features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds?",
+      "failure_mode": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "root_cause": "RGB images provide abundant visual information, which is essential for visual recognition.",
+      "why_existing_methods_fail": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "affected_scenario": "For example, since the query text descriptions usually involve moving objects such as “Closing a door” or “Throwing a pillow”, using optical ﬂow as input is able to identify such actions with large motion.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue?",
+      "failure_mode": "we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue...",
+      "root_cause": "the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+      "why_existing_methods_fail": "we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+      "affected_scenario": "For example, actions such as “Sitting in a bed” or “Working at a table” are not easily recognized by optical ﬂow due to small motion, but depth can provide structural information to assist the learning process.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue does.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps",
+      "method_core_mechanism": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+      "method_components": [
+        "RGB"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "multi-modal framework with 1) an inter-modal module",
+      "method_core_mechanism": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+      "method_components": [
+        "multi-modal framework with 1) an inter-modal module"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "intra-modal module via self-supervised contrastive learning",
+      "method_core_mechanism": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning .",
+      "method_components": [
+        "intra-modal module via self-supervised contrastive learning"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning [7, 15].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0037"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "We conduct extensive experiments on the Charades-STA and ActivityNet Captions datasets to demonstrate the effectiveness of our multi-modal learning...",
+      "method_core_mechanism": "We conduct extensive experiments on the Charades-STA and ActivityNet Captions datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query, and name our method as DRFT.",
+      "method_components": [
+        "ActivityNet Captions",
+        "STA",
+        "GB",
+        "DRFT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "We conduct extensive experiments on the Charades-STA [10] and ActivityNet Captions [17] datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query, and name our method as DRFT.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "complementary property of multi-modality and the improved performance over the single-modality models",
+      "method_core_mechanism": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+      "method_components": [
+        "complementary property of multi-modality and the improved performance over the single-modality models"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0028"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps targets existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "multi-modal framework with 1) an inter-modal module targets existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "multi-modal framework with 1) an inter-modal module targets we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "intra-modal module via self-supervised contrastive learning targets we ﬁnd that this scheme is less effective due to the lack of communication across different modalities, e.g., using depth cues alone without considering RGB features is not sufﬁcient to learn the semantic information as the appearance cue... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning [7, 15].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0037",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps",
+      "compared_to": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "why_it_matters": "It directly targets existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "multi-modal framework with 1) an inter-modal module",
+      "compared_to": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "why_it_matters": "It directly targets existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "intra-modal module via self-supervised contrastive learning",
+      "compared_to": "existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.",
+      "why_it_matters": "It directly targets existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To understand the video contents more holistically, we propose a multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-modal framework with 1) an inter-modal module",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To tackle this issue, we propose a multi-modal framework with 1) an inter-modal module that learns cross-modal features, and 2) an intra-modal module to self-learn feature representations across videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "intra-modal module via self-supervised contrastive learning",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning .",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To enhance feature representations for each modality and thereby improve multi-modal learning, we introduce an intra-modal module via self-supervised contrastive learning [7, 15].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "We conduct extensive experiments on the Charades-STA and ActivityNet Captions datasets to demonstrate the effectiveness of our multi-modal learning...",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "We conduct extensive experiments on the Charades-STA and ActivityNet Captions datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query, and name our method as DRFT.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "We conduct extensive experiments on the Charades-STA [10] and ActivityNet Captions [17] datasets to demonstrate the effectiveness of our multi-modal learning framework for video temporal grounding using (D)epth, (R)GB, and optical (F)low with the (T)ext as the query, and name our method as DRFT.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "complementary property of multi-modality and the improved performance over the single-modality models",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "First, we present the complementary property of multi-modality and the improved performance over the single-modality models.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps",
+      "baseline": "End-to-end Multi-modal Video Temporal Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "multi-modal framework to learn complementary visual features from RGB images, optical ﬂow and depth maps",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting existing methods based on appearance alone are likely to be less effective for complex scenes with cluttered backgrounds.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_chen_end-to-end-multi-modal-video-temporal-grounding_4caa460769\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_chen_end-to-end-multi-modal-video-temporal-grounding_4caa460769\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,367 @@
+{
+  "paper_id": "2024_wang_text-controlled-motion-mamba-text-instructed-temporal-grounding-of-human-motion_3a5d862319",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_text-controlled-motion-mamba-text-instructed-temporal-grounding-of-human-motion_3a5d862319",
+  "title": "Text-controlled Motion Mamba: Text-Instructed Temporal Grounding of Human Motion",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Xinghan Wang",
+    "Zixi Kang",
+    "Yadong Mu"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Human motion understanding is a crucial task with a wide range of applications.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Human motion understanding is a crucial task with a wide range of applications.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recent years have witnessed the flourishing of large-scale motion capture databases –, which greatly facilitate the end-to-end training of various motion-related tasks, such as motion prediction –, action recognition –, motion segmentation , , etc.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Recent years have witnessed the flourishing of large-scale motion capture databases [1]–[4], which greatly facilitate the end-to-end training of various motion-related tasks, such as motion prediction [5]–[8], action recognition [9]–[20], motion segmentation [21], [22], etc.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Based on these databases, recent studies – have augmented motion datasets with textual annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Based on these databases, recent studies [23]–[28] have augmented motion datasets with textual annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "These annotated motion-text pairs enable a range of text-motion tasks that require a joint understanding of human motion and language, such as text-based motion generation –, motion captioning , , text-based motion editing – , and motion question answering .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "These annotated motion-text pairs enable a range of text-motion tasks that require a joint understanding of human motion and language, such as text-based motion generation [29]–[32], motion captioning [33], [34], text-based motion editing [35]– [37], and motion question answering [38].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1, the THMG task is highly challenging as it requires simultaneous...",
+        "scenario": "As shown in Figure 1, the THMG task is highly challenging as it requires simultaneous consideration of several critical factors: (1) Achieving precise grounding of the time interval corresponding to the query within a long sequence demands the model’s ability to grasp",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, the THMG task is highly challenging as it requires simultaneous consideration of several critical factors: (1) Achieving precise grounding of the time interval corresponding to the query within a long sequence demands the model’s ability to grasp",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Thus, a textual description of particular human actions often corresponds to specific temporal segments of the sequence rather than the entire sequence.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Thus, a textual description of particular human actions often corresponds to specific temporal segments of the sequence rather than the entire sequence.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences?",
+      "failure_mode": "in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+      "root_cause": "These annotated motion-text pairs enable a range of text-motion tasks that require a joint understanding of human motion and language, such as text-based motion generation –, motion captioning , , text-based motion editing – , and motion question answering .",
+      "why_existing_methods_fail": "in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+      "affected_scenario": "As shown in Figure 1, the THMG task is highly challenging as it requires simultaneous consideration of several critical factors: (1) Achieving precise grounding of the time interval corresponding to the query within a long sequence demands the model’s ability to grasp",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0012"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving?",
+      "failure_mode": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+      "root_cause": "broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+      "why_existing_methods_fail": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+      "affected_scenario": "As shown in Figure 1, the THMG task is highly challenging as it requires simultaneous consideration of several critical factors: (1) Achieving precise grounding of the time interval corresponding to the query within a long sequence demands the model’s ability to grasp",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0012"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "task of text-based human motion grounding (THMG) for the first time",
+      "method_core_mechanism": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+      "method_components": [
+        "THMG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0111"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "task of text-based human motion grounding (THMG) for the first time targets in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0012",
+      "micro_method_cluster_id": "MM0111",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "task of text-based human motion grounding (THMG) for the first time targets presents a substantial challenge, which has broad applications across domains like surveillance, sports analytics, healthcare and autonomous driving. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0012",
+      "micro_method_cluster_id": "MM0111",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM007"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "task of text-based human motion grounding (THMG) for the first time",
+      "compared_to": "in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.",
+      "why_it_matters": "It directly targets in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "task of text-based human motion grounding (THMG) for the first time",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this study, we introduce the task of text-based human motion grounding (THMG) for the first time, which aims to identify the start and end timestamps of all segments corresponding to a given textual description from an untrimmed motion sequence.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for task of text-based human motion grounding (THMG) for the first time",
+      "baseline": "Text-controlled Motion Mamba: Text-Instructed Temporal Grounding of Human Motion",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "task of text-based human motion grounding (THMG) for the first time",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting in realworld scenarios, semantic actions often occur sparsely within lengthy motion sequences.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_text-controlled-motion-mamba-text-instructed-temporal-grounding-of-human-motion_3a5d862319\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_text-controlled-motion-mamba-text-instructed-temporal-grounding-of-human-motion_3a5d862319\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

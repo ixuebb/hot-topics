@@ -1,0 +1,393 @@
+{
+  "paper_id": "2021_zhao_cascaded-prediction-network-via-segment-tree-for-temporal-video-grounding_b3f0f4184d",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhao_cascaded-prediction-network-via-segment-tree-for-temporal-video-grounding_b3f0f4184d",
+  "title": "Cascaded Prediction Network via Segment Tree for Temporal Video Grounding",
+  "year": 2021,
+  "venue_or_source": "CVPR 2021",
+  "authors": [
+    "Yang Zhao",
+    "Zhou Zhao",
+    "Zhu Zhang",
+    "Zhijie Lin"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal video grounding aims to localize the target segment which is semantically aligned with the given sentence in an untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the rapid development of Internet technology, video has become a signiﬁcant medium for information communication and dissemination, which brings great application value and prospect for the ﬁeld of automatic video analysis.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction With the rapid development of Internet technology, video has become a signiﬁcant medium for information communication and dissemination, which brings great application value and prospect for the ﬁeld of automatic video analysis.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "After the release of several large-scale datasets , research in this area is gradually moving towards video-text understanding tasks, including videotext retrieval , video captioning , video question answering and so forth.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "After the release of several large-scale datasets [3, 4, 13, 36, 38], research in this area is gradually moving towards video-text understanding tasks, including videotext retrieval [39, 43], video captioning [21, 33], video question answering [30, 49] and so forth.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Considering the application scenarios in video websites and search engines, an increasing number of researchers begin to focus on the task of temporal video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Considering the application scenarios in video websites and search engines, an increasing number of researchers begin to focus on the task of temporal video grounding.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "∗Zhou Zhao is the corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "∗Zhou Zhao is the corresponding author.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As the example in Figure 1 illustrates, temporal video grounding aims to automatically...",
+        "scenario": "As the example in Figure 1 illustrates, temporal video grounding aims to automatically determine when an action or event corresponding to a given text query occurs in the video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "As the example in Figure 1 illustrates, temporal video grounding aims to automatically determine when an action or event corresponding to a given text query occurs in the video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction...",
+        "scenario": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction Network (CPN) for temporal grounding as shown in Figure 2.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction Network (CPN) for temporal grounding as shown in Figure 2.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Besides, the proposal boundaries are usually ﬁxed, leading to the incapability to work out more ﬂexible results.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Besides, the proposal boundaries are usually ﬁxed, leading to the incapability to work out more ﬂexible results.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction Network (CPN) for temporal grounding as shown in Figure 2.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction Network (CPN) for temporal grounding as shown in Figure 2.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing?",
+      "failure_mode": "for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+      "root_cause": "And the latter ones try to tackle this problem by utilizing fully integrated features to determine the start and end timestamps aligned to the given description directly.",
+      "why_existing_methods_fail": "for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+      "affected_scenario": "As the example in Figure 1 illustrates, temporal video grounding aims to automatically determine when an action or event corresponding to a given text query occurs in the video.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules?",
+      "failure_mode": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+      "root_cause": "the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+      "why_existing_methods_fail": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+      "affected_scenario": "To alleviate these problems, we devise a novel Cas- 14197 --- Page 2 --caded Prediction Network (CPN) for temporal grounding as shown in Figure 2.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0034"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network",
+      "method_core_mechanism": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+      "method_components": [
+        "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0136"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network targets for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network targets Moreover, due to the lack of supervision from the inside of segments, these methods are strongly dependent on the expression ability of fusion modules. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0034",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network",
+      "compared_to": "for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.",
+      "why_it_matters": "It directly targets for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Afterwards, we develop a segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network",
+      "baseline": "Cascaded Prediction Network via Segment Tree for Temporal Video Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "segmenttree-based structure to generate segment features in different temporal scales and reﬁne them in a message-passing way via graph neural network",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting for the proposal-based methods, the handcrafted pre-deﬁnitions heavily rely on the prior knowledge to the length distribution of target segments for the speciﬁc datasets and bring much extra computational cost for preprocessing.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhao_cascaded-prediction-network-via-segment-tree-for-temporal-video-grounding_b3f0f4184d\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhao_cascaded-prediction-network-via-segment-tree-for-temporal-video-grounding_b3f0f4184d\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

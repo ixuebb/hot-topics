@@ -1,0 +1,776 @@
+{
+  "paper_id": "2026_lin_unifunc3d-unified-active-spatial-temporal-grounding-for-3d-functionality-segment_d89001b908",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lin_unifunc3d-unified-active-spatial-temporal-grounding-for-3d-functionality-segment_d89001b908",
+  "title": "UniFunc3D: Unified Active Spatial-Temporal Grounding for 3D Functionality Segmentation",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Jiaying Lin",
+    "Dan Xu"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction For an embodied agent to operate effectively in human environments, it must look beyond simple object labels and understand affordances, the latent functional properties that enable interaction.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction For an embodied agent to operate effectively in human environments, it must look beyond simple object labels and understand affordances, the latent functional properties that enable interaction.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Existing training-free method Fun3DU [7] typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Because it cannot adaptively focus on important frames at a higher resolution, small functional parts occupy tiny regions that appear as imperceptible noise.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Because it cannot adaptively focus on important frames at a higher resolution, small functional parts occupy tiny regions that appear as imperceptible noise.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(Bottom) Our proposed UniFunc3D addresses these limitations by utilizing a unified Multimodal Large Language Model (MLLM) as an active observer.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "(Bottom) Our proposed UniFunc3D addresses these limitations by utilizing a unified Multimodal Large Language Model (MLLM) as an active observer.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is...",
+        "scenario": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU...",
+        "scenario": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Second, they utilize passive heuristic rules (e.g., handcrafted, threshold-based scores...",
+        "scenario": "Second, they utilize passive heuristic rules (e.g., handcrafted, threshold-based scores that weight the centeredness and uniformity of detected contextual object masks) to select video frames for independent processing.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Second, they utilize passive heuristic rules (e.g., handcrafted, threshold-based scores that weight the centeredness and uniformity of detected contextual object masks) to select video frames for independent processing.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "To conclude, existing passive design of Fun3DU leads to three critical failure modes, as...",
+        "scenario": "To conclude, existing passive design of Fun3DU leads to three critical failure modes, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "To conclude, existing passive design of Fun3DU leads to three critical failure modes, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Existing training-free method Fun3DU [7] typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "These approaches often begin with a “visually blind” reasoning stage where a text-only LLM (i.e., LLaMA-3.1-9B) to decompose the input text description into two kinds of object: the contextual object (i.e., the object that contains or is related to the...",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "These approaches often begin with a “visually blind” reasoning stage where a text-only LLM (i.e., LLaMA-3.1-9B) to decompose the input text description into two kinds of object: the contextual object (i.e., the object that contains or is related to the functional object) and the functional object (i.e., the ultimate object(s) or parts to segment).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps?",
+      "failure_mode": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "root_cause": "existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "why_existing_methods_fail": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "affected_scenario": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale?",
+      "failure_mode": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+      "root_cause": "it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+      "why_existing_methods_fail": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+      "affected_scenario": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning?",
+      "failure_mode": "Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+      "root_cause": "This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale.",
+      "why_existing_methods_fail": "Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+      "affected_scenario": "While standard open-vocabulary 3D segmentation focuses on identifying what an object is (e.g., “a cabinet”), functionality segmentation requires determining how to interact with it based on intent.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Existing training-free method Fun3DU [7] typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications?",
+      "failure_mode": "as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+      "root_cause": "their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+      "why_existing_methods_fail": "as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+      "affected_scenario": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism?",
+      "failure_mode": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+      "root_cause": "What is worse, these methods process images as isolated single frames and do not utilize temporal information from multiple frames, leading to errors when disambiguating spatial relationships or aggregating visibility across views.",
+      "why_existing_methods_fail": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+      "affected_scenario": "For example, for the input plug the device in the left socket behind the armchair, Fun3DU may wrongly identify the device as the functional object while the correct one is socket.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "UniFunc3D, a unified and training-free framework",
+      "method_core_mechanism": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+      "method_components": [
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0029"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "active spatial-temporal grounding process",
+      "method_core_mechanism": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+      "method_components": [
+        "active spatial-temporal grounding process"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0075"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "UniFunc3D, a unified and training-free framework targets Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "active spatial-temporal grounding process targets Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "UniFunc3D, a unified and training-free framework targets This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "active spatial-temporal grounding process targets This task is inherently difficult because it requires a synergy of high-level world knowledge for language interpretation and fine-grained spatial perception for localizing components at a small scale. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "UniFunc3D, a unified and training-free framework targets Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "active spatial-temporal grounding process targets Existing training-free method Fun3DU typically relies on fragmented pipelines that suffer from a fundamental lack of active spatial-temporal reasoning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0047",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "UniFunc3D, a unified and training-free framework targets as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "active spatial-temporal grounding process targets as their first stage is text-only, their decomposition occurs without seeing the scene, leading to inaccurate contextual and functional identifications. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "UniFunc3D, a unified and training-free framework targets Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "active spatial-temporal grounding process targets Third, when processing images, Fun3DU relies on single-scale processing and lacks a human-like “zoom-in” mechanism. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "UniFunc3D, a unified and training-free framework",
+      "compared_to": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "why_it_matters": "It directly targets Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "active spatial-temporal grounding process",
+      "compared_to": "Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.",
+      "why_it_matters": "It directly targets Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "UniFunc3D, a unified and training-free framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+      "can_transfer_to": [
+        "cross_modal",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce UniFunc3D, a unified and training-free framework that consolidates semantic, temporal, and spatial reasoning within a single multimodal large language model (MLLM).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "active spatial-temporal grounding process",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In UniFunc3D, we propose an active spatial-temporal grounding process that eliminates handcrafted and heuristic rules with the heavy hyperparameter controls and unstable object detection found in Fun3DU.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for UniFunc3D, a unified and training-free framework",
+      "baseline": "UniFunc3D: Unified Active Spatial-Temporal Grounding for 3D Functionality Segmentation",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "UniFunc3D, a unified and training-free framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Because existing methods cannot actively look for the context they need, they fall victim to cascading errors where a mistake in the initial “blind” reasoning or heuristic frame selection irrecoverably ruins all downstream steps.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lin_unifunc3d-unified-active-spatial-temporal-grounding-for-3d-functionality-segment_d89001b908\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lin_unifunc3d-unified-active-spatial-temporal-grounding-for-3d-functionality-segment_d89001b908\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

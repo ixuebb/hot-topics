@@ -1,0 +1,817 @@
+{
+  "paper_id": "2024_hou_event-aware-video-corpus-moment-retrieval_b6aa6755cf",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_hou_event-aware-video-corpus-moment-retrieval_b6aa6755cf",
+  "title": "Event-aware Video Corpus Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Danyang Hou",
+    "Liang Pang",
+    "Huawei Shen",
+    "Xueqi Cheng"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Corpus Moment Retrieval (VCMR) is a practical video retrieval task focused on identifying a specific moment within a vast corpus of untrimmed videos using the natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the widespread use of mobile devices and video-sharing applications, online video content has surged to unprecedented levels, encompassing extensive, untrimmed content, including TV series and instructional videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction With the widespread use of mobile devices and video-sharing applications, online video content has surged to unprecedented levels, encompassing extensive, untrimmed content, including TV series and instructional videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "An advanced video retrieval system should efficiently pinpoint specific moments within a vast corpus for users, be it a classic shot from a movie or a crucial step in an instructional video, thereby minimizing the user’s browsing time.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "An advanced video retrieval system should efficiently pinpoint specific moments within a vast corpus for users, be it a classic shot from a movie or a crucial step in an instructional video, thereby minimizing the user’s browsing time.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Addressing this need, the recently proposed Video Corpus Moment Retrieval task (VCMR) requires retrieving semantically relevant video Conference’17, July 2017, Washington D.C., USA Danyang Hou, Liang Pang, Huawei Shen, and Xueqi Cheng Table 1: The overlap...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Addressing this need, the recently proposed Video Corpus Moment Retrieval task (VCMR) [20, 39] requires retrieving semantically relevant video Conference’17, July 2017, Washington D.C., USA Danyang Hou, Liang Pang, Huawei Shen, and Xueqi Cheng Table 1: The overlap between the moments predicted by models or the extracted events with ground truth moments.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The metric is the ratio of predicted moments to ground truth moments with an IoU greater than 0.5 or 0.7.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "The metric is the ratio of predicted moments to ground truth moments with an IoU greater than 0.5 or 0.7.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, these works overlook the semantic structure embedded within the information between video frames, i.e.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although contextual relevance is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Although contextual relevance is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Hence, directly using frame as event is insufficient.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Hence, directly using frame as event is insufficient.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(2) It lacks event-level information interaction.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "(2) It lacks event-level information interaction.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the...",
+        "scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Unlike trimmed videos in text-to-video retrieval [8], where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "While the event may not overlap with relevant moment exactly, it covers more complete...",
+        "scenario": "While the event may not overlap with relevant moment exactly, it covers more complete information than a frame, shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "While the event may not overlap with relevant moment exactly, it covers more complete information than a frame, shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Cognitive science research suggests that human perception of visual information primarily revolves around the concept of events, with event information being the most fundamental unit of visual perception for humans.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Cognitive science research [57] suggests that human perception of visual information primarily revolves around the concept of events, with event information being the most fundamental unit of visual perception for humans.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "There are three main reasons.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "There are three main reasons.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Hence, directly using frame as event is insufficient.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Hence, directly using frame as event is insufficient.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In reference to the works on generic event boundary detection , we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+        "evidence": [
+          {
+            "evidence_id": "EV056",
+            "section": "Introduction",
+            "quote": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that works overlook the semantic structure embedded within the information between video frames, i.e?",
+      "failure_mode": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "root_cause": "This entails calculating the similarity between the query and all video frames in the corpus, ranking the videos based on the maximum similarity of frames within each video.",
+      "why_existing_methods_fail": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "affected_scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, these works overlook the semantic structure embedded within the information between video frames, i.e.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval?",
+      "failure_mode": "the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+      "root_cause": "Retrieval efficiency will also increase because fewer units reduce the amount of computation in retrieval.",
+      "why_existing_methods_fail": "the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+      "affected_scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "However, the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event?",
+      "failure_mode": "is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+      "root_cause": "(1) The event information is not explicitly extracted from the frames.",
+      "why_existing_methods_fail": "Although contextual relevance is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+      "affected_scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Although contextual relevance is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Hence, directly using frame as event is insufficient.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that hence, directly using frame as event is insufficient?",
+      "failure_mode": "Hence, directly using frame as event is insufficient.",
+      "root_cause": "event is insufficient.",
+      "why_existing_methods_fail": "Hence, directly using frame as event is insufficient.",
+      "affected_scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Hence, directly using frame as event is insufficient.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "(2) It lacks event-level information interaction.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (2) It lacks event-level information interaction?",
+      "failure_mode": "(2) It lacks event-level information interaction.",
+      "root_cause": "Hence, directly using frame as event is insufficient.",
+      "why_existing_methods_fail": "(2) It lacks event-level information interaction.",
+      "affected_scenario": "Unlike trimmed videos in text-to-video retrieval , where the entire video aligns with the text query, the untrimmed video involves only a small part (relevant moment) of the content being related to the query, shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "(2) It lacks event-level information interaction.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "EventFormer to explicitly leverage event information to help VCMR",
+      "method_core_mechanism": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+      "method_components": [
+        "VCMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0025"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event",
+      "method_core_mechanism": "In reference to the works on generic event boundary detection , we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+      "method_components": [
+        "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "boundary, contrastive",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0131"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "event-aware model EventFormer for VCMR, motivated by human perception for visual information",
+      "method_core_mechanism": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+      "method_components": [
+        "VCMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV056"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV056",
+          "section": "Introduction",
+          "quote": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0025"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "EventFormer to explicitly leverage event information to help VCMR targets these works overlook the semantic structure embedded within the information between video frames, i.e. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event targets these works overlook the semantic structure embedded within the information between video frames, i.e. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0131",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "EventFormer to explicitly leverage event information to help VCMR targets the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event targets the frame-aware method, which simply encodes the frame representations by Transformer, struggles to utilize event for retrieval. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0131",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "EventFormer to explicitly leverage event information to help VCMR targets is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event targets is captured using Transformer, each frame expresses more information from itself, posing challenges in capturing the overall information of an event. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0131",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "EventFormer to explicitly leverage event information to help VCMR targets Hence, directly using frame as event is insufficient. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event targets Hence, directly using frame as event is insufficient. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0131",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "EventFormer to explicitly leverage event information to help VCMR targets (2) It lacks event-level information interaction. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event targets (2) It lacks event-level information interaction. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0131",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "EventFormer to explicitly leverage event information to help VCMR",
+      "compared_to": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "why_it_matters": "It directly targets these works overlook the semantic structure embedded within the information between video frames, i.e.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event",
+      "compared_to": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "why_it_matters": "It directly targets these works overlook the semantic structure embedded within the information between video frames, i.e.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "event-aware model EventFormer for VCMR, motivated by human perception for visual information",
+      "compared_to": "these works overlook the semantic structure embedded within the information between video frames, i.e.",
+      "why_it_matters": "It directly targets these works overlook the semantic structure embedded within the information between video frames, i.e.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "EventFormer to explicitly leverage event information to help VCMR",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To this end, we propose EventFormer to explicitly leverage event information to help VCMR.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In reference to the works on generic event boundary detection , we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "In reference to the works on generic event boundary detection [54], we introduce three event extraction strategies, contrastive convolution, Kmeans, and window, aimed at aggregating visually similar and consecutive frames as event.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "event-aware model EventFormer for VCMR, motivated by human perception for visual information",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV056",
+          "section": "Introduction",
+          "quote": "Our main contributions are as follows: • We propose an event-aware model EventFormer for VCMR, motivated by human perception for visual information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for EventFormer to explicitly leverage event information to help VCMR",
+      "baseline": "Event-aware Video Corpus Moment Retrieval",
+      "dataset": "DiDeMo",
+      "module_to_modify": "EventFormer to explicitly leverage event information to help VCMR",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these works overlook the semantic structure embedded within the information between video frames, i.e.."
+    }
+  ],
+  "datasets": [
+    "DiDeMo"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_hou_event-aware-video-corpus-moment-retrieval_b6aa6755cf\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_hou_event-aware-video-corpus-moment-retrieval_b6aa6755cf\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

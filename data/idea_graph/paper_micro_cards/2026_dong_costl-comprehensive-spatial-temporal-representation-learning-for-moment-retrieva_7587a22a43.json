@@ -1,0 +1,972 @@
+{
+  "paper_id": "2026_dong_costl-comprehensive-spatial-temporal-representation-learning-for-moment-retrieva_7587a22a43",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_dong_costl-comprehensive-spatial-temporal-representation-learning-for-moment-retrieva_7587a22a43",
+  "title": "CoSTL: Comprehensive Spatial-Temporal Representation Learning for Moment Retrieval and Highlight Detection",
+  "year": 2026,
+  "venue_or_source": "ArXiv.org",
+  "authors": [
+    "Xin Luna Dong",
+    "Wenjia Geng",
+    "Wenfeng Deng",
+    "Yansong Tang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (MR) and Highlight Detection (HD) are crucial tasks in video analysis that aim to localize specific moments and estimate clip-wise relevance based on a given text query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video understanding has become increasingly popular and important in recent years.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Video understanding has become increasingly popular and important in recent years.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "With the rapid growth in the number of available videos, accurately extracting key information from them has become a challenging problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "With the rapid growth in the number of available videos, accurately extracting key information from them has become a challenging problem.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "The results demonstrate that our model outperforms existing methods on all benchmarks.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "The results demonstrate that our model outperforms existing methods on all benchmarks.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite capturing detailed information, this approach struggles to model the overall action due to its solely spatial focus.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Despite capturing detailed information, this approach struggles to model the overall action due to its solely spatial focus.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "After obtaining fine-frained spatial-level representations, then we address the aforementioned temporal dynamics challenge with a multi-scale temporal perception module at the video level.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "After obtaining fine-frained spatial-level representations, then we address the aforementioned temporal dynamics challenge with a multi-scale temporal perception module at the video level.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, to locate the moment corresponding to “Blonde woman wears a large gray scarf...",
+        "scenario": "For example, to locate the moment corresponding to “Blonde woman wears a large gray scarf with a red top”, the model must identify fine-grained elements like the “red top”.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "For example, to locate the moment corresponding to “Blonde woman wears a large gray scarf with a red top”, the model must identify fine-grained elements like the “red top”.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "The previous state-of-the-art method UVCOM , as shown in Fig.",
+        "scenario": "The previous state-of-the-art method UVCOM , as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "The previous state-of-the-art method UVCOM [15], as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Given a text query, moment retrieval aims to localize the corresponding accurate moment within the entire video, and highlight detection also has to provide a saliency score for each related video frame.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Given a text query, moment retrieval aims to localize the corresponding accurate moment within the entire video, and highlight detection also has to provide a saliency score for each related video frame.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "1 (b) demonstrates this by employing a fine-grained multimodal language model (BLIP2) to calculate per-frame saliency scores.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "1 (b) demonstrates this by employing a fine-grained multimodal language model (BLIP2) [16] to calculate per-frame saliency scores.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics?",
+      "failure_mode": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "root_cause": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+      "why_existing_methods_fail": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features?",
+      "failure_mode": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+      "root_cause": "insufficient spatial detail extraction, which only adopts frame-level features.",
+      "why_existing_methods_fail": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own?",
+      "failure_mode": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+      "root_cause": "1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features.",
+      "why_existing_methods_fail": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+      "affected_scenario": "For example, to locate the moment corresponding to “Blonde woman wears a large gray scarf with a red top”, the model must identify fine-grained elements like the “red top”.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "(ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "this approach struggles to model the overall action due to its solely spatial focus.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approach struggles to model the overall action due to its solely spatial focus?",
+      "failure_mode": "this approach struggles to model the overall action due to its solely spatial focus.",
+      "root_cause": "its solely spatial focus.",
+      "why_existing_methods_fail": "Despite capturing detailed information, this approach struggles to model the overall action due to its solely spatial focus.",
+      "affected_scenario": "The previous state-of-the-art method UVCOM , as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Despite capturing detailed information, this approach struggles to model the overall action due to its solely spatial focus.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling?",
+      "failure_mode": "these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+      "root_cause": "The resulting per-frame saliency scores (blue line) exhibit significant and unrealistic jumps between frames.",
+      "why_existing_methods_fail": "these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text...",
+      "method_core_mechanism": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+      "method_components": [
+        "UVCOM",
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0022"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "model",
+      "method_core_mechanism": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+      "method_components": [
+        "Comprehensive S-T Representation Learning",
+        "MR",
+        "HD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0142"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "text-driven progressive fine-grained frame encoder",
+      "method_core_mechanism": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+      "method_components": [
+        "we introduce a text-driven progressive fine-grained frame encoder."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0013"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "can get correct prediction results for complex scenes",
+      "method_core_mechanism": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+      "method_components": [
+        "can get correct prediction results for complex scenes"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0113"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+      "method_core_mechanism": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+      "method_components": [
+        "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0052"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text... targets The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics. by operating on ranking_selection, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065",
+      "micro_method_cluster_id": "MM0022",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "model targets The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "model targets 1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text... targets 1 (a), produces entirely incorrect results due to insufficient spatial detail extraction, which only adopts frame-level features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0022",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "model targets (ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "text-driven progressive fine-grained frame encoder targets (ii) Temporal Dynamic Modeling at the Temporal Level: While fine-grained spatial understanding is crucial, it is insufficient on its own. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "model targets this approach struggles to model the overall action due to its solely spatial focus. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "text-driven progressive fine-grained frame encoder targets this approach struggles to model the overall action due to its solely spatial focus. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0065",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text... targets these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling. by operating on ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0022",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "model targets these fluctuations are mitigated when considering a larger temporal context (red line), highlighting the importance of temporal modeling. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text...",
+      "compared_to": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "why_it_matters": "It directly targets The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "model",
+      "compared_to": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "why_it_matters": "It directly targets The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "text-driven progressive fine-grained frame encoder",
+      "compared_to": "The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.",
+      "why_it_matters": "It directly targets The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text...",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+      "can_transfer_to": [
+        "reasoning",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text matching scores of MLLM at various time scales and (c) presents our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "model",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+      "can_transfer_to": [
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose a model that captures optimal spatialtemporal representations corresponding to the text query, spanning from the CoSTL: Comprehensive S-T Representation Learning for MR and HD 3 image level to the video level.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "text-driven progressive fine-grained frame encoder",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Inspired by recent advancements in multimodal large language models, we introduce a text-driven progressive fine-grained frame encoder.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "can get correct prediction results for complex scenes",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "1 (c) shows that our method can get correct prediction results for complex scenes.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "– Extensive experiments across moment retrieval and highlight detection on four benchmarks demonstrate the significance of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for 1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text...",
+      "baseline": "CoSTL: Comprehensive Spatial-Temporal Representation Learning for Moment Retrieval and Highlight Detection",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "1: Comparison of highlight saliency scores across different methods: (a) denotes the previous state-of-the-art UVCOM; (b) illustrates the image-text...",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting The results in (a) indicate that the previous approach struggles to capture finegrained spatial details, while (b) highlights the temporal dynamics.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "TACoS",
+    "TVSum"
+  ],
+  "metrics": [
+    "HD",
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_dong_costl-comprehensive-spatial-temporal-representation-learning-for-moment-retrieva_7587a22a43\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_dong_costl-comprehensive-spatial-temporal-representation-learning-for-moment-retrieva_7587a22a43\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

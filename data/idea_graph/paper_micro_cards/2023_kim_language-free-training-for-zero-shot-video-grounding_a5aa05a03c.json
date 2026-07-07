@@ -1,0 +1,822 @@
+{
+  "paper_id": "2023_kim_language-free-training-for-zero-shot-video-grounding_a5aa05a03c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_kim_language-free-training-for-zero-shot-video-grounding_a5aa05a03c",
+  "title": "Language-free Training for Zero-shot Video Grounding",
+  "year": 2023,
+  "venue_or_source": "2023 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)",
+  "authors": [
+    "Dahye Kim",
+    "Jungin Park",
+    "Jiyoung Lee",
+    "Seongheon Park",
+    "Kwanghoon Sohn"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "Video grounding (also called video moment retrieval) with natural language query aims to help such video search by automatically localizing a temporal moment for various applications such as video surveillance [7] and smart video search [37, 38].",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction In our daily life, we surf, think, and learn through loads of videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction In our daily life, we surf, think, and learn through loads of videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "By extension, we wish to search for the information we want in the videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "By extension, we wish to search for the information we want in the videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "• Our language-free training framework outperforms the existing method, achieving state-of-the-art performance, and even shows comparable performance with weakly-supervised approaches on the Charades- STA and ActivityNet Captions datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "• Our language-free training framework outperforms the existing method, achieving state-of-the-art performance, and even shows comparable performance with weakly-supervised approaches on the Charades- STA [14] and ActivityNet Captions [19] datasets.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In this paper, we address the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "In this paper, we address the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, building massive annotations as more billion scales like image-language datasets, such as LAION-5B [35], in video scale is an impractical solution.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Input Video 6.4s 0.5s Time Interval Video Grounding Model (a) Video grounding Setting...",
+        "scenario": "Input Video 6.4s 0.5s Time Interval Video Grounding Model (a) Video grounding Setting Training Test Time interval Language query Language query FSVG ✓ ✓ ✓ WSVG ✗ ✓ ✓ ZSVG ✗ ✗ ✓ (b) Annotation types depending on the settings Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Input Video 6.4s 0.5s Time Interval Video Grounding Model (a) Video grounding Setting Training Test Time interval Language query Language query FSVG ✓ ✓ ✓ WSVG ✗ ✓ ✓ ZSVG ✗ ✗ ✓ (b) Annotation types depending on the settings Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Especially in such a field, large-scale training data is required to cover numerous video...",
+        "scenario": "Especially in such a field, large-scale training data is required to cover numerous video domains (e.g., instructional videos, movies, and so forth).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Especially in such a field, large-scale training data is required to cover numerous video domains (e.g., instructional videos, movies, and so forth).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person...",
+        "scenario": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Although recent fully-supervised video grounding (FSVG) methods *Corresponding author Language query: The person opens the bag.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Although recent fully-supervised video grounding (FSVG) methods [24, 39] *Corresponding author Language query: The person opens the bag.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "have shown remarkable performance on the limited size of datasets , there is still room for improvement with scale-up training.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "have shown remarkable performance on the limited size of datasets [14, 19], there is still room for improvement with scale-up training.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address the burden of annotations, researchers have proposed weakly-supervised video grounding (WSVG) methods which use only coarse video-level descriptions for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "To address the burden of annotations, researchers have proposed weakly-supervised video grounding (WSVG) methods [15, 23, 28] which use only coarse video-level descriptions for training.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method .",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method [30].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected?",
+      "failure_mode": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "root_cause": "Video grounding (also called video moment retrieval) with natural language query aims to help such video search by automatically localizing a temporal moment for various applications such as video surveillance and smart video search .",
+      "why_existing_methods_fail": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "affected_scenario": "Input Video 6.4s 0.5s Time Interval Video Grounding Model (a) Video grounding Setting Training Test Time interval Language query Language query FSVG ✓ ✓ ✓ WSVG ✗ ✓ ✓ ZSVG ✗ ✗ ✓ (b) Annotation types depending on the settings Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "ss the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ss the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training?",
+      "failure_mode": "ss the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+      "root_cause": "Given a video and a language query, video grounding aims to retrieve the time interval corresponding to the language query in the video.",
+      "why_existing_methods_fail": "In this paper, we address the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+      "affected_scenario": "Input Video 6.4s 0.5s Time Interval Video Grounding Model (a) Video grounding Setting Training Test Time interval Language query Language query FSVG ✓ ✓ ✓ WSVG ✗ ✓ ✓ ZSVG ✗ ✗ ✓ (b) Annotation types depending on the settings Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "In this paper, we address the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution?",
+      "failure_mode": "building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution.",
+      "root_cause": "more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution.",
+      "why_existing_methods_fail": "building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution.",
+      "affected_scenario": "Especially in such a field, large-scale training data is required to cover numerous video domains (e.g., instructional videos, movies, and so forth).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, building massive annotations as more billion scales like image-language datasets, such as LAION-5B [35], in video scale is an impractical solution.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’)?",
+      "failure_mode": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+      "root_cause": "To learn the localizing capability in a semi --- Page 2 --supervised manner, generates pseudo temporal event regions and corresponding pseudo sentence queries by examining noun-verb statistical co-occurrence patterns.",
+      "why_existing_methods_fail": "pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel language-free training framework for zero-shot video grounding",
+      "method_core_mechanism": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+      "method_components": [
+        "novel language-free training framework for zero-shot video grounding"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0193"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "is free to generate highquality natural language form from the proposal",
+      "method_core_mechanism": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+      "method_components": [
+        "is free to generate highquality natural language form from the proposal"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0146"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "has no need to produce textual embedding from a pseudo text label",
+      "method_core_mechanism": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method .",
+      "method_components": [
+        "has no need to produce textual embedding from a pseudo text label"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method [30].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0071"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "language-free framework for video grounding",
+      "method_core_mechanism": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+      "method_components": [
+        "language-free framework for video grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0193"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "language-free framework for video grounding targets A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel language-free training framework for zero-shot video grounding targets A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU4",
+      "solves_how": "language-free framework for video grounding targets ss the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel language-free training framework for zero-shot video grounding targets ss the zero-shot video grounding (ZSVG) problem which is the most challenging setting and cannot use any annotations for training. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "language-free framework for video grounding targets building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel language-free training framework for zero-shot video grounding targets building massive annotations as more billion scales like image-language datasets, such as LAION-5B , in video scale is an impractical solution. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel language-free training framework for zero-shot video grounding targets pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0193",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "is free to generate highquality natural language form from the proposal targets pseudo sentences are built upon the composition of nouns and verbs (e.g., ‘flip person switch door’), which is naturally different from the form of natural language query (e.g., ‘person flipped the light switch near the door.’). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "novel language-free training framework for zero-shot video grounding",
+      "compared_to": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "why_it_matters": "It directly targets A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "is free to generate highquality natural language form from the proposal",
+      "compared_to": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "why_it_matters": "It directly targets A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "has no need to produce textual embedding from a pseudo text label",
+      "compared_to": "A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.",
+      "why_it_matters": "It directly targets A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel language-free training framework for zero-shot video grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel language-free training framework for zero-shot video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is free to generate highquality natural language form from the proposal",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, our method is free to generate highquality natural language form from the proposal.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "has no need to produce textual embedding from a pseudo text label",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method .",
+      "can_transfer_to": [
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Moreover, since the dominant visual feature is directly used for the pseudo textual feature, our method has no need to produce textual embedding from a pseudo text label, which is a time-consuming yet necessary step for the training of the previous method [30].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "language-free framework for video grounding",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized three-fold: • We introduce a language-free framework for video grounding that can be an affordable solution to effectively reduce the annotation cost.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel language-free training framework for zero-shot video grounding",
+      "baseline": "Language-free Training for Zero-shot Video Grounding",
+      "dataset": "ActivityNet",
+      "module_to_modify": "novel language-free training framework for zero-shot video grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting A major challenge of video grounding is the exorbitant cost of constructing time interval annotations aligned to a given text that is also collected.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_kim_language-free-training-for-zero-shot-video-grounding_a5aa05a03c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_kim_language-free-training-for-zero-shot-video-grounding_a5aa05a03c\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,795 @@
+{
+  "paper_id": "2021_wang_structured-multi-level-interaction-network-for-video-moment-localization-via-lan_b2b1df3e52",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_wang_structured-multi-level-interaction-network-for-video-moment-localization-via-lan_b2b1df3e52",
+  "title": "Structured Multi-Level Interaction Network for Video Moment Localization via Language Query",
+  "year": 2021,
+  "venue_or_source": "CVPR 2021",
+  "authors": [
+    "Hao Wang",
+    "Zheng-Jun Zha",
+    "Liang Li",
+    "Dong Liu",
+    "Jiebo Luo"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Through multi-level interactions, the model obtains robust cross-modal representation for accurate moment localization.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the wide popularity of online videos, automatically understanding and analyzing the video content has drawn increasing attention.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction With the wide popularity of online videos, automatically understanding and analyzing the video content has drawn increasing attention.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works [1, 7].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use frame-level or proposal-level interaction to fuse video and query, we leverage the inherent moment structure and introduce a coarseto-ﬁne cross-modal interaction.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use frame-level or proposal-level interaction to fuse video and query, we leverage the inherent moment structure and introduce a coarseto-ﬁne cross-modal interaction.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works [1, 7].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex backgrounds.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex backgrounds.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for comprehensive cross-modal...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for comprehensive cross-modal understanding; (2) conduct the content-boundary-moment interaction (termed as structured moment interaction in this work) for elaborate video content comprehension.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1. (a): An example of video moment localization queried by a natural language...",
+        "scenario": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use...",
+        "scenario": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use frame-level or proposal-level interaction to fuse video and query, we leverage the inherent moment structure and introduce a coarseto-ﬁne cross-modal interaction.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use frame-level or proposal-level interaction to fuse video and query, we leverage the inherent moment structure and introduce a coarseto-ﬁne cross-modal interaction.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Its aim is to localize a temporary segment from an untrimmed video, containing the activity described *Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Its aim is to localize a temporary segment from an untrimmed video, containing the activity described *Corresponding author.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Existing works locate the moment by interacting the query with either video frame representation , or moment proposal representation .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Existing works locate the moment by interacting the query with either video frame representation [4, 5, 6, 10, 12, 16, 33, 42, 45], or moment proposal representation [1, 7, 9, 19, 20, 43, 44].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For video content comprehension, they directly utilize the features of video frame or proposal as the moment representation.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For video content comprehension, they directly utilize the features of video frame or proposal as the moment representation.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works ?",
+      "failure_mode": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "root_cause": "the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "why_existing_methods_fail": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "affected_scenario": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works [1, 7].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex?",
+      "failure_mode": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex...",
+      "root_cause": "Meanwhile, we conduct structured moment interaction to explore the relations between boundary, content, and the moment. (Best viewed in color) by the given language query.",
+      "why_existing_methods_fail": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex backgrounds.",
+      "affected_scenario": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex backgrounds.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary?",
+      "failure_mode": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+      "root_cause": "Existing works locate the moment by interacting the query with either video frame representation , or moment proposal representation .",
+      "why_existing_methods_fail": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+      "affected_scenario": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for?",
+      "failure_mode": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for...",
+      "root_cause": "structured moment interaction in this work) for elaborate video content comprehension.",
+      "why_existing_methods_fail": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for comprehensive cross-modal understanding; (2) conduct the content-boundary-moment...",
+      "affected_scenario": "As illustrated in Figure 1(b)(c), in contrast to previous works that simply use frame-level or proposal-level interaction to fuse video and query, we leverage the inherent moment structure and introduce a coarseto-ﬁne cross-modal interaction.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for comprehensive cross-modal understanding; (2) conduct the content-boundary-moment interaction (termed as structured moment interaction in this work) for elaborate video content comprehension.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction",
+      "method_core_mechanism": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+      "method_components": [
+        "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0027"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment",
+      "method_core_mechanism": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+      "method_components": [
+        "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction i",
+      "method_core_mechanism": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+      "method_components": [
+        "Structured Multi-level Interaction Network (SMIN)",
+        "Structured Multi-level Interaction Network",
+        "SMIN"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art...",
+      "method_core_mechanism": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+      "method_components": [
+        "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction targets Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment targets Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment targets For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex... by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction targets For this task, there are two key challenges: (1) crossmodal understanding between the language query and complicated video content, and (2) elaborate video content comprehension for localizing the target moment in videos with complex... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction targets For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment targets For vision-language interaction, these works neglect the inherent structure of 7026 --- Page 2 --the moment that one is constructed by content and boundary. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment targets In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for... by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction targets In fact, moment content, boundary, and the whole moment have different representation ability to represent a moment, and thus it is non-trivial to (1) perform cross-modal interaction between them and language query respectively for... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction",
+      "compared_to": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "why_it_matters": "It directly targets Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment",
+      "compared_to": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "why_it_matters": "It directly targets Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction i",
+      "compared_to": "Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .",
+      "why_it_matters": "It directly targets Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+      "can_transfer_to": [
+        "cross_modal",
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Figure 1. (a): An example of video moment localization queried by a natural language sentence. (b): Existing approaches simply conduct vision-language interaction at frame-level or proposallevel. (c): Our method ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Second, based on the inherent structure of a moment, we introduce the structured moment interaction by exploiting the structural relationships between content, boundary, and the whole moment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction i",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "• We propose a novel Structured Multi-level Interaction Network (SMIN) to incorporate ﬁne-grained crossmodal interaction and detailed structured moment interaction into a joint procedure with the disentangled moment structure.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art...",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• We conduct experiments on three popular benchmarks to verify the effectiveness of our approach, which performs superior to the state-of-the-art methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction",
+      "baseline": "Structured Multi-Level Interaction Network for Video Moment Localization via Language Query",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "ﬁrst fuses the sentence with the video frame as a coarse-grained cross-modal interaction",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Recently, due to the limitation of the pre-deﬁned action categories and the ﬂexibility of using a natural language sentence for describing the activity in videos, video moment localization is proposed in the works .."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_wang_structured-multi-level-interaction-network-for-video-moment-localization-via-lan_b2b1df3e52\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_wang_structured-multi-level-interaction-network-for-video-moment-localization-via-lan_b2b1df3e52\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

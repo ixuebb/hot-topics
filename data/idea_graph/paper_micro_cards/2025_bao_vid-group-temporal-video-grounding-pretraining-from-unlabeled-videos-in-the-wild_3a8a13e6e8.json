@@ -1,0 +1,1036 @@
+{
+  "paper_id": "2025_bao_vid-group-temporal-video-grounding-pretraining-from-unlabeled-videos-in-the-wild_3a8a13e6e8",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_bao_vid-group-temporal-video-grounding-pretraining-from-unlabeled-videos-in-the-wild_3a8a13e6e8",
+  "title": "Vid-Group: Temporal Video Grounding Pretraining from Unlabeled Videos in the Wild",
+  "year": 2025,
+  "venue_or_source": "ICCV 2025",
+  "authors": [
+    "Peijun Bao",
+    "Chenqi Kong",
+    "Siyuan Yang",
+    "Zihao Shao",
+    "Xinghao Jiang",
+    "Boon Poh Ng",
+    "Meng Hwa Er",
+    "Alex Kot"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Given a natural language query, temporal video grounding aims to localize the described temporal moment in an untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Given a natural language query and an untrimmed video, the task of Temporal Video Grounding (TVG) aims to temporally localize the video moment described by the language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Given a natural language query and an untrimmed video, the task of Temporal Video Grounding (TVG) [8, 15] aims to temporally localize the video moment described by the language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "TVG is one of the most fundamental tasks in video understanding and has a wide range of real-world †: Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "TVG is one of the most fundamental tasks in video understanding and has a wide range of real-world †: Corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Datasets As most previous works in zero-shot TVG and unsupervised TVG report results on Charades-STA and ActivityNet Captions datasets, we evaluate the proposed methods on these two datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV146",
+            "section": "Introduction",
+            "quote": "Datasets As most previous works in zero-shot TVG [12, 22, 36, 48] and unsupervised TVG [11, 13, 27, 32, 47] report results on Charades-STA [8] and ActivityNet Captions [15] datasets, we evaluate the proposed methods on these two datasets.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The ﬁnal part presents several competitive baseline models pretrained on the proposed Vid-Group dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV149",
+            "section": "Introduction",
+            "quote": "The ﬁnal part presents several competitive baseline models pretrained on the proposed Vid-Group dataset.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Moreover, as shown in the ﬁnal part of Table 2 (separated by a solid line), we carefully devise a list of competitive baselines, all of which are pretrained on the proposed Vid- Group dataset with SimBase as the TVG backbone: 1) 20546 Table 3.",
+        "evidence": [
+          {
+            "evidence_id": "EV170",
+            "section": "Introduction",
+            "quote": "Moreover, as shown in the ﬁnal part of Table 2 (separated by a solid line), we carefully devise a list of competitive baselines, all of which are pretrained on the proposed Vid- Group dataset with SimBase as the TVG backbone: 1) 20546 Table 3.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Additionally, we consider the following baselines for comparison: 1) GPT- 4o Finetuning: Training from scratch on the downstream dataset (i.e., either Charades-STA or ActivityNet Captions) using the original pseudo annotations provided by GPT-4o, without...",
+        "evidence": [
+          {
+            "evidence_id": "EV186",
+            "section": "Introduction",
+            "quote": "Additionally, we consider the following baselines for comparison: 1) GPT- 4o Finetuning: Training from scratch on the downstream dataset (i.e., either Charades-STA or ActivityNet Captions) using the original pseudo annotations provided by GPT-4o, without pretraining.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "For instance, according to [40], manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This highlights the Vid-Group’s potential to address the critical challenge of heavy reliance on manual annotations in TVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "This highlights the Vid-Group’s potential to address the critical challenge of heavy reliance on manual annotations in TVG.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these models depend on manually cleaned, unscalable video data.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "However, these models depend on manually cleaned, unscalable video data.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "manually cleaned video database manual labeling pretraining automatic labeling training...",
+        "scenario": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive ii) limited data size i) labor-free ii)...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive ii) limited data size i) labor-free ii) large-scale data volume manual annotations pseudo annotations 20% 40% 60% 80% #Videos Total Duration #Vocabulary #Token #Queries TACoS Charades-STA DiDeMO Anet-Caps Vid-Group 0K 1K 2K 3K 4K 5K Manual Annotation Time (h) 1.4K 1.7K 4.6K 5.2K 0 TACoS Charades-STA DiDeMO Anet-Caps Vid-Group c) Comparison of manual annotation time and dataset size (dataset size metrics normalized by Vid-Group) Figure 1",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "as shown in Fig 1, collecting these manual annotations, which include sentence queries...",
+        "scenario": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example,",
+        "scenario": "For example,",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "For example, Kim et al.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "ReCorrect Algorithm Since videos captured in the wild are inherently unclean, and MLLM’s...",
+        "scenario": "ReCorrect Algorithm Since videos captured in the wild are inherently unclean, and MLLM’s limitations in labeling accuracy introduce additional noise, there are widespread errors in the pseudo annotations of the Vid-Group Dataset, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV103",
+            "section": "Introduction",
+            "quote": "ReCorrect Algorithm Since videos captured in the wild are inherently unclean, and MLLM’s limitations in labeling accuracy introduce additional noise, there are widespread errors in the pseudo annotations of the Vid-Group Dataset, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "For instance, according to [40], manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Additionally, manual annotations often exhibit language and temporal biases , such as in query style and temporal boundary distribution, which limit practical applicability.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Additionally, manual annotations often exhibit language and temporal biases [16, 41], such as in query style and temporal boundary distribution, which limit practical applicability.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, as presented in Fig 2, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset containing over 50K videos captured in the wild and 200K training annotations, collected efﬁciently through an automated process with...",
+        "evidence": [
+          {
+            "evidence_id": "EV084",
+            "section": "Introduction",
+            "quote": "To this end, as presented in Fig 2, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset containing over 50K videos captured in the wild and 200K training annotations, collected efﬁciently through an automated process with minimal human involvement.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that other TVG pretraining methods are excluded as they cannot perform zeroshot inference?",
+      "failure_mode": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "root_cause": "they cannot perform zeroshot inference.",
+      "why_existing_methods_fail": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "affected_scenario": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive ii) limited data size i) labor-free ii)...",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV164"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV164",
+          "section": "Introduction",
+          "quote": "Other TVG pretraining methods [5, 34, 37] are excluded as they cannot perform zeroshot inference.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations?",
+      "failure_mode": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+      "root_cause": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive...",
+      "why_existing_methods_fail": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+      "affected_scenario": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive ii) limited data size i) labor-free ii)...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming?",
+      "failure_mode": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "root_cause": "shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "why_existing_methods_fail": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "affected_scenario": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings?",
+      "failure_mode": "For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+      "root_cause": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "why_existing_methods_fail": "For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+      "affected_scenario": "as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "For instance, according to [40], manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges?",
+      "failure_mode": "due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+      "root_cause": "the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+      "why_existing_methods_fail": "due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+      "affected_scenario": "manually cleaned video database manual labeling pretraining automatic labeling training dataset pretraining dataset TVG model training in-the-wild video database self-correction TVG model a) Traditional TVG datasets b) Our Vid-Group dataset i) labor-intensive ii) limited data size i) labor-free ii)...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement",
+      "method_core_mechanism": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+      "method_components": [
+        "Temporal Video Grounding Pretraining"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention",
+      "method_core_mechanism": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+      "method_components": [
+        "Temporal Video Grounding Pretraining"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining",
+      "method_core_mechanism": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+      "method_components": [
+        "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0192"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining",
+      "method_core_mechanism": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+      "method_components": [
+        "Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "ReCorrect algorithm",
+      "method_core_mechanism": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+      "method_components": [
+        "ReCorrect algorithm"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0192"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement targets Other TVG pretraining methods are excluded as they cannot perform zeroshot inference. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention targets Other TVG pretraining methods are excluded as they cannot perform zeroshot inference. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining targets a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement targets a) A crucial challenge in temporal video grounding is its reliance on massive datasets with labor-intensive annotations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining targets as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention targets as shown in Fig 1, collecting these manual annotations, which include sentence queries and temporal boundaries, remains both expensive and time-consuming. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining targets For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention targets For instance, according to , manually annotating the ActivityNet Captions dataset required at least 5,200 hours, which is both impractical and unscalable in real-world settings. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining targets due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention targets due to the minimal human involvement in creating these samples, directly pretraining on them poses signiﬁcant challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement",
+      "compared_to": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "why_it_matters": "It directly targets Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention",
+      "compared_to": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "why_it_matters": "It directly targets Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining",
+      "compared_to": "Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.",
+      "why_it_matters": "It directly targets Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "b) To overcome this, we introduce a large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To this end, we introduce Temporal Video Grounding Pretraining (Vid-Group), a large-scale dataset collected in a scalable manner with minimal human intervention.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Reﬁnement and Correction (ReCorrect) algorithm with a self-correction mechanism of pseudo annotations during pretraining.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce Vid-Group, a large-scale and diverse dataset containing over 50K videos captured in the wild and 200K pseudo training samples designed for pretraining in temporal video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "ReCorrect algorithm",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "To tackle the issues of error-prone pseudo training samples, we propose the ReCorrect algorithm.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement",
+      "baseline": "Vid-Group: Temporal Video Grounding Pretraining from Unlabeled Videos in the Wild",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "large-scale dataset for Temporal Video Grounding Pretraining (Vid-Group), collected in a scalable way with minimal human involvement",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Other TVG pretraining methods are excluded as they cannot perform zeroshot inference.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "DiDeMo",
+    "MAD",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "mAP",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_bao_vid-group-temporal-video-grounding-pretraining-from-unlabeled-videos-in-the-wild_3a8a13e6e8\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_bao_vid-group-temporal-video-grounding-pretraining-from-unlabeled-videos-in-the-wild_3a8a13e6e8\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

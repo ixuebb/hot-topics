@@ -1,0 +1,528 @@
+{
+  "paper_id": "2022_zhang_natural-language-video-moment-localization-through-query-controlled-temporal-con_ffdbe8b411",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zhang_natural-language-video-moment-localization-through-query-controlled-temporal-con_ffdbe8b411",
+  "title": "Natural Language Video Moment Localization Through Query-Controlled Temporal Convolution",
+  "year": 2022,
+  "venue_or_source": "2022 IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)",
+  "authors": [
+    "Lingyu Zhang",
+    "Richard J. Radke"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract The goal of natural language video moment localization is to locate a short segment of a long, untrimmed video that corresponds to a description presented as natural text.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Long, untrimmed videos are common, such as surveillance recordings, sports broadcasts, or conference streams.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Long, untrimmed videos are common, such as surveillance recordings, sports broadcasts, or conference streams.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This is the task of automatic video moment localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This is the task of automatic video moment localization.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "We are specifically interested in finding specific segments via text queries that express complex relationships between people in the videos, their activities, and their environments.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "We are specifically interested in finding specific segments via text queries that express complex relationships between people in the videos, their activities, and their environments.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We visualize the response map for locating the target moments, analyze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "We visualize the response map for locating the target moments, analyze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "In many situations, we are only interested in particular short segments of the original...",
+        "scenario": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, we would like to be able to distinguish “The janitor cleans windows after...",
+        "scenario": "For example, we would like to be able to distinguish “The janitor cleans windows after eating lunch” vs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "For example, we would like to be able to distinguish “The janitor cleans windows after eating lunch” vs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As shown in Figure 1, given a natural sentence as a query, our objective is to find the...",
+        "scenario": "As shown in Figure 1, given a natural sentence as a query, our objective is to find the temporal segment of a longer video that corresponds to the query (annotated as the blue area).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, given a natural sentence as a query, our objective is to find the temporal segment of a longer video that corresponds to the query (annotated as the blue area).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "The former include top-down approaches in which multiple candidate proposals are...",
+        "scenario": "The former include top-down approaches in which multiple candidate proposals are generated at different scales and a matching metric (e.g., a cosine function or multi-layer perceptron model) is designed to assess the semantic similarity between the current proposal and the given query.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "The former include top-down approaches in which multiple candidate proposals are generated at different scales [6, 11, 7] and a matching metric (e.g., a cosine function or multi-layer perceptron model) is designed to assess the semantic similarity between the current proposal and the given query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Figure 1 illustrates a query about two people walking through a door and one putting his hands on his hips.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Figure 1 illustrates a query about two people walking through a door and one putting his hands on his hips.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We evaluate our model on three benchmark datasets, TVR , TACoS and Charades-STA , and demonstrate that it achieves state-of-the-art results.",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "We evaluate our model on three benchmark datasets, TVR [14], TACoS [19] and Charades-STA [7], and demonstrate that it achieves state-of-the-art results.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query?",
+      "failure_mode": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+      "root_cause": "The final prediction is generated by grouping all possible Fst and Fed detections to maximize the joint confidence score (pst · ped) under the constraint that the start boundary must occur before the end boundary (Fst < Fed).",
+      "why_existing_methods_fail": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+      "affected_scenario": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ze success and failure cases, and demonstrate that the model can solve the aforementioned challenges?",
+      "failure_mode": "ze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+      "root_cause": "• Explainable model.",
+      "why_existing_methods_fail": "We visualize the response map for locating the target moments, analyze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+      "affected_scenario": "In many situations, we are only interested in particular short segments of the original video, e.g., suspicious behaviors in airports, goal replays in soccer games, or summary segments of discussion panels.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "We visualize the response map for locating the target moments, analyze success and failure cases, and demonstrate that the model can solve the aforementioned challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "boundary-based scheme",
+      "method_core_mechanism": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+      "method_components": [
+        "boundary-based scheme"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0146"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+      "method_core_mechanism": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+      "method_components": [
+        "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0196"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "boundary-based scheme targets We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”. targets We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057",
+      "micro_method_cluster_id": "MM0196",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”. targets ze success and failure cases, and demonstrate that the model can solve the aforementioned challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057",
+      "micro_method_cluster_id": "MM0196",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "boundary-based scheme targets ze success and failure cases, and demonstrate that the model can solve the aforementioned challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0057",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "boundary-based scheme",
+      "compared_to": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+      "why_it_matters": "It directly targets We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.."
+    },
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+      "compared_to": "We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.",
+      "why_it_matters": "It directly targets We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "boundary-based scheme",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+      "can_transfer_to": [
+        "boundary",
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Since proposal-based methods may generate redundant negative samples that increase the computational cost for the classifier and also may have limited performance due to the hyperparameters of the proposal generation process, here we develop a boundary-based scheme.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "In our approach, we learn a query-customized video boundary detector, which we call a “query filter”.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for boundary-based scheme",
+      "baseline": "Natural Language Video Moment Localization Through Query-Controlled Temporal Convolution",
+      "dataset": "Charades-STA, TACoS",
+      "module_to_modify": "boundary-based scheme",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting We focus on several challenges that remain unsolved in the existing literature: • CG1: Frame-wise matching techniques may fail if a non-boundary frame also contains partial key actions from the query.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zhang_natural-language-video-moment-localization-through-query-controlled-temporal-con_ffdbe8b411\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zhang_natural-language-video-moment-localization-through-query-controlled-temporal-con_ffdbe8b411\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

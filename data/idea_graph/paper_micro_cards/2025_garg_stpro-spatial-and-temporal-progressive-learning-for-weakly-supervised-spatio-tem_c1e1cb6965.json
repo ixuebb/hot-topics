@@ -1,0 +1,946 @@
+{
+  "paper_id": "2025_garg_stpro-spatial-and-temporal-progressive-learning-for-weakly-supervised-spatio-tem_c1e1cb6965",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_garg_stpro-spatial-and-temporal-progressive-learning-for-weakly-supervised-spatio-tem_c1e1cb6965",
+  "title": "STPro: Spatial and Temporal Progressive Learning for Weakly Supervised Spatio-Temporal Grounding",
+  "year": 2025,
+  "venue_or_source": "CVPR 2025",
+  "authors": [
+    "Aaryan Garg",
+    "Akash Kumar",
+    "Yogesh S Rawat"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract In this work, we study Weakly Supervised Spatio-Temporal Video Grounding (WSTVG), a challenging task of localizing subjects spatio-temporally in videos using only textual queries and no bounding box supervision.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-temporal video grounding (STVG) seeks to detect and localize objects within video sequences across both space and time, guided solely by textual descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-temporal video grounding (STVG) seeks to detect and localize objects within video sequences across both space and time, guided solely by textual descriptions.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This capability is crucial for applications like surveillance, autonomous navigation, and scene understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This capability is crucial for applications like surveillance, autonomous navigation, and scene understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "While recent methods tackle STVG in fully-supervised settings , they rely on costly, labor-intensive frame-level annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While recent methods tackle STVG in fully-supervised settings [17, 53, 56], they rely on costly, labor-intensive frame-level annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "While TRG provides a strong baseline for adapting VFMs to WSTVG, it has two main shortcomings: it struggles with complex free-form queries involving actoraction relationships and lacks an ability to handle dense scenes with ordered action compositions,...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "While TRG provides a strong baseline for adapting VFMs to WSTVG, it has two main shortcomings: it struggles with complex free-form queries involving actoraction relationships and lacks an ability to handle dense scenes with ordered action compositions, limiting its effectiveness in complex scenarios.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories .",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, these approaches are often complex, involving multiple hierarchical algorithms [23], additional modality information [8], and restricted object categories [8, 42].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "However, while recent work has adapted G-DINO for fully supervised video grounding [53], the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Simply extending G-DINO to videos results in noisy training due to irrelevant frames and complex action sequences that it cannot accurately localize.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Simply extending G-DINO to videos results in noisy training due to irrelevant frames and complex action sequences that it cannot accurately localize.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [],
+    "core_problem_transition": [
+      {
+        "summary": "While recent methods tackle STVG in fully-supervised settings , they rely on costly, labor-intensive frame-level annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While recent methods tackle STVG in fully-supervised settings [17, 53, 56], they rely on costly, labor-intensive frame-level annotations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Existing research in weakly supervised learning for grounding has focused primarily on image-based phrase and referral grounding .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Existing research in weakly supervised learning for grounding has focused primarily on image-based phrase [10, 32, 50] and referral grounding [15, 30, 31].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version,...",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce Congestion-Guided Spatial Curriculum Learning (CG-SCL), a novel approach that progressively adapts the model to more complex and dense scene structures, improving its ability to understand spatial relationships in challenging video scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "• We introduce Congestion-Guided Spatial Curriculum Learning (CG-SCL), a novel approach that progressively adapts the model to more complex and dense scene structures, improving its ability to understand spatial relationships in challenging video scenarios.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that sTVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions?",
+      "failure_mode": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "root_cause": "This capability is crucial for applications like surveillance, autonomous navigation, and scene understanding.",
+      "why_existing_methods_fail": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "However, STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels?",
+      "failure_mode": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+      "root_cause": "While recent methods tackle STVG in fully-supervised settings , they rely on costly, labor-intensive frame-level annotations.",
+      "why_existing_methods_fail": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+      "affected_scenario": "",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories ?",
+      "failure_mode": "these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories .",
+      "root_cause": "More recently, studies have extended weak supervision to the STVG task .",
+      "why_existing_methods_fail": "these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories .",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, these approaches are often complex, involving multiple hierarchical algorithms [23], additional modality information [8], and restricted object categories [8, 42].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries?",
+      "failure_mode": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+      "root_cause": "these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories .",
+      "why_existing_methods_fail": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available?",
+      "failure_mode": "while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+      "root_cause": "adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+      "why_existing_methods_fail": "while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+      "affected_scenario": "",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "However, while recent work has adapted G-DINO for fully supervised video grounding [53], the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "streamlined approach",
+      "method_core_mechanism": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+      "method_components": [
+        "streamlined approach"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0042"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Tubelet Referral Grounding (TRG) module",
+      "method_core_mechanism": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "method_components": [
+        "Tubelet Referral Grounding (TRG)",
+        "Tubelet Referral Grounding",
+        "This CVPR",
+        "Open Access",
+        "Computer Vision Foundation",
+        "TRG",
+        "CVPR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "temporal context",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0056"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks",
+      "method_core_mechanism": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+      "method_components": [
+        "Temporal Progressive Learning",
+        "WSTVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0224"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Temporal Referral Grounding (TRG) module",
+      "method_core_mechanism": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+      "method_components": [
+        "Temporal Referral Grounding (TRG)",
+        "Temporal Referral Grounding",
+        "TRG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0056"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm",
+      "method_core_mechanism": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+      "method_components": [
+        "Sub-Action Temporal Curriculum Learning (SA-TCL)",
+        "Sub-Action Temporal Curriculum Learning",
+        "SA",
+        "TCL"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0159"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "streamlined approach targets STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Tubelet Referral Grounding (TRG) module targets STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions. by operating on temporal context.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU4",
+      "solves_how": "Temporal Referral Grounding (TRG) module targets In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "streamlined approach targets In this work, we address these challenges through weakly supervised STVG (WSTVG), training models with high-level video descriptions and eliminating the need for detailed spatio-temporal labels. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "streamlined approach targets these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Tubelet Referral Grounding (TRG) module targets these approaches are often complex, involving multiple hierarchical algorithms , additional modality information , and restricted object categories . by operating on temporal context.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "streamlined approach targets To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Tubelet Referral Grounding (TRG) module targets To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries. by operating on temporal context.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "Temporal Referral Grounding (TRG) module targets while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "streamlined approach targets while recent work has adapted G-DINO for fully supervised video grounding , the potential of VFMs remains unexplored in weakly supervised spatio-temporal video grounding (WSTVG), where precise annotations are not available. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "streamlined approach",
+      "compared_to": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "why_it_matters": "It directly targets STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "Tubelet Referral Grounding (TRG) module",
+      "compared_to": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "why_it_matters": "It directly targets STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks",
+      "compared_to": "STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.",
+      "why_it_matters": "It directly targets STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "streamlined approach",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose a streamlined approach that relies solely on the vision modality and supports free-form text queries.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Tubelet Referral Grounding (TRG) module",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "can_transfer_to": [
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these limitations, we introduce the Tubelet Referral Grounding (TRG) module, which adapts image-based VFMs to spatio-temporal contexts by linking textual queries with tubelets (spatio-temporal ob- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose Spatial and Temporal Progressive Learning (STPro), a framework specifically designed to enhance VFMs for WSTVG tasks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Temporal Referral Grounding (TRG) module",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+      "can_transfer_to": [
+        "weak_supervision",
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "In summary, we make the following contributions: • We introduce Temporal Referral Grounding (TRG) module, which adapts foundation models for the weakly supervised spatio-temporal video grounding task, providing a strong baseline for handling temporal and spatial contexts.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "• We propose the Sub-Action Temporal Curriculum Learning (SA-TCL) paradigm, which improves the model’s temporal grounding capability by incrementally increasing the complexity of action sequences, enabling better handling of temporal dependencies in videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for streamlined approach",
+      "baseline": "STPro: Spatial and Temporal Progressive Learning for Weakly Supervised Spatio-Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "streamlined approach",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting STVG presents significant challenges, requiring models to distinguish target objects from distractors over time and to identify precise temporal boundaries of actions.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_garg_stpro-spatial-and-temporal-progressive-learning-for-weakly-supervised-spatio-tem_c1e1cb6965\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_garg_stpro-spatial-and-temporal-progressive-learning-for-weakly-supervised-spatio-tem_c1e1cb6965\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

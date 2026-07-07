@@ -1,0 +1,914 @@
+{
+  "paper_id": "2024_qin_grounding-is-all-you-need-dual-temporal-grounding-for-video-dialog_1b12ad4af8",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qin_grounding-is-all-you-need-dual-temporal-grounding-for-video-dialog_1b12ad4af8",
+  "title": "Grounding is All You Need? Dual Temporal Grounding for Video Dialog",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "You Qin",
+    "Wei Ji",
+    "Xin Lan",
+    "Hao Fei",
+    "Yang Xun",
+    "Dan Guo",
+    "Roger Zimmermann",
+    "Lizi Liao"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task is related to a series of visionand-language tasks such as video sentence grounding [26– 28, 44], video question answering , and video relation detection , etc.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This task is related to a series of visionand-language tasks such as video sentence grounding [26– 28, 44], video question answering [24, 43], and video relation detection [8, 22, 39], etc.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike image-grounded dialog , video dialog requires hierarchical cog- (Historical) Conversations 0.0s - 34.8s Timestamp 18.6s - 34.8s ➢ Video summary 18.6s - 34.8s ➢ Informative Moment ➢ Full Moment Nearest QA turns Informative QA turns 27.4s - 34.8s 0.6s -...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Unlike image-grounded dialog [4, 23, 32, 51], video dialog requires hierarchical cog- (Historical) Conversations 0.0s - 34.8s Timestamp 18.6s - 34.8s ➢ Video summary 18.6s - 34.8s ➢ Informative Moment ➢ Full Moment Nearest QA turns Informative QA turns 27.4s - 34.8s 0.6s - 33.4s 0.9s - 33.6s 0.9s - 33.0s 31.3s - 34.8s … Figure 1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Given a video clip and dialog history (Q1&A1-Q8&A8), video dialog model generates the corresponding answer (A9) to the current question (Q9).",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Given a video clip and dialog history (Q1&A1-Q8&A8), video dialog model generates the corresponding answer (A9) to the current question (Q9).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Such models, which accept video frames, dialog history, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Such models, which accept video frames, dialog history, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite their intricate spatial-temporal graphs and alignment strategies, these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Despite their intricate spatial-temporal graphs and alignment strategies, these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "1, have somewhat simplistically leaned on the immediate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "1, have somewhat simplistically leaned on the immediate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question,...",
+        "scenario": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Unlike image-grounded dialog , video dialog requires hierarchical cog- (Historical)...",
+        "scenario": "Unlike image-grounded dialog , video dialog requires hierarchical cog- (Historical) Conversations 0.0s - 34.8s Timestamp 18.6s - 34.8s ➢ Video summary 18.6s - 34.8s ➢ Informative Moment ➢ Full Moment Nearest QA turns Informative QA turns 27.4s - 34.8s 0.6s - 33.4s 0.9s - 33.6s 0.9s - 33.0s 31.3s -...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Unlike image-grounded dialog [4, 23, 32, 51], video dialog requires hierarchical cog- (Historical) Conversations 0.0s - 34.8s Timestamp 18.6s - 34.8s ➢ Video summary 18.6s - 34.8s ➢ Informative Moment ➢ Full Moment Nearest QA turns Informative QA turns 27.4s - 34.8s 0.6s - 33.4s 0.9s - 33.6s 0.9s - 33.0s 31.3s - 34.8s … Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Most previous methods merely exploit the nearest several turns of question-answer pairs...",
+        "scenario": "Most previous methods merely exploit the nearest several turns of question-answer pairs (e.g., Q7&A7, Q8&A8) and Full Moment.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Most previous methods merely exploit the nearest several turns of question-answer pairs (e.g., Q7&A7, Q8&A8) and Full Moment.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "In our method, we ground the temporal region of each QA pair in the video, and select...",
+        "scenario": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Recent endeavors in the domain of video dialog have harnessed the power of large-scale pretrained models like GPT , UniVL and LLaMA .",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Recent endeavors in the domain of video dialog have harnessed the power of large-scale pretrained models like GPT [35], UniVL [30] and LLaMA [42].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The strength of pretrained visual-language models lies in their capacity to exploit vast pre-existing knowledge, addressing the shortcomings of limited video dialog datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "The strength of pretrained visual-language models lies in their capacity to exploit vast pre-existing knowledge, addressing the shortcomings of limited video dialog datasets.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent?",
+      "failure_mode": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "root_cause": "nition and reasoning of video data, which involves much more abundant information than image.",
+      "why_existing_methods_fail": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "affected_scenario": "Most previous methods merely exploit the nearest several turns of question-answer pairs (e.g., Q7&A7, Q8&A8) and Full Moment.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that addressing these two challenges simultaneously is crucial for generating coherent and sensible responses?",
+      "failure_mode": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+      "root_cause": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "why_existing_methods_fail": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+      "affected_scenario": "Most previous methods merely exploit the nearest several turns of question-answer pairs (e.g., Q7&A7, Q8&A8) and Full Moment.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP013",
+      "macro_problem_name": "Temporal Context Robustness and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "tory, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tory, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges?",
+      "failure_mode": "tory, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+      "root_cause": "Recent endeavors in the domain of video dialog have harnessed the power of large-scale pretrained models like GPT , UniVL and LLaMA .",
+      "why_existing_methods_fail": "Such models, which accept video frames, dialog history, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+      "affected_scenario": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Such models, which accept video frames, dialog history, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP013",
+      "macro_problem_name": "Temporal Context Robustness and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive?",
+      "failure_mode": "these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive.",
+      "root_cause": ", delve into temporal relations via object trajectories, extracting them from video sequences with tools like Faster-RCNN and the DeepSort algorithm.",
+      "why_existing_methods_fail": "Despite their intricate spatial-temporal graphs and alignment strategies, these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive.",
+      "affected_scenario": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Despite their intricate spatial-temporal graphs and alignment strategies, these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP013",
+      "macro_problem_name": "Temporal Context Robustness and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "diate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that diate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content?",
+      "failure_mode": "diate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+      "root_cause": "Still, it’s noteworthy that numerous prior strategies, as depicted in Fig.",
+      "why_existing_methods_fail": "1, have somewhat simplistically leaned on the immediate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+      "affected_scenario": "# Introduction Video dialog aims to generate a free-form answer to a follow-up question, which is based on the content of video data and the history of multi-turn question-answer pairs, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "1, have somewhat simplistically leaned on the immediate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the...",
+      "method_core_mechanism": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+      "method_components": [
+        "Informative Moment",
+        "QA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0173"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model",
+      "method_core_mechanism": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+      "method_components": [
+        "Dual Temporal Groundingenhanced Video Dialog (DTGVD)",
+        "Dual Temporal Groundingenhanced Video Dialog",
+        "DTGVD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0061"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M07",
+      "legacy_macro_method_name": "Open-Set or Refusal-Aware Modeling",
+      "micro_method_name": "temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out ir",
+      "method_core_mechanism": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+      "method_components": [
+        "our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0055"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+      "method_core_mechanism": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+      "method_components": [
+        "Experiments on two popular benchmark datasets verified the effectiveness of our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0175"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the... targets The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068",
+      "micro_method_cluster_id": "MM0173",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model targets The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068",
+      "micro_method_cluster_id": "MM0061",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the... targets Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068",
+      "micro_method_cluster_id": "MM0173",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model targets Addressing these two challenges simultaneously is crucial for generating coherent and sensible responses. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0068",
+      "micro_method_cluster_id": "MM0061",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the... targets tory, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0173",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model targets tory, and questions, have 1 --- Page 2 --been fine-tuned to address video dialog-specific challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0061",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model targets these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0061",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the... targets these approaches encounter limitations, particularly when different objects in a single video clip correspond to diverse question-answer pairs, and their computational demands can be prohibitive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0173",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model targets diate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0061",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out ir targets diate preceding question-answer turns or processed the collective history linearly, often neglecting the distinct temporal relevance of each pairing to the video content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0061",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the...",
+      "compared_to": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "why_it_matters": "It directly targets The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model",
+      "compared_to": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "why_it_matters": "It directly targets The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.."
+    },
+    {
+      "axis": "Open-Set or Refusal-Aware Modeling",
+      "what_is_new": "temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out ir",
+      "compared_to": "The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.",
+      "why_it_matters": "It directly targets The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the...",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the responses (e.g., Q4&A4, Q5&A5).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Dual Temporal Groundingenhanced Video Dialog (DTGVD) model",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Therefore, we introduce the Dual Temporal Groundingenhanced Video Dialog (DTGVD) model.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out ir",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Overall, our main contributions are summarized as follows: • We propose a temporal grounding module to explicitly model the attention shift of each dialog turn over the video, and generate the temporal masks to filter out irrelevant video frames and irrelevant dialog history.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Experiments on two popular benchmark datasets verified the effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the...",
+      "baseline": "Grounding is All You Need? Dual Temporal Grounding for Video Dialog",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "In our method, we ground the temporal region of each QA pair in the video, and select Informative Moment and informative QA pairs for generating the...",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting The main challenge of video dialog is to accurately comprehend the content depicted in the video, and to effectively utilize the dialog history between the user and the dialog agent.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qin_grounding-is-all-you-need-dual-temporal-grounding-for-video-dialog_1b12ad4af8\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qin_grounding-is-all-you-need-dual-temporal-grounding-for-video-dialog_1b12ad4af8\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

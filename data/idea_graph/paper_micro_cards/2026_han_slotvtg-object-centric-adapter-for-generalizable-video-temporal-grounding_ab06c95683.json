@@ -1,0 +1,887 @@
+{
+  "paper_id": "2026_han_slotvtg-object-centric-adapter-for-generalizable-video-temporal-grounding_ab06c95683",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_han_slotvtg-object-centric-adapter-for-generalizable-video-temporal-grounding_ab06c95683",
+  "title": "SlotVTG: Object-Centric Adapter for Generalizable Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "ArXiv.org",
+  "authors": [
+    "Jiwook Han",
+    "Geo Ahn",
+    "Youngrae Kim",
+    "Jinwoo Choi"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Multimodal Large Language Models (MLLMs) have shown strong performance on Video Temporal Grounding (VTG).",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Temporal Grounding (VTG), the task of localizing temporal moments in untrimmed videos given natural language queries, has been predominantly addressed by DETR-based specialist models .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video Temporal Grounding (VTG), the task of localizing temporal moments in untrimmed videos given natural language queries, has been predominantly addressed by DETR-based specialist models [24, 30, 36, 44].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recently, Multimodal Large Language Models (MLLMs) have emerged as a compelling alternative , 1 --- Page 2 --owing to their powerful visual representations learned from massive image and video corpora.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Recently, Multimodal Large Language Models (MLLMs) have emerged as a compelling alternative [13, 17, 34, 42, 45, 55], 1 --- Page 2 --owing to their powerful visual representations learned from massive image and video corpora.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "naively applying MLLMs to VTG yields suboptimal results.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, naively applying MLLMs to VTG yields suboptimal results.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Temporal grounding demands fine-grained temporal understanding that goes beyond the coarse recognition capabilities of general-purpose MLLMs, making task-specific fine-tuning indispensable .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Temporal grounding demands fine-grained temporal understanding that goes beyond the coarse recognition capabilities of general-purpose MLLMs, making task-specific fine-tuning indispensable [17, 42, 45, 55].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "naively applying MLLMs to VTG yields suboptimal results.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, naively applying MLLMs to VTG yields suboptimal results.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "On OOD, however, the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "On OOD, however, the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "We validate our approach through cross-domain evaluation on standard VTG benchmarks,...",
+        "scenario": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA and QVHighlights ) and evaluating on different targets.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA [11] and QVHighlights [24]) and evaluating on different targets.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Temporal grounding demands fine-grained temporal understanding that goes beyond the coarse recognition capabilities of general-purpose MLLMs, making task-specific fine-tuning indispensable .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Temporal grounding demands fine-grained temporal understanding that goes beyond the coarse recognition capabilities of general-purpose MLLMs, making task-specific fine-tuning indispensable [17, 42, 45, 55].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This leads to severe overfitting to dataset-specific shortcuts, as these limited-scale datasets inevitably contain various forms of bias, such as temporal location bias , query text bias , and appearance bias .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This leads to severe overfitting to dataset-specific shortcuts, as these limited-scale datasets inevitably contain various forms of bias, such as temporal location bias [6, 14, 39], query text bias [6, 19, 26], and appearance bias [3, 40].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To encourage the model to genuinely ground on visual contents regardless of domain shifts, it is crucial to extract domain-invariant visual cues.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To encourage the model to genuinely ground on visual contents regardless of domain shifts, it is crucial to extract domain-invariant visual cues.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 features.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA and QVHighlights ) and evaluating on different targets.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA [11] and QVHighlights [24]) and evaluating on different targets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "naively applying MLLMs to VTG yields suboptimal results.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that naively applying MLLMs to VTG yields suboptimal results?",
+      "failure_mode": "naively applying MLLMs to VTG yields suboptimal results.",
+      "root_cause": "Recently, Multimodal Large Language Models (MLLMs) have emerged as a compelling alternative , 1 --- Page 2 --owing to their powerful visual representations learned from massive image and video corpora.",
+      "why_existing_methods_fail": "naively applying MLLMs to VTG yields suboptimal results.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "However, naively applying MLLMs to VTG yields suboptimal results.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions?",
+      "failure_mode": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+      "root_cause": "Temporal grounding demands fine-grained temporal understanding that goes beyond the coarse recognition capabilities of general-purpose MLLMs, making task-specific fine-tuning indispensable .",
+      "why_existing_methods_fail": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains?",
+      "failure_mode": "the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+      "root_cause": "rather lost its scene recognition capability for unseen domains.",
+      "why_existing_methods_fail": "On OOD, however, the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "On OOD, however, the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch?",
+      "failure_mode": "these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+      "root_cause": "A promising direction is object-centric learning , which decomposes scenes into discrete entity-level representations and has been shown to improve domain generalization in video understanding tasks in MLLMs .",
+      "why_existing_methods_fail": "these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query?",
+      "failure_mode": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+      "root_cause": "SlotVTG introduces a lightweight Slot Adapter that decomposes visual tokens into a compact set of abstract slots via slot attention, then reconstructs the original token sequence from these slots.",
+      "why_existing_methods_fail": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+      "affected_scenario": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA and QVHighlights ) and evaluating on different targets.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0072"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "SlotVTG, a framework",
+      "method_core_mechanism": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+      "method_components": [
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0162"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Slot Alignment (SA) loss",
+      "method_core_mechanism": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 features.",
+      "method_components": [
+        "Slot Alignment (SA)",
+        "Slot Alignment",
+        "SA",
+        "we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0133"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "through cross-domain evaluation on standard VTG benchmarks, training on one source (e",
+      "method_core_mechanism": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA and QVHighlights ) and evaluating on different targets.",
+      "method_components": [
+        "VTG",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA [11] and QVHighlights [24]) and evaluating on different targets.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "SlotVTG, a parameter-efficient framework consisting of a Slot Adapter",
+      "method_core_mechanism": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+      "method_components": [
+        "Slot Adapter",
+        "Slot Alignment Loss",
+        "and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0133"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SlotVTG, a framework targets naively applying MLLMs to VTG yields suboptimal results. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040",
+      "micro_method_cluster_id": "MM0162",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Slot Alignment (SA) loss targets naively applying MLLMs to VTG yields suboptimal results. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040",
+      "micro_method_cluster_id": "MM0133",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SlotVTG, a framework targets Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0162",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Slot Alignment (SA) loss targets Yet VTG annotations require precise start-end timestamps for each query, making large-scale data collection prohibitively expensive and preventing models from being exposed to diverse data distributions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0133",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SlotVTG, a framework targets the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0162",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Slot Alignment (SA) loss targets the two cause nearly identical drops, indicating the model is not actively grounding the visual inputs but has rather lost its scene recognition capability for unseen domains. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0133",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "SlotVTG, a framework targets these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0162",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "through cross-domain evaluation on standard VTG benchmarks, training on one source (e targets these approaches integrate object-centric representations between the visual encoder and the language model, requiring the entire visionlanguage alignment and instruction tuning pipeline to be retrained from scratch. by operating on domain_shift.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA [11] and QVHighlights [24]) and evaluating on different targets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Slot Alignment (SA) loss targets This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0072",
+      "micro_method_cluster_id": "MM0133",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "SlotVTG, a parameter-efficient framework consisting of a Slot Adapter targets This bottleneck guides visual information through entity-level representations, encouraging the model to suppress spurious correlations and instead attend to the actual visual content relevant to the query. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0072",
+      "micro_method_cluster_id": "MM0133",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "SlotVTG, a framework",
+      "compared_to": "naively applying MLLMs to VTG yields suboptimal results.",
+      "why_it_matters": "It directly targets naively applying MLLMs to VTG yields suboptimal results.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Slot Alignment (SA) loss",
+      "compared_to": "naively applying MLLMs to VTG yields suboptimal results.",
+      "why_it_matters": "It directly targets naively applying MLLMs to VTG yields suboptimal results.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "through cross-domain evaluation on standard VTG benchmarks, training on one source (e",
+      "compared_to": "naively applying MLLMs to VTG yields suboptimal results.",
+      "why_it_matters": "It directly targets naively applying MLLMs to VTG yields suboptimal results.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SlotVTG, a framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+      "can_transfer_to": [
+        "reasoning",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose SlotVTG, a framework that brings objectcentric representation learning into the MLLM framework at minimal cost.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Slot Alignment (SA) loss",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 features.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To further encourage semantically coherent tokens to be grouped into the same slot, we introduce a Slot Alignment (SA) loss that aligns the slot attention maps with selfsupervised objectness priors from pre-trained DINOv2 [38] features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "through cross-domain evaluation on standard VTG benchmarks, training on one source (e",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA and QVHighlights ) and evaluating on different targets.",
+      "can_transfer_to": [
+        "domain_shift"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We validate our approach through cross-domain evaluation on standard VTG benchmarks, training on one source (e.g., Charades-STA [11] and QVHighlights [24]) and evaluating on different targets.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "SlotVTG, a parameter-efficient framework consisting of a Slot Adapter",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "• We propose SlotVTG, a parameter-efficient framework consisting of a Slot Adapter that decomposes visual tokens into entity-level slots, and a Slot Alignment Loss that encourages semantically coherent slot formation via objectness priors from pre-trained DINOv2 features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SlotVTG, a framework",
+      "baseline": "SlotVTG: Object-Centric Adapter for Generalizable Video Temporal Grounding",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "SlotVTG, a framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting naively applying MLLMs to VTG yields suboptimal results.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_han_slotvtg-object-centric-adapter-for-generalizable-video-temporal-grounding_ab06c95683\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_han_slotvtg-object-centric-adapter-for-generalizable-video-temporal-grounding_ab06c95683\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

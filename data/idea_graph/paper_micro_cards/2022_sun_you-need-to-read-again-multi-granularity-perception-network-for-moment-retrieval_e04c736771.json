@@ -1,0 +1,643 @@
+{
+  "paper_id": "2022_sun_you-need-to-read-again-multi-granularity-perception-network-for-moment-retrieval_e04c736771",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_sun_you-need-to-read-again-multi-granularity-perception-network-for-moment-retrieval_e04c736771",
+  "title": "You Need to Read Again: Multi-granularity Perception Network for Moment Retrieval in Videos",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Xin Sun",
+    "Xuan Wang",
+    "Jialin Gao",
+    "Qiong Liu",
+    "Xi Zhou"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Moment retrieval in videos is a challenging task that aims to retrieve the most relevant video moment in an untrimmed video given a sentence description.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Tremendous videos over the internet contain diverse human activities, which are beneficial for us to perceive the real world.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Tremendous videos over the internet contain diverse human activities, which are beneficial for us to perceive the real world.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This phenomenon has motivated many popular tasks such as action recognition , video retrieval , to name a few.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This phenomenon has motivated many popular tasks such as action recognition [6, 7, 31], video retrieval [5, 43], to name a few.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Temporal Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Temporal Action Localization [17, 28] is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Temporal Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Temporal Action Localization [17, 28] is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Upper: Existing works tend to encode intra-modality and inter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Upper: Existing works tend to encode intra-modality and inter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For the drawbacks mentioned above, we apply a coarse-to-fine strategy to mine intra-modality and inter-modality information at a multi-granularity level.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "For the drawbacks mentioned above, we apply a coarse-to-fine strategy to mine intra-modality and inter-modality information at a multi-granularity level.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal...",
+        "scenario": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, most two-stage models [8, 40, 44] learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed...",
+        "scenario": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the...",
+        "scenario": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Figure 1: Illustration of moment retrieval and our motivation.",
+        "scenario": "Figure 1: Illustration of moment retrieval and our motivation.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Figure 1: Illustration of moment retrieval and our motivation.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Temporal Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Temporal Action Localization [17, 28] is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": ", and thus take full advantage of annotated language information and propose the Moment Retrieval task.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Gao et al.[8], and Hendricks et al.[1] thus take full advantage of annotated language information and propose the Moment Retrieval task.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need?",
+      "failure_mode": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+      "root_cause": "This phenomenon has motivated many popular tasks such as action recognition , video retrieval , to name a few.",
+      "why_existing_methods_fail": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+      "affected_scenario": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ral Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ral Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions?",
+      "failure_mode": "ral Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+      "root_cause": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+      "why_existing_methods_fail": "Temporal Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+      "affected_scenario": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Temporal Action Localization [17, 28] is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g?",
+      "failure_mode": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+      "root_cause": "They tend to use two separate feature encoders to capture intra-modality information, and then utilize attention mechanism to explore inter-modality information.",
+      "why_existing_methods_fail": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+      "affected_scenario": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning?",
+      "failure_mode": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning...",
+      "root_cause": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+      "why_existing_methods_fail": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+      "affected_scenario": "As shown in Figure 1, most two-stage models learn selfmodal relations and cross-modal interaction in a coarse-grained manner.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning stage.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "nter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that nter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g?",
+      "failure_mode": "nter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+      "root_cause": "Figure 1: Illustration of moment retrieval and our motivation.",
+      "why_existing_methods_fail": "Upper: Existing works tend to encode intra-modality and inter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+      "affected_scenario": "these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Upper: Existing works tend to encode intra-modality and inter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality",
+      "method_core_mechanism": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+      "method_components": [
+        "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0026"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality targets most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0026",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality targets ral Action Localization is a task to detect action instances in untrimmed videos while it neglects the fact that videos are often accompanied by sentence descriptions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0026",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality targets these two-stage methods suffer from two notorious drawbacks: (i) They neglect detailed information in intra-modality and inter-modality (e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0026",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality targets some subtle objects boxed by yellow anchors in Figure 1 bottom part while ignored in the upper part; key information like \"left\" that are crucial for accurate alignment), which needs to be sufficiently perceived with a deeper reasoning... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0026",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality targets nter-modality information in a coarse-grained manner (with one-step reasoning), which may neglect semantic details (e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0026",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality",
+      "compared_to": "most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.",
+      "why_it_matters": "It directly targets most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "• We propose a novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality",
+      "baseline": "You Need to Read Again: Multi-granularity Perception Network for Moment Retrieval in Videos",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "novel fine-grained feature encoder and a conditioned interaction module to fully mine semantic information in both intra-modality and inter-modality",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting most online videos are long, untrimmed and contain irrelevant content, thus automatic video content analysis methods are in emergent need.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "Recall"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_sun_you-need-to-read-again-multi-granularity-perception-network-for-moment-retrieval_e04c736771\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_sun_you-need-to-read-again-multi-granularity-perception-network-for-moment-retrieval_e04c736771\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

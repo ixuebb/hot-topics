@@ -1,0 +1,797 @@
+{
+  "paper_id": "2024_goyal_minotaur-multi-task-video-grounding-from-multimodal-queries_d0b698c41b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_goyal_minotaur-multi-task-video-grounding-from-multimodal-queries_d0b698c41b",
+  "title": "MINOTAUR: Multi-task Video Grounding From Multimodal Queries",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Raghav Goyal",
+    "Effrosyni Mavroudi",
+    "Xitong Yang",
+    "Sainbayar Sukhbaatar",
+    "Leonid Sigal",
+    "Matt Feiszli",
+    "Lorenzo Torresani",
+    "Du Tran"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Fine-grained video understanding has emerged as a crucial capability for the development of augmented reality (AR) and robotics applications.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Fine-grained video understanding has emerged as a crucial capability for the development of augmented reality (AR) and robotics applications.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection [6, 69, 102], object retrieval [20],and (spatio-)temporal grounding [2, 9, 18, 32].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike prior work on long video understanding that relies on pre-extracted visual features , our model is fully end-to-end learnable and can be trained with partially annotated data, i.e., without requiring annotations for all tasks per video.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Unlike prior work on long video understanding that relies on pre-extracted visual features [94, 99, 39], our model is fully end-to-end learnable and can be trained with partially annotated data, i.e., without requiring annotations for all tasks per video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization to novel tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "However, current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets [6, 18, 21, 30, 64, 98], without considering the synergies between multiple tasks and the model’s generalization to novel tasks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While the idea of building a uniﬁed framework for multiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "While the idea of building a uniﬁed framework for multiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In addition, effective training of models that capture multimodal information across tasks without compromising per-task performance remains an open challenge .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "In addition, effective training of models that capture multimodal information across tasks without compromising per-task performance remains an open challenge [49, 83].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be...",
+        "scenario": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object retrieval ,and (spatio-)temporal grounding .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection [6, 69, 102], object retrieval [20],and (spatio-)temporal grounding [2, 9, 18, 32].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, a model trained to answer natural language queries (e.g., “Where did I put...",
+        "scenario": "For example, a model trained to answer natural language queries (e.g., “Where did I put the spanner?”) can beneﬁt from the learning of answering visual queries (e.g., searching the latest occurrence of “spanner”) and moment queries (e.g., “repair small equipment (mower, trimmer, etc.)”), as...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "For example, a model trained to answer natural language queries [20] (e.g., “Where did I put the spanner?”) can beneﬁt from the learning of answering visual queries (e.g., searching the latest occurrence of “spanner”) and moment queries (e.g., “repair small equipment (mower, trimmer, etc.)”), as illustrated in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In this paper, we seek an alternative approach – building a uniﬁed framework for multiple ﬁne-grained video understanding tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In this paper, we seek an alternative approach – building a uniﬁed framework for multiple ﬁne-grained video understanding tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Taking the three episodic memory tasks as an example, the input of natural language query (NLQ) is free-form language and the output spans < 2 seconds, while the input of visual query (VQ) is an image crop and the output of moment query (MQ) typically spans >...",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Taking the three episodic memory tasks [20] as an example, the input of natural language query (NLQ) is free-form language and the output spans < 2 seconds, while the input of visual query (VQ) is an image crop and the output of moment query (MQ) typically spans > 1 minute.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across?",
+      "failure_mode": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...",
+      "root_cause": "MINOTAUR builds upon the Transformer encoder-decoder architecture , and task-speciﬁcity is baked into the input/output processing modules such as modalityspeciﬁc query embeddings and prediction heads.",
+      "why_existing_methods_fail": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+      "affected_scenario": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object retrieval ,and (spatio-)temporal grounding .",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization?",
+      "failure_mode": "current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization...",
+      "root_cause": "focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization to novel tasks.",
+      "why_existing_methods_fail": "current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization to novel tasks.",
+      "affected_scenario": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object retrieval ,and (spatio-)temporal grounding .",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "However, current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets [6, 18, 21, 30, 64, 98], without considering the synergies between multiple tasks and the model’s generalization to novel tasks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "tiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tiple tasks is conceptually straightforward, it does come with a number of core technical challenges?",
+      "failure_mode": "tiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+      "root_cause": "Our goals in this paper are synergetic with those of video foundation models , but are also distinct in that our focus is not on learning a model (using pretex tasks) that can easily adapt to various target tasks, but rather one joint model that is applicable...",
+      "why_existing_methods_fail": "While the idea of building a uniﬁed framework for multiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+      "affected_scenario": "For example, a model trained to answer natural language queries (e.g., “Where did I put the spanner?”) can beneﬁt from the learning of answering visual queries (e.g., searching the latest occurrence of “spanner”) and moment queries (e.g., “repair small equipment (mower, trimmer, etc.)”), as...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "While the idea of building a uniﬁed framework for multiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks?",
+      "failure_mode": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+      "root_cause": "While the idea of building a uniﬁed framework for multiple tasks is conceptually straightforward, it does come with a number of core technical challenges.",
+      "why_existing_methods_fail": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+      "affected_scenario": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object retrieval ,and (spatio-)temporal grounding .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "imodal information across tasks without compromising per-task performance remains an open challenge .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that imodal information across tasks without compromising per-task performance remains an open challenge ?",
+      "failure_mode": "imodal information across tasks without compromising per-task performance remains an open challenge .",
+      "root_cause": "The problem becomes more severe when localizing a short answer in the long-form videos (8 minutes) in an end-to-end manner.",
+      "why_existing_methods_fail": "In addition, effective training of models that capture multimodal information across tasks without compromising per-task performance remains an open challenge .",
+      "affected_scenario": "To achieve this level of video comprehension, an agent (e.g., virtual assistant) must be equipped with the ability to identify and reason about events and objects captured in videos, tackling a range of vision tasks such as activity detection , object retrieval ,and (spatio-)temporal grounding .",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In addition, effective training of models that capture multimodal information across tasks without compromising per-task performance remains an open challenge [49, 83].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "MINOTAUR, a uniﬁed multitask model",
+      "method_core_mechanism": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+      "method_components": [
+        "MINOTAUR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0065"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos",
+      "method_core_mechanism": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+      "method_components": [
+        "MINOTAUR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0065"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "efﬁcient, multi-task training and inference strategies",
+      "method_core_mechanism": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+      "method_components": [
+        "efﬁcient, multi-task training and inference strategies"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0194"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "MINOTAUR, a uniﬁed multitask model targets To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across... by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos targets To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "MINOTAUR, a uniﬁed multitask model targets current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos targets current research on video understanding has focused primarily on training individual, highly specialized models using task-speciﬁc annotated datasets , without considering the synergies between multiple tasks and the model’s generalization... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "MINOTAUR, a uniﬁed multitask model targets tiple tasks is conceptually straightforward, it does come with a number of core technical challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos targets tiple tasks is conceptually straightforward, it does come with a number of core technical challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "MINOTAUR, a uniﬁed multitask model targets The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos targets The ﬁrst challenge is the inconsistent input (visual, lingual)/output (spatial, temporal) format and output distribution across different tasks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "MINOTAUR, a uniﬁed multitask model targets imodal information across tasks without compromising per-task performance remains an open challenge . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos targets imodal information across tasks without compromising per-task performance remains an open challenge . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0079",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "MINOTAUR, a uniﬁed multitask model",
+      "compared_to": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+      "why_it_matters": "It directly targets To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos",
+      "compared_to": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+      "why_it_matters": "It directly targets To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "efﬁcient, multi-task training and inference strategies",
+      "compared_to": "To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across different tasks.",
+      "why_it_matters": "It directly targets To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "MINOTAUR, a uniﬁed multitask model",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+      "can_transfer_to": [
+        "cross_modal",
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In light of this, we present MINOTAUR, a uniﬁed multitask model that is designed to accept long videos and multimodal queries as input, and generate diverse structured outputs.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Foremost, we propose MINOTAUR, a uniﬁed, Transformer-based model for grounding multi-modal queries in long-form videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "efﬁcient, multi-task training and inference strategies",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In service of this model, we propose efﬁcient, multi-task training and inference strategies, which enable training with ﬁxed duration, partially annotated video segments, and testing on variable-length, long-form videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for MINOTAUR, a uniﬁed multitask model",
+      "baseline": "MINOTAUR: Multi-task Video Grounding From Multimodal Queries",
+      "dataset": "Ego4D",
+      "module_to_modify": "MINOTAUR, a uniﬁed multitask model",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting To address the challenges arising from inconsistent output distribution in long videos, we design a sliding-window based training and inference regime, combined with a foreground frame prediction module capable of generalizing across...."
+    }
+  ],
+  "datasets": [
+    "Ego4D"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_goyal_minotaur-multi-task-video-grounding-from-multimodal-queries_d0b698c41b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_goyal_minotaur-multi-task-video-grounding-from-multimodal-queries_d0b698c41b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

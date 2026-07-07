@@ -1,0 +1,801 @@
+{
+  "paper_id": "2022_yoon_selective-query-guided-debiasing-for-video-corpus-moment-retrieval_d85e75a91e",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yoon_selective-query-guided-debiasing-for-video-corpus-moment-retrieval_d85e75a91e",
+  "title": "Selective Query-Guided Debiasing for Video Corpus Moment Retrieval",
+  "year": 2022,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Sunjae Yoon",
+    "Ji Woo Hong",
+    "Eunseop Yoon",
+    "Dahyun Kim",
+    "Junyeong Kim",
+    "Hee Suk Yoon",
+    "Chang D. Yoo"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval (VMR) aims to localize target moments in untrimmed videos pertinent to a given textual query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As one of these video search technologies, video moment retrieval (VMR) serves as essential building block to underpin many frontier interactive AI systems, including video/image captioning , video/image question answering and visual dialog .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "As one of these video search technologies, video moment retrieval (VMR) [8,1] serves as essential building block to underpin many frontier interactive AI systems, including video/image captioning [31,26], video/image question answering [23,14] and visual dialog [3].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "VMR aims to localize temporal moments of video pertinent to textual query.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "VMR aims to localize temporal moments of video pertinent to textual query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Recently, the growing interest in video searching drove this ⋆Corresponding Author 2 S.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recently, the growing interest in video searching drove this ⋆Corresponding Author 2 S.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query:...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query: Beckett pours a coffee into her cup (Retrieval Bias) (Retrieval Bias) Video Corpus Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite this respectful effort to generalize video retrieval, the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Despite this respectful effort to generalize video retrieval, the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The predictions are from two retrieval models: (1) the current best performance model and (2) the biased retrieval model.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "The predictions are from two retrieval models: (1) the current best performance model and (2) the biased retrieval model.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which...",
+        "scenario": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+        "scenario": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "This retrieval bias constrains an object (e.g., coffee) to specific scene (e.g., scene of...",
+        "scenario": "This retrieval bias constrains an object (e.g., coffee) to specific scene (e.g., scene of drinking), thus the other scenes related to that object word lose chance to be searched.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "This retrieval bias constrains an object (e.g., coffee) to specific scene (e.g., scene of drinking), thus the other scenes related to that object word lose chance to be searched.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "We investigate predicates that appear together with a specific word (e.g., television) in...",
+        "scenario": "We investigate predicates that appear together with a specific word (e.g., television) in all queries and identify that one or two predicates (e.g., watch, turn) are predominantly bound with that word.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "We investigate predicates that appear together with a specific word (e.g., television) in all queries and identify that one or two predicates (e.g., watch, turn) are predominantly bound with that word.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "1: VCMR training and inference.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "1: VCMR training and inference.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "VMR to perform in a more general format of retrieval, referred to as video corpus moment retrieval (VCMR) .",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "VMR to perform in a more general format of retrieval, referred to as video corpus moment retrieval (VCMR) [15].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias...",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P09",
+      "legacy_macro_problem_name": "Scalability and Corpus-Level Retrieval",
+      "micro_problem_name": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee?",
+      "failure_mode": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee...",
+      "root_cause": "13.77 sec 12.33 sec Ground-truth Query: House drink his coffee Ground-truth Prediction 6.0 sec 9.0 sec Query: Beckett dumps coffee from cup into garbage can.",
+      "why_existing_methods_fail": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query: Beckett pours a coffee into her cup (Retrieval Bias) (Retrieval...",
+      "affected_scenario": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query: Beckett pours a coffee into her cup (Retrieval Bias) (Retrieval Bias) Video Corpus Fig.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference?",
+      "failure_mode": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+      "root_cause": "1: VCMR training and inference.",
+      "why_existing_methods_fail": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+      "affected_scenario": "Video streaming services (e.g., YouTube, Netflix) have rapidly grown these days, which promotes the development of video search technologies.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions?",
+      "failure_mode": "the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+      "root_cause": "Therefore, given query, VCMR conducts two sub-tasks: (1) identifying relevant video in the video corpus and (2) localizing a moment in the identified video.",
+      "why_existing_methods_fail": "Despite this respectful effort to generalize video retrieval, the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+      "affected_scenario": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Despite this respectful effort to generalize video retrieval, the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias?",
+      "failure_mode": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+      "root_cause": "annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+      "why_existing_methods_fail": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+      "affected_scenario": "Figure 1 gives an example of incorrect moment predictions due to the retrieval bias.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required?",
+      "failure_mode": "we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+      "root_cause": "there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+      "why_existing_methods_fail": "we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+      "affected_scenario": "This retrieval bias constrains an object (e.g., coffee) to specific scene (e.g., scene of drinking), thus the other scenes related to that object word lose chance to be searched.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Selective Query-guided Debiasing network (SQuiDNet)",
+      "method_core_mechanism": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via...",
+      "method_components": [
+        "Biased Moment Retrieval (BMR)",
+        "Selective Query-guided Debiasing",
+        "Biased Moment Retrieval",
+        "Selective Queryguided Debiasing",
+        "BMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0108"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder",
+      "method_core_mechanism": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+      "method_components": [
+        "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0055"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Selective Query-guided Debiasing network (SQuiDNet) targets Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee... by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder targets Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Selective Query-guided Debiasing network (SQuiDNet) targets The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder targets The biased annotations in training dataset make retrieval bias, which causes biased moment prediction in the inference. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Selective Query-guided Debiasing network (SQuiDNet) targets the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder targets the VCMR systems still suffer from dependence on retrieval bias, which hinders the system from accurately learning multi-modal interactions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Selective Query-guided Debiasing network (SQuiDNet) targets This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder targets This is because annotations of training dataset include many co-occurrences between the object word ‘coffee’ in query and the scene of ‘drinking,’ which leads to biased moment prediction referred to as retrieval bias. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "Selective Query-guided Debiasing network (SQuiDNet) targets we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder targets we argue that these biased predictions sometimes should be preserved because there are many queries where biased prediction is rather helpful, such that selective debiasing is required. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "Selective Query-guided Debiasing network (SQuiDNet)",
+      "compared_to": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query: Beckett pours a coffee into her cup (Retrieval Bias) (Retrieval...",
+      "why_it_matters": "It directly targets Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder",
+      "compared_to": "Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee “coffee !” Query: Beckett pours a coffee into her cup (Retrieval Bias) (Retrieval...",
+      "why_it_matters": "It directly targets Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Selective Query-guided Debiasing network (SQuiDNet)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via...",
+      "can_transfer_to": [
+        "bias"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Intrigued by these two characteristics of retrieval bias, we propose a Selective Query-guided Debiasing network (SQuiDNet), which incorporates the following two main properties: (1) Biased Moment Retrieval (BMR) that intentionally uncovers the retrieval bias inherent in objects of the query and (2) Selective Queryguided Debiasing (SQuiD) that performs selective debiasing via disentangling ‘good’ and ‘bad’ retrieval bias according to the meaning of the query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Here, we introduce two technical contributions on how the SQuiD decides good or bad: (1) Co-occurrence table and (2) Learnable confounder.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Selective Query-guided Debiasing network (SQuiDNet)",
+      "baseline": "Selective Query-Guided Debiasing for Video Corpus Moment Retrieval",
+      "dataset": "ActivityNet, DiDeMo",
+      "module_to_modify": "Selective Query-guided Debiasing network (SQuiDNet)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Video Corpus 2.73 sec 4.1 sec “Scene of dumping coffee” “Scene of drinking coffee” [Inference] [Training] 13.77 sec 14.79 sec Ground-truth Query: Ryan takes a drink of his coffee Training data Biased annotations Scene of drinking coffee...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "DiDeMo"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yoon_selective-query-guided-debiasing-for-video-corpus-moment-retrieval_d85e75a91e\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yoon_selective-query-guided-debiasing-for-video-corpus-moment-retrieval_d85e75a91e\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

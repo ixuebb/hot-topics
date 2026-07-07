@@ -1,0 +1,978 @@
+{
+  "paper_id": "2023_li_winner-weakly-supervised-hierarchical-decomposition-and-alignment-for-spatio-tem_4844ea45c3",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_winner-weakly-supervised-hierarchical-decomposition-and-alignment-for-spatio-tem_4844ea45c3",
+  "title": "WINNER: Weakly-Supervised hIerarchical decompositioN and aligNment for Spatio-tEmporal Video gRounding",
+  "year": 2023,
+  "venue_or_source": "CVPR 2023",
+  "authors": [
+    "Mengze Li",
+    "Han Wang",
+    "Wenqiao Zhang",
+    "Jiaxu Miao",
+    "Zhou Zhao",
+    "Shengyu Zhang",
+    "Wei Ji",
+    "Fei Wu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-temporal video grounding aims to localize the aligned visual tube corresponding to a language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-temporal video grounding (STVG) is a fundamental task for video-language understanding .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-temporal video grounding (STVG) is a fundamental task for video-language understanding [34, 41].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It aims to localize the spatio-temporal tube described by the *Equal Contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "It aims to localize the spatio-temporal tube described by the *Equal Contribution.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "†Corresponding Authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "†Corresponding Authors.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "language query from the untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "language query from the untrimmed video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely...",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw data.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw data.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "A hierarchical contrastive learning objective is devised to recursively learn the desired correspondence and distinguishment over intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "A hierarchical contrastive learning objective is devised to recursively learn the desired correspondence and distinguishment over intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal...",
+        "scenario": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, the spatial and temporal GCN modules in STGRN require region-by-region...",
+        "scenario": "For example, the spatial and temporal GCN modules in STGRN require region-by-region frame-by-frame annotations for training convolutions.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "For example, the spatial and temporal GCN modules in STGRN [55] require region-by-region frame-by-frame annotations for training convolutions.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, when we inspect the sample shown in Figure 1 at either the videosentence or...",
+        "scenario": "For example, when we inspect the sample shown in Figure 1 at either the videosentence or the object-word hierarchy (i.e., single-hierarchy understanding), the right-side woman can be hard to distinguish from the target woman to be localized.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "For example, when we inspect the sample shown in Figure 1 at either the videosentence or the object-word hierarchy (i.e., single-hierarchy understanding), the right-side woman can be hard to distinguish from the target woman to be localized.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "23090 Figure 1.",
+        "scenario": "23090 Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "23090 Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In addition, massive video-language data without spatial-temporal annotations are easily accessible but without exploitation.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "In addition, massive video-language data without spatial-temporal annotations are easily accessible but without exploitation.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "On the one hand, the highly This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "On the one hand, the highly This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available?",
+      "failure_mode": "the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "root_cause": "For example, the spatial and temporal GCN modules in STGRN require region-by-region frame-by-frame annotations for training convolutions.",
+      "why_existing_methods_fail": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "affected_scenario": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that there are mainly two technical challenges to achieving such hierarchical alignment?",
+      "failure_mode": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+      "root_cause": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+      "why_existing_methods_fail": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+      "affected_scenario": "For example, when we inspect the sample shown in Figure 1 at either the videosentence or the object-word hierarchy (i.e., single-hierarchy understanding), the right-side woman can be hard to distinguish from the target woman to be localized.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "There are mainly two technical challenges to achieving such hierarchical alignment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0055"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw?",
+      "failure_mode": "in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw...",
+      "root_cause": "On the other hand, hierarchical alignment requires simultaneously learning video-text correspondence and distinguishment at different hierarchies.",
+      "why_existing_methods_fail": "in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw data.",
+      "affected_scenario": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "However, in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw data.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that wINNER addresses the first challenge through language-structure guided video hierarchical understanding?",
+      "failure_mode": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+      "root_cause": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+      "why_existing_methods_fail": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+      "affected_scenario": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "WINNER addresses the first challenge through language-structure guided video hierarchical understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge?",
+      "failure_mode": "intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+      "root_cause": "Upon the matching, we could build the language-grounded video decomposition tree, containing specific tubes as nodes, as revealed in Figure 1.",
+      "why_existing_methods_fail": "A hierarchical contrastive learning objective is devised to recursively learn the desired correspondence and distinguishment over intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+      "affected_scenario": "To achieve such alignment, existing works fully exploit the fine-grained spatialtemporal annotations (e.g., temporal boundaries, and spatial bounding boxes).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "A hierarchical contrastive learning objective is devised to recursively learn the desired correspondence and distinguishment over intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i",
+      "method_core_mechanism": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+      "method_components": [
+        "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0038"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER)",
+      "method_core_mechanism": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+      "method_components": [
+        "WINNER"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ens",
+      "method_core_mechanism": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+      "method_components": [
+        "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "reconstruction",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel perspective, i",
+      "method_core_mechanism": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+      "method_components": [
+        "novel perspective, i"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0050"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "novel WINNER framework",
+      "method_core_mechanism": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+      "method_components": [
+        "WINNER",
+        "which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "novel perspective, i targets the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i targets the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i targets There are mainly two technical challenges to achieving such hierarchical alignment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0055",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER) targets There are mainly two technical challenges to achieving such hierarchical alignment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0055",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "novel perspective, i targets in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw... by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER) targets in weakly supervised video grounding, the multi-hierarchy supervision signals (e.g., paired and unpaired video-text components at different hierarchies) necessary for correspondence and distinguishment learning are rather lacking in raw... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER) targets WINNER addresses the first challenge through language-structure guided video hierarchical understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ens targets WINNER addresses the first challenge through language-structure guided video hierarchical understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ens targets intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "novel perspective, i targets intra-sample and inter-sample video-text decomposition trees, thus addressing the second challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i",
+      "compared_to": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "why_it_matters": "It directly targets the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER)",
+      "compared_to": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "why_it_matters": "It directly targets the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ens",
+      "compared_to": "Despite substantial research literature in this vein, the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.",
+      "why_it_matters": "It directly targets the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In this regard, we present a novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i.e., decomposing multiple aligned video-language hierarchies.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Weaklysupervised hIerarchical decompositioN and aligNment framework for spatio-tEmporal video gRounding (WINNER).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ens",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+      "can_transfer_to": [
+        "reconstruction"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "We introduce top-down feature backtracking over the multi-modal decomposition structure to ensure structural consistency and a text reconstruction objective to ensure the intra-sample correspondence between extracted visual cues and the multi-hierarchy language components.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel perspective, i",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+      "can_transfer_to": [
+        "bias",
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We present a novel perspective, i.e., hierarchical videolanguage decomposition and alignment, for alleviating spurious correlations brought by limited annotations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel WINNER framework",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• We propose a novel WINNER framework, which encapsulates the structural attention and top-down backtracking for multi-modal hierarchical understanding, and the multi-hierarchy intra-sample correspondence and inter-sample distinguishment learning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i",
+      "baseline": "WINNER: Weakly-Supervised hIerarchical decompositioN and aligNment for Spatio-tEmporal Video gRounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel perspective for grounding-oriented video disambiguation and understanding under the weakly-supervised setting, i",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the dense annotations (i.e., video-by-video temporal boundary and frame-by-frame spatial bounding boxes) necessary for effective alignment require tremendous labor costs, which are, however, not routinely available.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_winner-weakly-supervised-hierarchical-decomposition-and-alignment-for-spatio-tem_4844ea45c3\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_winner-weakly-supervised-hierarchical-decomposition-and-alignment-for-spatio-tem_4844ea45c3\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,942 @@
+{
+  "paper_id": "2022_hao_can-shuffling-video-benefit-temporal-bias-problem-a-novel-training-framework-for_42e915ef57",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_hao_can-shuffling-video-benefit-temporal-bias-problem-a-novel-training-framework-for_42e915ef57",
+  "title": "Can Shuffling Video Benefit Temporal Bias Problem: A Novel Training Framework for Temporal Grounding",
+  "year": 2022,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Jiachang Hao",
+    "Haifeng Sun",
+    "Pengfei Ren",
+    "Jingyu Wang",
+    "Qi Qi",
+    "Jianxin Liao"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Temporal grounding aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Temporal grounding [11,16] aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Due to its vast potential applications in video captioning, video question answering, and video retrieval, this task has attracted increasing interest over the last few years.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Due to its vast potential applications in video captioning, video question answering, and video retrieval, this task has attracted increasing interest over the last few years.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, this task suffers a temporal bias problem [37,52,51], which severely hinders the development of the temporal grounding task.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "⋆Corresponding author 2 J.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "⋆Corresponding author 2 J.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, this task suffers a temporal bias problem [37,52,51], which severely hinders the development of the temporal grounding task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Model ignore (b) Temporal bias problem Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Model ignore (b) Temporal bias problem Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "directly using these shuffled videos as training samples is not appropriate.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, directly using these shuffled videos as training samples is not appropriate.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Temporal grounding aims to localize the relevant video moment of interest semantically...",
+        "scenario": "Temporal grounding aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Temporal grounding [11,16] aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "⋆Corresponding author 2 J.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "⋆Corresponding author 2 J.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "1: (a) Temporal grounding is to localize a moment with the start point (0s) and end point (6.6s) in the video for the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "1: (a) Temporal grounding is to localize a moment with the start point (0s) and end point (6.6s) in the video for the query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Temporal bias problem refers to that a method reasons the target moment locations not based on the visual-textual semantic matching but over-relies on the temporal biases of queries in training set .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Temporal bias problem refers to that a method reasons the target moment locations not based on the visual-textual semantic matching but over-relies on the temporal biases of queries in training set [37].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "And our method can be easily transferred to other grounding models.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "And our method can be easily transferred to other grounding models.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal...",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task?",
+      "failure_mode": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "root_cause": "problem , which severely hinders the development of the temporal grounding task.",
+      "why_existing_methods_fail": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "affected_scenario": "Temporal grounding aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, this task suffers a temporal bias problem [37,52,51], which severely hinders the development of the temporal grounding task.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Model ignore (b) Temporal bias problem Fig.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ignore (b) Temporal bias problem Fig?",
+      "failure_mode": "Model ignore (b) Temporal bias problem Fig.",
+      "root_cause": "problem Fig.",
+      "why_existing_methods_fail": "Model ignore (b) Temporal bias problem Fig.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Model ignore (b) Temporal bias problem Fig.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction?",
+      "failure_mode": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+      "root_cause": "problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+      "why_existing_methods_fail": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment?",
+      "failure_mode": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+      "root_cause": "As illustrated in Fig.",
+      "why_existing_methods_fail": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "directly using these shuffled videos as training samples is not appropriate.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that directly using these shuffled videos as training samples is not appropriate?",
+      "failure_mode": "directly using these shuffled videos as training samples is not appropriate.",
+      "root_cause": "training samples is not appropriate.",
+      "why_existing_methods_fail": "directly using these shuffled videos as training samples is not appropriate.",
+      "affected_scenario": "Temporal grounding aims to localize the relevant video moment of interest semantically corresponding to the given sentence query in an untrimmed video, as illustrated in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "However, directly using these shuffled videos as training samples is not appropriate.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training",
+      "method_core_mechanism": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+      "method_components": [
+        "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0035"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "span-based framework to handle the temporal grounding and two auxiliary tasks",
+      "method_core_mechanism": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+      "method_components": [
+        "span-based framework to handle the temporal grounding and two auxiliary tasks"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0138"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "can be easily transferred to other grounding models",
+      "method_core_mechanism": "And our method can be easily transferred to other grounding models.",
+      "method_components": [
+        "can be easily transferred to other grounding models"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "And our method can be easily transferred to other grounding models.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0087"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem",
+      "method_core_mechanism": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+      "method_components": [
+        "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0010"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut",
+      "method_core_mechanism": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+      "method_components": [
+        "ActivityNet Captions",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem targets this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU5",
+      "solves_how": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut targets this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU4",
+      "solves_how": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem targets Model ignore (b) Temporal bias problem Fig. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut targets Model ignore (b) Temporal bias problem Fig. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem targets (b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU5",
+      "solves_how": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut targets (b) An example of temporal bias problem: a model ignores the visual input and uses the memorized temporal bias of the word ‘awaken’ in the training set of Charades-STA to make the prediction. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU4",
+      "solves_how": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem targets 1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU5",
+      "solves_how": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut targets 1b, a grounding model ignores visual inputs and takes a shortcut to directly exploit the memorized temporal biases of the given query in training set to reason the location of the target video moment. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training targets directly using these shuffled videos as training samples is not appropriate. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0035",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "span-based framework to handle the temporal grounding and two auxiliary tasks targets directly using these shuffled videos as training samples is not appropriate. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0005",
+      "micro_method_cluster_id": "MM0138",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training",
+      "compared_to": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "why_it_matters": "It directly targets this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "span-based framework to handle the temporal grounding and two auxiliary tasks",
+      "compared_to": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "why_it_matters": "It directly targets this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "can be easily transferred to other grounding models",
+      "compared_to": "this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.",
+      "why_it_matters": "It directly targets this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To this end, instead of using the shuffled videos as augmented training samples, we propose to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "span-based framework to handle the temporal grounding and two auxiliary tasks",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "We propose a span-based framework to handle the temporal grounding and two auxiliary tasks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "can be easily transferred to other grounding models",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "And our method can be easily transferred to other grounding models.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "And our method can be easily transferred to other grounding models.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+      "can_transfer_to": [
+        "bias"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are as follows: (1) We propose a novel training framework for temporal grounding models to use shuffled videos to address the temporal bias problem.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distribut",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+      "can_transfer_to": [
+        "bias",
+        "domain_shift"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "(3) Extensive experiments on Charades-STA and ActivityNet Captions demonstrate the effectiveness of our method for mitigating the grounding model’s reliance on temporal biases and strengthening the generalization ability against the different temporal distributions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training",
+      "baseline": "Can Shuffling Video Benefit Temporal Bias Problem: A Novel Training Framework for Temporal Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "to take the shuffled and original videos as paired input and design auxiliary tasks to promote the grounding model training",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting this task suffers a temporal bias problem , which severely hinders the development of the temporal grounding task.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_hao_can-shuffling-video-benefit-temporal-bias-problem-a-novel-training-framework-for_42e915ef57\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_hao_can-shuffling-video-benefit-temporal-bias-problem-a-novel-training-framework-for_42e915ef57\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

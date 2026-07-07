@@ -1,0 +1,730 @@
+{
+  "paper_id": "2026_kim_finding-optimal-video-moment-without-training-gaussian-boundary-optimization-for_b1348e620b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_finding-optimal-video-moment-without-training-gaussian-boundary-optimization-for_b1348e620b",
+  "title": "Finding Optimal Video Moment without Training: Gaussian Boundary Optimization for Weakly Supervised Video Grounding",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Sunoh Kim",
+    "Kimin Yun",
+    "Daeho Um"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Weakly supervised temporal video grounding aims to localize query-relevant segments in untrimmed videos using only video-sentence pairs, without requiring ground-truth segment annotations that specify exact temporal boundaries.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding is an important yet challenging task that requires a machine to watch a video and localize the temporal segment corresponding to a given query –.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding is an important yet challenging task that requires a machine to watch a video and localize the temporal segment corresponding to a given query [1]–[5].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In the weakly supervised setting, where ground-truth boundary annotations are unavailable during training, recent approaches have developed various proposal representations to bridge the semantic gap between video and language modalities –.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "In the weakly supervised setting, where ground-truth boundary annotations are unavailable during training, recent approaches have developed various proposal representations to bridge the semantic gap between video and language modalities [6]–[23].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Among these approaches, Gaussian-based temporal proposals – have demonstrated superior performance in modeling temporal structures by offering a flexible representation.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Among these approaches, Gaussian-based temporal proposals [12]– [23] have demonstrated superior performance in modeling temporal structures by offering a flexible representation.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Early studies , introduce single-Gaussian proposals learned during training, which significantly reduce the number of candidate segments compared to previous non-Gaussian methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Early studies [21], [22] introduce single-Gaussian proposals learned during training, which significantly reduce the number of candidate segments compared to previous non-Gaussian methods.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite the potential, these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Despite the potential, these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To address this limitation, Gaussian mixture proposals [23] have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian...",
+        "scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV901",
+            "section": "Introduction",
+            "quote": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to previous methods based on heuristic segment prediction, our Gaussian boundary optimization formulates the segment prediction as a principled optimization problem. By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content. to capture a broader range of tempor",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To address this limitation, Gaussian mixture proposals [23] have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(corresponding author: Daeho Um.) S.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "(corresponding author: Daeho Um.) S.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Specifically, when converting a Gaussian proposal into a temporal segment during inference, these methods typically adopt a simple heuristic: using the Gaussian mean as the segment center and defining the segment duration based on the Gaussian standard...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Specifically, when converting a Gaussian proposal into a temporal segment during inference, these methods typically adopt a simple heuristic: using the Gaussian mean as the segment center and defining the segment duration based on the Gaussian standard deviation (i.e., Gaussian width).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage?",
+      "failure_mode": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+      "root_cause": "to capture a broader range of temporal events.",
+      "why_existing_methods_fail": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+      "affected_scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization?",
+      "failure_mode": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+      "root_cause": "Consequently, such inference strategies often lead to suboptimal localization performance.",
+      "why_existing_methods_fail": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+      "affected_scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns?",
+      "failure_mode": "these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+      "root_cause": "Early studies , introduce single-Gaussian proposals learned during training, which significantly reduce the number of candidate segments compared to previous non-Gaussian methods.",
+      "why_existing_methods_fail": "Despite the potential, these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+      "affected_scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Despite the potential, these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025?",
+      "failure_mode": "To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+      "root_cause": "supported by the research fund of Dankook University in 2025.",
+      "why_existing_methods_fail": "To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+      "affected_scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To address this limitation, Gaussian mixture proposals [23] have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results?",
+      "failure_mode": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+      "root_cause": "Specifically, when converting a Gaussian proposal into a temporal segment during inference, these methods typically adopt a simple heuristic: using the Gaussian mean as the segment center and defining the segment duration based on the Gaussian standard...",
+      "why_existing_methods_fail": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+      "affected_scenario": "ing demonstrated. Query Ours Previous Methods Proposal Gaussian Width 𝑤 GT Gaussian Center 𝑐 ➔Heuristic Prediction Gaussian Boundary Optimization max 𝑠,𝑒 න 𝑠 𝑒 exp −𝑡−𝑐2 2𝑤2 𝑑𝑡+ 𝜆⋅(−𝑒−𝑠) Proposal Coverage Segment Compactness Penalty Weight Fig. 1. Weakly supervised video grounding. Compared to...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "yields segments",
+      "method_core_mechanism": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+      "method_components": [
+        "yields segments"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0146"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "Gaussian Boundary Optimization (GBO), a novel inference technique",
+      "method_core_mechanism": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+      "method_components": [
+        "Gaussian Boundary Optimization (GBO)",
+        "Gaussian Boundary Optimization",
+        "GBO"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0024"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "yields segments targets while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Gaussian Boundary Optimization (GBO), a novel inference technique targets while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Gaussian Boundary Optimization (GBO), a novel inference technique targets To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "yields segments targets To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "yields segments targets these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Gaussian Boundary Optimization (GBO), a novel inference technique targets these single-Gaussian proposals are inherently unimodal and symmetric, limiting their effectiveness in modeling diverse and asymmetric temporal patterns. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "yields segments targets To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Gaussian Boundary Optimization (GBO), a novel inference technique targets To address this limitation, Gaussian mixture proposals have been introduced, combining multiple Gaussians The present research was supported by the research fund of Dankook University in 2025. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "yields segments targets This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Gaussian Boundary Optimization (GBO), a novel inference technique targets This predefined mapping fails to fully leverage the rich structural information encoded in the proposal and cannot guarantee optimal results. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0080",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM007"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "yields segments",
+      "compared_to": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+      "why_it_matters": "It directly targets while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.."
+    },
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "Gaussian Boundary Optimization (GBO), a novel inference technique",
+      "compared_to": "while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.",
+      "why_it_matters": "It directly targets while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "yields segments",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "By maximizing coverage under a Gaussian-based proposal while penalizing excessive segment length via a penalty weight, our method yields segments that more accurately align with the query-relevant content.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Gaussian Boundary Optimization (GBO), a novel inference technique",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose Gaussian Boundary Optimization (GBO), a novel inference technique that predicts segment boundaries through principled optimization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for yields segments",
+      "baseline": "Finding Optimal Video Moment without Training: Gaussian Boundary Optimization for Weakly Supervised Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "yields segments",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting while existing Gaussian-based methods focus heavily on modeling temporal events and optimizing their networks during training, they largely overlook the inference stage.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_finding-optimal-video-moment-without-training-gaussian-boundary-optimization-for_b1348e620b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_finding-optimal-video-moment-without-training-gaussian-boundary-optimization-for_b1348e620b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

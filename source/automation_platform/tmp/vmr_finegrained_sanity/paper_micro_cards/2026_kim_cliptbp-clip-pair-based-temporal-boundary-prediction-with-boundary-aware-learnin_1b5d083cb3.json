@@ -1,0 +1,636 @@
+{
+  "paper_id": "2026_kim_cliptbp-clip-pair-based-temporal-boundary-prediction-with-boundary-aware-learnin_1b5d083cb3",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_cliptbp-clip-pair-based-temporal-boundary-prediction-with-boundary-aware-learnin_1b5d083cb3",
+  "title": "ClipTBP: Clip-Pair based Temporal Boundary Prediction with Boundary-Aware Learning for Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "ArXiv.org",
+  "authors": [
+    "Ji-Hyeon Kim",
+    "Ho-Joong Kim",
+    "Seong-Whan Lee"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Computer vision in recent years has expanded beyond image recognition to include video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Computer vision [9, 11, 12, 19, 20, 23, 34, 36] in recent years has expanded beyond image recognition to include video understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Videos have temporal continuity, unlike static images, and therefore address complex characteristics that require understanding of both scene context and event progression.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Videos have temporal continuity, unlike static images, and therefore address complex characteristics that require understanding of both scene context and event progression.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Ground truth Baseline Ours Time (seconds) (i) (iii) (ii) Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Ground truth Baseline Ours Time (seconds) (i) (iii) (ii) Fig.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The red boxes at the top are the segments predicted by baseline model (FlashVTG ) and the red boxes at the bottom are the segments predicted by our proposed model.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "The red boxes at the top are the segments predicted by baseline model (FlashVTG [1]) and the red boxes at the bottom are the segments predicted by our proposed model.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "ClipTBP 3 To illustrate this issue, we compare the moment retrieval results of our model with the baseline model (FlashVTG ) when there are multiple answer segments in the ground truth (GT).",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "ClipTBP 3 To illustrate this issue, we compare the moment retrieval results of our model with the baseline model (FlashVTG [1]) when there are multiple answer segments in the ground truth (GT).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The baseline model incorrectly predicts the segment as the answer segment due to visual similarity, despite the scene not fully matching the query, but only partially matching some content of the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "The baseline model incorrectly predicts the segment as the answer segment due to visual similarity, despite the scene not fully matching the query, but only partially matching some content of the query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "One of the main challenges of video moment retrieval is accurately predicting 2 J-H",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "One of the main challenges of video moment retrieval is accurately predicting 2 J-H Kim et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Another important challenge is understanding the semantic connection between text queries and videos and taking into account the temporal relationship within the video.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Another important challenge is understanding the semantic connection between text queries and videos and taking into account the temporal relationship within the video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this snippet-independent learning structure has limitations in reflecting the semantic relationships and global temporal context among multiple correct answer segments for a single query.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, this snippet-independent learning structure has limitations in reflecting the semantic relationships and global temporal context among multiple correct answer segments for a single query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "As a result, when segments appear that are visually similar to the answer segment but irrelevant to the query, the model is unable to distinguish them.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "As a result, when segments appear that are visually similar to the answer segment but irrelevant to the query, the model is unable to distinguish them.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this scene does not depict the query describing her trip, but instead shows a woman walking around during her trip.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, this scene does not depict the query describing her trip, but instead shows a woman walking around during her trip.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The baseline model incorrectly predicts the segment as the answer segment due to visual similarity, despite the scene not fully matching the query, but only partially matching some content of the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "The baseline model incorrectly predicts the segment as the answer segment due to visual similarity, despite the scene not fully matching the query, but only partially matching some content of the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Visually similar distractors and short gaps are merged into overly broad boundaries",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Although the segments in (ii) and (iii) are visually dissimilar to the ground-truth answer segments, the baseline model fails to recognize a brief temporal gap between adjacent answer segments, resulting in overly broad boundary predictions.",
+            "role": "problem",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "ideo summarization. One of the main challenges of video moment retrieval is accurately...",
+        "scenario": "ideo summarization. One of the main challenges of video moment retrieval is accurately predicting 2 J-H Query: A woman with black top and pink hair is describing her trip. Ground truth Baseline Ours Time (seconds) (i) (iii) (ii) Fig. 1: Challenges when multiple answer segments exist in a video. The...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV901",
+            "section": "Introduction",
+            "quote": "ideo summarization. One of the main challenges of video moment retrieval is accurately predicting 2 J-H Kim et al. Query: A woman with black top and pink hair is describing her trip. Ground truth Baseline Ours Time (seconds) (i) (iii) (ii) Fig. 1: Challenges when multiple answer segments exist in a video. The blue boxes are the answer segments matching the query in the ground truth. The red boxes at the top are the segments predicted by baseline model (FlashVTG [1]) and the red boxes at the bottom are the segments predicted by our proposed model. The images connected to the green arrows are the answer segments that match the query, and the images connected to the orange arrows are segments u",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "pink-haired woman repeated-segment example",
+        "scenario": "The query asks for a pink-haired woman describing her trip; visually similar or adjacent segments partially match but are not all correct.",
+        "what_it_reveals": "Independent snippet similarity merges distractors or adjacent answers and misses a short temporal gap.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Query: A woman with black top and pink hair is describing her trip.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Query: A woman with black top and pink hair is describing her trip.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Query: A woman with black top and pink hair is describing her trip.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The two model structures mainly used are the DETR-based models, which are endto-end transformer-based detection frameworks , and snippet-level offset regression models .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "The two model structures mainly used are the DETR-based [2] models, which are endto-end transformer-based detection frameworks [21,22,31,37], and snippet-level offset regression models [1,3,16].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As a result, when segments appear that are visually similar to the answer segment but irrelevant to the query, the model is unable to distinguish them.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "As a result, when segments appear that are visually similar to the answer segment but irrelevant to the query, the model is unable to distinguish them.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a clip-pair based temporal boundary prediction with boundary-aware learning for moment retrieval (ClipTBP).",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "In this paper, we propose a clip-pair based temporal boundary prediction with boundary-aware learning for moment retrieval (ClipTBP).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, this paper includes the following three contributions: – We propose ClipTBP that leads to improved moment retrieval performance through learning the relationship between multiple answer segments and learning the boundary of the answer segments.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "In summary, this paper includes the following three contributions: – We propose ClipTBP that leads to improved moment retrieval performance through learning the relationship between multiple answer segments and learning the boundary of the answer segments.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+        "evidence": [
+          {
+            "evidence_id": "EV001",
+            "section": "Abstract",
+            "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+            "role": "method",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Main and auxiliary boundary losses with inside-outside discrimination",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Abstract",
+            "quote": "ClipTBP also predicts accurate temporal boundaries by applying both main boundary loss and auxiliary boundary loss.",
+            "role": "method",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Semantic Negative Construction and Distractor Control",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "Snippet-independent learning ignores relationships among multiple answer segments",
+      "micro_problem_question": "How can MR model semantic and temporal relationships among multiple correct answer segments?",
+      "failure_mode": "Independent snippet scoring cannot represent global relationships among multiple answer segments.",
+      "root_cause": "The training unit is an isolated fixed-length snippet rather than a set or pair of answer clips.",
+      "why_existing_methods_fail": "Efficient snippet-query matching discards inter-segment structure and global temporal context.",
+      "affected_scenario": "The query asks for a pink-haired woman describing her trip; visually similar or adjacent segments partially match but are not all correct.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, this snippet-independent learning structure has limitations in reflecting the semantic relationships and global temporal context among multiple correct answer segments for a single query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Semantic Negative Construction and Distractor Control",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Visually similar distractors and short gaps are merged into overly broad boundaries",
+      "micro_problem_question": "How can a model separate query-irrelevant visual matches and adjacent answers divided by a brief temporal gap?",
+      "failure_mode": "The model predicts one broad interval spanning distractors or several adjacent answer segments.",
+      "root_cause": "Snippet-level similarity over-relies on partial visual overlap and lacks fine-grained inside-outside boundary structure.",
+      "why_existing_methods_fail": "Independent saliency and offset regression cannot distinguish a short gap or partial query mismatch.",
+      "affected_scenario": "The query asks for a pink-haired woman describing her trip; visually similar or adjacent segments partially match but are not all correct.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Although the segments in (ii) and (iii) are visually dissimilar to the ground-truth answer segments, the baseline model fails to recognize a brief temporal gap between adjacent answer segments, resulting in overly broad boundary predictions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+      "method_core_mechanism": "Learn relationships among clips inside the same ground-truth answer and contrast them with hard negative clip pairs.",
+      "method_components": [
+        "clip-level similarity loss",
+        "positive clip pairs inside GT segments",
+        "top-k hard negative mining",
+        "inter-segment semantic consistency"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "relationships among answer clips",
+      "required_inputs": [
+        "clip embeddings",
+        "GT answer segments",
+        "text query"
+      ],
+      "output_or_supervision": "clip-pair contrastive supervision",
+      "linked_intro_evidence_ids": [
+        "EV001"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0008"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "Main and auxiliary boundary losses with inside-outside discrimination",
+      "method_core_mechanism": "Supervise inside/outside boundary structure and stabilize start, end, center, and length regression with dynamic margins.",
+      "method_components": [
+        "main boundary loss",
+        "inside-outside boundary discrimination",
+        "dynamic segment-length margin",
+        "auxiliary boundary loss",
+        "start/end/center/length regression"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "fine-grained boundary geometry",
+      "required_inputs": [
+        "clip features",
+        "ground-truth boundaries"
+      ],
+      "output_or_supervision": "precise temporal offsets",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "ClipTBP also predicts accurate temporal boundaries by applying both main boundary loss and auxiliary boundary loss.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0009"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives targets Snippet-independent learning ignores relationships among multiple answer segments by operating on multi_segment.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Main and auxiliary boundary losses with inside-outside discrimination targets Snippet-independent learning ignores relationships among multiple answer segments by operating on fine-grained boundary geometry.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "ClipTBP also predicts accurate temporal boundaries by applying both main boundary loss and auxiliary boundary loss.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0009",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives targets Visually similar distractors and short gaps are merged into overly broad boundaries by operating on multi_segment.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Main and auxiliary boundary losses with inside-outside discrimination targets Visually similar distractors and short gaps are merged into overly broad boundaries by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "ClipTBP also predicts accurate temporal boundaries by applying both main boundary loss and auxiliary boundary loss.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0009",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+      "compared_to": "Efficient snippet-query matching discards inter-segment structure and global temporal context.",
+      "why_it_matters": "It directly targets Snippet-independent learning ignores relationships among multiple answer segments."
+    },
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "Main and auxiliary boundary losses with inside-outside discrimination",
+      "compared_to": "Efficient snippet-query matching discards inter-segment structure and global temporal context.",
+      "why_it_matters": "It directly targets Snippet-independent learning ignores relationships among multiple answer segments."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Learn relationships among clips inside the same ground-truth answer and contrast them with hard negative clip pairs.",
+      "can_transfer_to": [
+        "false_negative",
+        "multi_segment",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Video moment retrieval is the task of retrieving specific segments of a video corresponding to a given text query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Main and auxiliary boundary losses with inside-outside discrimination",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Supervise inside/outside boundary structure and stabilize start, end, center, and length regression with dynamic margins.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Abstract",
+          "quote": "ClipTBP also predicts accurate temporal boundaries by applying both main boundary loss and auxiliary boundary loss.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+      "baseline": "ClipTBP: Clip-Pair based Temporal Boundary Prediction with Boundary-Aware Learning for Moment Retrieval",
+      "dataset": "QVHighlights, TACoS",
+      "module_to_modify": "Clip-level similarity loss over positive answer-segment pairs and top-k hard negatives",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Independent snippet scoring cannot represent global relationships among multiple answer segments.."
+    }
+  ],
+  "datasets": [
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_cliptbp-clip-pair-based-temporal-boundary-prediction-with-boundary-aware-learnin_1b5d083cb3\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_kim_cliptbp-clip-pair-based-temporal-boundary-prediction-with-boundary-aware-learnin_1b5d083cb3\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

@@ -1,0 +1,732 @@
+{
+  "paper_id": "2026_li_object-centric-framework-for-video-moment-retrieval_c738187119",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_object-centric-framework-for-video-moment-retrieval_c738187119",
+  "title": "Object-Centric Framework for Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Zongyao Li",
+    "Yongkang Wong",
+    "Satoshi Yamazaki",
+    "Jianquan Liu",
+    "Mohan Kankanhalli"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Most existing video moment retrieval methods rely on temporal sequences of frame- or clip-level features that primarily encode global visual and semantic information.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video moment retrieval, also referred to as video temporal grounding, aims to localize temporal segments within a video that correspond to a given natural language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment retrieval, also referred to as video temporal grounding, aims to localize temporal segments within a video that correspond to a given natural language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recent advances have primarily focused on enhancing cross-modal interactions between visual and textual modalities (",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Recent advances have primarily focused on enhancing cross-modal interactions between visual and textual modalities (Xu et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (Radford et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (Radford et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Despite these advancements, a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Given the query “person opens the laptop”, the framelevel approach struggles to capture the crucial state transition of the laptop—from closed to open—due to its reliance on coarse frame-level features.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Given the query “person opens the laptop”, the framelevel approach struggles to capture the crucial state transition of the laptop—from closed to open—due to its reliance on coarse frame-level features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1: Comparison between the previous frame-level approach and the proposed...",
+        "scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In contrast, the proposed object-centric approach explicitly tracks the states and interactions of relevant objects over time, enabling more precise moment localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In contrast, the proposed object-centric approach explicitly tracks the states and interactions of relevant objects over time, enabling more precise moment localization.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "2021) or I3D , which primarily capture global semantics and overlook ﬁne-grained object-level dynamics.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "2021) or I3D (Carreira and Zisserman 2017), which primarily capture global semantics and overlook ﬁne-grained object-level dynamics.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In many practical scenarios, queries are inherently object-oriented, often describing actions or events involving state changes at the object level.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "In many practical scenarios, queries are inherently object-oriented, often describing actions or events involving state changes at the object level.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization?",
+      "failure_mode": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "root_cause": "the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "why_existing_methods_fail": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "affected_scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (?",
+      "failure_mode": "most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+      "root_cause": "frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+      "why_existing_methods_fail": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (",
+      "affected_scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Despite architectural differences, most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP (Radford et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval??",
+      "failure_mode": "a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+      "root_cause": "2021) or I3D , which primarily capture global semantics and overlook ﬁne-grained object-level dynamics.",
+      "why_existing_methods_fail": "a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+      "affected_scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Despite these advancements, a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval?",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics?",
+      "failure_mode": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+      "root_cause": "While powerful visual encoders may implicitly capture some object-level temporal cues, frame-level features typically lack explicit local information—such as object semantics, appearance, and interobject relationships—that is critical for accurately...",
+      "why_existing_methods_fail": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+      "affected_scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level?",
+      "failure_mode": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+      "root_cause": "This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics.",
+      "why_existing_methods_fail": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+      "affected_scenario": "Figure 1: Comparison between the previous frame-level approach and the proposed object-centric approach.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes",
+      "method_core_mechanism": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+      "method_components": [
+        "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV050"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0199"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "scene-graphbased object-level feature sequence representation",
+      "method_core_mechanism": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+      "method_components": [
+        "scene-graphbased object-level feature sequence representation"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0172"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes targets The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "scene-graphbased object-level feature sequence representation targets The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes targets most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "scene-graphbased object-level feature sequence representation targets most prior works rely on frame- or cliplevel (hereafter referred to as frame-level) features extracted by pre-trained visual encoders such as CLIP ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes targets a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "scene-graphbased object-level feature sequence representation targets a fundamental question remains underexplored: Are frame-level features truly sufﬁcient for video moment retrieval? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes targets This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "scene-graphbased object-level feature sequence representation targets This limitation poses a signiﬁcant barrier to further performance improvement, particularly in cases requiring precise modeling of object-level dynamics. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes targets To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "scene-graphbased object-level feature sequence representation targets To ameliorate the aforementioned limitations, we argue that object-oriented queries should be handled in an objectcentric manner, with temporal modeling performed explicitly at the object level. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes",
+      "compared_to": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "why_it_matters": "It directly targets The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "scene-graphbased object-level feature sequence representation",
+      "compared_to": "The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.",
+      "why_it_matters": "It directly targets The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "The key contributions of this paper are as follows: • We propose a novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes that are often overlooked by prior frame-level methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "scene-graphbased object-level feature sequence representation",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• Within this framework, we introduce a scene-graphbased object-level feature sequence representation that encodes rich semantic and visual information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes",
+      "baseline": "Object-Centric Framework for Video Moment Retrieval",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "novel object-centric framework for video moment retrieval, explicitly designed to capture objectlevel state changes",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting The frame-level approach fails to capture subtle yet critical state changes—such as the opening or closing of a laptop—resulting in inaccurate temporal localization.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_object-centric-framework-for-video-moment-retrieval_c738187119\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_object-centric-framework-for-video-moment-retrieval_c738187119\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

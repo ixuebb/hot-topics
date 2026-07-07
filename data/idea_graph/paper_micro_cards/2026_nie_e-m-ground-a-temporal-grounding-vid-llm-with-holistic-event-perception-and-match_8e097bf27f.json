@@ -1,0 +1,585 @@
+{
+  "paper_id": "2026_nie_e-m-ground-a-temporal-grounding-vid-llm-with-holistic-event-perception-and-match_8e097bf27f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_nie_e-m-ground-a-temporal-grounding-vid-llm-with-holistic-event-perception-and-match_8e097bf27f",
+  "title": "E.M.Ground: A Temporal Grounding Vid-LLM with Holistic Event Perception and Matching",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Jiahao Nie",
+    "Wenbin An",
+    "Gongjie Zhang",
+    "Yicheng Xu",
+    "Yap-Peng Tan",
+    "Alex C. Kot",
+    "Shijian Lu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Despite recent advances in Video Large Language Models (Vid-LLMs), Temporal Video Grounding (TVG), which aims to precisely localize time segments corresponding to query events, remains a significant challenge.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Large Language Models (Vid-LLMs) – have made great advances in general video understanding, such as general question answering – and video captioning –.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Video Large Language Models (Vid-LLMs) [1]–[8] have made great advances in general video understanding, such as general question answering [9]–[14] and video captioning [15]–[17].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "However, these models still face challenges in Temporal Video Grounding (TVG) [13], [18], a fine-grained task that requires precise timestamp localization of the query event [19]–[21].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "TVG is crucial for helping users quickly locate target segments and perform in-depth analyses without manually searching through the entire video .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "TVG is crucial for helping users quickly locate target segments and perform in-depth analyses without manually searching through the entire video [22].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Several representative approaches have been explored to address the challenging TVG task –.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Several representative approaches have been explored to address the challenging TVG task [23]–[29].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "However, these models still face challenges in Temporal Video Grounding (TVG) [13], [18], a fine-grained task that requires precise timestamp localization of the query event [19]–[21].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The state-of-the-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "The state-of-the-art method E.T.Chat [13] matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To mitigate this limitation, some recent works [22], [34]–[39] introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite its strong performance on temporal grounding, E.T.Chat still faces several limitations.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Despite its strong performance on temporal grounding, E.T.Chat still faces several limitations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "As a result, the model over-relies on the start and end frames of the query event while neglecting the intermediate frames, thereby overlooking a holistic and coherent perception of the matched event (refer to Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "As a result, the model over-relies on the start and end frames of the query event while neglecting the intermediate frames, thereby overlooking a holistic and coherent perception of the matched event (refer to Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens...",
+        "scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV901",
+            "section": "Introduction",
+            "quote": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat [13] matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames. Consequently, it performs worse on longer videos that contain richer information in the intermediate frames. In contrast, our proposed E.M.Ground models the holistic query event by a special token <evt>, which preserves the semantic continuity and integrity of the event, thus achieving better and stable pe",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "TVG is crucial for helping users quickly locate target segments and perform in-depth analyses without manually searching through the entire video .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "TVG is crucial for helping users quickly locate target segments and perform in-depth analyses without manually searching through the entire video [22].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "• Wenbin An is with the Xi’an Jiaotong University, China.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "• Wenbin An is with the Xi’an Jiaotong University, China.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Consequently, it performs worse on longer videos that contain richer information in the intermediate frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Consequently, it performs worse on longer videos that contain richer information in the intermediate frames.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+        "evidence": [
+          {
+            "evidence_id": "EV004",
+            "section": "Abstract",
+            "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –?",
+      "failure_mode": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+      "root_cause": "# Introduction Video Large Language Models (Vid-LLMs) – have made great advances in general video understanding, such as general question answering – and video captioning –.",
+      "why_existing_methods_fail": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+      "affected_scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "However, these models still face challenges in Temporal Video Grounding (TVG) [13], [18], a fine-grained task that requires precise timestamp localization of the query event [19]–[21].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore?",
+      "failure_mode": "their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+      "root_cause": "Early methods , , , address this by directly generating numerical texts to represent timestamps.",
+      "why_existing_methods_fail": "their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+      "affected_scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "he-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that he-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames?",
+      "failure_mode": "he-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+      "root_cause": "30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ...",
+      "why_existing_methods_fail": "The state-of-the-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+      "affected_scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "The state-of-the-art method E.T.Chat [13] matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "To mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding?",
+      "failure_mode": "To mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+      "root_cause": "grounding accuracy is constrained by the limited numerical reasoning ability of current LLMs , .",
+      "why_existing_methods_fail": "To mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+      "affected_scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To mitigate this limitation, some recent works [22], [34]–[39] introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "E.T.Chat still faces several limitations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that e.T.Chat still faces several limitations?",
+      "failure_mode": "E.T.Chat still faces several limitations.",
+      "root_cause": "Specifically, it introduces two special tokens to match the boundaries of the query event, one for the start timestamp and the other for the end timestamp.",
+      "why_existing_methods_fail": "Despite its strong performance on temporal grounding, E.T.Chat still faces several limitations.",
+      "affected_scenario": "t 30s 0s E.M.Ground adopts a single token to match the holistic event 1s frame tokens (GT: 0-12s) 2s 12s ... 30s 0s (a) Matching strategy of E.T.Chat and E.M.Ground (b) Performance comparison between E.T.Chat and E.M.Ground ... ... 11s 11s Fig. 1. The state-of-the-art method E.T.Chat matches the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Despite its strong performance on temporal grounding, E.T.Chat still faces several limitations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "method_core_mechanism": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "method_components": [
+        "LLM",
+        "TVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV004"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception. targets these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception. targets their • Jiahao Nie is with the Interdisciplinary Graduate Programme, Nanyang Technological University, Singapore, and the Nanyang Technological University, Singapore. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception. targets he-art method E.T.Chat matches the start and end frames with two separate tokens, thereby neglecting the intermediate frames. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception. targets To mitigate this limitation, some recent works , – introduce special time tokens and a paired lightweight decoder, which are both specially designed for temporal grounding. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception. targets E.T.Chat still faces several limitations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0130",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "compared_to": "these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.",
+      "why_it_matters": "It directly targets these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "baseline": "E.M.Ground: A Temporal Grounding Vid-LLM with Holistic Event Perception and Matching",
+      "dataset": "MAD",
+      "module_to_modify": "To address this, we propose E.M.Ground, a novel Vid-LLM for TVG that focuses on holistic and coherent event perception.",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these models still face challenges in Temporal Video Grounding (TVG) , , a fine-grained task that requires precise timestamp localization of the query event –.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_nie_e-m-ground-a-temporal-grounding-vid-llm-with-holistic-event-perception-and-match_8e097bf27f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_nie_e-m-ground-a-temporal-grounding-vid-llm-with-holistic-event-perception-and-match_8e097bf27f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

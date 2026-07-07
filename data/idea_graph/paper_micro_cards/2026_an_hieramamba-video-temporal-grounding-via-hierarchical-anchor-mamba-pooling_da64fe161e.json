@@ -1,0 +1,736 @@
+{
+  "paper_id": "2026_an_hieramamba-video-temporal-grounding-via-hierarchical-anchor-mamba-pooling_da64fe161e",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_an_hieramamba-video-temporal-grounding-via-hierarchical-anchor-mamba-pooling_da64fe161e",
+  "title": "HieraMamba: Video Temporal Grounding via Hierarchical Anchor-Mamba Pooling",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Joungbin An",
+    "Kristen Grauman"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding, the task of localizing the start and end times of a natural language query in untrimmed video, requires capturing both global context and fine-grained temporal detail.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Humans readily access broad episodic memories, answering ‘What did I do this morning?’ with ease, while simultaneously being able to pinpoint ﬁne-grained details like ‘Where did I leave my keys?’ or ‘Did I lock the front door?’ Our memory...",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Humans readily access broad episodic memories, answering ‘What did I do this morning?’ with ease, while simultaneously being able to pinpoint ﬁne-grained details like ‘Where did I leave my keys?’ or ‘Did I lock the front door?’ Our memory naturally navigates across multiple temporal scales, shifting seamlessly from the overall layout of a room to the precise motion of our ﬁngertips: an inherently hierarchical process [32, 48].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Video temporal grounding, the task of identifying the precise moment in an untrimmed video that corresponds to a language query, seeks to give machines this same ‘instant recall’ ability.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Video temporal grounding, the task of identifying the precise moment in an untrimmed video that corresponds to a language query, seeks to give machines this same ‘instant recall’ ability.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the...",
+        "scenario": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Second, queries demand ﬂexible temporal granularity: some require broad contextual...",
+        "scenario": "Second, queries demand ﬂexible temporal granularity: some require broad contextual understanding (e.g., what did the detective do in the library?), while others depend on subtle ﬁne-grained motions (e.g., when did the detective pull the hidden note from the shelf?), and many hinge on both.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Second, queries demand ﬂexible temporal granularity: some require broad contextual understanding (e.g., what did the detective do in the library?), while others depend on subtle ﬁne-grained motions (e.g., when did the detective pull the hidden note from the shelf?), and many hinge on both.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To close this gap, we require systems that can mirror and even surpass our hierarchical, multi-scale memory, supporting precise retrieval of desired episodes from long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To close this gap, we require systems that can mirror and even surpass our hierarchical, multi-scale memory, supporting precise retrieval of desired episodes from long videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, minutesto hours-long videos demand models capable of preserving temporal structure across extended sequences.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "First, minutesto hours-long videos demand models capable of preserving temporal structure across extended sequences.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop?",
+      "failure_mode": "icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+      "root_cause": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+      "why_existing_methods_fail": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+      "affected_scenario": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while many methods excel on short clips, long-form videos pose two intertwined challenges?",
+      "failure_mode": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+      "root_cause": "To close this gap, we require systems that can mirror and even surpass our hierarchical, multi-scale memory, supporting precise retrieval of desired episodes from long videos.",
+      "why_existing_methods_fail": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+      "affected_scenario": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "While many methods excel on short clips, long-form videos pose two intertwined challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation?",
+      "failure_mode": "many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "root_cause": "First, minutesto hours-long videos demand models capable of preserving temporal structure across extended sequences.",
+      "why_existing_methods_fail": "many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "affected_scenario": "For example, the brief ‘stove on’ moment in Q2 is captured by ﬁne-scale embeddings in the ﬁrst layer, while Q1’s broader ‘prepping ingredients’ context is naturally represented by the coarser embeddings at the top layer.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other?",
+      "failure_mode": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+      "root_cause": "Second, queries demand ﬂexible temporal granularity: some require broad contextual understanding (e.g., what did the detective do in the library?), while others depend on subtle ﬁne-grained motions (e.g., when did the detective pull the hidden note from the...",
+      "why_existing_methods_fail": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+      "affected_scenario": "Second, queries demand ﬂexible temporal granularity: some require broad contextual understanding (e.g., what did the detective do in the library?), while others depend on subtle ﬁne-grained motions (e.g., when did the detective pull the hidden note from the shelf?), and many hinge on both.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient?",
+      "failure_mode": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+      "root_cause": "Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other.",
+      "why_existing_methods_fail": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+      "affected_scenario": "Second, queries demand ﬂexible temporal granularity: some require broad contextual understanding (e.g., what did the detective do in the library?), while others depend on subtle ﬁne-grained motions (e.g., when did the detective pull the hidden note from the shelf?), and many hinge on both.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M11",
+      "legacy_macro_method_name": "State-Space, Mamba, or Efficient Sequence Modeling",
+      "micro_method_name": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos",
+      "method_core_mechanism": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+      "method_components": [
+        "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0065"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss",
+      "method_core_mechanism": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which...",
+      "method_components": [
+        "AMP",
+        "ACC",
+        "SPC",
+        "we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss",
+        "and a segment-pooled contrastive (SPC) loss"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss targets icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop. by operating on representation.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos targets icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos targets While many methods excel on short clips, long-form videos pose two intertwined challenges. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss targets While many methods excel on short clips, long-form videos pose two intertwined challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos targets many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss targets many existing methods compress temporal resolu- This CVPR paper is the Open Access version, provided by the Computer Vision Foundation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0131",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos targets Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss targets Traditional single-resolution methods struggle to meet these demands, often sacriﬁcing one type of detail for the other. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos targets These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss targets These challenges call for models that preserve temporal ﬁdelity across scales while remaining efﬁcient. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0061",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "State-Space, Mamba, or Efficient Sequence Modeling",
+      "what_is_new": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos",
+      "compared_to": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+      "why_it_matters": "It directly targets icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss",
+      "compared_to": "Yet replicating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.",
+      "why_it_matters": "It directly targets icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "To this end, we introduce HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which...",
+      "can_transfer_to": [
+        "proposal_dependency",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To enrich the AMP embeddings and preserve both global semantics and local details, we introduce two complementary contrastive objectives: an anchor-conditioned contrastive (ACC) loss, which encourages each generated anchor to better compress and represent the frames it summarizes while remaining distinct from unrelated ones, and a segment-pooled contrastive (SPC) loss, which pools each ground-truth segment into a single anchor and contrasts it against non–ground-truth moments, thereby enhancing the discriminability of localized event representations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos",
+      "baseline": "HieraMamba: Video Temporal Grounding via Hierarchical Anchor-Mamba Pooling",
+      "dataset": "Ego4D, MAD",
+      "module_to_modify": "HieraMamba, the ﬁrst hierarchical state-space video model for temporal grounding in hour-long videos",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting icating this multi-scale recall over continuous video remains challenging: current models struggle to faithfully preserve both the broad temporal layout and pinpoint precise moments, like when keys hit the countertop.."
+    }
+  ],
+  "datasets": [
+    "Ego4D",
+    "MAD",
+    "TACoS"
+  ],
+  "metrics": [
+    "Recall"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_an_hieramamba-video-temporal-grounding-via-hierarchical-anchor-mamba-pooling_da64fe161e\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_an_hieramamba-video-temporal-grounding-via-hierarchical-anchor-mamba-pooling_da64fe161e\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

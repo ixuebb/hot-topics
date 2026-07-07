@@ -1,0 +1,717 @@
+{
+  "paper_id": "2024_sun_tr-detr-task-reciprocal-transformer-for-joint-moment-retrieval-and-highlight-det_4d617761ff",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_sun_tr-detr-task-reciprocal-transformer-for-joint-moment-retrieval-and-highlight-det_4d617761ff",
+  "title": "TR-DETR: Task-Reciprocal Transformer for Joint Moment Retrieval and Highlight Detection",
+  "year": 2024,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Hao Sun",
+    "Mingyao Zhou",
+    "Wenjing Chen",
+    "Wei Xie"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval (MR) and highlight detection (HD) based on natural language queries are two highly related tasks, which aim to obtain relevant moments within videos and highlight scores of each video clip.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the ubiquity of digital devices and the expansion of the Internet, the number and variety of videos are rapidly increasing (",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction With the ubiquity of digital devices and the expansion of the Internet, the number and variety of videos are rapidly increasing (Foo et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "How to quickly search out the desired moments from massive videos (called moment retrieval, MR) (",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "How to quickly search out the desired moments from massive videos (called moment retrieval, MR) (Gao et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Existing methods (",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Existing methods (Liu et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Recent research constructs the QVHighlights dataset to facilitate joint learning of MR&HD and proposes a baseline model based on DETR.",
+        "evidence": [
+          {
+            "evidence_id": "EV081",
+            "section": "Introduction",
+            "quote": "Recent research (Lei, Berg, and Bansal 2021) constructs the QVHighlights dataset to facilitate joint learning of MR&HD and proposes a baseline model based on DETR.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the reciprocity between MR and HD tasks is ignored.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "However, the reciprocity between MR and HD tasks is ignored.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+        "evidence": [
+          {
+            "evidence_id": "EV074",
+            "section": "Introduction",
+            "quote": "However, highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, Moment-DETR pioneers the application of DETR (",
+        "scenario": "For example, Moment-DETR pioneers the application of DETR (",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "For example, Moment-DETR (Lei, Berg, and Bansal 2021) pioneers the application of DETR (Carion et al.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, the literature (",
+        "scenario": "For example, the literature (",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV091",
+            "section": "Introduction",
+            "quote": "For example, the literature (Ging et al.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For MR, the highlight scores from HD based on userprovided queries can be utilized to assist in eliminating query-irrelevant clips, thereby boosting moment retrieval accuracy.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "For MR, the highlight scores from HD based on userprovided queries can be utilized to assist in eliminating query-irrelevant clips, thereby boosting moment retrieval accuracy.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, the literature proposes to integrate text queries as supplementary information for highlight detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV075",
+            "section": "Introduction",
+            "quote": "Therefore, the literature (Kudi and Namboodiri 2017) proposes to integrate text queries as supplementary information for highlight detection.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce the local and global alignment regulators.",
+        "evidence": [
+          {
+            "evidence_id": "EV056",
+            "section": "Introduction",
+            "quote": "• We introduce the local and global alignment regulators.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the reciprocity between MR and HD tasks is ignored.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the reciprocity between MR and HD tasks is ignored?",
+      "failure_mode": "the reciprocity between MR and HD tasks is ignored.",
+      "root_cause": "These methods generally focus on improving the discrimination of multi-modal feature extraction and feature interaction through a multi-task learning scheme, achieving good performance.",
+      "why_existing_methods_fail": "the reciprocity between MR and HD tasks is ignored.",
+      "affected_scenario": "For example, Moment-DETR pioneers the application of DETR (",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "However, the reciprocity between MR and HD tasks is ignored.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that highlight determination is often a subjective matter and users’ preferences should be taken into account?",
+      "failure_mode": "highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+      "root_cause": "Slightly different from moment retrieval, highlight detection initially is proposed as a single-modal task and does not rely on text queries.",
+      "why_existing_methods_fail": "highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+      "affected_scenario": "For example, Moment-DETR pioneers the application of DETR (",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV074"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV074",
+          "section": "Introduction",
+          "quote": "However, highlight determination is often a subjective matter and users’ preferences should be taken into account.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD",
+      "method_core_mechanism": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+      "method_components": [
+        "DETR",
+        "TR",
+        "MR",
+        "HD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0142"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively",
+      "method_core_mechanism": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+      "method_components": [
+        "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0176"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "visual feature reﬁnement module for modal interaction",
+      "method_core_mechanism": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+      "method_components": [
+        "visual feature reﬁnement module for modal interaction"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0071"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "task cooperation module consisting of HD2MR and MR2HD",
+      "method_core_mechanism": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+      "method_components": [
+        "MR",
+        "HD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0142"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "innovative TR-DETR network",
+      "method_core_mechanism": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+      "method_components": [
+        "TR",
+        "DETR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV055"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0008"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD targets the reciprocity between MR and HD tasks is ignored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively targets the reciprocity between MR and HD tasks is ignored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0007",
+      "micro_method_cluster_id": "MM0176",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD targets highlight determination is often a subjective matter and users’ preferences should be taken into account. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0142",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively targets highlight determination is often a subjective matter and users’ preferences should be taken into account. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0176",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD",
+      "compared_to": "the reciprocity between MR and HD tasks is ignored.",
+      "why_it_matters": "It directly targets the reciprocity between MR and HD tasks is ignored.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively",
+      "compared_to": "the reciprocity between MR and HD tasks is ignored.",
+      "why_it_matters": "It directly targets the reciprocity between MR and HD tasks is ignored.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "visual feature reﬁnement module for modal interaction",
+      "compared_to": "the reciprocity between MR and HD tasks is ignored.",
+      "why_it_matters": "It directly targets the reciprocity between MR and HD tasks is ignored.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To fully exploit the reciprocal relationship between the two tasks, we propose a task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Then, we introduce a local-global multi-modal alignment module to perform local and global semantic alignment before modal interaction, respectively.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "visual feature reﬁnement module for modal interaction",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Subsequently, we propose a visual feature reﬁnement module for modal interaction, which employs aligned textual features to ﬁlter out query-irrelevant information in visual features to avoid it interfering with joint features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "task cooperation module consisting of HD2MR and MR2HD",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "Finally, to exploit the complementarities between MR and HD, we propose a task cooperation module consisting of HD2MR and MR2HD.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "innovative TR-DETR network",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "In addition, we introduce an innovative TR-DETR network that leverages this reciprocity between tasks to optimize performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD",
+      "baseline": "TR-DETR: Task-Reciprocal Transformer for Joint Moment Retrieval and Highlight Detection",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "task-reciprocal transformer based on DETR, named TR-DETR, for joint MR&HD",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the reciprocity between MR and HD tasks is ignored.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "TVSum"
+  ],
+  "metrics": [
+    "HD",
+    "IoU",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_sun_tr-detr-task-reciprocal-transformer-for-joint-moment-retrieval-and-highlight-det_4d617761ff\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_sun_tr-detr-task-reciprocal-transformer-for-joint-moment-retrieval-and-highlight-det_4d617761ff\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

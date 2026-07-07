@@ -1,0 +1,705 @@
+{
+  "paper_id": "2025_yang_timeexpert-an-expert-guided-video-llm-for-video-temporal-grounding_5dc6157ec1",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_timeexpert-an-expert-guided-video-llm-for-video-temporal-grounding_5dc6157ec1",
+  "title": "TimeExpert: An Expert-Guided Video LLM for Video Temporal Grounding",
+  "year": 2025,
+  "venue_or_source": "ICCV 2025",
+  "authors": [
+    "Zuhao Yang",
+    "Yingchen Yu",
+    "Yunqing Zhao",
+    "Shijian Lu",
+    "Song Bai"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Extensive experiments demonstrate that TimeExpert consistently achieves state-of-the-art performance on various VTG tasks such as Dense Video Captioning, Moment Retrieval, and Video Highlight Detection.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "24286 Token 1 Token 2 Top-2 Router Expert 1 Expert 2 Expert 4 (a) VTG-Specific Video-LLM (b) Vanilla MoE Expert 3 Top-2 Router Token 1 Token 2 Adaptive Router Expert 1 Expert 2 Expert 3 Expert 4 Adaptive Router (c) TimeExpert (Ours) Expert 5 Time-aware Frame...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "24286 Token 1 Token 2 Top-2 Router Expert 1 Expert 2 Expert 4 (a) VTG-Specific Video-LLM (b) Vanilla MoE Expert 3 Top-2 Router Token 1 Token 2 Adaptive Router Expert 1 Expert 2 Expert 3 Expert 4 Adaptive Router (c) TimeExpert (Ours) Expert 5 Time-aware Frame Encoder Projection Layer Video Input Text Input Text Tokenizer Large Language Model removal new expert Figure 2.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While traditional video grounding models excel in individual VTG subtasks like Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific...",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "While traditional video grounding models excel in individual VTG subtasks like Moment Retrieval [18, 24] and Video Highlight Detection [32], their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "More recently, Video Large Language Models (Video- LLMs) [5, 27, 29, 46, 55] have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA [11, 27]), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG [13, 64]), due to the lack of dedicated mechanisms for explicitly modeling temporal boundaries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens or are trained on temporally-annotated instruction-tuning datasets demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens [15, 20, 45] or are trained on temporally-annotated instruction-tuning datasets [19, 40, 49] demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly modeling timestamps and saliency scores, despite videos inherently possessing structured information beyond textual descriptions [16].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the...",
+        "scenario": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "(b): Vanilla MoE improves upon this by activating a fixed set (e.g., k=2) of experts,...",
+        "scenario": "(b): Vanilla MoE improves upon this by activating a fixed set (e.g., k=2) of experts, enabling some degree of task specialization.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "(b): Vanilla MoE improves upon this by activating a fixed set (e.g., k=2) of experts, enabling some degree of task specialization.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "More recently, Video Large Language Models (Video- LLMs) have made remarkable...",
+        "scenario": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "More recently, Video Large Language Models (Video- LLMs) [5, 27, 29, 46, 55] have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA [11, 27]), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG [13, 64]), due to the lack of dedicated mechanisms for explicitly modeling temporal boundaries.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "This parametersharing paradigm inherently constrains the model’s ability (Figure 1-Right)...",
+        "scenario": "This parametersharing paradigm inherently constrains the model’s ability (Figure 1-Right) to specialize in the diverse subtasks of VTG—such as timestamp prediction, saliency estimation, and caption generation—each of which may demand distinct feature representations for optimal performance.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "This parametersharing paradigm inherently constrains the model’s ability (Figure 1-Right) to specialize in the diverse subtasks of VTG—such as timestamp prediction, saliency estimation, and caption generation—each of which may demand distinct feature representations for optimal performance.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Except for this watermark, it is identical to the accepted version; the final published version of the proceedings is available on IEEE Xplore.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "More recently, Video Large Language Models (Video- LLMs) [5, 27, 29, 46, 55] have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA [11, 27]), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG [13, 64]), due to the lack of dedicated mechanisms for explicitly modeling temporal boundaries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens or are trained on temporally-annotated instruction-tuning datasets demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens [15, 20, 45] or are trained on temporally-annotated instruction-tuning datasets [19, 40, 49] demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly modeling timestamps and saliency scores, despite videos inherently possessing structured information beyond textual descriptions [16].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This?",
+      "failure_mode": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This...",
+      "root_cause": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+      "why_existing_methods_fail": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "affected_scenario": "# Introduction Consider watching a cooking tutorial video and attempting to pinpoint the exact moment when the chef fries the bacon (Figure 1-Left) or other highlighted visual segments.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ke Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ke Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance?",
+      "failure_mode": "ke Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+      "root_cause": "they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+      "why_existing_methods_fail": "While traditional video grounding models excel in individual VTG subtasks like Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+      "affected_scenario": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "While traditional video grounding models excel in individual VTG subtasks like Moment Retrieval [18, 24] and Video Highlight Detection [32], their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ble advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ble advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for?",
+      "failure_mode": "ble advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for...",
+      "root_cause": "the lack of dedicated mechanisms for explicitly modeling temporal boundaries.",
+      "why_existing_methods_fail": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for...",
+      "affected_scenario": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "More recently, Video Large Language Models (Video- LLMs) [5, 27, 29, 46, 55] have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA [11, 27]), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG [13, 64]), due to the lack of dedicated mechanisms for explicitly modeling temporal boundaries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": ".",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that is described in the introduction?",
+      "failure_mode": ".",
+      "root_cause": "they blend temporal information with text tokens without explicitly modeling timestamps and saliency scores, despite videos inherently possessing structured information beyond textual descriptions .",
+      "why_existing_methods_fail": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens or are trained on temporally-annotated instruction-tuning datasets demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly modeling timestamps and saliency scores, despite videos...",
+      "affected_scenario": "More recently, Video Large Language Models (Video- LLMs) have made remarkable advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Compared to generalist Video-LLMs, VTG-specific models that encode temporal tokens [15, 20, 45] or are trained on temporally-annotated instruction-tuning datasets [19, 40, 49] demonstrate marginal improvements, as they blend temporal information with text tokens without explicitly modeling timestamps and saliency scores, despite videos inherently possessing structured information beyond textual descriptions [16].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "TimeExpert, an event-centric modeling framework",
+      "method_core_mechanism": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+      "method_components": [
+        "TimeExpert, an event-centric modeling framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0115"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "task-dependent auxiliary loss",
+      "method_core_mechanism": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+      "method_components": [
+        "we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeExpert, an event-centric modeling framework targets This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0115",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "task-dependent auxiliary loss targets This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeExpert, an event-centric modeling framework targets ke Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0115",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "task-dependent auxiliary loss targets ke Moment Retrieval and Video Highlight Detection , their practicality is limited as they cannot handle multiple VTG subtasks concurrently and require extensive task-specific fine-tuning to achieve adequate performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeExpert, an event-centric modeling framework targets ble advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0115",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "task-dependent auxiliary loss targets ble advancements in coarse-grained video content understanding (e.g., VideoQA ), yet they struggle to extend such capabilities to tasks requiring fine-grained temporal localization (e.g., VTG ), due to the lack of dedicated mechanisms for... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeExpert, an event-centric modeling framework targets . by operating on ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0115",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "task-dependent auxiliary loss targets . by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "TimeExpert, an event-centric modeling framework",
+      "compared_to": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "why_it_matters": "It directly targets This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "task-dependent auxiliary loss",
+      "compared_to": "This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This ICCV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "why_it_matters": "It directly targets This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "TimeExpert, an event-centric modeling framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+      "can_transfer_to": [
+        "reasoning",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To address the misalignment between language modeling of existing Video-LLMs and inherent video temporal structure, we introduce TimeExpert, an event-centric modeling framework that decouples the prediction of timestamps, saliency scores, and textual descriptions into distinct specialized tasks, organized in an interleaved sequence.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "task-dependent auxiliary loss",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To harness each expert’s potential, we develop a task-dependent auxiliary loss that encourages more frequently activated experts to process a greater proportion of task-relevant tokens.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for TimeExpert, an event-centric modeling framework",
+      "baseline": "TimeExpert: An Expert-Guided Video LLM for Video Temporal Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "TimeExpert, an event-centric modeling framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting This seemingly simple task reveals a fundamental challenge: while humans can effortlessly recognize these actions visually, determining their precise temporal boundaries—down to the specific second—remains significantly challenging This...."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_timeexpert-an-expert-guided-video-llm-for-video-temporal-grounding_5dc6157ec1\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_timeexpert-an-expert-guided-video-llm-for-video-temporal-grounding_5dc6157ec1\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

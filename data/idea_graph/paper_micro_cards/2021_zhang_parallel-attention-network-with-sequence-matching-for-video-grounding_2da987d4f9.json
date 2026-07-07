@@ -1,0 +1,424 @@
+{
+  "paper_id": "2021_zhang_parallel-attention-network-with-sequence-matching-for-video-grounding_2da987d4f9",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhang_parallel-attention-network-with-sequence-matching-for-video-grounding_2da987d4f9",
+  "title": "Parallel Attention Network with Sequence Matching for Video Grounding",
+  "year": 2021,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Hao Zhang",
+    "Aixin Sun",
+    "Wei Jing",
+    "Liangli Zhen",
+    "Joey Tianyi Zhou",
+    "Siow Mong Rick Goh"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Given a video, video grounding aims to retrieve a temporal moment that semantically corresponds to a language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding is a fundamental and challenging problem in vision-language understanding research area .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding is a fundamental and challenging problem in vision-language understanding research area (Hu et al., 2019; Yu et al., 2019; Zhu and Yang, 2020).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It aims to retrieve a temporal video moment that semantically corresponds to a given language query, as shown in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It aims to retrieve a temporal video moment that semantically corresponds to a given language query, as shown in Figure 1.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This task requires techniques from both computer vision , natural language processing , and more importantly, the crossmodal interactions between the two.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This task requires techniques from both computer vision (Tran et al., 2015; Shou et al., 2016; Feichtenhofer et al., 2019), natural language processing (Yu et al., 2018; Yang et al., 2019), and more importantly, the crossmodal interactions between the two.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Many existing solutions tackle video grounding problem with proposal-based approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Many existing solutions (Chen et al., 2018; Liu et al., 2018a; Xu et al., 2019) tackle video grounding problem with proposal-based approach.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the “sequence” nature of frames or videos is not considered.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, the “sequence” nature of frames or videos is not considered.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "It aims to retrieve a temporal video moment that semantically corresponds to a given...",
+        "scenario": "It aims to retrieve a temporal video moment that semantically corresponds to a given language query, as shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It aims to retrieve a temporal video moment that semantically corresponds to a given language query, as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Target Moment Video Feature Extraction Integration Localization Self-Attention...",
+        "scenario": "Target Moment Video Feature Extraction Integration Localization Self-Attention Self-Attention 90.61s Cross-Attention Cross-Attention Cross Gating Figure 1: The overview of our procedures for video grounding, with an example of retrieving the temporal moment from an untrimmed video by a given...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Target Moment Video Feature Extraction Integration Localization Self-Attention Self-Attention 90.61s Cross-Attention Cross-Attention Cross Gating Figure 1: The overview of our procedures for video grounding, with an example of retrieving the temporal moment from an untrimmed video by a given language query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "If we view from the space of video frames, sparsity is a major concern, e.g., catching...",
+        "scenario": "If we view from the space of video frames, sparsity is a major concern, e.g., catching two frames among thousands.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "If we view from the space of video frames, sparsity is a major concern, e.g., catching two frames among thousands.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Recent studies attempt to address this issue by auxiliary objectives, e.g., to...",
+        "scenario": "Recent studies attempt to address this issue by auxiliary objectives, e.g., to discriminate whether each frame is foreground (positive) or background (negative) , or to regress distances of each frame within target moment to ground truth boundaries .",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Recent studies attempt to address this issue by auxiliary objectives, e.g., to discriminate whether each frame is foreground (positive) or background (negative) (Yuan et al., 2019b; Mun et al., 2020), or to regress distances of each frame within target moment to ground truth boundaries (Lu et al., 2019a; Zeng et al., 2020).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To better capture informative features for multimodalities, we encode both self-attentive contexts and cross-modal interactions from video and query.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To better capture informative features for multimodalities, we encode both self-attentive contexts and cross-modal interactions from video and query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We emphasize the “sequence” nature of video frames and adopt the concept of sequence labeling in NLP to video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "We emphasize the “sequence” nature of video frames and adopt the concept of sequence labeling in NLP to video grounding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance?",
+      "failure_mode": "existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+      "root_cause": "In video grounding task, ﬁne-grain scale unimodal representations are important to achieve good localization performance.",
+      "why_existing_methods_fail": "existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+      "affected_scenario": "It aims to retrieve a temporal video moment that semantically corresponds to a given language query, as shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the “sequence” nature of frames or videos is not considered.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the “sequence” nature of frames or videos is not considered?",
+      "failure_mode": "the “sequence” nature of frames or videos is not considered.",
+      "root_cause": "Recent studies attempt to address this issue by auxiliary objectives, e.g., to discriminate whether each frame is foreground (positive) or background (negative) , or to regress distances of each frame within target moment to ground truth boundaries .",
+      "why_existing_methods_fail": "the “sequence” nature of frames or videos is not considered.",
+      "affected_scenario": "If we view from the space of video frames, sparsity is a major concern, e.g., catching two frames among thousands.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "However, the “sequence” nature of frames or videos is not considered.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0023"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Parallel Attention Network with Sequence match- 2The “frame” is a general description",
+      "method_core_mechanism": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+      "method_components": [
+        "Parallel Attention Network",
+        "we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0004"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Parallel Attention Network with Sequence match- 2The “frame” is a general description targets existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Parallel Attention Network with Sequence match- 2The “frame” is a general description targets the “sequence” nature of frames or videos is not considered. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0023",
+      "micro_method_cluster_id": "MM0004",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Parallel Attention Network with Sequence match- 2The “frame” is a general description",
+      "compared_to": "existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.",
+      "why_it_matters": "It directly targets existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Parallel Attention Network with Sequence match- 2The “frame” is a general description",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In this research, we propose a Parallel Attention Network with Sequence match- 2The “frame” is a general description, which can refer to a frame in a video sequence or a unit in the corresponding video feature representation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Parallel Attention Network with Sequence match- 2The “frame” is a general description",
+      "baseline": "Parallel Attention Network with Sequence Matching for Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "Parallel Attention Network with Sequence match- 2The “frame” is a general description",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting existing solutions do not reﬁne unimodal representations of video and text when doing cross-modal reasoning, and thus limit the performance.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhang_parallel-attention-network-with-sequence-matching-for-video-grounding_2da987d4f9\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_zhang_parallel-attention-network-with-sequence-matching-for-video-grounding_2da987d4f9\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

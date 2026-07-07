@@ -1,0 +1,633 @@
+{
+  "paper_id": "2023_zala_hierarchical-video-moment-retrieval-and-step-captioning_46d0245984",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zala_hierarchical-video-moment-retrieval-and-step-captioning_46d0245984",
+  "title": "Hierarchical Video-Moment Retrieval and Step-Captioning",
+  "year": 2023,
+  "venue_or_source": "CVPR 2023",
+  "authors": [
+    "Abhay Zala",
+    "Jaemin Cho",
+    "Satwik Kottur",
+    "Xilun Chen",
+    "Barlas Oguz",
+    "Yashar Mehdad",
+    "Mohit Bansal"
+  ],
+  "task_scope": {
+    "primary_task": "Video Summarization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Summarization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Prior works have studied relevant tasks, such as text-based video retrieval, moment retrieval, video summarization, and video captioning in isolation, without an end-to-end setup that can jointly search from video corpora and generate summaries.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Encouraged by the easy access to smartphones, recording software, and video hosting platforms, people are increasingly accumulating videos of all kinds.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Encouraged by the easy access to smartphones, recording software, and video hosting platforms, people are increasingly accumulating videos of all kinds.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "To fuel the *equal contribution 1code and data: https://github.com/j-min/HiREST subsequent growing interest in using machine learning systems to extract and summarize important information from these large video corpora based on text queries, progress has...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "To fuel the *equal contribution 1code and data: https://github.com/j-min/HiREST subsequent growing interest in using machine learning systems to extract and summarize important information from these large video corpora based on text queries, progress has been made in video retrieval [2,17, 18,41, 42], moment retrieval [10,16,17], video summarization [9,24,33,34], and video captioning [13,20,41,42].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To provide good starting points to the community for our new task hierarchy, we show the performance of recent baseline models on HIREST.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To provide good starting points to the community for our new task hierarchy, we show the performance of recent baseline models on HIREST.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "For baselines, we use strong models including CLIP , EVA-CLIP , Frozenin-Time , BMT , and SwinBERT .",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "For baselines, we use strong models including CLIP [27], EVA-CLIP [8], Frozenin-Time [2], BMT [13], and SwinBERT [20].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "3) We provide a joint baseline model that can perform moment retrieval, moment segmentation, and step captioning with a single architecture.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "3) We provide a joint baseline model that can perform moment retrieval, moment segmentation, and step captioning with a single architecture.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "On all four tasks, we find that finetuning models on HIREST improve performance; however, there exists a large room to improve performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "On all four tasks, we find that finetuning models on HIREST improve performance; however, there exists a large room to improve performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, a text-based search service that finds a relevant video from a large video...",
+        "scenario": "For example, a text-based search service that finds a relevant video from a large video corpus, extracts the most relevant moment from that video, segments the moment into important steps, and captions them for easy indexing and retrieval.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "For example, a text-based search service that finds a relevant video from a large video corpus, extracts the most relevant moment from that video, segments the moment into important steps, and captions them for easy indexing and retrieval.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "HIREST consists of four annotations: 1) 3.4K pairs of text query about open-domain...",
+        "scenario": "HIREST consists of four annotations: 1) 3.4K pairs of text query about open-domain instructions (e.g., ‘how to make glow in the dark slime’) and videos, 2) relevant moment timestamps inside the 1.1K videos, where only a part of the video (< 75%) is relevant to the text query, 3) moment breakdown in...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "HIREST consists of four annotations: 1) 3.4K pairs of text query about open-domain instructions (e.g., ‘how to make glow in the dark slime’) and videos, 2) relevant moment timestamps inside the 1.1K videos, where only a part of the video (< 75%) is relevant to the text query, 3) moment breakdown in several instructional steps with timestamps (7.6 steps per video, total 8.6K steps), and, 4) an manually curated English caption for each step (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "While there are existing video datasets with step annotations, they are based on a small...",
+        "scenario": "While there are existing video datasets with step annotations, they are based on a small number of predefined task names (thus step captions are not diverse), or are limited to a single topic (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "While there are existing video datasets with step annotations, they are based on a small number of predefined task names [36, 46] (thus step captions are not diverse), or are limited to a single topic (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Break glow stick 67s 77s Figure 1.",
+        "scenario": "Break glow stick 67s 77s Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Break glow stick 67s 77s Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP010",
+      "macro_problem_name": "Predominantly / Focused / Segments",
+      "legacy_macro_problem_id": "P09",
+      "legacy_macro_problem_name": "Scalability and Corpus-Level Retrieval",
+      "micro_problem_name": "all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities?",
+      "failure_mode": "all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "root_cause": "To fuel the *equal contribution 1code and data: https://github.com/j-min/HiREST subsequent growing interest in using machine learning systems to extract and summarize important information from these large video corpora based on text queries, progress has...",
+      "why_existing_methods_fail": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "affected_scenario": "For example, a text-based search service that finds a relevant video from a large video corpus, extracts the most relevant moment from that video, segments the moment into important steps, and captions them for easy indexing and retrieval.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP010",
+      "macro_problem_name": "Predominantly / Focused / Segments",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "there exists a large room to improve performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that there exists a large room to improve performance?",
+      "failure_mode": "there exists a large room to improve performance.",
+      "root_cause": "For baselines, we use strong models including CLIP , EVA-CLIP , Frozenin-Time , BMT , and SwinBERT .",
+      "why_existing_methods_fail": "On all four tasks, we find that finetuning models on HIREST improve performance; however, there exists a large room to improve performance.",
+      "affected_scenario": "For example, a text-based search service that finds a relevant video from a large video corpus, extracts the most relevant moment from that video, segments the moment into important steps, and captions them for easy indexing and retrieval.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "On all four tasks, we find that finetuning models on HIREST improve performance; however, there exists a large room to improve performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "new hierarchical benchmark",
+      "method_core_mechanism": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+      "method_components": [
+        "new hierarchical benchmark"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0081"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec",
+      "method_core_mechanism": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+      "method_components": [
+        "HIREST"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0081"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "HIREST dataset and propose a new benchmark",
+      "method_core_mechanism": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+      "method_components": [
+        "HIREST"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0081"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new hierarchical benchmark targets all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056",
+      "micro_method_cluster_id": "MM0081",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec targets all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056",
+      "micro_method_cluster_id": "MM0081",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "HIREST dataset and propose a new benchmark targets there exists a large room to improve performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056",
+      "micro_method_cluster_id": "MM0081",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new hierarchical benchmark targets there exists a large room to improve performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0056",
+      "micro_method_cluster_id": "MM0081",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "new hierarchical benchmark",
+      "compared_to": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "why_it_matters": "It directly targets all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec",
+      "compared_to": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "why_it_matters": "It directly targets all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "HIREST dataset and propose a new benchmark",
+      "compared_to": "Previous works have generally focused on solving these tasks independently; however, all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.",
+      "why_it_matters": "It directly targets all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new hierarchical benchmark",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Hence, in this work, we introduce a new hierarchical benchmark that combines all four tasks to enable novel and useful real-world applications.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To support this, we introduce HIREST, a hierarchical instructional video dataset for a holistic benchmark of information retrieval from a video corpus (see Sec.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "HIREST dataset and propose a new benchmark",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "We summarize our contributions in this paper: 1) We present HIREST dataset and propose a new benchmark that covers hierarchy in information retrieval and visual/textual summarization from an instructional video corpus.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new hierarchical benchmark",
+      "baseline": "Hierarchical Video-Moment Retrieval and Step-Captioning",
+      "dataset": "HiREST, MAD",
+      "module_to_modify": "new hierarchical benchmark",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting all these tasks share the common goal of retrieving information from a video corpus, at different levels of scales and via different modalities.."
+    }
+  ],
+  "datasets": [
+    "HiREST",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zala_hierarchical-video-moment-retrieval-and-step-captioning_46d0245984\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zala_hierarchical-video-moment-retrieval-and-step-captioning_46d0245984\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

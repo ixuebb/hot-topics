@@ -1,0 +1,850 @@
+{
+  "paper_id": "2026_lee_learning-to-refuse-refusal-aware-reinforcement-fine-tuning-for-hard-irrelevant-q_c2f2afe855",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lee_learning-to-refuse-refusal-aware-reinforcement-fine-tuning-for-hard-irrelevant-q_c2f2afe855",
+  "title": "Learning to Refuse: Refusal-Aware Reinforcement Fine-Tuning for Hard-Irrelevant Queries in Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Jin-Seop Lee",
+    "SungJoon Lee",
+    "SeongJun Jung",
+    "Boyang Li",
+    "Jee-Hyong Lee"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) aims to localize a temporal segment in a video corresponding to a natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Grounding target segments within a video for a user’s query is essential for real-world applications including video understanding agents and interactive video analysis systems .",
+        "evidence": [
+          {
+            "evidence_id": "EV006",
+            "section": "Introduction",
+            "quote": "# Introduction Grounding target segments within a video for a user’s query is essential for real-world applications including video understanding agents and interactive video analysis systems [12, 38, 43].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "With this importance, research on Video Temporal Grounding (VTG), which aims to automatically extract relevant segments from videos based on a natural language query, has been actively explored in recent *Equal contribution †Corresponding author Ours Predict...",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "With this importance, research on Video Temporal Grounding (VTG), which aims to automatically extract relevant segments from videos based on a natural language query, has been actively explored in recent *Equal contribution †Corresponding author Ours Predict a target segment → Refusal Refuse with explanation → Refusal Existing VTG model The scene happens between 20.30 to 52.20 The query is not relevant.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Because the chef is not cutting but cooking, and not steaks but pasta.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Because the chef is not cutting but cooking, and not steaks but pasta.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.” Video Temporal Grounding Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.” Video Temporal Grounding Figure 1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite these advances, they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Despite these advances, they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "However, they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Nevertheless, existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Since training-based approaches are trained to refuse only completely unrelated queries (e.g., “the person is riding a bicycle”) , they primarily learn coarse-grained semantic differences and cannot distinguish fine-grained ones.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Since training-based approaches are trained to refuse only completely unrelated queries (e.g., “the person is riding a bicycle”) [6, 8], they primarily learn coarse-grained semantic differences and cannot distinguish fine-grained ones.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.”...",
+        "scenario": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.” Video Temporal Grounding Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.” Video Temporal Grounding Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input...",
+        "scenario": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Since training-based approaches are trained to refuse only completely unrelated queries...",
+        "scenario": "Since training-based approaches are trained to refuse only completely unrelated queries (e.g., “the person is riding a bicycle”) , they primarily learn coarse-grained semantic differences and cannot distinguish fine-grained ones.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Since training-based approaches are trained to refuse only completely unrelated queries (e.g., “the person is riding a bicycle”) [6, 8], they primarily learn coarse-grained semantic differences and cannot distinguish fine-grained ones.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In contrast, our model correctly refuses the query and explains the semantic mismatch.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In contrast, our model correctly refuses the query and explains the semantic mismatch.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "“pasta”), making the query not relevant to the video.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "“pasta”), making the query not relevant to the video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query?",
+      "failure_mode": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "root_cause": "a lack of fine-grained semantic understanding between the video and the query.",
+      "why_existing_methods_fail": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "affected_scenario": "Hard-Irrelevant Query Video Find the segment “The chef is cutting steaks in the kitchen.” Video Temporal Grounding Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant?",
+      "failure_mode": "they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+      "root_cause": "These approaches demonstrated good refusal performances on simply-shuffled irrelevant queries.",
+      "why_existing_methods_fail": "Despite these advances, they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+      "affected_scenario": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite these advances, they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs?",
+      "failure_mode": "they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+      "root_cause": "The text query “The chef is cutting steaks in the kitchen” is semantically related to the video “The chef is cooking the pasta in the kitchen,” as both describe a chef preparing food in the kitchen.",
+      "why_existing_methods_fail": "they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+      "affected_scenario": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "However, they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing approaches still fail to refuse these hardirrelevant queries and predict target segments?",
+      "failure_mode": "existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+      "root_cause": "“pasta”), making the query not relevant to the video.",
+      "why_existing_methods_fail": "existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+      "affected_scenario": "Figure 1 illustrates examples where a video and a hardirrelevant query are given as input to a VTG model.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Nevertheless, existing approaches still fail to refuse these hardirrelevant queries and predict target segments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query?",
+      "failure_mode": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+      "root_cause": "existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+      "why_existing_methods_fail": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+      "affected_scenario": "Since training-based approaches are trained to refuse only completely unrelated queries (e.g., “the person is riding a bicycle”) , they primarily learn coarse-grained semantic differences and cannot distinguish fine-grained ones.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M07",
+      "legacy_macro_method_name": "Open-Set or Refusal-Aware Modeling",
+      "micro_method_name": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding",
+      "method_core_mechanism": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+      "method_components": [
+        "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT)",
+        "Refusal-Aware Reinforcement Fine-Tuning",
+        "RA",
+        "RFT",
+        "we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0058"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M07",
+      "legacy_macro_method_name": "Open-Set or Refusal-Aware Modeling",
+      "micro_method_name": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings",
+      "method_core_mechanism": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+      "method_components": [
+        "VTG",
+        "RA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M07",
+      "legacy_macro_method_name": "Open-Set or Refusal-Aware Modeling",
+      "micro_method_name": "improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance",
+      "method_core_mechanism": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+      "method_components": [
+        "improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding targets Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0058",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings targets Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding targets they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0058",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings targets they still have a limitation: they can only reject queries that are completely unrelated to the video, while failing on hard-irrelevant queries that are semantically close to the video but not actually relevant. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding targets they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0058",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings targets they differ in terms of the action (“cutting” vs, “cooking”) and the object (“steaks” vs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding targets existing approaches still fail to refuse these hardirrelevant queries and predict target segments. by operating on open_set.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0058",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings targets existing approaches still fail to refuse these hardirrelevant queries and predict target segments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0004",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding targets This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0058",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings targets This happens because existing approaches cannot capture the fine-grained semantic differences between the video and the query. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Open-Set or Refusal-Aware Modeling",
+      "what_is_new": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding",
+      "compared_to": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "why_it_matters": "It directly targets Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.."
+    },
+    {
+      "axis": "Open-Set or Refusal-Aware Modeling",
+      "what_is_new": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings",
+      "compared_to": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "why_it_matters": "It directly targets Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.."
+    },
+    {
+      "axis": "Open-Set or Refusal-Aware Modeling",
+      "what_is_new": "improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance",
+      "compared_to": "Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.",
+      "why_it_matters": "It directly targets Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+      "can_transfer_to": [
+        "open_set"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "In this paper, we propose Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We demonstrate the effectiveness of our method across various relevance-aware VTG scenarios, including hardirrelevant VTG, simply-shuffled RA-VTG, and humanannotated RA-VTG settings.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "For all scenarios, our method improves not only relevance discrimination but also refusal explanation performance while maintaining temporal grounding performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding",
+      "baseline": "Learning to Refuse: Refusal-Aware Reinforcement Fine-Tuning for Hard-Irrelevant Queries in Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "Refusal-Aware Reinforcement Fine-Tuning (RA-RFT) to effectively refuse hard-irrelevant queries in video temporal grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Existing VTG models incorrectly predict a segment due to a lack of fine-grained semantic understanding between the video and the query.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lee_learning-to-refuse-refusal-aware-reinforcement-fine-tuning-for-hard-irrelevant-q_c2f2afe855\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_lee_learning-to-refuse-refusal-aware-reinforcement-fine-tuning-for-hard-irrelevant-q_c2f2afe855\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

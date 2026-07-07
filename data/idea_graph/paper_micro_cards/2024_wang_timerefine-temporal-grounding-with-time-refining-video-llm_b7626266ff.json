@@ -1,0 +1,552 @@
+{
+  "paper_id": "2024_wang_timerefine-temporal-grounding-with-time-refining-video-llm_b7626266ff",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_timerefine-temporal-grounding-with-time-refining-video-llm_b7626266ff",
+  "title": "TimeRefine: Temporal Grounding with Time Refining Video LLM",
+  "year": 2024,
+  "venue_or_source": "arXiv",
+  "authors": [
+    "Xizi Wang",
+    "Feng Cheng",
+    "Ziyang Wang",
+    "Huiyu Wang",
+    "Md Mohaiminul Islam",
+    "Lorenzo Torresani",
+    "Mohit Bansal",
+    "Gedas Bertasius",
+    "David Crandall"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding aims to localize relevant temporal boundaries in a video given a textual prompt.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Temporal Grounding (VTG)",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video Temporal Grounding (VTG) Yuan et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "[2019a],",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "[2019a], Zhang et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Many recent methods have focused on extending LLMs from language to video.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Many recent methods have focused on extending LLMs from language to video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+        "evidence": [
+          {
+            "evidence_id": "EV066",
+            "section": "Introduction",
+            "quote": "However, the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\") Huang et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+        "evidence": [
+          {
+            "evidence_id": "EV071",
+            "section": "Introduction",
+            "quote": "However, the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV072",
+            "section": "Introduction",
+            "quote": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "for effective temporal boundary learning, the model",
+        "evidence": [
+          {
+            "evidence_id": "EV080",
+            "section": "Introduction",
+            "quote": "However, for effective temporal boundary learning, the model",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "is a foundational task in video understanding that aims to localize relevant temporal...",
+        "scenario": "is a foundational task in video understanding that aims to localize relevant temporal boundaries in a video given a textual prompt (e.g., “during which time does the person stir the soup?\").",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "[2022] is a foundational task in video understanding that aims to localize relevant temporal boundaries in a video given a textual prompt (e.g., “during which time does the person stir the soup?\").",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1: Given a text query, existing Video LLMs directly predict the start and end...",
+        "scenario": "Figure 1: Given a text query, existing Video LLMs directly predict the start and end timestamps, which often leads to imprecise localization results.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Figure 1: Given a text query, existing Video LLMs directly predict the start and end timestamps, which often leads to imprecise localization results.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV074",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "1, unlike other Video LLMs that directly predict start and end timestamps (e.g., “18.6s...",
+        "scenario": "1, unlike other Video LLMs that directly predict start and end timestamps (e.g., “18.6s to 23.8s\") for a given query, we reformulate temporal grounding as a progressive temporal refinement task.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV075",
+            "section": "Introduction",
+            "quote": "1, unlike other Video LLMs that directly predict start and end timestamps (e.g., “18.6s to 23.8s\") for a given query, we reformulate temporal grounding as a progressive temporal refinement task.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To enhance the temporal perception capabilities of Video LLMs, most existing work",
+        "evidence": [
+          {
+            "evidence_id": "EV067",
+            "section": "Introduction",
+            "quote": "To enhance the temporal perception capabilities of Video LLMs, most existing work Guo et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV072",
+            "section": "Introduction",
+            "quote": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+        "evidence": [
+          {
+            "evidence_id": "EV073",
+            "section": "Introduction",
+            "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+        "evidence": [
+          {
+            "evidence_id": "EV073",
+            "section": "Introduction",
+            "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")?",
+      "failure_mode": "the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+      "root_cause": "most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+      "why_existing_methods_fail": "the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+      "affected_scenario": "is a foundational task in video understanding that aims to localize relevant temporal boundaries in a video given a textual prompt (e.g., “during which time does the person stir the soup?\").",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV066"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV066",
+          "section": "Introduction",
+          "quote": "However, the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\") Huang et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs?",
+      "failure_mode": "the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+      "root_cause": "focuses on building high-quality instructional tuning datasets or making architectural changes to better integrate visual features into LLMs and improve the encoding of temporal tokens.",
+      "why_existing_methods_fail": "the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV071"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV071",
+          "section": "Introduction",
+          "quote": "However, the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively?",
+      "failure_mode": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+      "root_cause": "a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+      "why_existing_methods_fail": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV072"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV072",
+          "section": "Introduction",
+          "quote": "As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0120"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "for effective temporal boundary learning, the model",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for effective temporal boundary learning, the model?",
+      "failure_mode": "for effective temporal boundary learning, the model",
+      "root_cause": "For instance, for a ground truth timestamp of “20s,\" CE loss assigns the same penalty for predictions of “21s\" and “100s,\" even though the latter is far less accurate.",
+      "why_existing_methods_fail": "for effective temporal boundary learning, the model",
+      "affected_scenario": "is a foundational task in video understanding that aims to localize relevant temporal boundaries in a video given a textual prompt (e.g., “during which time does the person stir the soup?\").",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV080"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV080",
+          "section": "Introduction",
+          "quote": "However, for effective temporal boundary learning, the model",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective",
+      "method_core_mechanism": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+      "method_components": [
+        "Video LLMs"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV073"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0207"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective targets the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\") by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044",
+      "micro_method_cluster_id": "MM0207",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective targets the temporal grounding task, which involves regressing timestamps, deviates from the traditional text prediction task used in LLMs. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0207",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective targets As a result, merely improving the model architecture is insufficient to integrate this task into the LLM framework effectively. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0120",
+      "micro_method_cluster_id": "MM0207",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective targets for effective temporal boundary learning, the model by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044",
+      "micro_method_cluster_id": "MM0207",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective",
+      "compared_to": "the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")",
+      "why_it_matters": "It directly targets the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "In this work, instead of altering the model architecture, we introduce a new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective",
+      "baseline": "TimeRefine: Temporal Grounding with Time Refining Video LLM",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "new perspective to enhance the ability of Video LLMs to handle the temporal grounding task by modifying its learning objective",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the ability of Video LLMs to perform temporal grounding remains limited, as most pretraining data emphasize detailed content (i.e., “what\") understanding rather than temporal perception (i.e., “when\")."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_timerefine-temporal-grounding-with-time-refining-video-llm_b7626266ff\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_timerefine-temporal-grounding-with-time-refining-video-llm_b7626266ff\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

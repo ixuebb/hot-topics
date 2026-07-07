@@ -1,0 +1,591 @@
+{
+  "paper_id": "2023_ma_llavilo-boosting-video-moment-retrieval-via-adapter-based-multimodal-modeling_91f742188c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_llavilo-boosting-video-moment-retrieval-via-adapter-based-multimodal-modeling_91f742188c",
+  "title": "LLaViLo: Boosting Video Moment Retrieval via Adapter-Based Multimodal Modeling",
+  "year": 2023,
+  "venue_or_source": "",
+  "authors": [
+    "Kaijing Ma",
+    "Xianghao Zang",
+    "Zerun Feng",
+    "Han Fang",
+    "Chao Ban",
+    "Yuhan Wei",
+    "Zhongjiang He",
+    "Yongxiang Li",
+    "Hao Sun"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "In this paper, we propose LLaV-iLo (LLaMa-Video-Localizer), a video moment retrieval pipeline powered by a large language model.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given a natural language query, moment retrieval (MR) aims to locate the most relevant segments from an untrimmed video, requiring effective modeling of the visual and textual semantics across continuous time.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Given a natural language query, moment retrieval (MR) aims to locate the most relevant segments from an untrimmed video, requiring effective modeling of the visual and textual semantics across continuous time.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "current models still struggle with semantic reasoning and relevance matching.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, current models [6, 9, 31] still struggle with semantic reasoning and relevance matching.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Recent works on LLMs for visual tasks suggest potential beneﬁts, i.e., LLMs have shown impressive capabilities in visual-textual semantic reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Recent works on LLMs for visual tasks [1, 7, 32] suggest potential beneﬁts, i.e., LLMs have shown impressive capabilities in visual-textual semantic reasoning.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "current models still struggle with semantic reasoning and relevance matching.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, current models [6, 9, 31] still struggle with semantic reasoning and relevance matching.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "They rely on separate modeling of visual and textual features, lacking deep integration...",
+        "scenario": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "\u0002\u0003\u0004\u0005\u0006 \u0007\u0004\b \u0005 \b \u0005 \b\u000e \u000f\b \u0005 \u0010\u0006\u0004\u0005\u0011 \u0012 \u0006\u0013 \u0002\u0003\u0004\u0005\u0006\u0007\u0005\b \u0003 \u000e\u0006 \u000f\u0005\u0010 \u0003\u0011 \u0012\u0003\u0013 \u0005\u0014 \u0015\u000e\u0016\u0012\u0007\u0003\u0005\u0007\u0005\b \b \u0005 \u0011\u000e\u0012 \u0006...",
+        "scenario": "\u0002\u0003\u0004\u0005\u0006 \u0007\u0004\b \u0005 \b \u0005 \b\u000e \u000f\b \u0005 \u0010\u0006\u0004\u0005\u0011 \u0012 \u0006\u0013 \u0002\u0003\u0004\u0005\u0006\u0007\u0005\b \u0003 \u000e\u0006 \u000f\u0005\u0010 \u0003\u0011 \u0012\u0003\u0013 \u0005\u0014 \u0015\u000e\u0016\u0012\u0007\u0003\u0005\u0007\u0005\b \b \u0005 \u0011\u000e\u0012 \u0006 \u0003\u0004\u0005\u0006\u0007\u0005\b \u0003 \u0014 \u0002\u0003\u0004\u0005\u0006\u0014 \u0015\u000e\u0016\u0006\u0004\u0005 \u0017\u0005\u0018 \u0015\u000e\u0016\u0006\u0004\u0005 \u0010\u000f\u0011 \u0003\u0019\u0010\u0006\u0004\u0005\u0011\u0014 \u0005\u0011\u0005\u001a\b\u000e\u0016\u0005\u0014 \u0013\b \u0016\u001b\u0003\u000e \u0014 \u0014 \u0006\u0016\b\u0011\u0003 \u0005 \u0002\u0003\u0004 \u0002\u0005\u0004 Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "\u0002\u0003\u0004\u0005\u0006 \u0007\u0004\b \u0005 \b \u0005 \b\u000e \u000f\b \u0005 \u0010\u0006\u0004\u0005\u0011 \u0012 \u0006\u0013 \u0002\u0003\u0004\u0005\u0006\u0007\u0005\b \u0003 \u000e\u0006 \u000f\u0005\u0010 \u0003\u0011 \u0012\u0003\u0013 \u0005\u0014 \u0015\u000e\u0016\u0012\u0007\u0003\u0005\u0007\u0005\b \b \u0005 \u0011\u000e\u0012 \u0006 \u0003\u0004\u0005\u0006\u0007\u0005\b \u0003 \u0014 \u0002\u0003\u0004\u0005\u0006\u0014 \u0015\u000e\u0016\u0006\u0004\u0005 \u0017\u0005\u0018 \u0015\u000e\u0016\u0006\u0004\u0005 \u0010\u000f\u0011 \u0003\u0019\u0010\u0006\u0004\u0005\u0011\u0014 \u0005\u0011\u0005\u001a\b\u000e\u0016\u0005\u0014 \u0013\b \u0016\u001b\u0003\u000e \u0014 \u0014 \u0006\u0016\b\u0011\u0003 \u0005 \u0002\u0003\u0004 \u0002\u0005\u0004 Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in...",
+        "scenario": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "†Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "†Corresponding authors.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "current models still struggle with semantic reasoning and relevance matching.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current models still struggle with semantic reasoning and relevance matching?",
+      "failure_mode": "current models still struggle with semantic reasoning and relevance matching.",
+      "root_cause": "# Introduction Given a natural language query, moment retrieval (MR) aims to locate the most relevant segments from an untrimmed video, requiring effective modeling of the visual and textual semantics across continuous time.",
+      "why_existing_methods_fail": "current models still struggle with semantic reasoning and relevance matching.",
+      "affected_scenario": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "However, current models [6, 9, 31] still struggle with semantic reasoning and relevance matching.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that lLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work?",
+      "failure_mode": "LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+      "root_cause": "Recent works on LLMs for visual tasks suggest potential beneﬁts, i.e., LLMs have shown impressive capabilities in visual-textual semantic reasoning.",
+      "why_existing_methods_fail": "LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+      "affected_scenario": "They rely on separate modeling of visual and textual features, lacking deep integration between these two modalities, as shown in Figure 1 (a).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)",
+      "method_core_mechanism": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+      "method_components": [
+        "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0199"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation",
+      "method_core_mechanism": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "method_components": [
+        "This ICCV",
+        "Open Access",
+        "Computer Vision Foundation",
+        "ICCV"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0056"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "multi-objective learning framework including a set prediction objective and a language modeling objective",
+      "method_core_mechanism": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+      "method_components": [
+        "multi-objective learning framework including a set prediction objective and a language modeling objective"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0154"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b) targets current models still struggle with semantic reasoning and relevance matching. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation targets current models still struggle with semantic reasoning and relevance matching. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b) targets LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0199",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation targets LLMs have not been thoroughly explored in the video do- *Both authors contributed equally to this work. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0056",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)",
+      "compared_to": "current models still struggle with semantic reasoning and relevance matching.",
+      "why_it_matters": "It directly targets current models still struggle with semantic reasoning and relevance matching.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation",
+      "compared_to": "current models still struggle with semantic reasoning and relevance matching.",
+      "why_it_matters": "It directly targets current models still struggle with semantic reasoning and relevance matching.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "multi-objective learning framework including a set prediction objective and a language modeling objective",
+      "compared_to": "current models still struggle with semantic reasoning and relevance matching.",
+      "why_it_matters": "It directly targets current models still struggle with semantic reasoning and relevance matching.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We propose an efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In summary, the main contributions of this work are three-fold: 1) We propose a lightweight adapter module This ICCV workshop paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-objective learning framework including a set prediction objective and a language modeling objective",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "2) We develop a multi-objective learning framework including a set prediction objective and a language modeling objective, which are complementary and optimized concurrently.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)",
+      "baseline": "LLaViLo: Boosting Video Moment Retrieval via Adapter-Based Multimodal Modeling",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "efﬁcient video moment retrieval framework integrating LLMs as shown in Figure 1 (b)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting current models still struggle with semantic reasoning and relevance matching.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_llavilo-boosting-video-moment-retrieval-via-adapter-based-multimodal-modeling_91f742188c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_llavilo-boosting-video-moment-retrieval-via-adapter-based-multimodal-modeling_91f742188c\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

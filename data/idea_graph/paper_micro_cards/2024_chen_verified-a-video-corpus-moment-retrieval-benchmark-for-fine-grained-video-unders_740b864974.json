@@ -1,0 +1,752 @@
+{
+  "paper_id": "2024_chen_verified-a-video-corpus-moment-retrieval-benchmark-for-fine-grained-video-unders_740b864974",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_verified-a-video-corpus-moment-retrieval-benchmark-for-fine-grained-video-unders_740b864974",
+  "title": "VERIFIED: A Video Corpus Moment Retrieval Benchmark for Fine-Grained Video Understanding",
+  "year": 2024,
+  "venue_or_source": "NeurIPS 2024",
+  "authors": [
+    "Houlun Chen",
+    "Xin Wang",
+    "Hong Chen",
+    "Zeyang Zhang",
+    "Wei Feng",
+    "Bin Huang",
+    "Jia Jia",
+    "Wenwu Zhu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Existing Video Corpus Moment Retrieval (VCMR) is limited to coarse-grained understanding that hinders precise video moment localization when given fine-grained queries.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Corpus Moment Retrieval (VCMR) aims to retrieve a video moment from a large untrimmed video corpus given a text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video Corpus Moment Retrieval (VCMR) [1] aims to retrieve a video moment from a large untrimmed video corpus given a text query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It requires handling two subtasks: Video Retrieval (VR) from a corpus and Single Video Moment Retreival (SVMR) within a video, which involves grasping multi-level semantic granularities across video-text and moment-text alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It requires handling two subtasks: Video Retrieval (VR) [2] from a corpus and Single Video Moment Retreival (SVMR) [3, 4] within a video, which involves grasping multi-level semantic granularities across video-text and moment-text alignment.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn distinctive video features.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn distinctive video features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to struggle with the...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to struggle with the hallucination problem, how to avoid the impact of the generated inaccurate content is also challenging.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually...",
+        "scenario": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn distinctive video features.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Fig 1(b), a fine-grained distinctive query is provided to retrieve the...",
+        "scenario": "As shown in Fig 1(b), a fine-grained distinctive query is provided to retrieve the best-matched moment, requiring models to precisely understand the details in text descriptions and distinguish the target moments from ∗Corresponding authors.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "As shown in Fig 1(b), a fine-grained distinctive query is provided to retrieve the best-matched moment, requiring models to precisely understand the details in text descriptions and distinguish the target moments from ∗Corresponding authors.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "VERIFIED Figure 1: (a) Previous VCMR, where a query may be coarse and there are many...",
+        "scenario": "VERIFIED Figure 1: (a) Previous VCMR, where a query may be coarse and there are many potential positive moments (green) that are not annotated, making the ground truth annotations unreasonable.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "VERIFIED Figure 1: (a) Previous VCMR, where a query may be coarse and there are many potential positive moments (green) that are not annotated, making the ground truth annotations unreasonable.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, we resort to the power of recent large language model (LLM) and large multimodal model (LMM) [12– 16] for automatic detailed video-clip annotation.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Therefore, we resort to the power of recent large language model (LLM) and large multimodal model (LMM) [12– 16] for automatic detailed video-clip annotation.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching losses,...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model [17] with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground?",
+      "failure_mode": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...",
+      "root_cause": "shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders...",
+      "why_existing_methods_fail": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn...",
+      "affected_scenario": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "However, as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn distinctive video features.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability?",
+      "failure_mode": "annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+      "root_cause": "partially matched candidates.",
+      "why_existing_methods_fail": "annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+      "affected_scenario": "VERIFIED Figure 1: (a) Previous VCMR, where a query may be coarse and there are many potential positive moments (green) that are not annotated, making the ground truth annotations unreasonable.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to?",
+      "failure_mode": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to...",
+      "root_cause": "much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to struggle with the hallucination problem, how to avoid the impact of the generated inaccurate content is also challenging.",
+      "why_existing_methods_fail": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to struggle with the hallucination problem, how to avoid the impact of the...",
+      "affected_scenario": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to struggle with the hallucination problem, how to avoid the impact of the generated inaccurate content is also challenging.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "more challenging VCMR scenario in this paper",
+      "method_core_mechanism": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+      "method_components": [
+        "VCMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0025"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics",
+      "method_core_mechanism": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+      "method_components": [
+        "RelIable FInE-grained",
+        "VERIFIED"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0013"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "VQA-guided dynamic detail discovering method",
+      "method_core_mechanism": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+      "method_components": [
+        "VQA",
+        "LMM",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching",
+      "method_core_mechanism": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+      "method_components": [
+        "Fine-Granularity Aware Noise Evaluator",
+        "LLM",
+        "LMM",
+        "we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model [17] with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0168"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "more challenging VCMR scenario in this paper targets as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0025",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics targets as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics targets annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "VQA-guided dynamic detail discovering method targets annotating such fine-grained video-text datasets [8–11] relies on intensive manual work and domain knowledge, limiting its productivity and scalability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching targets Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to... by operating on reasoning, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model [17] with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0168",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics targets Simply relying on the LLMs/LMMs for annotation faces the following two challenges: 1) how to extract as much fine-grained information from videos as possible remains unexplored, especially dynamic video details; 2) LLM or LMM are known to... by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0014",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "more challenging VCMR scenario in this paper",
+      "compared_to": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn...",
+      "why_it_matters": "It directly targets as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics",
+      "compared_to": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn...",
+      "why_it_matters": "It directly targets as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "VQA-guided dynamic detail discovering method",
+      "compared_to": "as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground truth, which hinders cross-modal retrieval and makes it hard for models to learn...",
+      "why_it_matters": "It directly targets as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "more challenging VCMR scenario in this paper",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "To address the problem, we propose a more challenging VCMR scenario in this paper.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+      "can_transfer_to": [
+        "cross_modal",
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose VERIFIED, an automatic VidEo-text annotation pipeline to generate captions with RelIable FInE-grained statics and Dynamics.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VQA-guided dynamic detail discovering method",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "For dynamics, we propose a VQA-guided dynamic detail discovering method, which guides the video LMM to focus more on dynamic changes in the video, before having LLM rewrite dynamics enhanced captions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+      "can_transfer_to": [
+        "weak_supervision",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To alleviate the impact of the inaccurate annotations caused by LLM/LMM hallucinations, we propose a Fine-Granularity Aware Noise Evaluator where we fine-tune a video foundation model [17] with disturbed hard-negative data through contrastive and matching losses, so that it can better discriminate the unreasonable annotations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for more challenging VCMR scenario in this paper",
+      "baseline": "VERIFIED: A Video Corpus Moment Retrieval Benchmark for Fine-Grained Video Understanding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "more challenging VCMR scenario in this paper",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting as shown in Figure 1(a), in the previous VCMR setting, the queries are usually coarse-grained and thus struggle to localize a video moment discriminatively, where there exists potentially relevant positive pairs [5– 7] besides the ground...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "DiDeMo"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_verified-a-video-corpus-moment-retrieval-benchmark-for-fine-grained-video-unders_740b864974\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_verified-a-video-corpus-moment-retrieval-benchmark-for-fine-grained-video-unders_740b864974\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

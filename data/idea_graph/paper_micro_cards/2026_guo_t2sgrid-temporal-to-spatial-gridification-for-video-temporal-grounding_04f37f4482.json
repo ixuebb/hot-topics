@@ -1,0 +1,771 @@
+{
+  "paper_id": "2026_guo_t2sgrid-temporal-to-spatial-gridification-for-video-temporal-grounding_04f37f4482",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_guo_t2sgrid-temporal-to-spatial-gridification-for-video-temporal-grounding_04f37f4482",
+  "title": "T2SGrid: Temporal-to-Spatial Gridification for Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Chaohong Guo",
+    "Yihan He",
+    "Yongwei Nie",
+    "Fei Ma",
+    "Xuemiao Xu",
+    "Chengjiang Long"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) aims to localize the video segment that corresponds to a natural language query, which requires a comprehensive understanding of complex temporal dynamics.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video content has become a ubiquitous medium for information dissemination, yet efficiently localizing specific mo- *Equal contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video content has become a ubiquitous medium for information dissemination, yet efficiently localizing specific mo- *Equal contribution.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "†Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "†Corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "‡This work was done when Dr.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "‡This work was done when Dr.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Chengjiang Long was with Meta.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Chengjiang Long was with Meta.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "However, extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these approaches face inherent limitations.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "However, these approaches face inherent limitations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include...",
+        "scenario": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness [9, 18, 24, 29] include adding positional encoding (+PE) [15, 23, 35, 48, 57], as seen in Qwen2.5-VL [2] models, and using text-based timestamps (+TextNum) [31, 81, 82], as in Qwen3-VL [51] models, and visual numbering (+VisualNum) [5, 60, 61].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Text-based timestamps (e.g., prompting with “Frame 1” or “1 seconds”) inevitably...",
+        "scenario": "Text-based timestamps (e.g., prompting with “Frame 1” or “1 seconds”) inevitably introduce a rapidly growing amount of textual tokens that leads to increasingly sparse visual attention as the video length increases.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Text-based timestamps (e.g., prompting with “Frame 1” or “1 seconds”) inevitably introduce a rapidly growing amount of textual tokens that leads to increasingly sparse visual attention as the video length increases.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "T2SGrid takes a different approach, which partitions the video into configurable temporal...",
+        "scenario": "T2SGrid takes a different approach, which partitions the video into configurable temporal windows and arranges the frames within each window into a composite image with grid-structured layout (Figure 1 (b)), which we call “gridification” of the temporal window.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "T2SGrid takes a different approach, which partitions the video into configurable temporal windows and arranges the frames within each window into a composite image with grid-structured layout (Figure 1 (b)), which we call “gridification” of the temporal window.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For instance, as shown in Figure 2, these models can infer relative temporal...",
+        "scenario": "For instance, as shown in Figure 2, these models can infer relative temporal relationships (e.g., “before” and “after”) by reading the spatial configuration of the grid from top-left to bottom-right, and can also identify the specific order of frames within the grid.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "For instance, as shown in Figure 2, these models can infer relative temporal relationships (e.g., “before” and “after”) by reading the spatial configuration of the grid from top-left to bottom-right, and can also identify the specific order of frames within the grid.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "(b) Our T2SGrid method folds multiple frames within a temporal window into the spatial dimension via gridification, allowing direct processing a temporal window by the standard 2D ViT.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "(b) Our T2SGrid method folds multiple frames within a temporal window into the spatial dimension via gridification, allowing direct processing a temporal window by the standard 2D ViT.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness [9, 18, 24, 29] include adding positional encoding (+PE) [15, 23, 35, 48, 57], as seen in Qwen2.5-VL [2] models, and using text-based timestamps (+TextNum) [31, 81, 82], as in Qwen3-VL [51] models, and visual numbering (+VisualNum) [5, 60, 61].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling?",
+      "failure_mode": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "root_cause": "(a) Traditional methods process frames sequentially or apply temporal pooling to capture information at multiple scales.",
+      "why_existing_methods_fail": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "affected_scenario": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that extending these spatiallyoriented architectures to the temporal domain remains nontrivial?",
+      "failure_mode": "extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+      "root_cause": "The emergence of Vision-Large Language Models (Vision-LMMs) has revolutionized visual understanding , exhibiting remarkable zero-shot reasoning and multi-modal comprehension , primarily on static images.",
+      "why_existing_methods_fail": "extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+      "affected_scenario": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "However, extending these spatiallyoriented architectures to the temporal domain remains nontrivial.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these approaches face inherent limitations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches face inherent limitations?",
+      "failure_mode": "these approaches face inherent limitations.",
+      "root_cause": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+      "why_existing_methods_fail": "these approaches face inherent limitations.",
+      "affected_scenario": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "However, these approaches face inherent limitations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules?",
+      "failure_mode": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+      "root_cause": "these approaches face inherent limitations.",
+      "why_existing_methods_fail": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+      "affected_scenario": "As shown in Figure 1 (a), Current approaches to incorporate temporal awareness include adding positional encoding (+PE) , as seen in Qwen2.5-VL models, and using text-based timestamps (+TextNum) , as in Qwen3-VL models, and visual numbering (+VisualNum) .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Temporal to Spatial Gridification (T2SGrid), a novel framework",
+      "method_core_mechanism": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+      "method_components": [
+        "Spatial Gridification"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+      "method_core_mechanism": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+      "method_components": [
+        "The gridification process is central to our approach, establishing a novel paradigm for video input representation."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0050"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "T2SGrid, a novel paradigm",
+      "method_core_mechanism": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+      "method_components": [
+        "T2SGrid, a novel paradigm"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0050"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Temporal to Spatial Gridification (T2SGrid), a novel framework targets sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "The gridification process is central to our approach, establishing a novel paradigm for video input representation. targets sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Temporal to Spatial Gridification (T2SGrid), a novel framework targets extending these spatiallyoriented architectures to the temporal domain remains nontrivial. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "The gridification process is central to our approach, establishing a novel paradigm for video input representation. targets extending these spatiallyoriented architectures to the temporal domain remains nontrivial. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Temporal to Spatial Gridification (T2SGrid), a novel framework targets these approaches face inherent limitations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "The gridification process is central to our approach, establishing a novel paradigm for video input representation. targets these approaches face inherent limitations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Temporal to Spatial Gridification (T2SGrid), a novel framework targets Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "The gridification process is central to our approach, establishing a novel paradigm for video input representation. targets Positional encoding, though effective for sequence modeling, fail to capture absolute temporal positions essential for grounding specific events and require additional encoding modules. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0129",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Temporal to Spatial Gridification (T2SGrid), a novel framework",
+      "compared_to": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "why_it_matters": "It directly targets sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+      "compared_to": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "why_it_matters": "It directly targets sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "T2SGrid, a novel paradigm",
+      "compared_to": "sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.",
+      "why_it_matters": "It directly targets sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Temporal to Spatial Gridification (T2SGrid), a novel framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Temporal to Spatial Gridification (T2SGrid), a novel framework that partially reformulates temporal reasoning as a spatial problem.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The gridification process is central to our approach, establishing a novel paradigm for video input representation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "T2SGrid, a novel paradigm",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(1) We introduce T2SGrid, a novel paradigm that shifts video processing from individual frames to local temporal clips by transforming sequences of frames within a sliding window into a single, composite grid image.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Temporal to Spatial Gridification (T2SGrid), a novel framework",
+      "baseline": "T2SGrid: Temporal-to-Spatial Gridification for Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "Temporal to Spatial Gridification (T2SGrid), a novel framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting sequential processing and pooling can cause information loss, obscure local temporal details within a window, and often require additional time encoding/label for temporal modeling.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_guo_t2sgrid-temporal-to-spatial-gridification-for-video-temporal-grounding_04f37f4482\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_guo_t2sgrid-temporal-to-spatial-gridification-for-video-temporal-grounding_04f37f4482\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

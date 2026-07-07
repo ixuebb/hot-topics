@@ -1,0 +1,495 @@
+{
+  "paper_id": "2023_ma_interactive-video-corpus-moment-retrieval-using-reinforcement-learning_fd21004a83",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_interactive-video-corpus-moment-retrieval-using-reinforcement-learning_fd21004a83",
+  "title": "Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+  "year": 2023,
+  "venue_or_source": "Proceedings of the 30th ACM International Conference on Multimedia",
+  "authors": [
+    "Zhixin Ma",
+    "Chong‐Wah Ngo"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "We conduct experiments for the challenging task of video corpus moment retrieval (VCMR) to localize moments from a large video corpus.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Past research efforts have demonstrated that interactive search, which allows user to inspect search result and modify query, can significantly boost the performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Past research efforts [1, 18, 32, 42] have demonstrated that interactive search, which allows user to inspect search result and modify query, can significantly boost the performance.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Copyrights for components of this work owned by others than ACM must be honored.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Copyrights for components of this work owned by others than ACM must be honored.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session [11, 33, 49], ending up in a lack of a persistent view between the search results of adjacent sessions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, relevant keywords overlooked in the initial query can be added;...",
+        "scenario": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Past research efforts have demonstrated that interactive search, which allows user to inspect search result and modify query, can significantly boost the performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Past research efforts [1, 18, 32, 42] have demonstrated that interactive search, which allows user to inspect search result and modify query, can significantly boost the performance.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Due to these factors, user experience is negatively impacted as reported in the live competition of Video Browser Showdown (VBS) .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Due to these factors, user experience is negatively impacted as reported in the live competition of Video Browser Showdown (VBS) [25, 34].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, the navigation space of a search result is extremely huge even with only a few hundreds of retrieved items to explore.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "First, the navigation space of a search result is extremely huge even with only a few hundreds of retrieved items to explore.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": []
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that # Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search?",
+      "failure_mode": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+      "root_cause": "The introduction attributes the failure to a mismatch between the available representation or supervision and the target temporal evidence.",
+      "why_existing_methods_fail": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+      "affected_scenario": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV007"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Introduction",
+          "quote": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions?",
+      "failure_mode": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions.",
+      "root_cause": "query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions.",
+      "why_existing_methods_fail": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions.",
+      "affected_scenario": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Furthermore, as query history is not traced over time, each modification is treated as an independent search session [11, 33, 49], ending up in a lack of a persistent view between the search results of adjacent sessions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties?",
+      "failure_mode": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+      "root_cause": "adopted in this paper, is a non-trivial problem due to the following difficulties.",
+      "why_existing_methods_fail": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+      "affected_scenario": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in general, assuming long period provision of user feedbacks is impractical and can frustrate search experience?",
+      "failure_mode": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+      "root_cause": "Second, user interaction will last for MM ’22, October 10–14, 2022, Lisboa, Portugal Zhixin Ma and Chong Wah Ngo few iterations only.",
+      "why_existing_methods_fail": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+      "affected_scenario": "For example, relevant keywords overlooked in the initial query can be added; out-of-vocabulary query terms which are interpreted incorrectly by a search engine can be replaced with synonyms; and contextually relevant terms discovered through result inspection can be appended to the original query.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "method_core_mechanism": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+      "method_components": [
+        "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-specific temporal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization output",
+      "linked_intro_evidence_ids": [
+        "EV001"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0073"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning targets # Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search. by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning targets Furthermore, as query history is not traced over time, each modification is treated as an independent search session , ending up in a lack of a persistent view between the search results of adjacent sessions. by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning targets Applying RL for interactive video search, as adopted in this paper, is a non-trivial problem due to the following difficulties. by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning targets In general, assuming long period provision of user feedbacks is impractical and can frustrate search experience. by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0090",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "compared_to": "# Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.",
+      "why_it_matters": "It directly targets # Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract Known-item video search is effective with human-in-the-loop to interactively investigate the search result and refine the initial query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "baseline": "Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "dataset": "DiDeMo, MAD",
+      "module_to_modify": "Paper-specific mechanism from Interactive Video Corpus Moment Retrieval using Reinforcement Learning",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting # Introduction “Finding needle from a haystack” is always the grand challenge of multimedia search.."
+    }
+  ],
+  "datasets": [
+    "DiDeMo",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_interactive-video-corpus-moment-retrieval-using-reinforcement-learning_fd21004a83\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_ma_interactive-video-corpus-moment-retrieval-using-reinforcement-learning_fd21004a83\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,594 @@
+{
+  "paper_id": "2024_ma_beyond-uncertainty-evidential-deep-learning-for-robust-video-temporal-grounding_da48b19b38",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_ma_beyond-uncertainty-evidential-deep-learning-for-robust-video-temporal-grounding_da48b19b38",
+  "title": "Beyond Uncertainty: Evidential Deep Learning for Robust Video Temporal Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Kaijing Ma",
+    "Haojian Huang",
+    "Jin Chen",
+    "Haodong Chen",
+    "Pengliang Ji",
+    "Xianghao Zang",
+    "Fang Han",
+    "Chao Ban",
+    "Hao Sun",
+    "Mulin Chen",
+    "Xuelong Li"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Existing Video Temporal Grounding (VTG) models excel in accuracy but often overlook open-world challenges posed by open-vocabulary queries and untrimmed videos.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video is emerging as the primary information carrier in the era of streaming media.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video is emerging as the primary information carrier in the era of streaming media.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "With the influx of video data, the need for efficiently and precisely extracting desired content from videos according to users’ queries is becoming increasingly essential.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "With the influx of video data, the need for efficiently and precisely extracting desired content from videos according to users’ queries is becoming increasingly essential.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In response to these demands, Video Temporal Grounding (VTG) emerges as a core research area in the field of computer vision .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In response to these demands, Video Temporal Grounding (VTG) emerges as a core research area in the field of computer vision [9, 28, 7, 6, 21].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Given an untrimmed video with a textual query, VTG can be categorized into three main types: 1) accurately identifying specific segments, referred to as Moment Retrieval ; 2) comprehending the meaningful gist of a video, known as Highlight Detection ; and 3)...",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Given an untrimmed video with a textual query, VTG can be categorized into three main types: 1) accurately identifying specific segments, referred to as Moment Retrieval [12, 14, 27, 32]; 2) comprehending the meaningful gist of a video, known as Highlight Detection [27, 48, 54, 19]; and 3) grasping the overall content of the entire video or specific sections, termed Video Summarization [46, 3, 15, 47].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These models fail to handle potential uncertainties in an open world appropriately.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "These models fail to handle potential uncertainties in an open world appropriately.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "To begin with, epistemic uncertainty can be attributed to Knowledge Gap and Semantic...",
+        "scenario": "To begin with, epistemic uncertainty can be attributed to Knowledge Gap and Semantic Ambiguity as shown in Figure 1 (a) and (b) respectively.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "To begin with, epistemic uncertainty can be attributed to Knowledge Gap and Semantic Ambiguity as shown in Figure 1 (a) and (b) respectively.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "(iii) (i) (ii) (iii) … … Annotations 𝑡 High Light Low Light jitter Figure 1: Motivation...",
+        "scenario": "(iii) (i) (ii) (iii) … … Annotations 𝑡 High Light Low Light jitter Figure 1: Motivation illustration.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "(iii) (i) (ii) (iii) … … Annotations 𝑡 High Light Low Light jitter Figure 1: Motivation illustration.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Exemplification can be found in Appendix C.6 and C.4.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Exemplification can be found in Appendix C.6 and C.4.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This inadequacy is detrimental in scenarios that require cautious decision-making, such as security and confidential environments.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "This inadequacy is detrimental in scenarios that require cautious decision-making, such as security and confidential environments.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+        "evidence": [
+          {
+            "evidence_id": "EV004",
+            "section": "Abstract",
+            "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Abstract",
+            "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts?",
+      "failure_mode": "tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+      "root_cause": "Epistemic uncertainty arises mainly from Knowledge Gaps and Semantic Ambiguity in (a) and (b), while aleatoric uncertainty is primarily due to Subjective Annotations and Low-Level Feature Uncertainty in (c) and (d).",
+      "why_existing_methods_fail": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+      "affected_scenario": "(iii) (i) (ii) (iii) … … Annotations 𝑡 High Light Low Light jitter Figure 1: Motivation illustration.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "dicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that dicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc?",
+      "failure_mode": "dicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+      "root_cause": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges...",
+      "why_existing_methods_fail": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+      "affected_scenario": "(iii) (i) (ii) (iii) … … Annotations 𝑡 High Light Low Light jitter Figure 1: Motivation illustration.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "(c) indicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "These models fail to handle potential uncertainties in an open world appropriately.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that models fail to handle potential uncertainties in an open world appropriately?",
+      "failure_mode": "These models fail to handle potential uncertainties in an open world appropriately.",
+      "root_cause": "Unfortunately, when confronted with anomalies, such as the abnormal queries shown in Figure 2, conventional VTG models often respond with nearly random and indiscreet answers.",
+      "why_existing_methods_fail": "These models fail to handle potential uncertainties in an open world appropriately.",
+      "affected_scenario": "To begin with, epistemic uncertainty can be attributed to Knowledge Gap and Semantic Ambiguity as shown in Figure 1 (a) and (b) respectively.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "These models fail to handle potential uncertainties in an open world appropriately.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "SRAM, a robust network module",
+      "method_core_mechanism": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+      "method_components": [
+        "SRAM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV004"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0107"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M06",
+      "legacy_macro_method_name": "Uncertainty, Evidential Learning, and Calibration",
+      "micro_method_name": "simple yet effective Geom-regularizer",
+      "method_core_mechanism": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+      "method_components": [
+        "we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "uncertainty",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "uncertainty",
+      "linked_intro_evidence_ids": [
+        "EV007"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Abstract",
+          "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0164"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SRAM, a robust network module targets tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117",
+      "micro_method_cluster_id": "MM0107",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective Geom-regularizer targets tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts. by operating on uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Abstract",
+          "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SRAM, a robust network module targets dicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117",
+      "micro_method_cluster_id": "MM0107",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective Geom-regularizer targets dicates the subjective nature of annotations in datasets, while (d) unfolds the potential challenge led by variations in scene lighting, resolution, jittering, blurring, and transitions etc. by operating on uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Abstract",
+          "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0117",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective Geom-regularizer targets These models fail to handle potential uncertainties in an open world appropriately. by operating on uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Abstract",
+          "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SRAM, a robust network module targets These models fail to handle potential uncertainties in an open world appropriately. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0107",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "SRAM, a robust network module",
+      "compared_to": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+      "why_it_matters": "It directly targets tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.."
+    },
+    {
+      "axis": "Uncertainty, Evidential Learning, and Calibration",
+      "what_is_new": "simple yet effective Geom-regularizer",
+      "compared_to": "Specifically, (a) illustrates a critical knowledge gap where the model’s training does not sufficiently cover the possible real-world scenarios, leading to potential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.",
+      "why_it_matters": "It directly targets tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SRAM, a robust network module",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To this end, we introduce SRAM, a robust network module that benefits from a two-stage cross-modal alignment task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "simple yet effective Geom-regularizer",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+      "can_transfer_to": [
+        "uncertainty"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Abstract",
+          "quote": "In response, we develop a simple yet effective Geom-regularizer that enhances the uncertainty learning framework from the ground up.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SRAM, a robust network module",
+      "baseline": "Beyond Uncertainty: Evidential Deep Learning for Robust Video Temporal Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "SRAM, a robust network module",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting tential failures in understanding and responding to user inputs, while (b) highlights the challenges of semantic ambiguity in both visual and textual contexts.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_ma_beyond-uncertainty-evidential-deep-learning-for-robust-video-temporal-grounding_da48b19b38\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_ma_beyond-uncertainty-evidential-deep-learning-for-robust-video-temporal-grounding_da48b19b38\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

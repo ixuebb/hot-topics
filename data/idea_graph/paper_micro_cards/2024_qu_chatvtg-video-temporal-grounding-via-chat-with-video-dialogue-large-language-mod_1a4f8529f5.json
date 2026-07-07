@@ -1,0 +1,524 @@
+{
+  "paper_id": "2024_qu_chatvtg-video-temporal-grounding-via-chat-with-video-dialogue-large-language-mod_1a4f8529f5",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qu_chatvtg-video-temporal-grounding-via-chat-with-video-dialogue-large-language-mod_1a4f8529f5",
+  "title": "ChatVTG: Video Temporal Grounding via Chat with Video Dialogue Large Language Models",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Mengxue Qu",
+    "Xiaodong Chen",
+    "Wu Liu",
+    "Alicia Li",
+    "Yao Zhao"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) aims to ground specific segments within an untrimmed video corresponding to the given natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the rapid development of short video platforms, videos have become the primary form of documenting and sharing life experiences for people worldwide.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction With the rapid development of short video platforms, videos have become the primary form of documenting and sharing life experiences for people worldwide.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Unlike static image data, videos encapsulate dynamic information, providing a more vivid and immersive way to showcase stories and memories.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Unlike static image data, videos encapsulate dynamic information, providing a more vivid and immersive way to showcase stories and memories.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "age Models (LLMs) , have demonstrated remarkable capabilities in engaging in dialogues based on video content, enhancing the model’s ability to explore and comprehend --- Page 2 --the information conveyed within videos. crucial but challenging. The task of...",
+        "evidence": [
+          {
+            "evidence_id": "EV900",
+            "section": "Introduction",
+            "quote": "age Models (LLMs) [15, 16, 22], have demonstrated remarkable capabilities in engaging in dialogues based on video content, enhancing the model’s ability to explore and comprehend --- Page 2 --the information conveyed within videos. crucial but challenging. The task of Video Temporal Grounding (VTG) has been developed to address this by aiming to accurately locate continuous time windows within videos using natural language descriptions, which is essential for enhancing the accessibility and usability of video content amidst improved yet still imperfect comprehension capabilities. Most existing VTG methods [8, 20, 34, 37] heavily rely on supervised training with paired annotation data, which ",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the...",
+        "scenario": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [],
+    "method_transition": [
+      {
+        "summary": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases?",
+      "failure_mode": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "root_cause": "# Abstract Video Temporal Grounding (VTG) aims to ground specific segments within an untrimmed video corresponding to the given natural language query.",
+      "why_existing_methods_fail": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "affected_scenario": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV002"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV002",
+          "section": "Abstract",
+          "quote": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26",
+      "method_core_mechanism": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s...",
+      "method_components": [
+        "Video LLM Language",
+        "Video LLM Input",
+        "Previous Method",
+        "Our Method Input",
+        "Tuning Freeze Video LLM Language",
+        "Tuning Freeze Figure",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0053"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "does not require training and can provide temporal grounding zero-shot",
+      "method_core_mechanism": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+      "method_components": [
+        "Video LLMs",
+        "Video LLM",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0078"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "innovative approach",
+      "method_core_mechanism": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+      "method_components": [
+        "Video Dialogue LLMs"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0112"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "combines captions and matching to find the moment without training the Video LLM",
+      "method_core_mechanism": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+      "method_components": [
+        "Video LLMs",
+        "Video LLM",
+        "VTG",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0053"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26 targets Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "does not require training and can provide temporal grounding zero-shot targets Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26",
+      "compared_to": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "why_it_matters": "It directly targets Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "does not require training and can provide temporal grounding zero-shot",
+      "compared_to": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "why_it_matters": "It directly targets Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "innovative approach",
+      "compared_to": "Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.",
+      "why_it_matters": "It directly targets Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s...",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26.1s~35.6s “Person reads the book.” Video LLM Input video clips “Describe the content of the video clip.” C1 C2 C3 C4 Q Q (a) Previous Method 🔥 ❄ (b) Our Method Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "does not require training and can provide temporal grounding zero-shot",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Comparison between previous methods based on Video LLMs and our approach: Previous methods require fully supervised training of the Video LLM, whereas our method does not require training and can provide temporal grounding zero-shot.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "innovative approach",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+      "can_transfer_to": [
+        "weak_supervision",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "In this paper, we introduce an innovative approach that leverages Video Dialogue LLMs for video temporal grounding without the need for additional training data or paired annotations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "combines captions and matching to find the moment without training the Video LLM",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "1, different from existing methods that utilize VTG data to train Video LLMs for temporal grounding capabilities, our approach combines captions and matching to find the moment without training the Video LLM.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26",
+      "baseline": "ChatVTG: Video Temporal Grounding via Chat with Video Dialogue Large Language Models",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "Input instruction 27s~36s Caption of video clips Language query Matching 🔥 ❄ Tuning Freeze Video LLM Language query Input video The query occurs at 26",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Existing VTG methods largely depend on supervised learning and extensive annotated data, which is labor-intensive and prone to human biases.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qu_chatvtg-video-temporal-grounding-via-chat-with-video-dialogue-large-language-mod_1a4f8529f5\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_qu_chatvtg-video-temporal-grounding-via-chat-with-video-dialogue-large-language-mod_1a4f8529f5\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

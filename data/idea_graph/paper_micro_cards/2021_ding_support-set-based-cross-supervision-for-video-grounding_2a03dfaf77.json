@@ -1,0 +1,602 @@
+{
+  "paper_id": "2021_ding_support-set-based-cross-supervision-for-video-grounding_2a03dfaf77",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_support-set-based-cross-supervision-for-video-grounding_2a03dfaf77",
+  "title": "Support-Set Based Cross-Supervision for Video Grounding",
+  "year": 2021,
+  "venue_or_source": "ICCV 2021",
+  "authors": [
+    "Xinpeng Ding",
+    "Nannan Wang",
+    "Shiwei Zhang",
+    "De Cheng",
+    "Xiaomeng Li",
+    "Ziyuan Huang",
+    "Mingqian Tang",
+    "Xinbo Gao"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Current approaches for video grounding propose kinds of complex architectures to capture the video-text relations, and have achieved impressive improvements.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding aims to localize the target time intervals in an untrimmed video by a text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding aims to localize the target time intervals in an untrimmed video by a text query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As illustrated in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "GT Query with GT: The person pours some water into the glass Baseline Support-Set based GT clip based （a） （b） G𝑟𝑜𝑢𝑛𝑑𝑖𝑛𝑔 l𝑜𝑠𝑠 c 𝑔 𝑔 Sscs Module 𝑔 𝑉𝑖𝑉𝑗 𝐿𝑖𝐿𝑗 𝑔 𝐗𝑖𝐗𝑗 𝐘𝑖𝐘𝑗 Shared space Clips Text FFN Encoder FFN Encoder Interaction Query w/o GT: Person start...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "GT Query with GT: The person pours some water into the glass Baseline Support-Set based GT clip based （a） （b） G𝑟𝑜𝑢𝑛𝑑𝑖𝑛𝑔 l𝑜𝑠𝑠 c 𝑔 𝑔 Sscs Module 𝑔 𝑉𝑖𝑉𝑗 𝐿𝑖𝐿𝑗 𝑔 𝐗𝑖𝐗𝑗 𝐘𝑖𝐘𝑗 Shared space Clips Text FFN Encoder FFN Encoder Interaction Query w/o GT: Person start holding the glass Person/glass Figure 1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To achieve this goal, existing methods focus on carefully designing complex video-text interaction modules.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "To achieve this goal, existing methods focus on carefully designing complex video-text interaction modules.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Hence, existing methods based on the architecture improvements have limited capacities to learn videocaption relations; see Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Hence, existing methods based on the architecture improvements have limited capacities to learn videocaption relations; see Fig.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "1 (a) (Please see ‘Baseline’).",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "1 (a) (Please see ‘Baseline’).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "GT Query with GT: The person pours some water into the glass Baseline Support-Set based...",
+        "scenario": "GT Query with GT: The person pours some water into the glass Baseline Support-Set based GT clip based （a） （b） G𝑟𝑜𝑢𝑛𝑑𝑖𝑛𝑔 l𝑜𝑠𝑠 c 𝑔 𝑔 Sscs Module 𝑔 𝑉𝑖𝑉𝑗 𝐿𝑖𝐿𝑗 𝑔 𝐗𝑖𝐗𝑗 𝐘𝑖𝐘𝑗 Shared space Clips Text FFN Encoder FFN Encoder Interaction Query w/o GT: Person start holding the glass Person/glass Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "GT Query with GT: The person pours some water into the glass Baseline Support-Set based GT clip based （a） （b） G𝑟𝑜𝑢𝑛𝑑𝑖𝑛𝑔 l𝑜𝑠𝑠 c 𝑔 𝑔 Sscs Module 𝑔 𝑉𝑖𝑉𝑗 𝐿𝑖𝐿𝑗 𝑔 𝐗𝑖𝐗𝑗 𝐘𝑖𝐘𝑗 Shared space Clips Text FFN Encoder FFN Encoder Interaction Query w/o GT: Person start holding the glass Person/glass Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example,",
+        "scenario": "For example,",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "For example, Zeng et al.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "the multi-modal relations are complicated because the video and text have unequal...",
+        "scenario": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Hence, existing methods based on the architecture improvements have limited capacities to learn videocaption relations; see Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Hence, existing methods based on the architecture improvements have limited capacities to learn videocaption relations; see Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Motivated by the advances of multi-modal pre-training , we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Motivated by the advances of multi-modal pre-training [28, 33, 29], we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video?",
+      "failure_mode": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "root_cause": "the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "why_existing_methods_fail": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "affected_scenario": "For example,",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Support-Set Based Cross- Supervision, termed Sscs",
+      "method_core_mechanism": "Motivated by the advances of multi-modal pre-training , we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+      "method_components": [
+        "Support-Set Based Cross- Supervision"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Motivated by the advances of multi-modal pre-training [28, 33, 29], we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0222"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel cross-supervision module for video grounding",
+      "method_core_mechanism": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+      "method_components": [
+        "novel cross-supervision module for video grounding"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0187"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to apply support-set concept to address the mutual exclusion of video entities",
+      "method_core_mechanism": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+      "method_components": [
+        "to apply support-set concept to address the mutual exclusion of video entities"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0183"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "can significantly improve the performance of the state-of-the-art approaches",
+      "method_core_mechanism": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+      "method_components": [
+        "can significantly improve the performance of the state-of-the-art approaches"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Support-Set Based Cross- Supervision, termed Sscs targets the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Motivated by the advances of multi-modal pre-training [28, 33, 29], we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0222",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel cross-supervision module for video grounding targets the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0187",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Support-Set Based Cross- Supervision, termed Sscs",
+      "compared_to": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "why_it_matters": "It directly targets the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "novel cross-supervision module for video grounding",
+      "compared_to": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "why_it_matters": "It directly targets the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to apply support-set concept to address the mutual exclusion of video entities",
+      "compared_to": "the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.",
+      "why_it_matters": "It directly targets the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Support-Set Based Cross- Supervision, termed Sscs",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Motivated by the advances of multi-modal pre-training , we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Motivated by the advances of multi-modal pre-training [28, 33, 29], we propose a Support-Set Based Cross- Supervision, termed Sscs, to improve multi-modal relation learning for video grounding in a supervision way compared with the hand-designed architectures.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel cross-supervision module for video grounding",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as three-folds: (a) We introduce a novel cross-supervision module for video grounding, which can enhance the correlation modeling between videos and texts but not bring in the extra inference cost.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to apply support-set concept to address the mutual exclusion of video entities",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "(b) We propose to apply support-set concept to address the mutual exclusion of video entities, which make it is more suitable to apply contrastive learning for video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "can significantly improve the performance of the state-of-the-art approaches",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "(c) Extensive experiments illustrate the effectiveness of Sscs on three public datasets, and the results show that our method can significantly improve the performance of the state-of-the-art approaches.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Support-Set Based Cross- Supervision, termed Sscs",
+      "baseline": "Support-Set Based Cross-Supervision for Video Grounding",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "Support-Set Based Cross- Supervision, termed Sscs",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the multi-modal relations are complicated because the video and text have unequal semantics, e.g., ‘person’ is just one word but may last a whole video.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_support-set-based-cross-supervision-for-video-grounding_2a03dfaf77\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_support-set-based-cross-supervision-for-video-grounding_2a03dfaf77\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

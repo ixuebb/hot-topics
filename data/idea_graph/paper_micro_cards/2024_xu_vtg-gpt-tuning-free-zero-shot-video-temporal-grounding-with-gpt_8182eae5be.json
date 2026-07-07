@@ -1,0 +1,392 @@
+{
+  "paper_id": "2024_xu_vtg-gpt-tuning-free-zero-shot-video-temporal-grounding-with-gpt_8182eae5be",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_xu_vtg-gpt-tuning-free-zero-shot-video-temporal-grounding-with-gpt_8182eae5be",
+  "title": "VTG-GPT: Tuning-Free Zero-Shot Video Temporal Grounding with GPT",
+  "year": 2024,
+  "venue_or_source": "Applied Sciences",
+  "authors": [
+    "Yifang Xu",
+    "Yunzhuo Sun",
+    "Zien Xie",
+    "Benxiang Zhai",
+    "Sidan Du"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding (VTG) aims to locate specific temporal segments from an untrimmed video based on a linguistic query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given a linguistic query, video temporal grounding (VTG) aims to locate the most relevant temporal segments from an untrimmed video, each containing a start and end timestamp.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Given a linguistic query, video temporal grounding (VTG) aims to locate the most relevant temporal segments from an untrimmed video, each containing a start and end timestamp.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "An illustrative example of VTG is shown in Figure 1a.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "An illustrative example of VTG is shown in Figure 1a.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This task has numerous practical applications in daily life, such as how it can help video platform users easily skip to relevant portions of a video.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This task [1,2] has numerous practical applications in daily life, such as how it can help video platform users easily skip to relevant portions of a video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The field of natural language has witnessed a significant leap forward with the advent of GPT-4 .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "The field of natural language has witnessed a significant leap forward with the advent of GPT-4 [3].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR [1] spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "An illustrative example of VTG is shown in Figure 1a.",
+        "scenario": "An illustrative example of VTG is shown in Figure 1a.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "An illustrative example of VTG is shown in Figure 1a.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive...",
+        "scenario": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Furthermore, ground-truth (GT) queries often contain human biases, such as (1) Bias from erroneous word spellings, as depicted in Figure 2a.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Furthermore, ground-truth (GT) queries often contain human biases, such as (1) Bias from erroneous word spellings, as depicted in Figure 2a.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+        "evidence": [
+          {
+            "evidence_id": "EV003",
+            "section": "Abstract",
+            "quote": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs?",
+      "failure_mode": "this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+      "root_cause": "A recent work, LLaViLo , reveals that training adapters alone can effectively leverage the video understanding capabilities of LLMs.",
+      "why_existing_methods_fail": "this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+      "affected_scenario": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset?",
+      "failure_mode": "developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+      "root_cause": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+      "why_existing_methods_fail": "developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+      "affected_scenario": "Existing VTG methods [1,9–12] primarily adopt supervised learning, which demands massive training resources and numerous annotated video-query pairs, as illustrated in Figure 1b.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR [1] spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning",
+      "method_core_mechanism": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+      "method_components": [
+        "VTG",
+        "GPT",
+        "a GPT-based method for zero-shot VTG without training or fine-tuning."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV003"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0067"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning targets this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0067",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning targets developing datasets for VTG is time-consuming and expensive; for instance, Moment-DETR spent 1455 person-hours and USD 16,600 to create the QVhighlights dataset. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0067",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning",
+      "compared_to": "this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.",
+      "why_it_matters": "It directly targets this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To tackle these challenges, we propose VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning",
+      "baseline": "VTG-GPT: Tuning-Free Zero-Shot Video Temporal Grounding with GPT",
+      "dataset": "MAD, QVHighlights",
+      "module_to_modify": "VTG-GPT, a GPT-based method for zero-shot VTG without training or fine-tuning",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting this method requires designing a sophisticated fine-tuning strategy specifically for VTG, thereby introducing additional computing costs.."
+    }
+  ],
+  "datasets": [
+    "MAD",
+    "QVHighlights"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_xu_vtg-gpt-tuning-free-zero-shot-video-temporal-grounding-with-gpt_8182eae5be\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_xu_vtg-gpt-tuning-free-zero-shot-video-temporal-grounding-with-gpt_8182eae5be\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

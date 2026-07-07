@@ -1,0 +1,565 @@
+{
+  "paper_id": "2024_liu_context-enhanced-video-moment-retrieval-with-large-language-models_bfb11b48d1",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_context-enhanced-video-moment-retrieval-with-large-language-models_bfb11b48d1",
+  "title": "Context-Enhanced Video Moment Retrieval with Large Language Models",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Weijia Liu",
+    "Bo Miao",
+    "Jiuxin Cao",
+    "Xuelin Zhu",
+    "Bo Liu",
+    "Mehwish Nasim",
+    "Ajmal Mian"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Current methods for Video Moment Retrieval (VMR) struggle to align complex situations involving specific environmental details, character descriptions, and action narratives.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) aims to localize the specific moment in an untrimmed video that semantically corresponds to a given language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) aims to localize the specific moment in an untrimmed video that semantically corresponds to a given language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The success of VMR enhances video analysis with reduced effort and benefits a wide range of applications, including video semantic segmentation, user-friendly video editing, and mass surveillance.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "The success of VMR enhances video analysis with reduced effort and benefits a wide range of applications, including video semantic segmentation, user-friendly video editing, and mass surveillance.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "1(b), when multiple moments fit the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "1(b), when multiple moments fit the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR [1] fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "on the multimodal features of the provided video and sentence query.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "on the multimodal features of the provided video and sentence query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Two-stage matching approaches rely on segment-level features as the proposal representation to estimate proposal-query semantic relevance, often overlooking contextual and global information of videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Two-stage matching approaches rely on segment-level features as the proposal representation to estimate proposal-query semantic relevance, often overlooking contextual and global information of videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Recently, Large Language Models (LLMs) – trained with unmatched Internet-scale visual-language data have exhibited impressive capabilities in comprehending visual and textual inputs to promote various vision-language tasks – .",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Recently, Large Language Models (LLMs) [11]–[15] trained with unmatched Internet-scale visual-language data have exhibited impressive capabilities in comprehending visual and textual inputs to promote various vision-language tasks [16]– [19].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment?",
+      "failure_mode": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "root_cause": "insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "why_existing_methods_fail": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions?",
+      "failure_mode": "existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+      "root_cause": "on the multimodal features of the provided video and sentence query.",
+      "why_existing_methods_fail": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite promising results, existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”?",
+      "failure_mode": "the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+      "root_cause": "As illustrated in Fig.",
+      "why_existing_methods_fail": "1(b), when multiple moments fit the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "1(b), when multiple moments fit the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR [1] fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "LLM-based context enhancement and modeling",
+      "method_core_mechanism": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "accurately localizes the target moment",
+      "method_core_mechanism": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "method_components": [
+        "QD",
+        "DETR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0089"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "accurately localizes the target moment targets (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment. by operating on context.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0089",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "LLM-based context enhancement and modeling targets (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment. by operating on context.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "accurately localizes the target moment targets existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063",
+      "micro_method_cluster_id": "MM0089",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "LLM-based context enhancement and modeling targets existing methods face challenges in distinguishing the target moment from similarlooking or similar-action ones when query sentences involve detailed environmental, character, and action descriptions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "accurately localizes the target moment targets the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0089",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "LLM-based context enhancement and modeling targets the action “A woman talks cheerfully” and the background “a shelf”, the benchmark QD-DETR fails to identify the correct moment for “A woman talks cheerfully in front of a shelf full of shoes”. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "LLM-based context enhancement and modeling",
+      "compared_to": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "why_it_matters": "It directly targets (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "accurately localizes the target moment",
+      "compared_to": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "why_it_matters": "It directly targets (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "LLM-based context enhancement and modeling",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+      "can_transfer_to": [
+        "context",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(a) We introduce LLM-based context enhancement and modeling to improve video representations and directly employ free-form language as queries to decode these representations for accurate moment localization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "accurately localizes the target moment",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "(b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+      "can_transfer_to": [
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "(b) The benchmark QD-DETR [1] predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for LLM-based context enhancement and modeling",
+      "baseline": "Context-Enhanced Video Moment Retrieval with Large Language Models",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "LLM-based context enhancement and modeling",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting (b) The benchmark QD-DETR predicts false positives due to insufficient context modeling and decoding (captures major context but misses important details), whereas, our approach accurately localizes the target moment.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_context-enhanced-video-moment-retrieval-with-large-language-models_bfb11b48d1\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_context-enhanced-video-moment-retrieval-with-large-language-models_bfb11b48d1\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

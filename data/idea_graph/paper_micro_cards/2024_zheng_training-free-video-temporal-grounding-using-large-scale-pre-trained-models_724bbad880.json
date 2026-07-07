@@ -1,0 +1,918 @@
+{
+  "paper_id": "2024_zheng_training-free-video-temporal-grounding-using-large-scale-pre-trained-models_724bbad880",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zheng_training-free-video-temporal-grounding-using-large-scale-pre-trained-models_724bbad880",
+  "title": "Training-Free Video Temporal Grounding Using Large-Scale Pre-trained Models",
+  "year": 2024,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Minghang Zheng",
+    "Xinhao Cai",
+    "Qing-Chao Chen",
+    "Yuxin Peng",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding aims to identify video segments within untrimmed videos that are most relevant to a given natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding aims to localize the most semantically relevant segment in untrimmed videos according to free-form natural language queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding [7] aims to localize the most semantically relevant segment in untrimmed videos according to free-form natural language queries.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It has broad application potential in video surveillance , video summarization , and other fields.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "It has broad application potential in video surveillance [4], video summarization [29], and other fields.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "A naive baseline is to enumerate proposals in the video and use the pre-trained visual language models 4 We follow and plot the performance under the OOD-1 setting in the figure.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "A naive baseline is to enumerate proposals in the video and use the pre-trained visual language models 4 We follow [50] and plot the performance under the OOD-1 setting in the figure.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "However, collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this approach has the following drawbacks.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, this approach has the following drawbacks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1 (a), we report the OOD performance 4 on the Charades-STA dataset of...",
+        "scenario": "As shown in Figure 1 (a), we report the OOD performance 4 on the Charades-STA dataset of recent fully supervised method MMN , weakly supervised method CPL , and unsupervised method PSVL .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1 (a), we report the OOD performance 4 on the Charades-STA dataset of recent fully supervised method MMN [44], weakly supervised method CPL [61], and unsupervised method PSVL [33].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Most of the existing image-text or video-text pre-trained VLMs are trained to align...",
+        "scenario": "Most of the existing image-text or video-text pre-trained VLMs are trained to align single images (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Most of the existing image-text or video-text pre-trained VLMs are trained to align single images (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "CLIP , BLIP ) or trimmed video clips (e.g.",
+        "scenario": "CLIP , BLIP ) or trimmed video clips (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "CLIP [34], BLIP [21]) or trimmed video clips (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in...",
+        "scenario": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In addition, they heavily rely on the distribution of the training dataset and the performance degrades significantly in out-of-distribution (OOD) or cross-dataset settings according to previous research .",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "In addition, they heavily rely on the distribution of the training dataset and the performance degrades significantly in out-of-distribution (OOD) or cross-dataset settings according to previous research [3,19,50,53].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Firstly, it can be challenging for VLMs to understand the temporal boundaries of multiple events in untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Firstly, it can be challenging for VLMs to understand the temporal boundaries of multiple events in untrimmed video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the above problems, we propose to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries,...",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text query.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA and ActivityNet Captions datasets and has a greater advantage in cross-dataset and OOD settings.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA [7] and ActivityNet Captions [16] datasets and has a greater advantage in cross-dataset and OOD settings.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods?",
+      "failure_mode": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "root_cause": "These methods have achieved remarkable improvements recently on specific datasets, such as ActivityNet Captions and Charades-STA .",
+      "why_existing_methods_fail": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "affected_scenario": "As shown in Figure 1 (a), we report the OOD performance 4 on the Charades-STA dataset of recent fully supervised method MMN , weakly supervised method CPL , and unsupervised method PSVL .",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "However, collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "this approach has the following drawbacks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approach has the following drawbacks?",
+      "failure_mode": "this approach has the following drawbacks.",
+      "root_cause": "the following drawbacks.",
+      "why_existing_methods_fail": "this approach has the following drawbacks.",
+      "affected_scenario": "Most of the existing image-text or video-text pre-trained VLMs are trained to align single images (e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, this approach has the following drawbacks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’?",
+      "failure_mode": "in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+      "root_cause": "‘She sprays it with a spray bottle and continues brushing her hair’.",
+      "why_existing_methods_fail": "in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+      "affected_scenario": "Most of the existing image-text or video-text pre-trained VLMs are trained to align single images (e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "ing of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ing of the event where a person gradually picks up the picture and approaches the wall is ignored?",
+      "failure_mode": "ing of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+      "root_cause": "As shown in Figure 1(c), we show the similarity between video frames and the query text using the BLIP-2 Q-Former .",
+      "why_existing_methods_fail": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+      "affected_scenario": "The skill is seldom emphasized in the image or trimmed video pretraining, and as shown in Figure 1(b), the naive baseline has a poorer performance when the query describes multiple events.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "It can be found that in the naive baseline’s prediction, the beginning of the event where a person gradually picks up the picture and approaches the wall is ignored.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig",
+      "method_core_mechanism": "To address the above problems, we propose to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+      "method_components": [
+        "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0110"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "to prompt the LLMs to analyze the multiple events",
+      "method_core_mechanism": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+      "method_components": [
+        "we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0212"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text quer",
+      "method_core_mechanism": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text query.",
+      "method_components": [
+        "to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text quer"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features",
+        "clip features",
+        "moment proposals"
+      ],
+      "output_or_supervision": "similarity",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0039"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs)",
+      "method_core_mechanism": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+      "method_components": [
+        "TFVTG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0110"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves the best performance on zero-shot video temporal grounding on both the Charades-STA and ActivityNet Captions datasets and has a greater advan",
+      "method_core_mechanism": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA and ActivityNet Captions datasets and has a greater advantage in cross-dataset and OOD settings.",
+      "method_components": [
+        "ActivityNet Captions",
+        "STA",
+        "OOD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA [7] and ActivityNet Captions [16] datasets and has a greater advantage in cross-dataset and OOD settings.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig targets collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0110",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to prompt the LLMs to analyze the multiple events targets collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0033",
+      "micro_method_cluster_id": "MM0212",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig targets this approach has the following drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0110",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to prompt the LLMs to analyze the multiple events targets this approach has the following drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0212",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig targets in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0110",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "to prompt the LLMs to analyze the multiple events targets in the video temporal grounding, the model needs to understand multiple sequential events and their temporal relationships, such as ‘She sprays it with a spray bottle and continues brushing her hair’. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0212",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig targets ing of the event where a person gradually picks up the picture and approaches the wall is ignored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0110",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "to prompt the LLMs to analyze the multiple events targets ing of the event where a person gradually picks up the picture and approaches the wall is ignored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0125",
+      "micro_method_cluster_id": "MM0212",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig",
+      "compared_to": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "why_it_matters": "It directly targets collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "to prompt the LLMs to analyze the multiple events",
+      "compared_to": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "why_it_matters": "It directly targets collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text quer",
+      "compared_to": "collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.",
+      "why_it_matters": "It directly targets collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the above problems, we propose to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address the above problems, we propose to combine the ability of large language models (LLMs) [1,26,36] to understand and reason about queries and the ability of visual language models (VLMs) to align vision and text in a trainingfree manner.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to prompt the LLMs to analyze the multiple events",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Specifically, for the challenge of understanding videos and queries that contain multiple events, we propose to prompt the LLMs to analyze the multiple events that may be contained in the query and give a text description of each single event as sub-queries, the order in which each event occurs, and the relationship between events (sequential or simultaneous).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text quer",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text query.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To better use the VLMs to locate the video clip corresponding to the single event query and solve the problem of ignoring the dynamic transitions in the video while enhancing localization completeness, we propose to consider both dynamic transition and static status after transition explicitly when measuring the similarity between the proposal and the text query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs)",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "(1) We propose a trainingfree pipeline for video temporal grounding (TFVTG) using pre-trained large language models (LLMs) and vison-language models (VLMs).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves the best performance on zero-shot video temporal grounding on both the Charades-STA and ActivityNet Captions datasets and has a greater advan",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA and ActivityNet Captions datasets and has a greater advantage in cross-dataset and OOD settings.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "(3) Our method achieves the best performance on zero-shot video temporal grounding on both the Charades-STA [7] and ActivityNet Captions [16] datasets and has a greater advantage in cross-dataset and OOD settings.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig",
+      "baseline": "Training-Free Video Temporal Grounding Using Large-Scale Pre-trained Models",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "to combine the ability of large language models (LLMs) to understand and reason about queries and the ability of visual language models (VLMs) to alig",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting collecting high-quality video temporal grounding datasets is time-consuming and laborintensive, which hinders the large-scale real-world application of these methods.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zheng_training-free-video-temporal-grounding-using-large-scale-pre-trained-models_724bbad880\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_zheng_training-free-video-temporal-grounding-using-large-scale-pre-trained-models_724bbad880\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

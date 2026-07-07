@@ -1,0 +1,870 @@
+{
+  "paper_id": "2024_wang_efficient-temporal-extrapolation-of-multimodal-large-language-models-with-tempor_d3dfd3b09d",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_efficient-temporal-extrapolation-of-multimodal-large-language-models-with-tempor_d3dfd3b09d",
+  "title": "Efficient Temporal Extrapolation of Multimodal Large Language Models with Temporal Grounding Bridge",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Yuxuan Wang",
+    "Yueqian Wang",
+    "Pengfei Wu",
+    "Jianxin Liang",
+    "Dongyan Zhao",
+    "Yang Liu",
+    "Zilong Zheng"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "A fundamental aspect of human intelligence is to effortlessly perceive, memorize, and comprehend daily multi-modal information such as events, observations, and videos that span hours and days.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "A fundamental aspect of human intelligence is to effortlessly perceive, memorize, and comprehend daily multi-modal information such as events, observations, and videos that span hours and days.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "A wide range of research works in computer vision and multi-modal tasks has extensively *Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "A wide range of research works in computer vision and multi-modal tasks has extensively *Corresponding author.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and Length Extrapolation of TGB.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the prominent advancements in many video-language benchmarks , understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity...",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Despite the prominent advancements in many video-language benchmarks (Yu et al., 2018, 2019; Hendricks et al., 2017; Xu et al., 2016; Krishna et al., 2017), understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead (Buch et al., 2022; Gao et al., 2023a; Yu et al., 2023; Song et al., 2023; He et al., 2024) imposed by highdimensional video data and the disparity between language and temporal dynamic cues (Lei et al., 2022; Xiao et al., 2023a).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language query; and third, the complexity of the specialized vision encoder complicates the adaptation to long-video understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2...",
+        "scenario": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and Length Extrapolation of TGB.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "A wide range of research works in computer vision and multi-modal tasks has extensively *Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "A wide range of research works in computer vision and multi-modal tasks has extensively *Corresponding author.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Some researchers have proposed scaling up 1 --- Page 2 --the amount of vision data fed into larger models, following the scaling law observed in LLMs.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Some researchers have proposed scaling up 1 --- Page 2 --the amount of vision data fed into larger models(Bai et al., 2023; Liu et al., 2024a), following the scaling law observed in LLMs.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Others have explored sampling-based methods to reduce input overhead by selecting relevant frames at either the frame level or token level .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Others have explored sampling-based methods to reduce input overhead by selecting relevant frames at either the frame level(Lei et al., 2021; Wang et al., 2023; Bain et al., 2021; Buch et al., 2022) or token level (Gao et al., 2023a).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Results of parameters on AGQA Our method demonstrates the best performance with less trainable parameters.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Results of parameters on AGQA (Grunde- McLaughlin et al., 2021) Our method demonstrates the best performance with less trainable parameters.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach employs a bootstrapping strategy to refine TGB using MLLMs, eliminating the need for explicit temporal grounding annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Our approach employs a bootstrapping strategy to refine TGB using MLLMs, eliminating the need for explicit temporal grounding annotations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,?",
+      "failure_mode": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...",
+      "root_cause": "the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language query; and third, the complexity of the specialized vision encoder...",
+      "why_existing_methods_fail": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language...",
+      "affected_scenario": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and...",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language query; and third, the complexity of the specialized vision encoder complicates the adaptation to long-video understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "g, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that g, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems?",
+      "failure_mode": "g, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+      "root_cause": "A fundamental aspect of human intelligence is to effortlessly perceive, memorize, and comprehend daily multi-modal information such as events, observations, and videos that span hours and days.",
+      "why_existing_methods_fail": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+      "affected_scenario": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "Such capacity of long-form multi-modal understanding, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues ?",
+      "failure_mode": "understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues .",
+      "root_cause": "delved into real-life videos, including video question answering (VideoQA) , text-to-video retrieval , video captioning , etc.",
+      "why_existing_methods_fail": "Despite the prominent advancements in many video-language benchmarks , understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues .",
+      "affected_scenario": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and...",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Despite the prominent advancements in many video-language benchmarks (Yu et al., 2018, 2019; Hendricks et al., 2017; Xu et al., 2016; Krishna et al., 2017), understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead (Buch et al., 2022; Gao et al., 2023a; Yu et al., 2023; Song et al., 2023; He et al., 2024) imposed by highdimensional video data and the disparity between language and temporal dynamic cues (Lei et al., 2022; Xiao et al., 2023a).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the scarcity of high-quality, long video-language datasets makes this approach difficult?",
+      "failure_mode": "the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+      "root_cause": "Some researchers have proposed scaling up 1 --- Page 2 --the amount of vision data fed into larger models, following the scaling law observed in LLMs.",
+      "why_existing_methods_fail": "the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+      "affected_scenario": "52 54 56 58 60 Accuracy (%) 1.5 2 2.5 3 3.5 4 102 Trainable Parameters (M) BLIP2 SINGULARITY SEVILA TGB (Ours) MIST-CLIP SAMPLER+SINGULARITY 10 45 44 43 42 41 40 39 38 37 20 Number of frames TGB (T-4) VideoLLaVA (T-8) PLLaVA (T-16) Accuacy (%) 30 40 50 60 A B Figure 1: Training Efficiency and...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, the scarcity of high-quality, long video-language datasets makes this approach difficult.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "demonstrates the best performance with less trainable parameters",
+      "method_core_mechanism": "Results of parameters on AGQA Our method demonstrates the best performance with less trainable parameters.",
+      "method_components": [
+        "Grunde- McLaughlin",
+        "AGQA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Results of parameters on AGQA (Grunde- McLaughlin et al., 2021) Our method demonstrates the best performance with less trainable parameters.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel framework, Temporal Grounding Bridge",
+      "method_core_mechanism": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+      "method_components": [
+        "Temporal Grounding Bridge"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features",
+      "method_core_mechanism": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+      "method_components": [
+        "learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0005"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to extrapolate to longer sequences in a zero-shot setting (see Fig",
+      "method_core_mechanism": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+      "method_components": [
+        "to extrapolate to longer sequences in a zero-shot setting (see Fig"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0067"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image...",
+      "method_core_mechanism": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+      "method_components": [
+        "Bootstrapping Framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0137"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features targets These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,... by operating on action_motion.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel framework, Temporal Grounding Bridge targets These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "demonstrates the best performance with less trainable parameters targets g, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Results of parameters on AGQA (Grunde- McLaughlin et al., 2021) Our method demonstrates the best performance with less trainable parameters.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0095",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel framework, Temporal Grounding Bridge targets g, seamlessly integrating prolonged visual dynamics with textual cues, poses considerable challenges for contemporary machine perceptual systems. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel framework, Temporal Grounding Bridge targets understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues . by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "demonstrates the best performance with less trainable parameters targets understanding long-form videos with task-oriented linguistic queries still suffers from the significant computational overhead imposed by highdimensional video data and the disparity between language and temporal dynamic cues . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Results of parameters on AGQA (Grunde- McLaughlin et al., 2021) Our method demonstrates the best performance with less trainable parameters.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0095",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel framework, Temporal Grounding Bridge targets the scarcity of high-quality, long video-language datasets makes this approach difficult. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU5",
+      "solves_how": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image... targets the scarcity of high-quality, long video-language datasets makes this approach difficult. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0019",
+      "micro_method_cluster_id": "MM0137",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "demonstrates the best performance with less trainable parameters",
+      "compared_to": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language...",
+      "why_it_matters": "It directly targets These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "novel framework, Temporal Grounding Bridge",
+      "compared_to": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language...",
+      "why_it_matters": "It directly targets These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features",
+      "compared_to": "These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features, especially when there’s misalignment between the video segment and the language...",
+      "why_it_matters": "It directly targets These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "demonstrates the best performance with less trainable parameters",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Results of parameters on AGQA Our method demonstrates the best performance with less trainable parameters.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Results of parameters on AGQA (Grunde- McLaughlin et al., 2021) Our method demonstrates the best performance with less trainable parameters.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel framework, Temporal Grounding Bridge",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address these challenges, we present a novel framework, Temporal Grounding Bridge, which enriches image-language models with temporal priors, significantly improving the understanding of long videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+      "can_transfer_to": [
+        "action_motion"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To achieve this, we introduce a learnable multi-span algorithm capable of simultaneously extracting multiple relevant segments from lowdimension motion features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to extrapolate to longer sequences in a zero-shot setting (see Fig",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "This approach allows our method to extrapolate to longer sequences in a zero-shot setting (see Fig.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image...",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+      "can_transfer_to": [
+        "weak_supervision",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Bootstrapping Framework without Annotation: Due to the high cost of manual annotations and the limited availability of video data compared to image data, we developed a framework that leverages MLLMs without requiring them to be pretrained on videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    },
+    {
+      "risk": "Backbone dependence",
+      "why": "Improvements may come from a stronger pretrained encoder rather than the proposed mechanism.",
+      "possible_defense": "Keep the backbone frozen and compare under identical extracted features."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for demonstrates the best performance with less trainable parameters",
+      "baseline": "Efficient Temporal Extrapolation of Multimodal Large Language Models with Temporal Grounding Bridge",
+      "dataset": "ActivityNet",
+      "module_to_modify": "demonstrates the best performance with less trainable parameters",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting These methods have three main limitations: first, they are computationally inefficient with slow training and inference speeds due to the large number of tunable parameters; second, the sampling strategy may miss important motion features,...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "HD",
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_efficient-temporal-extrapolation-of-multimodal-large-language-models-with-tempor_d3dfd3b09d\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_efficient-temporal-extrapolation-of-multimodal-large-language-models-with-tempor_d3dfd3b09d\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

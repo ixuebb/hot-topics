@@ -1,0 +1,961 @@
+{
+  "paper_id": "2024_cheng_shine-saliency-aware-hierarchical-negative-ranking-for-compositional-temporal-gr_8f65a0145c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cheng_shine-saliency-aware-hierarchical-negative-ranking-for-compositional-temporal-gr_8f65a0145c",
+  "title": "SHINE: Saliency-Aware Hierarchical Negative Ranking for Compositional Temporal Grounding",
+  "year": 2024,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Zixu Cheng",
+    "Yujiang Pu",
+    "Shaogang Gong",
+    "Parisa Kordjamshidi",
+    "Yu Kong"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal grounding, also known as video moment retrieval, aims at locating video segments corresponding to a given query sentence.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Temporal grounding has received continuous attention for its wide range of applications in video summarization , moment retrieval , surveillance and security .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Temporal grounding [9,19,32,56] has received continuous attention for its wide range of applications in video summarization [13,22], moment retrieval [25,53], surveillance and security [34, 35].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Unlike typical temporal action localization tasks , temporal grounding aims to retrieve video moments based on textual queries that include not only the action itself but also the objects, attributes, and ⋆Equal Contribution 2 Cheng and",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Unlike typical temporal action localization tasks [60], temporal grounding aims to retrieve video moments based on textual queries that include not only the action itself but also the objects, attributes, and ⋆Equal Contribution 2 Cheng and Pu et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "The existing work [32] struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, recent works [5,38,39,52] have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address this challenge, compositional temporal grounding has been recently proposed in [23], which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g.,...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA [23] and SSL2CG [21] focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the light), where the substitution of these words fundamentally changes the semantics.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(2) Deco neglects the viability of semantics when recombining primitives, resulting in numerous infeasible combinations, such as eating the table and reading the door.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "(2) Deco [48] neglects the viability of semantics when recombining primitives, resulting in numerous infeasible combinations, such as eating the table and reading the door.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "While these methods have improved existing techniques, they share limitations in the...",
+        "scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA [23] and SSL2CG [21] focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the light), where the substitution of these words fundamentally changes the semantics.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "we observed that existing work struggles with discerning different negative queries,...",
+        "scenario": "we observed that existing work struggles with discerning different negative queries, showing irrational saliency responses under different primitive substitutions, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "However, we observed that existing work [32] struggles with discerning different negative queries, showing irrational saliency responses under different primitive substitutions, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address this challenge, compositional temporal grounding has been recently proposed in [23], which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "They decompose videos and queries into global events, local actions, and atomic objects, and establish relationships between visual and text concepts by constructing a hierarchical semantic graph.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "They decompose videos and queries into global events, local actions, and atomic objects, and establish relationships between visual and text concepts by constructing a hierarchical semantic graph.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived...",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal grounding models to learn plausible compositional semantics.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions?",
+      "failure_mode": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "root_cause": "1: Comparison of saliency scores given different queries.",
+      "why_existing_methods_fail": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "affected_scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "The existing work [32] struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives?",
+      "failure_mode": "recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+      "root_cause": "reflected by their insensitivity to word order and primitives.",
+      "why_existing_methods_fail": "recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+      "affected_scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, recent works [5,38,39,52] have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data?",
+      "failure_mode": "To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+      "root_cause": "been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+      "why_existing_methods_fail": "To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+      "affected_scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this challenge, compositional temporal grounding has been recently proposed in [23], which aims at locating unseen video moments by learning novel combinations of known words in the training data.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability?",
+      "failure_mode": "their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+      "root_cause": "They decompose videos and queries into global events, local actions, and atomic objects, and establish relationships between visual and text concepts by constructing a hierarchical semantic graph.",
+      "why_existing_methods_fail": "their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+      "affected_scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions?",
+      "failure_mode": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions...",
+      "root_cause": "prepositions and adverbs (e.g., on/under the table and turn on/off the light), where the substitution of these words fundamentally changes the semantics.",
+      "why_existing_methods_fail": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the light), where the...",
+      "affected_scenario": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA [23] and SSL2CG [21] focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions and adverbs (e.g., on/under the table and turn on/off the light), where the substitution of these words fundamentally changes the semantics.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo",
+      "method_core_mechanism": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+      "method_components": [
+        "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0064"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "has the following advantages: (1) a good compositional representation for negative queries",
+      "method_core_mechanism": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully...",
+      "method_components": [
+        "DETR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0064"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "LLM-driven approach",
+      "method_core_mechanism": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal grounding models to learn plausible compositional semantics.",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal grounding models to learn plausible compositional semantics.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0064"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "coarse-to-fine saliency ranking strategy",
+      "method_core_mechanism": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+      "method_components": [
+        "we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "ranking",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0054"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "significantly improves baseline performance and achieves competitive results",
+      "method_core_mechanism": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+      "method_components": [
+        "DETR",
+        "CG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "coarse-to-fine saliency ranking strategy targets The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions. by operating on false_negative, ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0054",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "has the following advantages: (1) a good compositional representation for negative queries targets The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions. by operating on ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo targets recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "has the following advantages: (1) a good compositional representation for negative queries targets recent works have shown that existing vision-language models (VLMs) lack compositional generalizability for unseen combinations, as reflected by their insensitivity to word order and primitives. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo targets To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "has the following advantages: (1) a good compositional representation for negative queries targets To address this challenge, compositional temporal grounding has been recently proposed in , which aims at locating unseen video moments by learning novel combinations of known words in the training data. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo targets their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "has the following advantages: (1) a good compositional representation for negative queries targets their pipeline greatly relies on off-the-shelf object detection and action recognition models, which exhibits poor flexibility and scalability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo targets While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "has the following advantages: (1) a good compositional representation for negative queries targets While these methods have improved existing techniques, they share limitations in the construction of negative samples: (1) VISA and SSL2CG focus on dominant verbs and nouns, but overlook the role of other primitives such as prepositions... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0109",
+      "micro_method_cluster_id": "MM0064",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo",
+      "compared_to": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "why_it_matters": "It directly targets The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "has the following advantages: (1) a good compositional representation for negative queries",
+      "compared_to": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "why_it_matters": "It directly targets The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "LLM-driven approach",
+      "compared_to": "The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.",
+      "why_it_matters": "It directly targets The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our method helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boosting its compositional generalizability.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "has the following advantages: (1) a good compositional representation for negative queries",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully...",
+      "can_transfer_to": [
+        "reasoning",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Compared to existing works, our method has the following advantages: (1) a good compositional representation for negative queries that consider the significance of different primitives while maintaining semantic feasibility; (2) the saliency scores derived from negative samples at different levels exhibit a hierarchical divergence, indicating that our method successfully captures the multigranularity relationship between video clips and queries; (3) our method can be seamlessly integrated into existing DETR-based models, significantly improving their generalization capabilities to unseen combinations while maintaining the accuracy for seen samples.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "LLM-driven approach",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal grounding models to learn plausible compositional semantics.",
+      "can_transfer_to": [
+        "false_negative",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are three-fold: – To address the issue of implausible negative queries generated by random sampling, we introduce an LLM-driven approach that produces semantically viable hard negative queries, which facilitates temporal grounding models to learn plausible compositional semantics.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "coarse-to-fine saliency ranking strategy",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+      "can_transfer_to": [
+        "false_negative",
+        "reasoning",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "– To deal with the irrational saliency responses in existing methods, we propose a coarse-to-fine saliency ranking strategy that utilizes the plausible hard negatives to capture hierarchical semantic differences and boost their compositional generalizability.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "significantly improves baseline performance and achieves competitive results",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+      "can_transfer_to": [
+        "backbone_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "– Extensive experiments are conducted with two DETR-based backbones on two challenging benchmarks, Charades-CG and ActivityNet-CG, which show that our method significantly improves baseline performance and achieves competitive results.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo",
+      "baseline": "SHINE: Saliency-Aware Hierarchical Negative Ranking for Compositional Temporal Grounding",
+      "dataset": "ActivityNet",
+      "module_to_modify": "helps a model to learn the nuances in the semantics of hierarchical negative samples, suppressing the model’s response to irrelevant queries while boo",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting The existing work struggles with discerning hard negative queries, showing irrational saliency responses under different primitive substitutions.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cheng_shine-saliency-aware-hierarchical-negative-ranking-for-compositional-temporal-gr_8f65a0145c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cheng_shine-saliency-aware-hierarchical-negative-ranking-for-compositional-temporal-gr_8f65a0145c\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

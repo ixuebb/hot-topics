@@ -1,0 +1,760 @@
+{
+  "paper_id": "2026_ran_masra-mllm-assisted-semantic-relational-consistent-alignment-for-video-temporal_0570dd9e8a",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ran_masra-mllm-assisted-semantic-relational-consistent-alignment-for-video-temporal_0570dd9e8a",
+  "title": "MASRA: MLLM-Assisted Semantic-Relational Consistent Alignment for Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "ArXiv.org",
+  "authors": [
+    "Ran Ran",
+    "Jiwei Wei",
+    "Shuchang Zhou",
+    "Yitong Qin",
+    "Shiyuan He",
+    "Zeyu Ma",
+    "Yuyang Zhou",
+    "Yang Yang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) faces a cross-modal semantic gap that often leads to background features being incorrectly aligned with the query, while directly matching the query to moments results in insufficient discriminability and consistency of temporal semantics.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video has become the dominant medium on the internet, and users increasingly expect to retrieve specific moments with naturallanguage queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video has become the dominant medium on the internet, and users increasingly expect to retrieve specific moments with naturallanguage queries.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This trend makes Video Temporal Grounding (VTG) an important topic in multimodal understanding .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This trend makes Video Temporal Grounding (VTG) an important topic in multimodal understanding [1, 28, 55, 60].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, existing methods still face notable challenges in crossmodal alignment and boundary representation [58].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "On multiple VTG benchmarks, MASRA achieves consistent improvements and competitive performance over strong existing methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "On multiple VTG benchmarks, MASRA achieves consistent improvements and competitive performance over strong existing methods.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, existing methods still face notable challenges in crossmodal alignment and boundary representation [58].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues [11, 50, 51].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Event Analysis Captioning Vanilla Moment- Query Alignment Query Feature Video Feature (a)...",
+        "scenario": "Event Analysis Captioning Vanilla Moment- Query Alignment Query Feature Video Feature (a) Vanilla Alignment in Video Temporal Grounding (b) The Proposed MLLM-Assisted Alignment Target Moment Figure 1: (a) Vanilla VTG alignment, where the query is directly matched to raw video features.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Event Analysis Captioning Vanilla Moment- Query Alignment Query Feature Video Feature (a) Vanilla Alignment in Video Temporal Grounding (b) The Proposed MLLM-Assisted Alignment Target Moment Figure 1: (a) Vanilla VTG alignment, where the query is directly matched to raw video features.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Moreover, many approaches primarily focus on the correlation between the query and the...",
+        "scenario": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Textual information thus acts as an alignment mediator to bridge the modality gap while...",
+        "scenario": "Textual information thus acts as an alignment mediator to bridge the modality gap while simultaneously strengthening boundary discrimination and temporal consistency, as shown in Figure 1(b).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Textual information thus acts as an alignment mediator to bridge the modality gap while simultaneously strengthening boundary discrimination and temporal consistency, as shown in Figure 1(b).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "First, the modality gap remains pronounced.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "First, the modality gap remains pronounced.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues [11, 50, 51].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• Extensive experiments demonstrate the effectiveness of our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "• Extensive experiments demonstrate the effectiveness of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that still face notable challenges in crossmodal alignment and boundary representation ?",
+      "failure_mode": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "root_cause": "These families of approaches have achieved significant improvements in overall grounding performance.",
+      "why_existing_methods_fail": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "affected_scenario": "Event Analysis Captioning Vanilla Moment- Query Alignment Query Feature Video Feature (a) Vanilla Alignment in Video Temporal Grounding (b) The Proposed MLLM-Assisted Alignment Target Moment Figure 1: (a) Vanilla VTG alignment, where the query is directly matched to raw video features.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, existing methods still face notable challenges in crossmodal alignment and boundary representation [58].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context?",
+      "failure_mode": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "root_cause": "illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "why_existing_methods_fail": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "affected_scenario": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues ?",
+      "failure_mode": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+      "root_cause": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "why_existing_methods_fail": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+      "affected_scenario": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues [11, 50, 51].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision?",
+      "failure_mode": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+      "root_cause": "In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues .",
+      "why_existing_methods_fail": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+      "affected_scenario": "Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding",
+      "method_core_mechanism": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+      "method_components": [
+        "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA)",
+        "MLLM-Assisted Semantic-Relational Consistent Alignment",
+        "MLLM",
+        "MASRA"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0086"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "two complementary alignments supervised by MLLM-generated textual priors",
+      "method_core_mechanism": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+      "method_components": [
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0055"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "• Extensive experiments demonstrate the effectiveness of our method.",
+      "method_core_mechanism": "• Extensive experiments demonstrate the effectiveness of our method.",
+      "method_components": [
+        "• Extensive experiments demonstrate the effectiveness of our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• Extensive experiments demonstrate the effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0175"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding targets existing methods still face notable challenges in crossmodal alignment and boundary representation . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063",
+      "micro_method_cluster_id": "MM0086",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary alignments supervised by MLLM-generated textual priors targets existing methods still face notable challenges in crossmodal alignment and boundary representation . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0063",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding targets Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0086",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary alignments supervised by MLLM-generated textual priors targets Moreover, many approaches primarily focus on the correlation between the query and the target moment, as illustrated in Figure 1(a), which leads to insufficient semantic separability from the surrounding temporal context. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding targets In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0086",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary alignments supervised by MLLM-generated textual priors targets In particular, temporal-segment discriminability and local relational consistency remain relatively weak, making it difficult to form clear and stable boundary cues . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding targets Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0086",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "two complementary alignments supervised by MLLM-generated textual priors targets Meanwhile, the prevailing training paradigm lacks dense semantic supervision and local relational supervision. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0105",
+      "micro_method_cluster_id": "MM0055",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding",
+      "compared_to": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "why_it_matters": "It directly targets existing methods still face notable challenges in crossmodal alignment and boundary representation .."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "two complementary alignments supervised by MLLM-generated textual priors",
+      "compared_to": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "why_it_matters": "It directly targets existing methods still face notable challenges in crossmodal alignment and boundary representation .."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "• Extensive experiments demonstrate the effectiveness of our method.",
+      "compared_to": "existing methods still face notable challenges in crossmodal alignment and boundary representation .",
+      "why_it_matters": "It directly targets existing methods still face notable challenges in crossmodal alignment and boundary representation .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "On this basis, we propose MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two complementary alignments supervised by MLLM-generated textual priors",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce two complementary alignments supervised by MLLM-generated textual priors.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "• Extensive experiments demonstrate the effectiveness of our method.",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• Extensive experiments demonstrate the effectiveness of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• Extensive experiments demonstrate the effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding",
+      "baseline": "MASRA: MLLM-Assisted Semantic-Relational Consistent Alignment for Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "MLLM-Assisted Semantic-Relational Consistent Alignment (MASRA), a novel training-time supervision framework for video temporal grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting existing methods still face notable challenges in crossmodal alignment and boundary representation .."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ran_masra-mllm-assisted-semantic-relational-consistent-alignment-for-video-temporal_0570dd9e8a\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ran_masra-mllm-assisted-semantic-relational-consistent-alignment-for-video-temporal_0570dd9e8a\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

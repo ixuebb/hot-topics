@@ -1,0 +1,779 @@
+{
+  "paper_id": "2024_park_momentmix-augmentation-with-length-aware-detr-for-temporally-robust-moment-retri_f66fe16cb2",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_park_momentmix-augmentation-with-length-aware-detr-for-temporally-robust-moment-retri_f66fe16cb2",
+  "title": "MomentMix Augmentation with Length-Aware DETR for Temporally Robust Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Soo Yeon Park",
+    "Jiho Choi",
+    "Kyungjune Baek",
+    "Hyunjung Shim"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (MR) aims to localize moments within a video based on a given natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction As vast amounts of video content are created and shared on the internet daily , moment retrieval (MR) has gained significant attention to improve user experience and search efficiency.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction As vast amounts of video content are created and shared on the internet daily [5], moment retrieval (MR) [1, 9] has gained significant attention to improve user experience and search efficiency.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "MR identifies the specific moments within a video that best align with a given query.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "MR identifies the specific moments within a video that best align with a given query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Although conceptually, moments are defined by (start, end), existing models predict them in the format of (center, length).",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Although conceptually, moments are defined by (start, end), existing models predict them in the format of (center, length).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Specifically, this task involves localizing the start and end points in the video...",
+        "scenario": "Specifically, this task involves localizing the start and end points in the video relevant to the textual query, offering a more detailed underlong middle short 0 10 20 30 40 50 mAP (a) QD-DETR TR-DETR UVCOM 0 5 10 15 20 (b) QD-DETR TR-DETR UVCOM + Ours QD-DETR TR-DETR UVCOM + Ours Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Specifically, this task involves localizing the start and end points in the video relevant to the textual query, offering a more detailed underlong middle short 0 10 20 30 40 50 mAP (a) QD-DETR TR-DETR UVCOM 0 5 10 15 20 (b) QD-DETR TR-DETR UVCOM + Ours QD-DETR TR-DETR UVCOM + Ours Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "our empirical findings indicate that these DETR-based models suffer from a significant...",
+        "scenario": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, UVCOM shows an average mAP of 44.90 for middle-length moments (10–30...",
+        "scenario": "For example, UVCOM shows an average mAP of 44.90 for middle-length moments (10–30 seconds), while achieving only 10.67 for short moments (less than 10 seconds), revealing a substantial gap.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "For example, UVCOM [36] shows an average mAP of 44.90 for middle-length moments (10–30 seconds), while achieving only 10.67 for short moments (less than 10 seconds), revealing a substantial gap.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For example, highlights in sports and news, as well as key scenes in movies and dramas,...",
+        "scenario": "For example, highlights in sports and news, as well as key scenes in movies and dramas, often involve short moments.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "For example, highlights in sports and news, as well as key scenes in movies and dramas, often involve short moments.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Non-DETR methods offer faster inference but rely heavily on complex post-processing, such as Non-Maximum Suppression (NMS), making them sensitive to IoU thresholds.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Non-DETR methods offer faster inference but rely heavily on complex post-processing, such as Non-Maximum Suppression (NMS), making them sensitive to IoU thresholds.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For example, UVCOM shows an average mAP of 44.90 for middle-length moments (10–30 seconds), while achieving only 10.67 for short moments (less than 10 seconds), revealing a substantial gap.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "For example, UVCOM [36] shows an average mAP of 44.90 for middle-length moments (10–30 seconds), while achieving only 10.67 for short moments (less than 10 seconds), revealing a substantial gap.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "From a data perspective, we examined the feature distribution of short moments compared to other moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "From a data perspective, we examined the feature distribution of short moments compared to other moments.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that lLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds?",
+      "failure_mode": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "root_cause": "slow inference speeds.",
+      "why_existing_methods_fail": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "affected_scenario": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1?",
+      "failure_mode": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+      "root_cause": "highlighted in Figure 1.",
+      "why_existing_methods_fail": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+      "affected_scenario": "our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives?",
+      "failure_mode": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+      "root_cause": "This emphasizes the importance of accurately retrieving short moments in practical scenarios.",
+      "why_existing_methods_fail": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+      "affected_scenario": "For example, highlights in sports and news, as well as key scenes in movies and dramas, often involve short moments.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that through data analysis, we identified a key limitation in the feature diversity of short moments?",
+      "failure_mode": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+      "root_cause": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+      "why_existing_methods_fail": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+      "affected_scenario": "Specifically, this task involves localizing the start and end points in the video relevant to the textual query, offering a more detailed underlong middle short 0 10 20 30 40 50 mAP (a) QD-DETR TR-DETR UVCOM 0 5 10 15 20 (b) QD-DETR TR-DETR UVCOM + Ours QD-DETR TR-DETR UVCOM + Ours Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Through data analysis, we identified a key limitation in the feature diversity of short moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "new DETRbased MR framework",
+      "method_core_mechanism": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+      "method_components": [
+        "DETRbased MR",
+        "MR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0105"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD)",
+      "method_core_mechanism": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+      "method_components": [
+        "Length-Aware Decoder (LAD)",
+        "Length-Aware Decoder",
+        "LAD",
+        "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD)."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0114"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "length-aware decoder designed to enhance center prediction by conditioning it on length",
+      "method_core_mechanism": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+      "method_components": [
+        "we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0114"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new DETRbased MR framework targets LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0105",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD) targets LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0114",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new DETRbased MR framework targets our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0105",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD) targets our empirical findings indicate that these DETR-based models suffer from a significant drop in performance when handling short moments as highlighted in Figure 1. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0114",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new DETRbased MR framework targets In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0105",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD) targets In this study, we analyzed the challenges associated with existing methods in short-moment retrieval from both data and model perspectives. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0114",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD) targets Through data analysis, we identified a key limitation in the feature diversity of short moments. by operating on augmentation.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0114",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "new DETRbased MR framework targets Through data analysis, we identified a key limitation in the feature diversity of short moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0105",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "new DETRbased MR framework",
+      "compared_to": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "why_it_matters": "It directly targets LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD)",
+      "compared_to": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "why_it_matters": "It directly targets LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "length-aware decoder designed to enhance center prediction by conditioning it on length",
+      "compared_to": "LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.",
+      "why_it_matters": "It directly targets LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new DETRbased MR framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Based on the above analysis, we propose a new DETRbased MR framework that addresses the performance degradation when retrieving short moments.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+      "can_transfer_to": [
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Our framework consists of two novel techniques: a data augmentation technique called MomentMix and a Length-Aware Decoder (LAD).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "length-aware decoder designed to enhance center prediction by conditioning it on length",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "To address this, we introduce a length-aware decoder designed to enhance center prediction by conditioning it on length.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new DETRbased MR framework",
+      "baseline": "MomentMix Augmentation with Length-Aware DETR for Temporally Robust Moment Retrieval",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "new DETRbased MR framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting LLM-based approaches achieve strong zero-shot performance but are impractical for real-world applications due to slow inference speeds.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_park_momentmix-augmentation-with-length-aware-detr-for-temporally-robust-moment-retri_f66fe16cb2\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_park_momentmix-augmentation-with-length-aware-detr-for-temporally-robust-moment-retri_f66fe16cb2\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

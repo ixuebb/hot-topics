@@ -1,0 +1,854 @@
+{
+  "paper_id": "2024_wang_grounded-videollm-sharpening-fine-grained-temporal-grounding-in-video-large-lang_7adcb5e20a",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_grounded-videollm-sharpening-fine-grained-temporal-grounding-in-video-large-lang_7adcb5e20a",
+  "title": "Grounded-VideoLLM: Sharpening Fine-grained Temporal Grounding in Video Large Language Models",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Haibo Wang",
+    "Zhiyang Xu",
+    "Yu Cheng",
+    "Shizhe Diao",
+    "Yufan Zhou",
+    "Yixin Cao",
+    "Qifan Wang",
+    "Weifeng Ge",
+    "Lifu Huang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "To optimize the training of Grounded-VideoLLM, we employ a multi-stage training scheme, beginning with simple video-captioning tasks and progressively introducing video temporal grounding tasks of increasing complexity.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Multi-modal Large Language Models (MLLMs) have made remarkable progress in image-level understanding .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Multi-modal Large Language Models (MLLMs) have made remarkable progress in image-level understanding (Liu et al., 2023; Dai et al., 2023; Li et al., 2023b).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "extending their capabilities to the video domain poses distinct challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, extending their capabilities to the video domain poses distinct challenges.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Although there have been some previous works using spe Temporal Localization Temporal Reasoning What is taking place between <12> and <28>?",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Although there have been some previous works (Yang et al., 2023; Huang et al., 2024b; Qian et al., 2024a) using spe Temporal Localization Temporal Reasoning What is taking place between <12> and <28>?",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "extending their capabilities to the video domain poses distinct challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, extending their capabilities to the video domain poses distinct challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained video understanding ,...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs (Xu et al., 2024a; Li et al., 2024; Zhang et al., 2023b; Lin et al., 2023) are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained video understanding (Liu et al., 2024c; Wang et al., 2024d), which requires decomposing the video along the temporal axis to accurately perceive and reason over specific moments, such as subtle actions, transitions, and events that unfold over time.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image...",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT (Maaz et al., 2024b), P-LLaVA (Xu et al., 2024a), and Video-LLAMA (Zhang et al., 2023b) typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector (e.g., sliding Q-former (Ren et al., 2024), visual adapter (Huang et al., 2024a)).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(2) Current models also struggle with timestamp representation, which is crucial for pinpointing specific moments in time for fine-grained understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "(2) Current models also struggle with timestamp representation, which is crucial for pinpointing specific moments in time for fine-grained understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "two main challenges impede their potential for achieving effective finegrained temporal...",
+        "scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT (Maaz et al., 2024b), P-LLaVA (Xu et al., 2024a), and Video-LLAMA (Zhang et al., 2023b) typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector (e.g., sliding Q-former (Ren et al., 2024), visual adapter (Huang et al., 2024a)).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Models such as TimeChat and VTimeLLM represent timestamps as plain texts, for example,...",
+        "scenario": "Models such as TimeChat and VTimeLLM represent timestamps as plain texts, for example, [\"from 102.3 to 120.1 seconds\"].",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Models such as TimeChat (Ren et al., 2024) and VTimeLLM (Huang et al., 2024a) represent timestamps as plain texts, for example, [\"from 102.3 to 120.1 seconds\"].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Temporal Referring 00:19 <12> <28> <34> <58> <60> <104> <180> <288> <280> <276> <270>...",
+        "scenario": "Temporal Referring 00:19 <12> <28> <34> <58> <60> <104> <180> <288> <280> <276> <270> <254> 00:45 00:54 01:36 01:33 02:46 04:48 06:46 07:12 07:22 07:28 07:41 Temporal Tokens Timestamp Figure 1: Grounded-VideoLLM enables Temporal Referring/Localizing/Reasoning for MLLMs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Temporal Referring 00:19 <12> <28> <34> <58> <60> <104> <180> <288> <280> <276> <270> <254> 00:45 00:54 01:36 01:33 02:46 04:48 06:46 07:12 07:22 07:28 07:41 Temporal Tokens Timestamp Figure 1: Grounded-VideoLLM enables Temporal Referring/Localizing/Reasoning for MLLMs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "To further improve video understanding, we propose to sharpen the model with fine-grained...",
+        "scenario": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "*Work done during an internship at UC Davis.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "*Work done during an internship at UC Davis.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Previous research efforts have explored temporal grounding to improve fine-grained video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Previous research efforts (Ren et al., 2024; Huang et al., 2024a; Qian et al., 2024a; Huang et al., 2024b; Guo et al., 2024) have explored temporal grounding to improve fine-grained video understanding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies .",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies (Huang et al., 2024b; Qian et al., 2024a; Yang et al., 2023).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "extending their capabilities to the video domain poses distinct challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that extending their capabilities to the video domain poses distinct challenges?",
+      "failure_mode": "extending their capabilities to the video domain poses distinct challenges.",
+      "root_cause": "# Introduction Multi-modal Large Language Models (MLLMs) have made remarkable progress in image-level understanding .",
+      "why_existing_methods_fail": "extending their capabilities to the video domain poses distinct challenges.",
+      "affected_scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "However, extending their capabilities to the video domain poses distinct challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events?",
+      "failure_mode": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+      "root_cause": "extending their capabilities to the video domain poses distinct challenges.",
+      "why_existing_methods_fail": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+      "affected_scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained?",
+      "failure_mode": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained...",
+      "root_cause": "subtle actions, transitions, and events that unfold over time.",
+      "why_existing_methods_fail": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained video understanding , which requires decomposing the video along the temporal axis...",
+      "affected_scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs (Xu et al., 2024a; Li et al., 2024; Zhang et al., 2023b; Lin et al., 2023) are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained video understanding (Liu et al., 2024c; Wang et al., 2024d), which requires decomposing the video along the temporal axis to accurately perceive and reason over specific moments, such as subtle actions, transitions, and events that unfold over time.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently?",
+      "failure_mode": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently...",
+      "root_cause": "Previous research efforts have explored temporal grounding to improve fine-grained video understanding.",
+      "why_existing_methods_fail": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector , visual adapter ).",
+      "affected_scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT (Maaz et al., 2024b), P-LLaVA (Xu et al., 2024a), and Video-LLAMA (Zhang et al., 2023b) typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector (e.g., sliding Q-former (Ren et al., 2024), visual adapter (Huang et al., 2024a)).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images?",
+      "failure_mode": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+      "root_cause": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image...",
+      "why_existing_methods_fail": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+      "affected_scenario": "two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently using an image encoder, followed by a feature projector ,...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin",
+      "method_core_mechanism": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+      "method_components": [
+        "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0013"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Grounded- VideoLLM, a novel Video-LLM",
+      "method_core_mechanism": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+      "method_components": [
+        "Grounded- VideoLLM",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "from previous studies",
+      "method_core_mechanism": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies .",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies (Huang et al., 2024b; Qian et al., 2024a; Yang et al., 2023).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Grounded- VideoLLM, a novel Video-LLM targets extending their capabilities to the video domain poses distinct challenges. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "from previous studies targets extending their capabilities to the video domain poses distinct challenges. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies (Huang et al., 2024b; Qian et al., 2024a; Yang et al., 2023).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin targets Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Grounded- VideoLLM, a novel Video-LLM targets Unlike static images, the temporal nature of videos challenges models to process not only visual content but also the sequence and timing of events. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Grounded- VideoLLM, a novel Video-LLM targets Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "from previous studies targets Codes will be available at https://github.com/WHB139426/Grounded-Video-LLM While current Video-LLMs are capable of capturing global visual semantics and generating coarse-grained captions for short clips, they struggle with fine-grained... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies (Huang et al., 2024b; Qian et al., 2024a; Yang et al., 2023).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin targets two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Grounded- VideoLLM, a novel Video-LLM targets two main challenges impede their potential for achieving effective finegrained temporal grounding: (1) Models like Video-ChatGPT , P-LLaVA , and Video-LLAMA typically sample multiple frames from a video and encode each frame independently... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin targets This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0013",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Grounded- VideoLLM, a novel Video-LLM targets This focuses primarily on spatial details while potentially neglecting the temporal relationships between frames since their visual encoders are solely trained on images. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0121",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin",
+      "compared_to": "extending their capabilities to the video domain poses distinct challenges.",
+      "why_it_matters": "It directly targets extending their capabilities to the video domain poses distinct challenges.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Grounded- VideoLLM, a novel Video-LLM",
+      "compared_to": "extending their capabilities to the video domain poses distinct challenges.",
+      "why_it_matters": "It directly targets extending their capabilities to the video domain poses distinct challenges.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "from previous studies",
+      "compared_to": "extending their capabilities to the video domain poses distinct challenges.",
+      "why_it_matters": "It directly targets extending their capabilities to the video domain poses distinct challenges.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To further improve video understanding, we propose to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with finer granularity, as illustrated in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Grounded- VideoLLM, a novel Video-LLM",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Targeting these goals, we introduce Grounded- VideoLLM, a novel Video-LLM that can perceive and reason over specific video moments with finegrained precision.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "from previous studies",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies .",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "This scheme ensures the introduced temporal tokens align closely with the video timelines and LLM’s semantic space, distinguishing our method from previous studies (Huang et al., 2024b; Qian et al., 2024a; Yang et al., 2023).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin",
+      "baseline": "Grounded-VideoLLM: Sharpening Fine-grained Temporal Grounding in Video Large Language Models",
+      "dataset": "MAD",
+      "module_to_modify": "to sharpen the model with fine-grained temporal grounding, allowing the model to recognize not only what happens but pinpoint when it happens with fin",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting extending their capabilities to the video domain poses distinct challenges.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_grounded-videollm-sharpening-fine-grained-temporal-grounding-in-video-large-lang_7adcb5e20a\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_wang_grounded-videollm-sharpening-fine-grained-temporal-grounding-in-video-large-lang_7adcb5e20a\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

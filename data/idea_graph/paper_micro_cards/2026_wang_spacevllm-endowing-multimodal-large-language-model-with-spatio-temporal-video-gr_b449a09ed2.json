@@ -1,0 +1,885 @@
+{
+  "paper_id": "2026_wang_spacevllm-endowing-multimodal-large-language-model-with-spatio-temporal-video-gr_b449a09ed2",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_spacevllm-endowing-multimodal-large-language-model-with-spatio-temporal-video-gr_b449a09ed2",
+  "title": "SpaceVLLM: Endowing Multimodal Large Language Model with Spatio-Temporal Video Grounding Capability",
+  "year": 2026,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Jiankang Wang",
+    "Zhihan Zhang",
+    "Zhihang Liu",
+    "Yang Li",
+    "Jiannan Ge",
+    "Hongtao Xie",
+    "Yongdong Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Multimodal Large Language Models (MLLMs) have shown remarkable progress in temporal or spatial localization tasks, but struggle with joint spatio-temporal video grounding (STVG).",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Multimodal large language models (MLLMs) have recently demonstrated significant advancements in multimodal un- ∗Equal contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Multimodal large language models (MLLMs) have recently demonstrated significant advancements in multimodal un- ∗Equal contribution.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "B Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "B Corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "SpaceVLLM GT 0 5.4 12.5 20(s) Textual Query: The standing fat woman clamps something and puts it on a plate, then raises the teapot and pours tea.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "SpaceVLLM GT 0 5.4 12.5 20(s) Textual Query: The standing fat woman clamps something and puts it on a plate, then raises the teapot and pours tea.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Locate the visual content described by the given textual query in the video from the temporal dimension.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Locate the visual content described by the given textual query in the video from the temporal dimension.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, the challenging task of Spatio-Temporal Video Grounding (STVG) [60], which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Nevertheless, when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "VTG STVG REC Figure 1.",
+        "scenario": "VTG STVG REC Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "VTG STVG REC Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1 shows our model’s temporal, spatial and spatio-temporal localization...",
+        "scenario": "Figure 1 shows our model’s temporal, spatial and spatio-temporal localization capabilities.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Figure 1 shows our model’s temporal, spatial and spatio-temporal localization capabilities.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "How can MLLMs be endowed with Spatio-Temporal Video Grounding capability?",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "How can MLLMs be endowed with Spatio-Temporal Video Grounding capability?",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Another idea is to allow powerful MLLMs to generate the time range and the coordinates of each frame in one step through instruction tuning.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Another idea is to allow powerful MLLMs [49, 59] to generate the time range and the coordinates of each frame in one step through instruction tuning.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs?",
+      "failure_mode": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "root_cause": "Some studies aim to enhance the ability of MLLMs to perceive temporal information in tasks such as Video Temporal Grounding, while others concentrate on localizing referred objects within a single image.",
+      "why_existing_methods_fail": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "affected_scenario": "VTG STVG REC Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, the challenging task of Spatio-Temporal Video Grounding (STVG) [60], which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise?",
+      "failure_mode": "when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise...",
+      "root_cause": "static images lack temporal awareness and the dynamic spatial details necessary for precise localization.",
+      "why_existing_methods_fail": "when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise localization.",
+      "affected_scenario": "VTG STVG REC Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Nevertheless, when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once?",
+      "failure_mode": "a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+      "root_cause": "Another idea is to allow powerful MLLMs to generate the time range and the coordinates of each frame in one step through instruction tuning.",
+      "why_existing_methods_fail": "a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+      "affected_scenario": "VTG STVG REC Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens?",
+      "failure_mode": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+      "root_cause": "a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once.",
+      "why_existing_methods_fail": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+      "affected_scenario": "VTG STVG REC Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains?",
+      "failure_mode": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+      "root_cause": "Additionally, most existing datasets are designed to address either temporal grounding or spatial grounding in isolation.",
+      "why_existing_methods_fail": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+      "affected_scenario": "Figure 1 shows our model’s temporal, spatial and spatio-temporal localization capabilities.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG)",
+      "method_core_mechanism": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+      "method_components": [
+        "Spatio-Temporal Video Grounding (STVG)",
+        "Spatio-Temporal Video Grounding",
+        "MLLM",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "Query-Guided Space Decoder",
+      "method_core_mechanism": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+      "method_components": [
+        "Query-Guided Space Decoder",
+        "we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0108"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability",
+      "method_core_mechanism": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+      "method_components": [
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding",
+      "method_core_mechanism": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+      "method_components": [
+        "Unified Spatio-Temporal Grounding",
+        "STG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0013"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) targets the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability targets the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) targets when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Query-Guided Space Decoder targets when the given caption describes a person’s action, this approach often fails to extract accu- 1 --- Page 2 --rate spatio-temporal information, as static images lack temporal awareness and the dynamic spatial details necessary for precise... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) targets a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability targets a video inherently contains a vast number of visual tokens, and MLLMs are required to output considerable coordinates at once. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) targets This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability targets This makes it difficult to accurately associate each spatial coordinate with the corresponding frame’s visual tokens. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0113",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Query-Guided Space Decoder targets The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability targets The lack of spatiotemporal datasets limits the model’s ability to fully capture the fine-grained details of a video across both temporal and spatial domains. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG)",
+      "compared_to": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "why_it_matters": "It directly targets the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "Query-Guided Space Decoder",
+      "compared_to": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "why_it_matters": "It directly targets the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability",
+      "compared_to": "the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.",
+      "why_it_matters": "It directly targets the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address the above challenges, we propose SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG) task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Query-Guided Space Decoder",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To map the extracted information into coordinates, we propose a Query-Guided Space Decoder which connects the query of the corresponding frame with the spatial coordinate.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: • We propose SpaceVLLM, the first MLLM equipped with spatio-temporal video grounding capability.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "• We propose a Unified Spatio-Temporal Grounding dataset (Uni-STG) with 3 tasks and 480K instances, facilitating fine-grained spatial-temporal understanding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG)",
+      "baseline": "SpaceVLLM: Endowing Multimodal Large Language Model with Spatio-Temporal Video Grounding Capability",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "SpaceVLLM, the first MLLM capable of simultaneously integrating spatial and temporal information to perform the Spatio-Temporal Video Grounding (STVG)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the challenging task of Spatio-Temporal Video Grounding (STVG) , which requires locating a spatio-temporal tube corresponding to a specific instance described by a caption, remains underexplored by existing MLLMs.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_spacevllm-endowing-multimodal-large-language-model-with-spatio-temporal-video-gr_b449a09ed2\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_spacevllm-endowing-multimodal-large-language-model-with-spatio-temporal-video-gr_b449a09ed2\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

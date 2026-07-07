@@ -1,0 +1,904 @@
+{
+  "paper_id": "2026_gu_towards-long-form-spatio-temporal-video-grounding_c284612347",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gu_towards-long-form-spatio-temporal-video-grounding_c284612347",
+  "title": "Towards Long-Form Spatio-Temporal Video Grounding",
+  "year": 2026,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Xin Gu",
+    "Bing Fan",
+    "Jiali Yao",
+    "Zhipeng Zhang",
+    "Yan Huang",
+    "Cheng Han",
+    "Heng Fan",
+    "Libo Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "However, existing research on spatio-temporal video grounding (STVG), given a textual query, mainly focuses on localizing targets in short videos of tens of seconds, typically less than one minute, which limits real-world applications.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Spatio-temporal video grounding (STVG) aims to localize a target of interest in space and time from an untrimmed video given a free-form textual query .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Spatio-temporal video grounding (STVG) aims to localize a target of interest in space and time from an untrimmed video given a free-form textual query [54].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As †Equal advising and corresponding authors 2 X.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "As †Equal advising and corresponding authors 2 X.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "⋯ ⋯ Existing (SF-)STVG Models (a) Existing (SF-)STVG models: processing all frames in one time ⋯ ⋯ ART-STVG ART-STVG Text Text Text ⋯ ⋯ ⋯ ⋯ ⋯ Text (b) Our LF-STVG model: processing one frame at a time ART-STVG Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "⋯ ⋯ Existing (SF-)STVG Models (a) Existing (SF-)STVG models: processing all frames in one time ⋯ ⋯ ART-STVG ART-STVG Text Text Text ⋯ ⋯ ⋯ ⋯ ⋯ Text (b) Our LF-STVG model: processing one frame at a time ART-STVG Fig.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "1: Comparison of existing STVG approaches (e.g., [10,12,19,26,46,50]) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For these reasons, Towards Long-Form Spatio-Temporal Video Grounding 3 processing all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive...",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "For these reasons, Towards Long-Form Spatio-Temporal Video Grounding 3 processing all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck faced by current...",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck faced by current approaches.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a...",
+        "scenario": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "1: Comparison of existing STVG approaches (e.g., [10,12,19,26,46,50]) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Owing to its pivotal role in multimodal video understanding, STVG has recently attracted...",
+        "scenario": "Owing to its pivotal role in multimodal video understanding, STVG has recently attracted extensive attention (e.g., ).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Owing to its pivotal role in multimodal video understanding, STVG has recently attracted extensive attention (e.g., [10,12,19,26,37,40,46,50,53,54]).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "To localize the desired target, existing STVG approaches (e.g., ) process all video...",
+        "scenario": "To localize the desired target, existing STVG approaches (e.g., ) process all video frames in one time (see Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "To localize the desired target, existing STVG approaches (e.g., [10,12, 19,26,46,50]) process all video frames in one time (see Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For instance, the average video length of existing popular benchmarks HCSTVGv1/-v2 and VidSTG is 20 and 35 seconds, respectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For instance, the average video length of existing popular benchmarks HCSTVGv1/-v2 [40] and VidSTG [54] is 20 and 35 seconds, respectively.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Our response is negative!",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Our response is negative!",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial...",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial spatio-temporal context for enhancing target localization; ♣We introduce a cascaded spatio-temporal decoder design to fully leverage the fine-grained information produced by spatial localization to assist temporal localization; ♦In extensive experiments on both long-term and short-term benchmarks, our ART-STVG achieves excellent performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute?",
+      "failure_mode": "current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "root_cause": "Owing to its pivotal role in multimodal video understanding, STVG has recently attracted extensive attention (e.g., ).",
+      "why_existing_methods_fail": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "affected_scenario": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG??",
+      "failure_mode": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+      "root_cause": "the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+      "why_existing_methods_fail": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+      "affected_scenario": "To localize the desired target, existing STVG approaches (e.g., ) process all video frames in one time (see Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG?",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig?",
+      "failure_mode": "all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+      "root_cause": "done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+      "why_existing_methods_fail": "For these reasons, Towards Long-Form Spatio-Temporal Video Grounding 3 processing all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+      "affected_scenario": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "For these reasons, Towards Long-Form Spatio-Temporal Video Grounding 3 processing all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames?",
+      "failure_mode": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+      "root_cause": "of high GPU memory requirements for simultaneous target localization in all frames.",
+      "why_existing_methods_fail": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+      "affected_scenario": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck?",
+      "failure_mode": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck...",
+      "root_cause": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+      "why_existing_methods_fail": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck faced by current approaches.",
+      "affected_scenario": "1: Comparison of existing STVG approaches (e.g., ) that see the entire video to make a full prediction at once in (a) and ART-STVG that processes frames one at a time and is more suitable for handling long videos in LF-STVG in (b).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck faced by current approaches.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG",
+      "method_core_mechanism": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+      "method_components": [
+        "AutoRegressive Transformer",
+        "LF",
+        "STVG",
+        "ART"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0141"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance",
+      "method_core_mechanism": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+      "method_components": [
+        "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0164"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "novel cascaded spatio-temporal design",
+      "method_core_mechanism": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+      "method_components": [
+        "we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0016"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "memory selection strategies",
+      "method_core_mechanism": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial spatio-temporal context for enhancing target localization; ♣We introduce a cascaded spatio-temporal decoder design to...",
+      "method_components": [
+        "LF",
+        "STVG",
+        "ART",
+        "♣We introduce a cascaded spatio-temporal decoder design to fully leverage the fine-grained information produced by spatial..."
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "temporal context",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial spatio-temporal context for enhancing target localization; ♣We introduce a cascaded spatio-temporal decoder design to fully leverage the fine-grained information produced by spatial localization to assist temporal localization; ♦In extensive experiments on both long-term and short-term benchmarks, our ART-STVG achieves excellent performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0141"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG targets current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0141",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance targets current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG targets Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0141",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance targets Nonetheless, as the video length increases, new challenges arise, prompting an important question: Is processing all video frames at once, as done in existing SF-STVG models, still applicable to LF-STVG? by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG targets all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0141",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance targets all frames of a long video at once, as done in current STVG methods, presents significant challenges in capturing long-term spatio-temporal relationships and handling excessive irrelevant information for accurate localization (see Fig. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG targets Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0141",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance targets Additionally, it causes computational bottlenecks because of high GPU memory requirements for simultaneous target localization in all frames. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance targets Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "novel cascaded spatio-temporal design targets Compared to existing approaches which require seeing the entire video for prediction, our proposed ART-STVG ingests frames one at a time for prediction, hence naturally processing longer videos and resolving the computational bottleneck... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0058",
+      "micro_method_cluster_id": "MM0016",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG",
+      "compared_to": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "why_it_matters": "It directly targets current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance",
+      "compared_to": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "why_it_matters": "It directly targets current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "novel cascaded spatio-temporal design",
+      "compared_to": "Despite advancements, current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.",
+      "why_it_matters": "It directly targets current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Addressing the aforementioned challenges, we propose a novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "Since the memories in the banks are not equally important to a certain frame, we introduce simple yet effective memory selective strategies to leverage more relevant information in memory banks for grounding, effectively boosting performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel cascaded spatio-temporal design",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Furthermore, rather than parallelizing the spatial and temporal localization as is done in existing approaches, we propose a novel cascaded spatio-temporal design which connects spatial decoder to temporal decoder during grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "memory selection strategies",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial spatio-temporal context for enhancing target localization; ♣We introduce a cascaded spatio-temporal decoder design to...",
+      "can_transfer_to": [
+        "context",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are as follows: ♠We explore the LF-STVG problem and introduce a novel memory-augmented autoregressive transformer, dubbed ART-STVG, for LF-STVG; ♥We propose memory selection strategies that allow the selection of relevant crucial spatio-temporal context for enhancing target localization; ♣We introduce a cascaded spatio-temporal decoder design to fully leverage the fine-grained information produced by spatial localization to assist temporal localization; ♦In extensive experiments on both long-term and short-term benchmarks, our ART-STVG achieves excellent performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG",
+      "baseline": "Towards Long-Form Spatio-Temporal Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel AutoRegressive Transformer method for LF-STVG, dubbed ART-STVG",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting current research mainly focuses on locating the target within a short-term video lasting tens of seconds, typically less than one minute.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gu_towards-long-form-spatio-temporal-video-grounding_c284612347\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gu_towards-long-form-spatio-temporal-video-grounding_c284612347\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

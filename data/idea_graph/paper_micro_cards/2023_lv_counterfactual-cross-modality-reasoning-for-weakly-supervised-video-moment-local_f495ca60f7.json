@@ -1,0 +1,775 @@
+{
+  "paper_id": "2023_lv_counterfactual-cross-modality-reasoning-for-weakly-supervised-video-moment-local_f495ca60f7",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lv_counterfactual-cross-modality-reasoning-for-weakly-supervised-video-moment-local_f495ca60f7",
+  "title": "Counterfactual Cross-modality Reasoning for Weakly Supervised Video Moment Localization",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Zezhong Lv",
+    "Bing Su",
+    "Ji-Rong Wen"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment localization aims to retrieve the target segment of an untrimmed video according to the natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The widespread use of the internet and mobile devices has led to an unprecedented surge in multimedia content consumption, especially videos, due to their stronger capacity for information expression compared to other media forms.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction The widespread use of the internet and mobile devices has led to an unprecedented surge in multimedia content consumption, especially videos, due to their stronger capacity for information expression compared to other media forms.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection [12, 32] and temporal action localization [3, 9, 18].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Experimental results show that our CCR significantly outperforms the state-of-the-art baseline.",
+        "evidence": [
+          {
+            "evidence_id": "EV054",
+            "section": "Introduction",
+            "quote": "Experimental results show that our CCR significantly outperforms the state-of-the-art baseline.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection [12, 32] and temporal action localization [3, 9, 18].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "However, when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a...",
+        "scenario": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a glass.\" Masked Query Reconstruction person stands in doorway holding a glass person stands indoor holding a glass Contrastive Learning Reasonable Contrast Unreasonable Contrast Spurious Correlation Figure 1: A...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a glass.\" Masked Query Reconstruction person stands in doorway holding a glass person stands indoor holding a glass Contrastive Learning Reasonable Contrast Unreasonable Contrast Spurious Correlation Figure 1: A general query reconstruction based weakly supervised video moment localization framework.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Figure 1, one of the common end-to-end schemes utilized by existing...",
+        "scenario": "As illustrated in Figure 1, one of the common end-to-end schemes utilized by existing weakly supervised methods can be summarized as follows: (1) Generating several candidate proposals from the untrimmed video based on the cross-modality features, and extracting their features; (2) By interacting...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, one of the common end-to-end schemes utilized by existing weakly supervised methods can be summarized as follows: (1) Generating several candidate proposals from the untrimmed video based on the cross-modality features, and extracting their features; (2) By interacting the proposal features with the masked query, the reconstructed query for each proposal is obtained, while the reconstruction loss is taken as the proxy of the alignment score between video proposal and query; These two steps enable the model to discover the fine-grained cross-modality alignment with no temporal labels; (3) Applying intra-sample contrastive learning between the reconstruction errors ",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, the non-uniform joint distribution of the noun and predicate in queries...",
+        "scenario": "For example, the non-uniform joint distribution of the noun and predicate in queries reported in will make the model tend to predict the masked word based on the combination of regular word pairs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "For example, the non-uniform joint distribution of the noun and predicate in queries reported in [33] will make the model tend to predict the masked word based on the combination of regular word pairs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As illustrated in Figure 1, given a query “person stands in doorway holding a glass”,...",
+        "scenario": "As illustrated in Figure 1, given a query “person stands in doorway holding a glass”, when we mask the word “glass” and reconstruct it, the answer could be predicted directly based on the language knowledge rather than the cross-modality fusion model because of the highly statistic correlation...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, given a query “person stands in doorway holding a glass”, when we mask the word “glass” and reconstruct it, the answer could be predicted directly based on the language knowledge rather than the cross-modality fusion model because of the highly statistic correlation between the word “glass” and “holding” implying by dataset.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "While these tasks primarily focus on single video modality, video moment localization is increasingly becoming a central research topic in modeling the relationship between video and natural language, which is largely motivated by the requirements of the...",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "While these tasks primarily focus on single video modality, video moment localization [8, 13] is increasingly becoming a central research topic in modeling the relationship between video and natural language, which is largely motivated by the requirements of the cross-modality application scenarios.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Besides, the performance of a fully supervised method heavily relies on the quality of the ground truth labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Besides, the performance of a fully supervised method heavily relies on the quality of the ground truth labels.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "the prediction for the masked “indoor” can differ between positive and negative proposals due to changes in the person’s location.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "the prediction for the masked “indoor” can differ between positive and negative proposals due to changes in the person’s location.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different...",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization ?",
+      "failure_mode": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "root_cause": "a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "why_existing_methods_fail": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "affected_scenario": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a glass.\" Masked Query Reconstruction person stands in doorway holding a glass person stands indoor holding a glass Contrastive Learning Reasonable Contrast Unreasonable Contrast Spurious Correlation Figure 1: A...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection [12, 32] and temporal action localization [3, 9, 18].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming?",
+      "failure_mode": "these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+      "root_cause": "the start and end times of the target moment) provided in the given datasets.",
+      "why_existing_methods_fail": "these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+      "affected_scenario": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a glass.\" Masked Query Reconstruction person stands in doorway holding a glass person stands indoor holding a glass Contrastive Learning Reasonable Contrast Unreasonable Contrast Spurious Correlation Figure 1: A...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the spurious correlation between un-masked and masked words confuses the contrastive learning process?",
+      "failure_mode": "the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+      "root_cause": "The reconstruction based on positive and negative proposals is contrasted to learn the cross-modality alignment.",
+      "why_existing_methods_fail": "the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+      "affected_scenario": "\" Positive proposal Negative proposal Masked Query: \"person stands in doorway holding a glass.\" Masked Query Reconstruction person stands in doorway holding a glass person stands indoor holding a glass Contrastive Learning Reasonable Contrast Unreasonable Contrast Spurious Correlation Figure 1: A...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, the spurious correlation between un-masked and masked words confuses the contrastive learning process.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations?",
+      "failure_mode": "when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+      "root_cause": "The core idea of these methods relies on that a larger similarity between the video proposal and the query implies the masked query can be reconstructed easier according to the video proposal, and vice versa.",
+      "why_existing_methods_fail": "when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+      "affected_scenario": "As illustrated in Figure 1, one of the common end-to-end schemes utilized by existing weakly supervised methods can be summarized as follows: (1) Generating several candidate proposals from the untrimmed video based on the cross-modality features, and extracting their features; (2) By interacting...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "However, when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model?",
+      "failure_mode": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+      "root_cause": "the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+      "why_existing_methods_fail": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+      "affected_scenario": "For example, the non-uniform joint distribution of the noun and predicate in queries reported in will make the model tend to predict the masked word based on the combination of regular word pairs.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR)",
+      "method_core_mechanism": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+      "method_components": [
+        "Counterfactual Cross-modality Reasoning (CCR)",
+        "Counterfactual Cross-modality Reasoning",
+        "CCR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0171"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential",
+      "method_core_mechanism": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+      "method_components": [
+        "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0171"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR) targets As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential targets As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR) targets these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential targets these fine-grained temporal labels are not always accessible in many application scenarios, and manually annotating such labels are expensive and time-consuming. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR) targets the spurious correlation between un-masked and masked words confuses the contrastive learning process. by operating on bias, cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential targets the spurious correlation between un-masked and masked words confuses the contrastive learning process. by operating on bias, cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0066",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR) targets when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations. by operating on bias, cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential targets when training the cross-modality interaction module on biased queries in the dataset, which illustrate certain patterns of word combinations, the model learns the spurious correlations implied by these combinations. by operating on bias, cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR) targets In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential targets In other words, the difficulty of the query reconstruction is significantly lower because the masked words can be approximately reconstructed even if the mismatching video moment proposal is fed into the cross-modality model. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0171",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR)",
+      "compared_to": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "why_it_matters": "It directly targets As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential",
+      "compared_to": "As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .",
+      "why_it_matters": "It directly targets As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+      "can_transfer_to": [
+        "bias",
+        "cross_modal",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "We propose to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+      "can_transfer_to": [
+        "bias",
+        "cross_modal",
+        "weak_supervision",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We summarize our major contributions as follows: (1) We propose a novel method, counterfactual cross-modality reasoning, for weakly supervised video moment localization, aimed at discovering and mitigating potential spurious correlations between different words in the query.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR)",
+      "baseline": "Counterfactual Cross-modality Reasoning for Weakly Supervised Video Moment Localization",
+      "dataset": "ActivityNet, MAD",
+      "module_to_modify": "to discover and mitigate these spurious correlations through Counterfactual Cross-modality Reasoning (CCR)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting As a result, video understanding has become a crucial challenge in computer vision, encompassing a vast range of research topics, such as video highlight detection and temporal action localization .."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lv_counterfactual-cross-modality-reasoning-for-weakly-supervised-video-moment-local_f495ca60f7\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lv_counterfactual-cross-modality-reasoning-for-weakly-supervised-video-moment-local_f495ca60f7\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

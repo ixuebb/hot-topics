@@ -1,0 +1,833 @@
+{
+  "paper_id": "2023_wang_protege-untrimmed-pretraining-for-video-temporal-grounding-by-video-temporal-gro_83371a939a",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_wang_protege-untrimmed-pretraining-for-video-temporal-grounding-by-video-temporal-gro_83371a939a",
+  "title": "ProTeGe: Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+  "year": 2023,
+  "venue_or_source": "CVPR 2023",
+  "authors": [
+    "Lan Wang",
+    "Gaurav Mittal",
+    "Sandra Sajeev",
+    "Ye Yu",
+    "Matthew Hall",
+    "Vishnu Naresh Boddeti",
+    "Mei Chen"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video temporal grounding (VTG) is the task of localizing a given natural language text query in an arbitrarily long untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding (VTG) is the video-language multimodal task of localizing which part of an arbitrarily long untrimmed video can be best associated with a given natural language text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding (VTG) is the video-language multimodal task of localizing which part of an arbitrarily long untrimmed video can be best associated with a given natural language text query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "VTG has a wide range of applications, such as information retrieval and robotics.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "VTG has a wide range of applications, such as information retrieval and robotics.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "While there are multiple approaches for VTG, all existing methods, to the best of our knowledge, rely on video backbones pretrained on trimmed videos (such as Kinetics ) to obtain the visual features as part of their respective approaches.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "While there are multiple approaches for VTG, all existing methods, to the best of our knowledge, rely on video backbones pretrained on trimmed videos (such as Kinetics [15]) to obtain the visual features as part of their respective approaches.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "There are, however, datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "There are, however, datasets such as HowTo100M [30] and Youtube-8M [1], with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, as noted by prior methods [12,29,41], since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary...",
+        "scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "(Q2) 0.0-8.4s 13.3-22.4s Video-text Pretraining on Trimmed Videos ProTéGé: Video-text...",
+        "scenario": "(Q2) 0.0-8.4s 13.3-22.4s Video-text Pretraining on Trimmed Videos ProTéGé: Video-text Pretraining on Untrimmed Videos 0.0-10.4s 13.4-19.3s 0.0-8.9s 13.4-22.3s … … … Cosine Similarity of Downstream Untrimmed Video Features with Q2 “Use a watercolor pen to fill in the gaps.” … … “Next step is to fill...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "(Q2) 0.0-8.4s 13.3-22.4s Video-text Pretraining on Trimmed Videos ProTéGé: Video-text Pretraining on Untrimmed Videos 0.0-10.4s 13.4-19.3s 0.0-8.9s 13.4-22.3s … … … Cosine Similarity of Downstream Untrimmed Video Features with Q2 “Use a watercolor pen to fill in the gaps.” … … “Next step is to fill the channel” (a) (b) Video-text Pretraining on Trimmed Videos (c) ProTéGé: Video-text Pretraining on Untrimmed Videos “Reinforce the handrail with screws.” Cosine Similarity of Downstream Untrimmed Video Features with Q2 “The person climbing mountain.” Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, Fig 1 shows that the grounding predictions (in orange), when using a...",
+        "scenario": "For example, Fig 1 shows that the grounding predictions (in orange), when using a backbone jointly pretrained on trimmed videos and text, do not match adequately with the ground truth.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "For example, Fig 1 shows that the grounding predictions (in orange), when using a backbone jointly pretrained on trimmed videos and text, do not match adequately with the ground truth.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As a result, the cosine similarity between video features aligning and not aligning with...",
+        "scenario": "As a result, the cosine similarity between video features aligning and not aligning with the text query are indistinguishable, as shown in Fig 1b.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "As a result, the cosine similarity between video features aligning and not aligning with the text query are indistinguishable, as shown in Fig 1b.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "⋆Authors with equal contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "⋆Authors with equal contribution.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "There are, however, datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "There are, however, datasets such as HowTo100M [30] and Youtube-8M [1], with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "One can potentially employ them for untrimmed pretraining as a VTG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "One can potentially employ them for untrimmed pretraining as a VTG task.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the?",
+      "failure_mode": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...",
+      "root_cause": "VTG has a wide range of applications, such as information retrieval and robotics.",
+      "why_existing_methods_fail": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "affected_scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets?",
+      "failure_mode": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+      "root_cause": "ProT´eG´e is the first approach to formulate pretraining as a VTG task to bridge the gap between video backbones pretrained on trimmed videos and downstream VTG tasks working with untrimmed videos.",
+      "why_existing_methods_fail": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+      "affected_scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs?",
+      "failure_mode": "datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+      "root_cause": "HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+      "why_existing_methods_fail": "There are, however, datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+      "affected_scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "There are, however, datasets such as HowTo100M [30] and Youtube-8M [1], with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task?",
+      "failure_mode": "as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+      "root_cause": "noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+      "why_existing_methods_fail": "as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+      "affected_scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "However, as noted by prior methods [12,29,41], since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets?",
+      "failure_mode": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+      "root_cause": "as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task.",
+      "why_existing_methods_fail": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+      "affected_scenario": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "method_core_mechanism": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+      "method_components": [
+        "Untrimmed Pretraining"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0129"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "novel video-text similarity grounding module along with an optimization objective",
+      "method_core_mechanism": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+      "method_components": [
+        "novel video-text similarity grounding module along with an optimization objective"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "similarity",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0211"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video tempo",
+      "method_core_mechanism": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+      "method_components": [
+        "ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video tempo"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0129"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel video-text similarity grounding module along with an optimization objective targets Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0211",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding targets Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0129",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding targets A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0129",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel video-text similarity grounding module along with an optimization objective targets A critical challenge impeding this untrimmed pretraining is the scarcity of large-scale well-annotated video grounding datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0211",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding targets datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0129",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel video-text similarity grounding module along with an optimization objective targets datasets such as HowTo100M and Youtube-8M , with over a million untrimmed videos and corresponding subtitled text generated via automated speech-to-text APIs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0211",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel video-text similarity grounding module along with an optimization objective targets as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0211",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding targets as noted by prior methods , since the text is derived from subtitles, the video regions are only noisily-correlated with the subtitled text, rendering the utility of these video-text pairs for grounding a non-trivial task. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0129",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "novel video-text similarity grounding module along with an optimization objective targets To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0211",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding targets To overcome the aforementioned challenges in leveraging large-scale untrimmed video datasets, we first propose a novel approach to transform them into VTG datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0069",
+      "micro_method_cluster_id": "MM0129",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "compared_to": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "why_it_matters": "It directly targets Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "novel video-text similarity grounding module along with an optimization objective",
+      "compared_to": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "why_it_matters": "It directly targets Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video tempo",
+      "compared_to": "Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the spatio-temporal dynamics in the video.",
+      "why_it_matters": "It directly targets Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We introduce ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel video-text similarity grounding module along with an optimization objective",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Then we introduce a novel video-text similarity grounding module along with an optimization objective that allows the pretraining to be robust to the noisy video-text correlations present in these datasets.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video tempo",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We propose ProT´eG´e, the first pretraining method formulated as a video temporal grounding task to bridge the gap between pretraining and downstream video temporal grounding tasks in untrimmed videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "baseline": "ProTeGe: Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "ProT´eG´e, Untrimmed Pretraining for Video Temporal Grounding by Video Temporal Grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Figure 1 shows a sample video-text pair for the VTG task and illustrates the primary challenge in grounding an unconstrained natural language text query in a long untrimmed video, namely, the need for a fine-grained understanding of the...."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_wang_protege-untrimmed-pretraining-for-video-temporal-grounding-by-video-temporal-gro_83371a939a\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_wang_protege-untrimmed-pretraining-for-video-temporal-grounding-by-video-temporal-gro_83371a939a\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

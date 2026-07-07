@@ -1,0 +1,396 @@
+{
+  "paper_id": "2024_liang_exploring-iterative-refinement-with-diffusion-models-for-video-grounding_ee77ece203",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_exploring-iterative-refinement-with-diffusion-models-for-video-grounding_ee77ece203",
+  "title": "Exploring Iterative Refinement with Diffusion Models for Video Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Xiao Liang",
+    "Tao Shi",
+    "Yaoyuan Liang",
+    "Te Tao",
+    "Shao-Luo Huang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video grounding aims to localize the target moment in an untrimmed video corresponding to a given sentence query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding (VG) is a fundamental task in videolanguage understanding, which focuses on identifying the start and end timestamps of a target moment (termed as target span) that exhibits the highest semantic correspondence with a sentence...",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding (VG) is a fundamental task in videolanguage understanding, which focuses on identifying the start and end timestamps of a target moment (termed as target span) that exhibits the highest semantic correspondence with a sentence query in an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As shown in Fig 1(a), this task is challenging since it requires not only separate understanding of the video and sentence representations but also a comprehension of their corresponding interaction.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "As shown in Fig 1(a), this task is challenging since it requires not only separate understanding of the video and sentence representations but also a comprehension of their corresponding interaction.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Existing methods on the VG task can be generally classified into three primary categories: (I) Proposal-based methods : Following the propose-and-rank pipeline, these methods first generate a set of proposals with predefined multi-scale anchors, then predict...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Existing methods on the VG task can be generally classified into three primary categories: (I) Proposal-based methods [1, 2, 3, 4]: Following the propose-and-rank pipeline, these methods first generate a set of proposals with predefined multi-scale anchors, then predict alignment scores for each proposal after aggregating contextual multi-modal information to identify the optimal matching moment, as depicted in Fig.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Nevertheless, incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset [1, 3], thereby limiting the model’s generalizability.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Fig 1(a), this task is challenging since it requires not only separate...",
+        "scenario": "As shown in Fig 1(a), this task is challenging since it requires not only separate understanding of the video and sentence representations but also a comprehension of their corresponding interaction.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "As shown in Fig 1(a), this task is challenging since it requires not only separate understanding of the video and sentence representations but also a comprehension of their corresponding interaction.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "(II) Proposal-free methods : As shown in Fig.",
+        "scenario": "(II) Proposal-free methods : As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "(II) Proposal-free methods [5, 6, 7]: As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Consequently, proposal-free methods tend to yield inferior performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Consequently, proposal-free methods tend to yield inferior performance.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Inspired by the inherent characteristic of multi-step denoising process in diffusion models , this paper presents DiffusionVG, a novel framework that employs diffusion models to formulate VG as a conditional generative task.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Inspired by the inherent characteristic of multi-step denoising process in diffusion models [12, 13, 14] , this paper presents DiffusionVG, a novel framework that employs diffusion models to formulate VG as a conditional generative task.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion...",
+        "evidence": [
+          {
+            "evidence_id": "EV003",
+            "section": "Abstract",
+            "quote": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction?",
+      "failure_mode": "incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+      "root_cause": "the extensive search space for moment prediction.",
+      "why_existing_methods_fail": "incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+      "affected_scenario": "(II) Proposal-free methods : As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Nevertheless, incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability?",
+      "failure_mode": "the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability.",
+      "root_cause": "inherent in the dataset , thereby limiting the model’s generalizability.",
+      "why_existing_methods_fail": "the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "However, the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset [1, 3], thereby limiting the model’s generalizability.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "DiffusionVG, a novel framework with diffusion models",
+      "method_core_mechanism": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+      "method_components": [
+        "we propose DiffusionVG",
+        "a novel framework with diffusion models that formulates video grounding as a conditional generative task",
+        "where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV003"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "DiffusionVG, a novel framework with diffusion models targets incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "DiffusionVG, a novel framework with diffusion models targets the fixed number of learnable queries tends to focus on specific video patterns and exploits the location bias inherent in the dataset , thereby limiting the model’s generalizability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0010",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "DiffusionVG, a novel framework with diffusion models",
+      "compared_to": "incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.",
+      "why_it_matters": "It directly targets incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "DiffusionVG, a novel framework with diffusion models",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "In this paper, we propose DiffusionVG, a novel framework with diffusion models that formulates video grounding as a conditional generative task, where the target span is generated from Gaussian noise inputs and iteratively refined in the reverse diffusion process.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for DiffusionVG, a novel framework with diffusion models",
+      "baseline": "Exploring Iterative Refinement with Diffusion Models for Video Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "DiffusionVG, a novel framework with diffusion models",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting incorporating frame-wise predictions poses challenges in optimization due to the extensive search space for moment prediction.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_exploring-iterative-refinement-with-diffusion-models-for-video-grounding_ee77ece203\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_exploring-iterative-refinement-with-diffusion-models-for-video-grounding_ee77ece203\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

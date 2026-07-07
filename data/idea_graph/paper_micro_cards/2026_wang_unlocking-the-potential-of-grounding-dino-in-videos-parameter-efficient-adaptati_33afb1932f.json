@@ -1,0 +1,993 @@
+{
+  "paper_id": "2026_wang_unlocking-the-potential-of-grounding-dino-in-videos-parameter-efficient-adaptati_33afb1932f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_unlocking-the-potential-of-grounding-dino-in-videos-parameter-efficient-adaptati_33afb1932f",
+  "title": "Unlocking the Potential of Grounding DINO in Videos: Parameter-Efficient Adaptation for Limited-Data Spatial-Temporal Localization",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Zanyi Wang",
+    "Fan Li",
+    "Dengyang Jiang",
+    "Liuzhuozheng Li",
+    "Yunhua Zhong",
+    "Guang Dai",
+    "Mengmeng Wang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-temporal video grounding (STVG) aims to localize queried objects within dynamic video segments.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-temporal video grounding (STVG) is a task that requires localizing an object described by a natural language query in both space and time.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-temporal video grounding (STVG) [30, 33] is a task that requires localizing an object described by a natural language query in both space and time.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task is crucial for enabling machines to understand videos and powers applications like autonomous driving and interactive video editing .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task is crucial for enabling machines to understand videos and powers applications like autonomous driving [11, 32] and interactive video editing [20, 24].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Performance comparison on HCSTVG-v1 against a “minimal baseline” (frozen Grounding DINO with fine-tuned heads) highlights naive adaptation’s ineffectiveness and validates our specialized PEFT approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Performance comparison on HCSTVG-v1 against a “minimal baseline” (frozen Grounding DINO with fine-tuned heads) highlights naive adaptation’s ineffectiveness and validates our specialized PEFT approach.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "STVG is inherently *Equal contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, STVG is inherently *Equal contribution.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This approach maximally preserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "This approach maximally preserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(1) Why this research qualifies as small data research: The task of Spatio-Temporal Video Grounding (STVG) intrinsically suffers from a severe lack of large-scale annotated data due to the prohibitive cost of dense, frame-level bounding box annotations and...",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "(1) Why this research qualifies as small data research: The task of Spatio-Temporal Video Grounding (STVG) intrinsically suffers from a severe lack of large-scale annotated data due to the prohibitive cost of dense, frame-level bounding box annotations and complex temporal-language alignment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Text Encoder Visual Encoder Multimodal and Temporal Fusion Module Spatial Decoder...",
+        "scenario": "Text Encoder Visual Encoder Multimodal and Temporal Fusion Module Spatial Decoder Temporal Decoder (a) Resources Consuming due to Fully Trainable Modules Visual Encoder Multimodal Fusion Module Spatial Decoder Temporal Decoder PEFT Text Encoder PEFT PEFT PEFT (b) Resources Friendly by Efficient...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Text Encoder Visual Encoder Multimodal and Temporal Fusion Module Spatial Decoder Temporal Decoder (a) Resources Consuming due to Fully Trainable Modules Visual Encoder Multimodal Fusion Module Spatial Decoder Temporal Decoder PEFT Text Encoder PEFT PEFT PEFT (b) Resources Friendly by Efficient PEFT-Based Transfer Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning...",
+        "scenario": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Consequently, datasets in this domain (e.g., HC-STVG) are orders of magnitude smaller...",
+        "scenario": "Consequently, datasets in this domain (e.g., HC-STVG) are orders of magnitude smaller than typical image or text pre-training corpora.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "Consequently, datasets in this domain (e.g., HC-STVG) are orders of magnitude smaller than typical image or text pre-training corpora.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "This work was completed during the internship at SGIT AI Lab.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This work was completed during the internship at SGIT AI Lab.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Performance comparison on HCSTVG-v1 against a “minimal baseline” (frozen Grounding DINO with fine-tuned heads) highlights naive adaptation’s ineffectiveness and validates our specialized PEFT approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Performance comparison on HCSTVG-v1 against a “minimal baseline” (frozen Grounding DINO with fine-tuned heads) highlights naive adaptation’s ineffectiveness and validates our specialized PEFT approach.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This leaves a critical question unanswered: How can we deeply adapt a powerful foundation model for STVG while retaining its robust pretrained knowledge, all with minimal computational cost?",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "This leaves a critical question unanswered: How can we deeply adapt a powerful foundation model for STVG while retaining its robust pretrained knowledge, all with minimal computational cost?",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(2) Methods employed to tackle this challenge: To prevent catastrophic forgetting and severe overfitting on these limited video datasets, we propose a data-efficient PEFT framework, ST-GD.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "(2) Methods employed to tackle this challenge: To prevent catastrophic forgetting and severe overfitting on these limited video datasets, we propose a data-efficient PEFT framework, ST-GD.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation?",
+      "failure_mode": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "root_cause": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+      "why_existing_methods_fail": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "affected_scenario": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "STVG is inherently *Equal contribution.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that sTVG is inherently *Equal contribution?",
+      "failure_mode": "STVG is inherently *Equal contribution.",
+      "root_cause": "This task is crucial for enabling machines to understand videos and powers applications like autonomous driving and interactive video editing .",
+      "why_existing_methods_fail": "STVG is inherently *Equal contribution.",
+      "affected_scenario": "Text Encoder Visual Encoder Multimodal and Temporal Fusion Module Spatial Decoder Temporal Decoder (a) Resources Consuming due to Fully Trainable Modules Visual Encoder Multimodal Fusion Module Spatial Decoder Temporal Decoder PEFT Text Encoder PEFT PEFT PEFT (b) Resources Friendly by Efficient...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, STVG is inherently *Equal contribution.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2?",
+      "failure_mode": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+      "root_cause": "Acquiring dense frame-level bounding boxes and precise temporal language alignments for videos is exceptionally challenging.",
+      "why_existing_methods_fail": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+      "affected_scenario": "Text Encoder Visual Encoder Multimodal and Temporal Fusion Module Spatial Decoder Temporal Decoder (a) Resources Consuming due to Fully Trainable Modules Visual Encoder Multimodal Fusion Module Spatial Decoder Temporal Decoder PEFT Text Encoder PEFT PEFT PEFT (b) Resources Friendly by Efficient...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "eserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that eserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization?",
+      "failure_mode": "eserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+      "root_cause": "the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+      "why_existing_methods_fail": "This approach maximally preserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+      "affected_scenario": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "This approach maximally preserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP010",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b?",
+      "failure_mode": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "root_cause": "illustrated in Figure 1b.",
+      "why_existing_methods_fail": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "affected_scenario": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "ST-GD, a framework",
+      "method_core_mechanism": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+      "method_components": [
+        "ST",
+        "GD",
+        "PEFT",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding...",
+      "method_core_mechanism": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+      "method_components": [
+        "Grounding DINO",
+        "DINO"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0075"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness",
+      "method_core_mechanism": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+      "method_components": [
+        "strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0016"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models",
+      "method_core_mechanism": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+      "method_components": [
+        "HCSTVG",
+        "SOTA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx",
+      "method_core_mechanism": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+      "method_components": [
+        "Superior Performance",
+        "Data Constraints"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "ST-GD, a framework targets Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding... targets Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "ST-GD, a framework targets STVG is inherently *Equal contribution. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding... targets STVG is inherently *Equal contribution. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "ST-GD, a framework targets Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding... targets Consequently, such a fully trainable approach is severely data-hungry; it struggles to learn generalizable representations and easily overfits the 1 Figure 2. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "ST-GD, a framework targets eserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding... targets eserves pre-trained knowledge but suffers from suboptimal adaptation, as the frozen model cannot be sufficiently tailored to the nuances of spatio-temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "ST-GD, a framework targets To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding... targets To address this challenge, we chart a third course: Parameter-Efficient Fine-Tuning (PEFT), as illustrated in Figure 1b. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0036",
+      "micro_method_cluster_id": "MM0075",
+      "macro_problem_id": "EP010",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "ST-GD, a framework",
+      "compared_to": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "why_it_matters": "It directly targets Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding...",
+      "compared_to": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "why_it_matters": "It directly targets Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness",
+      "compared_to": "Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.",
+      "why_it_matters": "It directly targets Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "ST-GD, a framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "We propose ST-GD, a framework that, to the best of our knowledge, is the first to introduce PEFT to the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding...",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To validate our approach, we first demonstrate in Figure 2 that a minimal baseline—finetuning only spatial and temporal heads on a frozen Grounding DINO—yields poor performance, confirming that simplistic adaptation is insufficient.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "In contrast, our framework strategically injects a series of lightweight, specialized adapters to instill spatio-temporal awareness.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "Without bells and whistles, our approach achieves competitive performance on HCSTVG v1 and v2 datasets, while using approximately 4% of those required by existing SOTA models, which once again demonstrates the efficiency and effectiveness of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• Superior Performance under Data Constraints: Our method achieves competitive results on challenging benchmarks with only a fraction of the trainable parameters (approx.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for ST-GD, a framework",
+      "baseline": "Unlocking the Potential of Grounding DINO in Videos: Parameter-Efficient Adaptation for Limited-Data Spatial-Temporal Localization",
+      "dataset": "MAD",
+      "module_to_modify": "ST-GD, a framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Instead of choosing between expensive fine-tuning and rigid zero-shot inference, ST-GD enables deep yet efficient adaptation.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_unlocking-the-potential-of-grounding-dino-in-videos-parameter-efficient-adaptati_33afb1932f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_wang_unlocking-the-potential-of-grounding-dino-in-videos-parameter-efficient-adaptati_33afb1932f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

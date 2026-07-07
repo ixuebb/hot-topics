@@ -1,0 +1,392 @@
+{
+  "paper_id": "2026_shah_improving-temporal-localization-in-vision-language-video-anomaly-detection_082b97006f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_shah_improving-temporal-localization-in-vision-language-video-anomaly-detection_082b97006f",
+  "title": "Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+  "year": 2026,
+  "venue_or_source": "Journal of Innovative Image Processing",
+  "authors": [
+    "Siddharth Shah",
+    "Narendrasinh Chauhan"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Automated surveillance generates vast amounts of video data, and it is not feasible to manually review every video.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "# Introduction Automated surveillance generates vast amounts of video data, and it is not feasible to manually review every video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Video anomaly detection (VAD) is used to flag unusual events such as fights, accidents, thefts, or fires so that human operators can focus attention where it is most needed.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Video anomaly detection (VAD) is used to flag unusual events such as fights, accidents, thefts, or fires so that human operators can focus attention where it is most needed.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Most methods rely on Multiple Instance Learning (MIL), treating each video as a bag of snippet-level instances and aggregating their scores to match the video label.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Most methods rely on Multiple Instance Learning (MIL), treating each video as a bag of snippet-level instances and aggregating their scores to match the video label.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches .",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches [3,9].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video, leading to the learning...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video, leading to the learning of irrelevant information or missing out on critical snippets altogether 2.) Due to abnormal peaks in normal snippets and dips between anomalies, false positives may occur.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [],
+    "core_problem_transition": [
+      {
+        "summary": "Frame-level scores must be inferred at test time.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Frame-level scores must be inferred at test time.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "found that snippet scores are highly variant within continuous anomalies.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "[3] found that snippet scores are highly variant within continuous anomalies.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Based on the above insights, several modifications to the existing approach in VadCLIP , focusing on temporal localization, are proposed.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Based on the above insights, several modifications to the existing approach in VadCLIP [7], focusing on temporal localization, are proposed.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": []
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled?",
+      "failure_mode": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+      "root_cause": "it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+      "why_existing_methods_fail": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+      "affected_scenario": "",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0031"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches ?",
+      "failure_mode": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches .",
+      "root_cause": "highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches .",
+      "why_existing_methods_fail": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches .",
+      "affected_scenario": "",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches [3,9].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0050"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video,...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video,?",
+      "failure_mode": "two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video,...",
+      "root_cause": "abnormal peaks in normal snippets and dips between anomalies, false positives may occur.",
+      "why_existing_methods_fail": "two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video, leading to the learning of irrelevant information or missing out on critical snippets...",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "However, two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video, leading to the learning of irrelevant information or missing out on critical snippets altogether 2.) Due to abnormal peaks in normal snippets and dips between anomalies, false positives may occur.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0007"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "method_core_mechanism": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+      "method_components": [
+        "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-specific temporal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization output",
+      "linked_intro_evidence_ids": [
+        "EV001"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0073"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection targets Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0031",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection targets Previous research has highlighted that MILbased methods often suffer from temporally inconsistent predictions due to the lack of temporal supervision in those approaches . by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0050",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "AP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection targets two main issues have been observed with respect to the performance of the VadCLIP algorithm’s predictions: 1.) The traditional MIL chooses the same number of snippets independently of the span covered by the anomaly within the video,... by operating on task-specific temporal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0007",
+      "micro_method_cluster_id": "MM0073",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "compared_to": "Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.",
+      "why_it_matters": "It directly targets Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV001",
+          "section": "Abstract",
+          "quote": "# Abstract The recent developments in the vision-language-based model framework for weakly supervised video anomaly detection (WSVAD) have significantly enhanced anomaly detection performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "baseline": "Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "Paper-specific mechanism from Improving Temporal Localization in Vision-Language Video Anomaly Detection",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Weakly supervised VAD overcomes this bottleneck as it requires only video-level labels instead of frame- level labels, meaning, each video is labelled.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_shah_improving-temporal-localization-in-vision-language-video-anomaly-detection_082b97006f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_shah_improving-temporal-localization-in-vision-language-video-anomaly-detection_082b97006f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,994 @@
+{
+  "paper_id": "2022_li_compositional-temporal-grounding-with-structured-variational-cross-graph-corresp_d0942ca1de",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_li_compositional-temporal-grounding-with-structured-variational-cross-graph-corresp_d0942ca1de",
+  "title": "Compositional Temporal Grounding With Structured Variational Cross-Graph Correspondence Learning",
+  "year": 2022,
+  "venue_or_source": "CVPR 2022",
+  "authors": [
+    "Juncheng Li",
+    "Junlin Xie",
+    "Long Qian",
+    "Linchao Zhu",
+    "Siliang Tang",
+    "Fei Wu",
+    "Yi Yang",
+    "Yueting Zhuang",
+    "Xin Eric Wang"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Understanding rich and diverse activities in videos is a prominent and fundamental goal of video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Understanding rich and diverse activities in videos is a prominent and fundamental goal of video understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While there have been significant works in activity recognition [3, 8] and localization [28, 37], one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While there have been significant works in activity recognition [3, 8] and localization [28, 37], one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Using our newly constructed datasets, we evaluate modern state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Using our newly constructed datasets, we evaluate modern state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "When we systematically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "When we systematically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These global representations fail to explicitly model video structure and language compositions.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "These global representations fail to explicitly model video structure and language compositions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and...",
+        "evidence": [
+          {
+            "evidence_id": "EV054",
+            "section": "Introduction",
+            "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No...",
+        "scenario": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No Perturbation 49.45% Shuffled 49.32% ≈ ≫ Novel Composition 29.42% (a) Examples and Prediction Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No Perturbation 49.45% Shuffled 49.32% ≈ ≫ Novel Composition 29.42% (a) Examples and Prediction Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "The training and testing splits of existing datasets contain almost the same compositions...",
+        "scenario": "The training and testing splits of existing datasets contain almost the same compositions (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "The training and testing splits of existing datasets contain almost the same compositions (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+        "scenario": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Surprisingly, we find that they are insensitive to the word order, even though permuting...",
+        "scenario": "Surprisingly, we find that they are insensitive to the word order, even though permuting word order destroys the complete semantics of original sentences (Figure 1.b, left vs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Surprisingly, we find that they are insensitive to the word order, even though permuting word order destroys the complete semantics of original sentences (Figure 1.b, left vs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Original Query A: A woman takes a selfie while sits on a horse.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Original Query A: A woman takes a selfie while sits on a horse.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "These methods mainly encode both sentence and video segments into unstructured global representations, respectively, and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "These methods [10, 32,45,47] mainly encode both sentence and video segments into unstructured global representations, respectively, and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and...",
+        "evidence": [
+          {
+            "evidence_id": "EV054",
+            "section": "Introduction",
+            "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• Experimental results validate the significant superiority of our approach on compositional generalizability.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "• Experimental results validate the significant superiority of our approach on compositional generalizability.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP009",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author?",
+      "failure_mode": "le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "root_cause": "# Introduction Understanding rich and diverse activities in videos is a prominent and fundamental goal of video understanding.",
+      "why_existing_methods_fail": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "affected_scenario": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No Perturbation 49.45% Shuffled 49.32% ≈ ≫ Novel Composition 29.42% (a) Examples and Prediction Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "While there have been significant works in activity recognition [3, 8] and localization [28, 37], one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0069"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task?",
+      "failure_mode": "state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task.",
+      "root_cause": "Our dataset split protocols enable us to measure whether a model can generalize to novel compositions, of which the individual components have been observed during training but the combination is novel.",
+      "why_existing_methods_fail": "Using our newly constructed datasets, we evaluate modern state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task.",
+      "affected_scenario": "We observe that their performance drops dramatically (Figure 1.b, left vs.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Using our newly constructed datasets, we evaluate modern state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "tically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning?",
+      "failure_mode": "tically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+      "root_cause": "This pushes us to rethink the solution of temporal grounding.",
+      "why_existing_methods_fail": "When we systematically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+      "affected_scenario": "Surprisingly, we find that they are insensitive to the word order, even though permuting word order destroys the complete semantics of original sentences (Figure 1.b, left vs.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "When we systematically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP011",
+      "macro_problem_name": "Cross-Modal Consistency and Reconstruction",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "These global representations fail to explicitly model video structure and language compositions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that global representations fail to explicitly model video structure and language compositions?",
+      "failure_mode": "These global representations fail to explicitly model video structure and language compositions.",
+      "root_cause": "These methods mainly encode both sentence and video segments into unstructured global representations, respectively, and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+      "why_existing_methods_fail": "These global representations fail to explicitly model video structure and language compositions.",
+      "affected_scenario": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No Perturbation 49.45% Shuffled 49.32% ≈ ≫ Novel Composition 29.42% (a) Examples and Prediction Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "These global representations fail to explicitly model video structure and language compositions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that • We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into?",
+      "failure_mode": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into...",
+      "root_cause": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+      "why_existing_methods_fail": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+      "affected_scenario": "Ground-truth A Ground-truth B (b) Performance of SOTA Method: (R@1,IoU=0.5) No Perturbation 49.45% Shuffled 49.32% ≈ ≫ Novel Composition 29.42% (a) Examples and Prediction Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV054"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV054",
+          "section": "Introduction",
+          "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new task, Compositional Temporal Grounding",
+      "method_core_mechanism": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+      "method_components": [
+        "Compositional Temporal Grounding",
+        "CG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0185"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding",
+      "method_core_mechanism": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+      "method_components": [
+        "VISA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0101"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "variational cross-graph correspondence learning",
+      "method_core_mechanism": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+      "method_components": [
+        "variational cross-graph correspondence learning"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV052"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0101"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets",
+      "method_core_mechanism": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+      "method_components": [
+        "Compositional Temporal Grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV053"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0185"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "VarIational croSs-graph reAsoning (VISA) framework",
+      "method_core_mechanism": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+      "method_components": [
+        "SOTA",
+        "VISA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV054"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV054",
+          "section": "Introduction",
+          "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0101"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new task, Compositional Temporal Grounding targets le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0069",
+      "micro_method_cluster_id": "MM0185",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding targets le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0069",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "VarIational croSs-graph reAsoning (VISA) framework targets state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task. by operating on domain_shift, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV054",
+          "section": "Introduction",
+          "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new task, Compositional Temporal Grounding targets state-of-the-art (SOTA) temporal grounding models, and empirically find that SOTA models fail to achieve compositional generalization, though they have achieved promising progress on the typical temporal grounding task. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0185",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding targets tically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new task, Compositional Temporal Grounding targets tically analyze the SOTA models, we find that previous temporal grounding methods largely neglect the structured semantics in video and language, which is crucial for compositional reasoning. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0185",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding targets These global representations fail to explicitly model video structure and language compositions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "variational cross-graph correspondence learning targets These global representations fail to explicitly model video structure and language compositions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU5",
+      "solves_how": "VarIational croSs-graph reAsoning (VISA) framework targets • We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into... by operating on domain_shift, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV054",
+          "section": "Introduction",
+          "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0101",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets targets • We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0023",
+      "micro_method_cluster_id": "MM0185",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "new task, Compositional Temporal Grounding",
+      "compared_to": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "why_it_matters": "It directly targets le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding",
+      "compared_to": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "why_it_matters": "It directly targets le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "variational cross-graph correspondence learning",
+      "compared_to": "While there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.",
+      "why_it_matters": "It directly targets le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new task, Compositional Temporal Grounding",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To systematically measure the compositional generalizability (CG) of existing methods, we introduce a new task, Compositional Temporal Grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by this insight, we propose a novel VarIational croSs-graph reAsoning (VISA) framework for compositional temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "variational cross-graph correspondence learning",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Second, we propose a variational cross-graph correspondence learning that establishes finegrained semantic correspondence between the semantic hierarchical graphs of video and language.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We introduce a new task, Compositional Temporal Grounding, as well as new splits of two prevailing temporal grounding datasets, which are able to measure the compositional generalizability of existing methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VarIational croSs-graph reAsoning (VISA) framework",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+      "can_transfer_to": [
+        "domain_shift",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV054",
+          "section": "Introduction",
+          "quote": "• We perform in-depth analyses on several SOTA models and empirically find that they fail to achieve compositional generalization • We propose a VarIational croSs-graph reAsoning (VISA) framework that decomposes video and language into hierarchical graphs and learns fine-grained cross-graph correspondence between them.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new task, Compositional Temporal Grounding",
+      "baseline": "Compositional Temporal Grounding With Structured Variational Cross-Graph Correspondence Learning",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "new task, Compositional Temporal Grounding",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting le there have been significant works in activity recognition and localization , one major limitation of these works is that they are restricted to pre-defined ac- ∗Yueting Zhuang is the corresponding author.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "R@1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_li_compositional-temporal-grounding-with-structured-variational-cross-graph-corresp_d0942ca1de\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_li_compositional-temporal-grounding-with-structured-variational-cross-graph-corresp_d0942ca1de\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

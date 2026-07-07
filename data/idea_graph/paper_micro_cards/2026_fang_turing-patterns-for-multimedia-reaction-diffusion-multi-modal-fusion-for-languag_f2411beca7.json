@@ -1,0 +1,774 @@
+{
+  "paper_id": "2026_fang_turing-patterns-for-multimedia-reaction-diffusion-multi-modal-fusion-for-languag_f2411beca7",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_turing-patterns-for-multimedia-reaction-diffusion-multi-modal-fusion-for-languag_f2411beca7",
+  "title": "Turing Patterns for Multimedia: Reaction-Diffusion Multi-Modal Fusion for Language-Guided Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "arXiv",
+  "authors": [
+    "Xiang Fang",
+    "Wanlong Fang",
+    "Wei Ji",
+    "Tat‐Seng Chua"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The rapid proliferation of multimedia content, encompassing videos, text, audio, and other modalities, has spurred significant advancements in multimodal and video-language representation learning .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction The rapid proliferation of multimedia content, encompassing videos, text, audio, and other modalities, has spurred significant advancements in multimodal and video-language representation learning [36, 40, 53, 70].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "These models aim to bridge the semantic gap between visual and textual data, enabling tasks such as moment retrieval and highlight detection .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "These models aim to bridge the semantic gap between visual and textual data, enabling tasks such as moment retrieval [34, 40, 41, 75] and highlight detection [40, 50, 51].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Moment retrieval involves identifying specific temporal segments in a video that correspond to a textual query, while highlight detection seeks to pinpoint salient moments that capture the essence of the video content .",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Moment retrieval involves identifying specific temporal segments in a video that correspond to a textual query, while highlight detection seeks to pinpoint salient moments that capture the essence of the video content [40].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "These tasks are critical for applications ranging from video search and recommendation systems to automated content analysis and interactive media platforms [1, 2, 6– 32, 38, 39, 42–48, 54, 55, 58–67, 69, 71, 73, 76, 77].",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "These tasks are critical for applications ranging from video search and recommendation systems to automated content analysis and interactive media platforms [1, 2, 6– 32, 38, 39, 42–48, 54, 55, 58–67, 69, 71, 73, 76, 77].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization...",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "However, despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization across diverse datasets [40, 41].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "While effective in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as key moments or...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as key moments or highlights.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Traditional cross-attention mechanisms, which assign static weights to video-text pairs, struggle to model such dynamic relationships, often leading to false positives or missed detections.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Traditional cross-attention mechanisms, which assign static weights to video-text pairs, struggle to model such dynamic relationships, often leading to false positives or missed detections.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0...",
+        "scenario": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1:...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1: Comparison between traditional model and our proposed model.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Recent advancements, such as Moment-DETR , QD-DETR , and CG-DETR , attempt to address...",
+        "scenario": "Recent advancements, such as Moment-DETR , QD-DETR , and CG-DETR , attempt to address these issues but remain constrained by predefined attention patterns or rigid fusion strategies that lack adaptability to the dynamic nature of multimedia data, as shown in Figure 1.",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Recent advancements, such as Moment-DETR [40], QD-DETR [51], and CG-DETR [50], attempt to address these issues but remain constrained by predefined attention patterns or rigid fusion strategies that lack adaptability to the dynamic nature of multimedia data, as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, in moment retrieval, a textual query like “a person jumping” requires the...",
+        "scenario": "For example, in moment retrieval, a textual query like “a person jumping” requires the model to not only identify frames containing the action but also understand the temporal context (e.g., the buildup to the jump) and suppress irrelevant frames (e.g., static backgrounds).",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "For example, in moment retrieval, a textual query like “a person jumping” requires the model to not only identify frames containing the action but also understand the temporal context (e.g., the buildup to the jump) and suppress irrelevant frames (e.g., static backgrounds).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Traditional video-language models rely on mechanisms such as cross-modal attention , contrastive pretraining , or largescale vision-language representation learning to fuse video and text representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Traditional video-language models rely on mechanisms such as cross-modal attention [57], contrastive pretraining [53, 70], or largescale vision-language representation learning [36] to fuse video and text representations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "MM ’25, October 27–31, 2025, Dublin, Ireland Xiang Fang, Wanlong Fang, Wei Ji, and Tat-Seng Chua Video They put the limes and sugar into a blender.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "MM ’25, October 27–31, 2025, Dublin, Ireland Xiang Fang, Wanlong Fang, Wei Ji, and Tat-Seng Chua Video They put the limes and sugar into a blender.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "By adapting the Gray-Scott RD model , we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and?",
+      "failure_mode": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and...",
+      "root_cause": "These tasks are critical for applications ranging from video search and recommendation systems to automated content analysis and interactive media platforms [1, 2, 6– 32, 38, 39, 42–48, 54, 55, 58–67, 69, 71, 73, 76, 77].",
+      "why_existing_methods_fail": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization across diverse datasets .",
+      "affected_scenario": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1:...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "However, despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization across diverse datasets [40, 41].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries?",
+      "failure_mode": "in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+      "root_cause": "For instance, methods like CLIP-based feature extraction combined with SlowFast or DETR-based architectures segment videos into fixed intervals and align them with text embeddings using attention mechanisms or transformer encoders.",
+      "why_existing_methods_fail": "in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+      "affected_scenario": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1:...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "While effective in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments?",
+      "failure_mode": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+      "root_cause": "over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+      "why_existing_methods_fail": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+      "affected_scenario": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1:...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to?",
+      "failure_mode": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to...",
+      "root_cause": "Recent advancements, such as Moment-DETR , QD-DETR , and CG-DETR , attempt to address these issues but remain constrained by predefined attention patterns or rigid fusion strategies that lack adaptability to the dynamic nature of multimedia data, as shown in...",
+      "why_existing_methods_fail": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes .",
+      "affected_scenario": "Localization head Previous methods Our RDMF 1 6 11 16 21 26 31 Frame index -30 -20 -10 0 10 20 30 Feature value Misalignment in traditional fusion Video Text Moment 1 6 11 16 21 26 31 Frame index -30 -25 -20 -15 -10 -5 0 5 10 Feature value Alignment in our RDMF Video Text Moment Figure 1:...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as?",
+      "failure_mode": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as...",
+      "root_cause": "key moments or highlights.",
+      "why_existing_methods_fail": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as key moments or highlights.",
+      "affected_scenario": "Recent advancements, such as Moment-DETR , QD-DETR , and CG-DETR , attempt to address these issues but remain constrained by predefined attention patterns or rigid fusion strategies that lack adaptability to the dynamic nature of multimedia data, as shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as key moments or highlights.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+      "method_core_mechanism": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes .",
+      "method_components": [
+        "Reaction-Diffusion Multimodal Fusion (RDMF)",
+        "Reaction-Diffusion Multimodal Fusion",
+        "Alan Turing",
+        "RDMF",
+        "RD",
+        "we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+        "specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "new paradigm for multimodal fusion",
+      "method_core_mechanism": "By adapting the Gray-Scott RD model , we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+      "method_components": [
+        "Gray-Scott RD",
+        "RD",
+        "we propose a new paradigm for multimodal fusion that captures dynamic"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0205"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF) targets despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "new paradigm for multimodal fusion targets despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0205",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF) targets in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "new paradigm for multimodal fusion targets in controlled settings, these approaches often assume static or linear interactions between modalities, failing to account for the temporal evolution of video content and the context-dependent relevance of textual queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0205",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF) targets Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "new paradigm for multimodal fusion targets Moreover, they struggle with modeling long-range dependencies and non-linear semantic alignments, leading to issues such as over-emphasizing irrelevant video segments or missing subtle but critical moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0205",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF) targets To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "new paradigm for multimodal fusion targets To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0205",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF) targets This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "new paradigm for multimodal fusion targets This process mirrors the challenge in video-language tasks, where video frames (representing a temporal-spatial domain) and text queries (representing semantic constraints) must interact dynamically to identify salient patterns, such as... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0127",
+      "micro_method_cluster_id": "MM0205",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+      "compared_to": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization across diverse datasets .",
+      "why_it_matters": "It directly targets despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and...."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "new paradigm for multimodal fusion",
+      "compared_to": "despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and limited generalization across diverse datasets .",
+      "why_it_matters": "It directly targets despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes .",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To overcome these limitations, we propose a novel framework called Reaction-Diffusion Multimodal Fusion (RDMF), which draws inspiration from systems biology, specifically the reactiondiffusion (RD) systems introduced by Alan Turing to model pattern formation in chemical and biological processes [56].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new paradigm for multimodal fusion",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "By adapting the Gray-Scott RD model , we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "By adapting the Gray-Scott RD model [35], we propose a new paradigm for multimodal fusion that captures dynamic, non-linear interactions between video and text.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+      "baseline": "Turing Patterns for Multimedia: Reaction-Diffusion Multi-Modal Fusion for Language-Guided Video Moment Retrieval",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel framework called Reaction-Diffusion Multimodal Fusion (RDMF)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting despite recent progress, current video-language models face significant challenges in capturing the dynamic, non-linear interactions between temporal video sequences and textual semantics, often resulting in suboptimal alignment and...."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_turing-patterns-for-multimedia-reaction-diffusion-multi-modal-fusion-for-languag_f2411beca7\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_turing-patterns-for-multimedia-reaction-diffusion-multi-modal-fusion-for-languag_f2411beca7\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

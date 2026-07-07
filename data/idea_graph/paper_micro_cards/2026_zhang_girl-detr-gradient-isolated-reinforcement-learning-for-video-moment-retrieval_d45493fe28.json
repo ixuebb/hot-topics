@@ -1,0 +1,589 @@
+{
+  "paper_id": "2026_zhang_girl-detr-gradient-isolated-reinforcement-learning-for-video-moment-retrieval_d45493fe28",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_girl-detr-gradient-isolated-reinforcement-learning-for-video-moment-retrieval_d45493fe28",
+  "title": "GIRL-DETR: Gradient-Isolated Reinforcement Learning for Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Shihang Zhang",
+    "Mingjin Kuai",
+    "Ye Wei",
+    "Zhen Zhang",
+    "Wei Ji"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (VMR) task requires accurately localizing temporal boundaries aligned with natural language queries, but many models suffer from a misalignment between continuous surrogate losses and non-differentiable metrics, leading to optimization stagnation during the late stages of training and trapping boundary predictions in suboptimal solutions.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction W ITH the rapid growth of video data, video moment retrieval (VMR), which localizes target segments based on natural-language queries, has emerged as a fundamental task in video understanding , , , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction W ITH the rapid growth of video data, video moment retrieval (VMR), which localizes target segments based on natural-language queries, has emerged as a fundamental task in video understanding [1], [2], [3], [4], [5].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Compared to coarse-grained retrieval, VMR imposes stricter requirements on boundary precision, thus necessitating both deep crossmodal semantic alignment and accurate temporal boundary regression , .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Compared to coarse-grained retrieval, VMR imposes stricter requirements on boundary precision, thus necessitating both deep crossmodal semantic alignment and accurate temporal boundary regression [6], [7].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "However, in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts [8], [9], [3].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "These issues directly Shihang Zhang and Mingjin Kuai contributed equally to this work.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "These issues directly Shihang Zhang and Mingjin Kuai contributed equally to this work.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "However, in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts [8], [9], [3].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(a) In early training, proxy loss optimization effectively drives metric improvements, despite gradient updates deviating from the optimal path.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "(a) In early training, proxy loss optimization effectively drives metric improvements, despite gradient updates deviating from the optimal path.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models [10], [11] and lightweight models designed for efficient inference [12], [13], [14], [7], [5].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the architectural differences, both paradigms predominantly rely on local proxy losses for supervised training , , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Despite the architectural differences, both paradigms predominantly rely on local proxy losses for supervised training [13], [15], [16], [6].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This reliance commonly leads to a bottleneck in temporal alignment during the late stages of optimization.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "This reliance commonly leads to a bottleneck in temporal alignment during the late stages of optimization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "These issues directly Shihang Zhang and Mingjin Kuai contributed equally to this work.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "These issues directly Shihang Zhang and Mingjin Kuai contributed equally to this work.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(b) Near the optimal solution, loss degradation prevents the model from finding effective update directions aligned with the localization metric.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "(b) Near the optimal solution, loss degradation prevents the model from finding effective update directions aligned with the localization metric.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models [10], [11] and lightweight models designed for efficient inference [12], [13], [14], [7], [5].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+        "evidence": [
+          {
+            "evidence_id": "EV003",
+            "section": "Abstract",
+            "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that boundary regression and the reliable ranking of high-confidence candidates remains a core challenge?",
+      "failure_mode": "boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+      "root_cause": "limit the upper bound of the temporal Intersection-over-Union (tIoU) and degrade the ranking quality of high-confidence candidate segments.",
+      "why_existing_methods_fail": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , ?",
+      "failure_mode": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , .",
+      "root_cause": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+      "why_existing_methods_fail": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , .",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models [10], [11] and lightweight models designed for efficient inference [12], [13], [14], [7], [5].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training?",
+      "failure_mode": "Consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training.",
+      "root_cause": "The geometric constraints imposed by local proxy losses fail to fully reflect the global alignment quality of the tIoU.",
+      "why_existing_methods_fail": "Consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0064"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , ?",
+      "failure_mode": "in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , .",
+      "root_cause": "Compared to coarse-grained retrieval, VMR imposes stricter requirements on boundary precision, thus necessitating both deep crossmodal semantic alignment and accurate temporal boundary regression , .",
+      "why_existing_methods_fail": "in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , .",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "However, in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts [8], [9], [3].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "path.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that path?",
+      "failure_mode": "path.",
+      "root_cause": "Loss Degradation and Ranking Collapse.",
+      "why_existing_methods_fail": "(a) In early training, proxy loss optimization effectively drives metric improvements, despite gradient updates deviating from the optimal path.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "(a) In early training, proxy loss optimization effectively drives metric improvements, despite gradient updates deviating from the optimal path.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the",
+      "method_core_mechanism": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+      "method_components": [
+        "Gradient-Isolated Reinforcement Learning",
+        "DETR",
+        "GIRL",
+        "RL"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV003"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the targets boundary regression and the reliable ranking of high-confidence candidates remains a core challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the targets To address this challenge, existing studies primarily follow two paradigms: methods based on multimodal large models , and lightweight models designed for efficient inference , , , , . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the targets Consequently, this discrepancy renders models prone to suboptimal states, wherein the performance of localization and ranking stagnates or degrades toward the end of training. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0064",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the targets in practical localization scenarios, the predicted segments frequently exhibit loose boundaries or global temporal shifts , , . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the targets path. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the",
+      "compared_to": "Therefore, developing an efficient framework that preserves accurate cross-modal semantic alignment while strictly supporting fine-grained temporal boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.",
+      "why_it_matters": "It directly targets boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To overcome this optimization bottleneck, we propose Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the first time.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the",
+      "baseline": "GIRL-DETR: Gradient-Isolated Reinforcement Learning for Video Moment Retrieval",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "Gradient-Isolated Reinforcement Learning for DETR (GIRL-DETR), introducing RL post-training into a lightweight temporal localization framework for the",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting boundary regression and the reliable ranking of high-confidence candidates remains a core challenge.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_girl-detr-gradient-isolated-reinforcement-learning-for-video-moment-retrieval_d45493fe28\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_girl-detr-gradient-isolated-reinforcement-learning-for-video-moment-retrieval_d45493fe28\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

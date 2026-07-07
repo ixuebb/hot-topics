@@ -1,0 +1,780 @@
+{
+  "paper_id": "2026_vasili_explainable-unsupervised-multi-anomaly-detection-and-temporal-localization-in-nu_67c7e7c2a9",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_vasili_explainable-unsupervised-multi-anomaly-detection-and-temporal-localization-in-nu_67c7e7c2a9",
+  "title": "Explainable Unsupervised Multi-Anomaly Detection and Temporal Localization in Nuclear Times Series Data with a Dual Attention–Based Autoencoder",
+  "year": 2026,
+  "venue_or_source": "Nuclear Technology",
+  "authors": [
+    "Konstantinos Vasili",
+    "Zachery Dahm",
+    "Stylianos Chatzidakis"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Uncertainty estimation can support abstention and evidence sufficiency in moment retrieval.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The operation of a nuclear reactor historically relied on human operators to perform all basic operations and system diagnostics.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction The operation of a nuclear reactor historically relied on human operators to perform all basic operations and system diagnostics.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Once implemented, new advanced designs are envisioned to rely on digital instrumentation and potentially remote operation via autonomous or semi-autonomous control systems , aiming to minimize human intervention and reducing costs.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Once implemented, new advanced designs are envisioned to rely on digital instrumentation and potentially remote operation via autonomous or semi-autonomous control systems [1][2], aiming to minimize human intervention and reducing costs.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "An autonomous control system is described as an intelligent system with ability to self-perform and execute control functions under uncertain conditions .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "An autonomous control system is described as an intelligent system with ability to self-perform and execute control functions under uncertain conditions [3].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite recent advancements [2][4][5][6], a fully operational autonomous control nuclear system is still far from its intended performance.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite recent advancements [2][4][5][6], a fully operational autonomous control nuclear system is still far from its intended performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based frameworks.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "However, it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based frameworks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "In addition, research conducted in relevant studies [15] [16] [17] has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "AI/ML predictions are often regarded as black boxes, as their non-linear structure makes it difficult to determine which inputs cause them to generate particular outputs.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "AI/ML predictions are often regarded as black boxes, as their non-linear structure makes it difficult to determine which inputs cause them to generate particular outputs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [],
+    "core_problem_transition": [
+      {
+        "summary": "The degree of autonomy in such a system, depends upon the extent to 3 which it can reliably perform tasks such as fault diagnosis, self-validation, forecasting, and decision-making with minimum human intervention .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "The degree of autonomy in such a system, depends upon the extent to 3 which it can reliably perform tasks such as fault diagnosis, self-validation, forecasting, and decision-making with minimum human intervention [1] [3].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In the authors discuss the complexity of implementing prognostics and health management in nuclear power plants, highlighting that the integration of various advanced technologies, such as ML and DL for big data analytics, into a cohesive 4 system is...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "In [14] the authors discuss the complexity of implementing prognostics and health management in nuclear power plants, highlighting that the integration of various advanced technologies, such as ML and DL for big data analytics, into a cohesive 4 system is inherently challenging.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an...",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP014",
+      "macro_problem_name": "Evidence Sufficiency, Uncertainty, and Abstention",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a fully operational autonomous control nuclear system is still far from its intended performance?",
+      "failure_mode": "a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "root_cause": "An autonomous control system is described as an intelligent system with ability to self-perform and execute control functions under uncertain conditions .",
+      "why_existing_methods_fail": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Despite recent advancements [2][4][5][6], a fully operational autonomous control nuclear system is still far from its intended performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP010",
+      "macro_problem_name": "Predominantly / Focused / Segments",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based?",
+      "failure_mode": "it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based...",
+      "root_cause": "The study concludes that ML algorithms are well-suited for damage detection in nuclear facilities due to their ability to learn complex patterns in large datasets generated by sensors that monitor structures and systems.",
+      "why_existing_methods_fail": "it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based frameworks.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "However, it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based frameworks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP010",
+      "macro_problem_name": "Predominantly / Focused / Segments",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing?",
+      "failure_mode": "the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+      "root_cause": "it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based frameworks.",
+      "why_existing_methods_fail": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Despite the potential of the proposed methods, the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP014",
+      "macro_problem_name": "Evidence Sufficiency, Uncertainty, and Abstention",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework?",
+      "failure_mode": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+      "root_cause": "In the authors discuss the complexity of implementing prognostics and health management in nuclear power plants, highlighting that the integration of various advanced technologies, such as ML and DL for big data analytics, into a cohesive 4 system is...",
+      "why_existing_methods_fail": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP010",
+      "macro_problem_name": "Predominantly / Focused / Segments",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes?",
+      "failure_mode": "In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+      "root_cause": "shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+      "why_existing_methods_fail": "In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In addition, research conducted in relevant studies [15] [16] [17] has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0078"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and",
+      "method_core_mechanism": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+      "method_components": [
+        "ML"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0062"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+      "method_core_mechanism": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+      "method_components": [
+        "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0136"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "with real data from PUR-1 research reactor at Purdue University",
+      "method_core_mechanism": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+      "method_components": [
+        "Purdue University",
+        "PUR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0062"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and targets a fully operational autonomous control nuclear system is still far from its intended performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030",
+      "micro_method_cluster_id": "MM0062",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages. targets a fully operational autonomous control nuclear system is still far from its intended performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and targets it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053",
+      "micro_method_cluster_id": "MM0062",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages. targets it also points out significant challenges, including limited real data availability, lack of validation in real-world conditions, and increased computational resources required for the development and deployment of these AI-based... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and targets the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053",
+      "micro_method_cluster_id": "MM0062",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages. targets the complexity of reactor systems, the need for real-time decision-making, and the handling of vast amounts of sensor data present significant challenges that researchers are actively addressing. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0053",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and targets These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030",
+      "micro_method_cluster_id": "MM0062",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages. targets These challenges include data acquisition, real-time processing, model accuracy, and the integration of multiple subsystems into a reliable and robust autonomous control framework. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0030",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and targets In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0078",
+      "micro_method_cluster_id": "MM0062",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages. targets In addition, research conducted in relevant studies has shown that the lack of explainability in advanced data analytics techniques, including AI/ML, restricts their adaptation in critical processes. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0078",
+      "micro_method_cluster_id": "MM0136",
+      "macro_problem_id": "AP010",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and",
+      "compared_to": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "why_it_matters": "It directly targets a fully operational autonomous control nuclear system is still far from its intended performance.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+      "compared_to": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "why_it_matters": "It directly targets a fully operational autonomous control nuclear system is still far from its intended performance.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "with real data from PUR-1 research reactor at Purdue University",
+      "compared_to": "Despite recent advancements , a fully operational autonomous control nuclear system is still far from its intended performance.",
+      "why_it_matters": "It directly targets a fully operational autonomous control nuclear system is still far from its intended performance.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "In this work, we propose a framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and the explainability of ML methods, as part of a diagnostics module for an autonomous control system of a real nuclear reactor.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In prior results , we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In prior results [18], we developed a dedicated unsupervised network to monitor each sensor and generate system diagnostic messages.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "with real data from PUR-1 research reactor at Purdue University",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "We validate our approach with real data from PUR-1 research reactor at Purdue University.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and",
+      "baseline": "Explainable Unsupervised Multi-Anomaly Detection and Temporal Localization in Nuclear Times Series Data with a Dual Attention–Based Autoencoder",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "framework to address challenges on anomaly detection, including the lack of real-world data, the scarcity of abnormal events in nuclear processes, and",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting a fully operational autonomous control nuclear system is still far from its intended performance.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_vasili_explainable-unsupervised-multi-anomaly-detection-and-temporal-localization-in-nu_67c7e7c2a9\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_vasili_explainable-unsupervised-multi-anomaly-detection-and-temporal-localization-in-nu_67c7e7c2a9\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,870 @@
+{
+  "paper_id": "2025_pramanick_enrich-and-detect-video-temporal-grounding-with-multimodal-llms_9c995e2d79",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_pramanick_enrich-and-detect-video-temporal-grounding-with-multimodal-llms_9c995e2d79",
+  "title": "Enrich and Detect: Video Temporal Grounding with Multimodal LLMs",
+  "year": 2025,
+  "venue_or_source": "ICCV 2025",
+  "authors": [
+    "Shraman Pramanick",
+    "Effrosyni Mavroudi",
+    "Yale Song",
+    "Rama Chellappa",
+    "Lorenzo Torresani",
+    "Triantafyllos Afouras"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract We introduce ED-VTG, a method for fine-grained video temporal grounding utilizing multi-modal large language models.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding aims to identify temporal intervals in a video that correspond to a set of provided language queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding [32, 40, 53, 80, 102] aims to identify temporal intervals in a video that correspond to a set of provided language queries.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The task is essential for applications such as video editing and content retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "The task is essential for applications such as video editing and content retrieval.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks [8, 32, 53, 104] or solv- †Work done during an internship at FAIR.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks [8, 32, 53, 104] or solv- †Work done during an internship at FAIR.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The quality and completeness of these queries however is crucial for the precision of the temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "The quality and completeness of these queries however is crucial for the precision of the temporal grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing”...",
+        "scenario": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, as illustrated in Figure 1, a vague query like ‘Man starts surfing’ can be...",
+        "scenario": "For example, as illustrated in Figure 1, a vague query like ‘Man starts surfing’ can be refined into a more detailed description such as ‘The man with a yellow surfboard slowly runs to start surfing,’ resulting in grounding with more accurate temporal boundaries.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "For example, as illustrated in Figure 1, a vague query like ‘Man starts surfing’ can be refined into a more detailed description such as ‘The man with a yellow surfboard slowly runs to start surfing,’ resulting in grounding with more accurate temporal boundaries.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "⋄Work done while at FAIR.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "⋄Work done while at FAIR.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "A natural hypothesis, therefore, is that more detailed queries, which could be obtained via conditional captioning, can significantly enhance grounding accuracy.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "A natural hypothesis, therefore, is that more detailed queries, which could be obtained via conditional captioning, can significantly enhance grounding accuracy.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with detection objectives tailored to the task; (iii) we propose a multiple-instance learning paradigm that enables the model to dynamically select the query that leads to better temporal localization; (iv) we achieve state-of-the-art results on several temporal grounding benchmarks, for both single query grounding and paragraph grounding, demonstr",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR?",
+      "failure_mode": "it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "root_cause": "largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "why_existing_methods_fail": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "affected_scenario": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks [8, 32, 53, 104] or solv- †Work done during an internship at FAIR.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "is crucial for the precision of the temporal grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that is crucial for the precision of the temporal grounding?",
+      "failure_mode": "is crucial for the precision of the temporal grounding.",
+      "root_cause": "Our key observation is that natural language queries often lack the completeness or detail necessary for effective temporal localization; indeed, existing grounding datasets frequently contain poorly worded, coarse, and potentially incomplete queries.",
+      "why_existing_methods_fail": "The quality and completeness of these queries however is crucial for the precision of the temporal grounding.",
+      "affected_scenario": "For example, as illustrated in Figure 1, a vague query like ‘Man starts surfing’ can be refined into a more detailed description such as ‘The man with a yellow surfboard slowly runs to start surfing,’ resulting in grounding with more accurate temporal boundaries.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "The quality and completeness of these queries however is crucial for the precision of the temporal grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones?",
+      "failure_mode": "powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+      "root_cause": "We obtain those by using a strong external captioning model which we condition on the original queries and the video content of the target temporal boundaries.",
+      "why_existing_methods_fail": "powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+      "affected_scenario": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "However powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that at the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive?",
+      "failure_mode": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+      "root_cause": "powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones.",
+      "why_existing_methods_fail": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+      "affected_scenario": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets?",
+      "failure_mode": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+      "root_cause": "Finally, we note that our proposed method is not equivalent to a data augmentation approach which simply preproecsses the training set to generate enhanced queries that are directly used for training.",
+      "why_existing_methods_fail": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+      "affected_scenario": "Bspraman3@meta.com, afourast@meta.com Untrimmed Video User Query “Man starts surfing” Video LLM Interval Decoder The query “The man with a yellow surfboard slowly runs to start surfing” occurs at <INT> Enrich Query & Embed Detect Precise Interval Figure 1.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "lightweight perception decoder",
+      "method_core_mechanism": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+      "method_components": [
+        "LLM",
+        "we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "training in a multiple-instance learning (MIL) fashion",
+      "method_core_mechanism": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+      "method_components": [
+        "MIL"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0012"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance",
+      "method_core_mechanism": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+      "method_components": [
+        "overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to lo",
+      "method_core_mechanism": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with detection objectives...",
+      "method_components": [
+        "LLM",
+        "(ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with detection objectives tailored to the task; (iii) we propose a multiple-instance learning paradigm that enables the model to dynamically select the query that leads to better temporal localization; (iv) we achieve state-of-the-art results on several temporal grounding benchmarks, for both single query grounding and paragraph grounding, demonstr",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0132"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "lightweight perception decoder targets it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "training in a multiple-instance learning (MIL) fashion targets it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "lightweight perception decoder targets is crucial for the precision of the temporal grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "training in a multiple-instance learning (MIL) fashion targets is crucial for the precision of the temporal grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "training in a multiple-instance learning (MIL) fashion targets powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "lightweight perception decoder targets powerful, these models are prone to hallucinations and there is no guarantee that the enriched queries will always be easier to ground than the original ones. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "training in a multiple-instance learning (MIL) fashion targets At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "lightweight perception decoder targets At the same time, annotating the ground truth to determine which query – original or enriched – is a better candidate, is extremely expensive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "training in a multiple-instance learning (MIL) fashion targets While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance targets While this simpler alternative offers some of the same benefits, it suffers from the limitation that extracting enriched queries during training requires knowledge of the ground-truth temporal segments, i.e., the grounding targets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0096",
+      "micro_method_cluster_id": "MM0095",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "lightweight perception decoder",
+      "compared_to": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "why_it_matters": "It directly targets it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "training in a multiple-instance learning (MIL) fashion",
+      "compared_to": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "why_it_matters": "It directly targets it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance",
+      "compared_to": "Intuitively, there is significant potential in exploiting this synergy, however it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.",
+      "why_it_matters": "It directly targets it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "lightweight perception decoder",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+      "can_transfer_to": [
+        "context",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To effectively perform the temporal localization, we introduce a lightweight perception decoder that specializes in generating precise temporal boundaries, conditioned on a contextual representation, allowing the LLM to focus on language outputs, where it excels.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "training in a multiple-instance learning (MIL) fashion",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To address this issue, we propose training in a multiple-instance learning (MIL) fashion, that enables the model to autonomously determine which query is better suited for the task during training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method overcomes this limitation by learning to jointly enrich and detect, demonstrating superior performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to lo",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with detection objectives...",
+      "can_transfer_to": [
+        "context",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To summarize, our contributions are as follows: (i) we introduce a cascaded approach to temporal grounding, where the model first enriches the provided language query based on the video context and then proceeds to localize it; (ii) we enable multi-modal LLMs to accurately localize text queries using a lightweight decoder which allows for training with detection objectives tailored to the task; (iii) we propose a multiple-instance learning paradigm that enables the model to dynamically select the query that leads to better temporal localization; (iv) we achieve state-of-the-art results on several temporal grounding benchmarks, for both single query grounding and paragraph grounding, demonstr",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for lightweight perception decoder",
+      "baseline": "Enrich and Detect: Video Temporal Grounding with Multimodal LLMs",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "lightweight perception decoder",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting it has largely remained unexplored, with previous works typically specializing in one of the two tasks or solv- †Work done during an internship at FAIR.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_pramanick_enrich-and-detect-video-temporal-grounding-with-multimodal-llms_9c995e2d79\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_pramanick_enrich-and-detect-video-temporal-grounding-with-multimodal-llms_9c995e2d79\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

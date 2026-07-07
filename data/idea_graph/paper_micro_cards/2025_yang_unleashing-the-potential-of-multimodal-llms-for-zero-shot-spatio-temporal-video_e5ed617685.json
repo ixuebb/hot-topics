@@ -1,0 +1,778 @@
+{
+  "paper_id": "2025_yang_unleashing-the-potential-of-multimodal-llms-for-zero-shot-spatio-temporal-video_e5ed617685",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_unleashing-the-potential-of-multimodal-llms-for-zero-shot-spatio-temporal-video_e5ed617685",
+  "title": "Unleashing the Potential of Multimodal LLMs for Zero-Shot Spatio-Temporal Video Grounding",
+  "year": 2025,
+  "venue_or_source": "NeurIPS 2025",
+  "authors": [
+    "Zaiquan Yang",
+    "Yuhao LIU",
+    "Gerhard Hancke",
+    "Rynson Lau"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-temporal video grounding (STVG) aims at localizing the spatio-temporal tube of a video, as specified by the input text query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to localize a target object in a video both spatially and temporally, given an input text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to localize a target object in a video both spatially and temporally, given an input text query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving ).",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving [67]).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "While existing methods handle the STVG task mainly in a fully-supervised setting [13; 59; 54], which often relies on costly frame-level annotations, several works [29; 3; 61; 21; 60; 25] attempt to introduce the weakly-supervised or zero-shot setting to...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "While existing methods handle the STVG task mainly in a fully-supervised setting [13; 59; 54], which often relies on costly frame-level annotations, several works [29; 3; 61; 21; 60; 25] attempt to introduce the weakly-supervised or zero-shot setting to alleviate the burden of dense annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data .",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "However, they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data [4].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the strong comprehension ability, the grounding tokens cannot optimally adapt to STVG as they tend to ignore some important cues (e.g., attribute or action) in a complex video query.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Despite the strong comprehension ability, the grounding tokens cannot optimally adapt to STVG as they tend to ignore some important cues (e.g., attribute or action) in a complex video query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This task is fundamental to many different applications (e.g., video surveillance and...",
+        "scenario": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving ).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving [67]).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, E3M integrates CLIP and an expectation maximization strategy to optimize...",
+        "scenario": "For example, E3M integrates CLIP and an expectation maximization strategy to optimize spatio-temporal localization in a zero-shot manner.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "For example, E3M [3] integrates CLIP [43] and an expectation maximization strategy to optimize spatio-temporal localization in a zero-shot manner.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Visual input Visual input Figure 1: (a) The visual attention maps shows that some special...",
+        "scenario": "Visual input Visual input Figure 1: (a) The visual attention maps shows that some special tokens (marked as ) can precisely attend to the target region of the input query.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Visual input Visual input Figure 1: (a) The visual attention maps shows that some special tokens (marked as ) can precisely attend to the target region of the input query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Although some recent works [4; 69] have investigated the attention maps in language...",
+        "scenario": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "While existing methods handle the STVG task mainly in a fully-supervised setting [13; 59; 54], which often relies on costly frame-level annotations, several works [29; 3; 61; 21; 60; 25] attempt to introduce the weakly-supervised or zero-shot setting to...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "While existing methods handle the STVG task mainly in a fully-supervised setting [13; 59; 54], which often relies on costly frame-level annotations, several works [29; 3; 61; 21; 60; 25] attempt to introduce the weakly-supervised or zero-shot setting to alleviate the burden of dense annotations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "† Joint corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "† Joint corresponding authors.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Examples (b) and (c) illustrate spatial/temporal grounding errors caused by ignoring the discriminative attribute/action cues.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Examples (b) and (c) illustrate spatial/temporal grounding errors caused by ignoring the discriminative attribute/action cues.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action?",
+      "failure_mode": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "root_cause": "it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "why_existing_methods_fail": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "affected_scenario": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving ).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that cLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs?",
+      "failure_mode": "CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+      "root_cause": "it simply aligns the global representation of image-text pairs.",
+      "why_existing_methods_fail": "CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+      "affected_scenario": "This task is fundamental to many different applications (e.g., video surveillance and autonomous driving ).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0024"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts)?",
+      "failure_mode": "these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+      "root_cause": "the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+      "why_existing_methods_fail": "these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+      "affected_scenario": "Visual input Visual input Figure 1: (a) The visual attention maps shows that some special tokens (marked as ) can precisely attend to the target region of the input query.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0098"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data ?",
+      "failure_mode": "they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data .",
+      "root_cause": "Considering the strong capability of multi-modal large language models (MLLMs) [37; 27; 31; 8; 53; 36] in cross-modality alignment, several works explore the application of MLLMs in the visual grounding task.",
+      "why_existing_methods_fail": "they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data .",
+      "affected_scenario": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "However, they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data [4].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "ous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens)?",
+      "failure_mode": "ous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "root_cause": "done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "why_existing_methods_fail": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "affected_scenario": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Although some recent works [4; 69] have investigated the attention maps in language models as done in previous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec",
+      "method_core_mechanism": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+      "method_components": [
+        "DSTH"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0014"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "temporal-augmented assembling (TAS) strategy (Sec",
+      "method_core_mechanism": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+      "method_components": [
+        "TAS"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0014"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec targets it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal-augmented assembling (TAS) strategy (Sec targets it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0138",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec targets CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0024",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal-augmented assembling (TAS) strategy (Sec targets CLIP is known to be weak in localization [75; 14] as it simply aligns the global representation of image-text pairs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0024",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec targets these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0098",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal-augmented assembling (TAS) strategy (Sec targets these special tokens, referred to as the grounding tokens in our work, underperform on complex STVG, where they often focus on part cues and ignore other cues (marked in red within the input text prompts). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0098",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec targets they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal-augmented assembling (TAS) strategy (Sec targets they typically require explicit fine-tuning [26; 44; 39] of MLLMs with additional grounding datasets and specific model modifications, which can be difficult to scale and generalize to novel visual data . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec targets ous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "temporal-augmented assembling (TAS) strategy (Sec targets ous ViT and CNN architectures [74; 52; 12], they only focus on the generated tokens while neglecting other token components input in the language model (e.g., system tokens and special tokens). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0139",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec",
+      "compared_to": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "why_it_matters": "It directly targets it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "temporal-augmented assembling (TAS) strategy (Sec",
+      "compared_to": "it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.",
+      "why_it_matters": "It directly targets it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To alleviate the problem of neglecting discriminative cues, we propose a novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "temporal-augmented assembling (TAS) strategy (Sec",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "In addition, to further enhance the temporal consistency during spatial grounding by the attribute sub-query, we develop a temporal-augmented assembling (TAS) strategy (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec",
+      "baseline": "Unleashing the Potential of Multimodal LLMs for Zero-Shot Spatio-Temporal Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel decomposed spatio-temporal highlighting (DSTH) strategy (Sec",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting it is also very challenging as it requires the model to be able to distinguish the target from distractors over time and identify the precise temporal boundary of the action.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_unleashing-the-potential-of-multimodal-llms-for-zero-shot-spatio-temporal-video_e5ed617685\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_yang_unleashing-the-potential-of-multimodal-llms-for-zero-shot-spatio-temporal-video_e5ed617685\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

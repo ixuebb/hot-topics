@@ -1,0 +1,976 @@
+{
+  "paper_id": "2025_hu_uncertainty-quantified-rollout-policy-adaptation-for-unlabelled-cross-domain-vid_b9aa84124d",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_hu_uncertainty-quantified-rollout-policy-adaptation-for-unlabelled-cross-domain-vid_b9aa84124d",
+  "title": "Uncertainty-quantified Rollout Policy Adaptation for Unlabelled Cross-domain Video Temporal Grounding",
+  "year": 2025,
+  "venue_or_source": "NeurIPS 2025",
+  "authors": [
+    "Jian Hu",
+    "Zixu Cheng",
+    "Shaogang Gong",
+    "Isabel Guan",
+    "Jianye Hao",
+    "Jun Wang",
+    "Kun Shao"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (TG) aims to temporally locate video segments matching a natural language description (a query) in a long video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Temporal Grounding (TG) localises the exact temporal segment in an untrimmed video that semantically corresponds to a given natural-language query .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "# Introduction Temporal Grounding (TG) localises the exact temporal segment in an untrimmed video that semantically corresponds to a given natural-language query [1, 12].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Accurate TG is fundamental to high-level applications such as activity detection and embodied human–computer interaction .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Accurate TG is fundamental to high-level applications such as activity detection [6] and embodied human–computer interaction [7].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Existing methods adapt on thousands of unlabelled target videos (grey), which is slow and resource-heavy.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Existing methods adapt on thousands of unlabelled target videos (grey), which is slow and resource-heavy.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "While VLMs are effective at capturing holistic video semantics [22, 41, 18], they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding .",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding [60].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "While effective, this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems (NeurIPS 2025).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "which are expensive to collect and hard to scale across domains and tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "which are expensive to collect and hard to scale across domains and tasks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "GRPO relies on ground-truth temporal boundaries to compute reward signals.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, GRPO relies on ground-truth temporal boundaries to compute reward signals.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in...",
+        "scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.1(b), MC Dropout estimates uncertainty by sampling multiple...",
+        "scenario": "As illustrated in Fig.1(b), MC Dropout estimates uncertainty by sampling multiple sub-networks via stochastic dropout and computing the variance across their outputs.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.1(b), MC Dropout [11] estimates uncertainty by sampling multiple sub-networks via stochastic dropout and computing the variance across their outputs.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Some recent works apply Supervised Fine-Tuning (SFT) to better align video-query pairs .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Some recent works apply Supervised Fine-Tuning (SFT) to better align video-query pairs [4, 39, 58].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To improve temporal reasoning, Chain-of-Thought (CoT) post-training introduces explicit intermediate reasoning steps before prediction .",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "To improve temporal reasoning, Chain-of-Thought (CoT) post-training introduces explicit intermediate reasoning steps before prediction [37, 50].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "MC Dropout Sampling different sub-networks via dropout masks GRPO Rollout Sampling multiple structural sequences from the policy Dropout Net 1 Dropout Net 2 Dropout Net 3 Sampled Structure 1 Sampled Structure 2 Sampled Structure 3 (a) Motivation of...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "MC Dropout Sampling different sub-networks via dropout masks GRPO Rollout Sampling multiple structural sequences from the policy Dropout Net 1 Dropout Net 2 Dropout Net 3 Sampled Structure 1 Sampled Structure 2 Sampled Structure 3 (a) Motivation of data-efficient CTG setting.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are threefold: (i) We introduce an unlabelled cross-domain temporal grounding approach to test-time model adaptation using only a small number of unlabelled target-domain",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "Our contributions are threefold: (i) We introduce an unlabelled cross-domain temporal grounding approach to test-time model adaptation using only a small number of unlabelled target-domain",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding?",
+      "failure_mode": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "root_cause": "Accurate TG is fundamental to high-level applications such as activity detection and embodied human–computer interaction .",
+      "why_existing_methods_fail": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "affected_scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "While VLMs are effective at capturing holistic video semantics [22, 41, 18], they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding ?",
+      "failure_mode": "since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding .",
+      "root_cause": "Some recent works apply Supervised Fine-Tuning (SFT) to better align video-query pairs .",
+      "why_existing_methods_fail": "since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding .",
+      "affected_scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding [60].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems ?",
+      "failure_mode": "this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems .",
+      "root_cause": "To improve temporal reasoning, Chain-of-Thought (CoT) post-training introduces explicit intermediate reasoning steps before prediction .",
+      "why_existing_methods_fail": "this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems .",
+      "affected_scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "While effective, this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems (NeurIPS 2025).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that our method matches or exceeds performance on the TaCoS →ActivityNet task?",
+      "failure_mode": "our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+      "root_cause": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+      "why_existing_methods_fail": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+      "affected_scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "which are expensive to collect and hard to scale across domains and tasks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that which are expensive to collect and hard to scale across domains and tasks?",
+      "failure_mode": "which are expensive to collect and hard to scale across domains and tasks.",
+      "root_cause": "URPA leverages this property to generate averaged pseudo labels and estimate uncertainty via rollout standard deviation, enabling uncertainty-quantified adaptation without ground-truth labels.",
+      "why_existing_methods_fail": "which are expensive to collect and hard to scale across domains and tasks.",
+      "affected_scenario": "Figure 1: (a) A comparison between full-data and data-efficient adaptation in Cross-domain Temporal Grounding (CTG).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "which are expensive to collect and hard to scale across domains and tasks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "data-efficient CTG setting using only 100 or 200 randomly selected target videos",
+      "method_core_mechanism": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+      "method_components": [
+        "CTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0206"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "matches or exceeds performance on the TaCoS →ActivityNet task",
+      "method_core_mechanism": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+      "method_components": [
+        "matches or exceeds performance on the TaCoS →ActivityNet task"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Data-Efficient Unlabelled Cross-domain Temporal Grounding approach",
+      "method_core_mechanism": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+      "method_components": [
+        "Data-Efficient Unlabelled Cross-domain Temporal Grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0206"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M06",
+      "legacy_macro_method_name": "Uncertainty, Evidential Learning, and Calibration",
+      "micro_method_name": "explicit uncertainty quantification to assess the reliability of pseudo-labels",
+      "method_core_mechanism": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+      "method_components": [
+        "explicit uncertainty quantification to assess the reliability of pseudo-labels"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "uncertainty",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "uncertainty",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0057"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M06",
+      "legacy_macro_method_name": "Uncertainty, Evidential Learning, and Calibration",
+      "micro_method_name": "Uncertainty-quantified Rollout Policy Adaptation (URPA)",
+      "method_core_mechanism": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+      "method_components": [
+        "Uncertainty-quantified Rollout Policy Adaptation (URPA)",
+        "Uncertainty-quantified Rollout Policy Adaptation",
+        "URPA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "uncertainty",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "uncertainty",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0057"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "data-efficient CTG setting using only 100 or 200 randomly selected target videos targets While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0206",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "matches or exceeds performance on the TaCoS →ActivityNet task targets While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "data-efficient CTG setting using only 100 or 200 randomly selected target videos targets since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0206",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "matches or exceeds performance on the TaCoS →ActivityNet task targets since relevant segments typically cover only a small portion of the video, the model often overfits to redundant context, limiting its ability to perform precise grounding . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "data-efficient CTG setting using only 100 or 200 randomly selected target videos targets this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0206",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "matches or exceeds performance on the TaCoS →ActivityNet task targets this approach depends on manually annotated prompts, ∗Corresponding author: shaokun2@huawei.com 39th Conference on Neural Information Processing Systems . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "matches or exceeds performance on the TaCoS →ActivityNet task targets our method matches or exceeds performance on the TaCoS →ActivityNet task. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "data-efficient CTG setting using only 100 or 200 randomly selected target videos targets our method matches or exceeds performance on the TaCoS →ActivityNet task. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0206",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "explicit uncertainty quantification to assess the reliability of pseudo-labels targets which are expensive to collect and hard to scale across domains and tasks. by operating on uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0057",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU5",
+      "solves_how": "Uncertainty-quantified Rollout Policy Adaptation (URPA) targets which are expensive to collect and hard to scale across domains and tasks. by operating on uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0057",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "data-efficient CTG setting using only 100 or 200 randomly selected target videos",
+      "compared_to": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "why_it_matters": "It directly targets While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "matches or exceeds performance on the TaCoS →ActivityNet task",
+      "compared_to": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "why_it_matters": "It directly targets While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "Data-Efficient Unlabelled Cross-domain Temporal Grounding approach",
+      "compared_to": "While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.",
+      "why_it_matters": "It directly targets While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "data-efficient CTG setting using only 100 or 200 randomly selected target videos",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose a data-efficient CTG setting using only 100 or 200 randomly selected target videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "matches or exceeds performance on the TaCoS →ActivityNet task",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Despite the limited data, our method matches or exceeds performance on the TaCoS →ActivityNet task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Data-Efficient Unlabelled Cross-domain Temporal Grounding approach",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+      "can_transfer_to": [
+        "domain_shift"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Data-Efficient Unlabelled Cross-domain Temporal Grounding approach.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "explicit uncertainty quantification to assess the reliability of pseudo-labels",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+      "can_transfer_to": [
+        "uncertainty"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To mitigate this, we introduce explicit uncertainty quantification to assess the reliability of pseudo-labels.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Uncertainty-quantified Rollout Policy Adaptation (URPA)",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+      "can_transfer_to": [
+        "uncertainty"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "To this end, we propose Uncertainty-quantified Rollout Policy Adaptation (URPA).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for data-efficient CTG setting using only 100 or 200 randomly selected target videos",
+      "baseline": "Uncertainty-quantified Rollout Policy Adaptation for Unlabelled Cross-domain Video Temporal Grounding",
+      "dataset": "ActivityNet, TACoS",
+      "module_to_modify": "data-efficient CTG setting using only 100 or 200 randomly selected target videos",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting While VLMs are effective at capturing holistic video semantics , they often struggle with fine-grained localisation, leading to suboptimal performance in temporal grounding.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "TACoS"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_hu_uncertainty-quantified-rollout-policy-adaptation-for-unlabelled-cross-domain-vid_b9aa84124d\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_hu_uncertainty-quantified-rollout-policy-adaptation-for-unlabelled-cross-domain-vid_b9aa84124d\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

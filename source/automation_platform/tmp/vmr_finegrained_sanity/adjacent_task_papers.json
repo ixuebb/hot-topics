@@ -1,0 +1,198 @@
+[
+  {
+    "paper_id": "2026_koutlis_auvire-audio-visual-speech-representation-reconstruction-for-deepfake-temporal-l_bfd74499b0",
+    "title": "AuViRe: Audio-visual Speech Representation Reconstruction for Deepfake Temporal Localization",
+    "year": 2026,
+    "venue_or_source": "ArXiv.org",
+    "task_scope": {
+      "primary_task": "Temporal Forgery Localization",
+      "task_family": "temporal localization / adjacent video understanding",
+      "is_core_video_moment_retrieval": false,
+      "is_adjacent_task": true,
+      "adjacent_task_type": "Temporal Forgery Localization",
+      "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+      "transferable_value": "Cross-modal reconstruction discrepancy can test query-video inconsistency or insufficient evidence.",
+      "evidence": [
+        {
+          "evidence_id": "TASK01",
+          "section": "Abstract",
+          "quote": "Cross-modal reconstruction is significantly more challenging in manipulated video segments, leading to amplified discrepancies, thereby providing robust discriminative cues for precise temporal forgery localization.",
+          "role": "task_scope",
+          "page": null
+        }
+      ]
+    },
+    "problem_units": [
+      {
+        "problem_unit_id": "PU1",
+        "macro_problem_id": "AP001",
+        "macro_problem_name": "Cross-Modal Consistency and Reconstruction",
+        "legacy_macro_problem_id": "P_NEW",
+        "legacy_macro_problem_name": "new_or_adjacent",
+        "micro_problem_name": "Video-level deepfake classification cannot localize short manipulated segments",
+        "micro_problem_question": "How can a deepfake detector identify the exact manipulated temporal interval rather than only classify the whole video?",
+        "failure_mode": "Coarse video-level classification hides brief forged intervals.",
+        "root_cause": "Existing detectors optimize global authenticity rather than frame-level temporal boundaries.",
+        "why_existing_methods_fail": "A single video label provides no fine-grained temporal supervision or boundary prediction.",
+        "affected_scenario": "",
+        "problem_type": "task_definition",
+        "linked_intro_evidence_ids": [
+          "EV012"
+        ],
+        "linked_example_ids": [],
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Existing methods [8,9,18,19,21,25,31,34–36], primarily focus on coarse-grained video classification instead of temporal forgery localization, while neglecting to also leverage the subtle cross-modal inconsistencies that are crucial for fine-grained temporal localization.",
+            "role": "problem",
+            "page": null
+          }
+        ],
+        "micro_problem_cluster_id": "AMP0001"
+      },
+      {
+        "problem_unit_id": "PU2",
+        "macro_problem_id": "AP001",
+        "macro_problem_name": "Cross-Modal Consistency and Reconstruction",
+        "legacy_macro_problem_id": "P_NEW",
+        "legacy_macro_problem_name": "new_or_adjacent",
+        "micro_problem_name": "Multimodal deepfake detectors underuse subtle audio-visual speech inconsistencies",
+        "micro_problem_question": "How can temporal forgery localization exploit discrepancies between audio and visual speech representations?",
+        "failure_mode": "Raw-signal fusion or generic features miss subtle cross-modal speech inconsistency.",
+        "root_cause": "The relevant forgery cue is a mismatch between high-level audio and visual speech representations.",
+        "why_existing_methods_fail": "Raw audio-visual processing overfits and general-purpose encoders lack speech-specific capacity.",
+        "affected_scenario": "",
+        "problem_type": "model",
+        "linked_intro_evidence_ids": [
+          "EV012"
+        ],
+        "linked_example_ids": [],
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Existing methods [8,9,18,19,21,25,31,34–36], primarily focus on coarse-grained video classification instead of temporal forgery localization, while neglecting to also leverage the subtle cross-modal inconsistencies that are crucial for fine-grained temporal localization.",
+            "role": "problem",
+            "page": null
+          }
+        ],
+        "micro_problem_cluster_id": "AMP0002"
+      }
+    ],
+    "method_units": [
+      {
+        "method_unit_id": "MU1",
+        "macro_method_id": "EM002",
+        "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Evidential and Calibration Mechanisms",
+        "legacy_macro_method_id": "M12",
+        "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+        "micro_method_name": "Audio-visual speech representation reconstruction",
+        "method_core_mechanism": "Predict visual speech representations from audio and add unimodal audio-audio and visual-visual reconstruction paths.",
+        "method_components": [
+          "audio-to-visual speech reconstruction",
+          "audio-audio reconstruction",
+          "visual-visual reconstruction",
+          "pretrained speech-related feature extractors"
+        ],
+        "training_or_inference_strategy": "training and inference",
+        "what_is_transferred_or_injected_or_aligned": "cross-modal speech representations",
+        "required_inputs": [
+          "audio speech features",
+          "visual speech features"
+        ],
+        "output_or_supervision": "reconstruction errors",
+        "linked_intro_evidence_ids": [
+          "EV019"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "A representation reconstruction module then predicts visual speech representations from audio, complemented by unimodal (audio-audio and visual-visual) reconstructions.",
+            "role": "method",
+            "page": null
+          }
+        ],
+        "micro_method_cluster_id": "MM0005"
+      },
+      {
+        "method_unit_id": "MU2",
+        "macro_method_id": "EM002",
+        "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Evidential and Calibration Mechanisms",
+        "legacy_macro_method_id": "M10",
+        "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+        "micro_method_name": "Reconstruction-discrepancy encoding for frame-level forgery localization",
+        "method_core_mechanism": "Encode cross-modal reconstruction errors as discriminative forgery cues for frame classification and temporal boundaries.",
+        "method_components": [
+          "cross-modal reconstruction discrepancy",
+          "reconstruction-discrepancy encoder",
+          "frame-level forgery classification",
+          "temporal boundary regression"
+        ],
+        "training_or_inference_strategy": "training and inference",
+        "what_is_transferred_or_injected_or_aligned": "audio-visual inconsistency",
+        "required_inputs": [
+          "reconstruction errors"
+        ],
+        "output_or_supervision": "frame-level forgery scores and temporal boundaries",
+        "linked_intro_evidence_ids": [
+          "EV001"
+        ],
+        "evidence": [
+          {
+            "evidence_id": "EV001",
+            "section": "Abstract",
+            "quote": "# Abstract With the rapid advancement of sophisticated synthetic audio-visual content, e.g., for subtle malicious manipulations, ensuring the integrity of digital media has become paramount.",
+            "role": "method",
+            "page": null
+          }
+        ],
+        "micro_method_cluster_id": "MM0004"
+      }
+    ],
+    "transferable_idea_units": [
+      {
+        "unit_name": "Audio-visual speech representation reconstruction",
+        "source_method_unit_id": "MU1",
+        "transferable_mechanism": "Predict visual speech representations from audio and add unimodal audio-audio and visual-visual reconstruction paths.",
+        "can_transfer_to": [
+          "reconstruction",
+          "backbone_dependency"
+        ],
+        "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+        "risk": "The mechanism may depend on task-specific supervision or representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "A representation reconstruction module then predicts visual speech representations from audio, complemented by unimodal (audio-audio and visual-visual) reconstructions.",
+            "role": "method",
+            "page": null
+          }
+        ]
+      },
+      {
+        "unit_name": "Reconstruction-discrepancy encoding for frame-level forgery localization",
+        "source_method_unit_id": "MU2",
+        "transferable_mechanism": "Encode cross-modal reconstruction errors as discriminative forgery cues for frame classification and temporal boundaries.",
+        "can_transfer_to": [
+          "boundary",
+          "cross_modal",
+          "reconstruction"
+        ],
+        "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+        "risk": "The mechanism may depend on task-specific supervision or representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV001",
+            "section": "Abstract",
+            "quote": "# Abstract With the rapid advancement of sophisticated synthetic audio-visual content, e.g., for subtle malicious manipulations, ensuring the integrity of digital media has become paramount.",
+            "role": "method",
+            "page": null
+          }
+        ]
+      }
+    ]
+  }
+]

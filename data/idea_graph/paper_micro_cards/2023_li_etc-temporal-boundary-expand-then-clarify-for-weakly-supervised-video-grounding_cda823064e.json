@@ -1,0 +1,633 @@
+{
+  "paper_id": "2023_li_etc-temporal-boundary-expand-then-clarify-for-weakly-supervised-video-grounding_cda823064e",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_etc-temporal-boundary-expand-then-clarify-for-weakly-supervised-video-grounding_cda823064e",
+  "title": "EtC: Temporal Boundary Expand then Clarify for Weakly Supervised Video Grounding with Multimodal Large Language Model",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Guozhang Li",
+    "Xinpeng Ding",
+    "De Cheng",
+    "Jie Li",
+    "Nannan Wang",
+    "Xinbo Gao"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Early weakly supervised video grounding (WSVG) methods often struggle with incomplete boundary detection due to the absence of temporal boundary annotations.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Weakly Supervised Video Grounding (WSVG) aims to locate the moments of interest in a video based on a query description without temporal boundary annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Weakly Supervised Video Grounding (WSVG) aims to locate the moments of interest in a video based on a query description without temporal boundary annotations.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Compared to its fully-supervised counterpart, weakly supervised approaches simplify the data collection process and avoid annotation biases, finding vast applications in video action analysis , video question and answer , , and human-computer interaction...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Compared to its fully-supervised counterpart, weakly supervised approaches simplify the data collection process and avoid annotation biases, finding vast applications in video action analysis [1], video question and answer [2], [3], and human-computer interaction systems [4], [5].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This is in contrast to existing methods, which often risk losing critical information.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "This is in contrast to existing methods, which often risk losing critical information.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "However, these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Explicit supervision-based WSVG methods [14] have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "However, in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise...",
+        "scenario": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise and missing complete GT boundaries (e.g., the blue line).",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise and missing complete GT boundaries (e.g., the blue line).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Existing implicit optimization paradigms.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Existing implicit optimization paradigms.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "These methods commence by creating pseudo-labels through data augmentation and a mean teacher approach, utilizing these labels to refine the outputs of the basic WSVG model.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "These methods commence by creating pseudo-labels through data augmentation and a mean teacher approach, utilizing these labels to refine the outputs of the basic WSVG model.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Similarly, augmenting text might result in the omission of tokens essential for localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Similarly, augmenting text might result in the omission of tokens essential for localization.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding?",
+      "failure_mode": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "root_cause": "These methods generally begin by generating proposals and then aiming to identify the proposal that most closely aligns with the given query by MIL-based , , or querybased reconstruction methods , , , .",
+      "why_existing_methods_fail": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "affected_scenario": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise and missing complete GT boundaries (e.g., the blue line).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "However, these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding?",
+      "failure_mode": "Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+      "root_cause": "The proposal result of description generated by the MLLM, where the proposal will be as complete as possible to cover all content.",
+      "why_existing_methods_fail": "Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+      "affected_scenario": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise and missing complete GT boundaries (e.g., the blue line).",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Explicit supervision-based WSVG methods [14] have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b))?",
+      "failure_mode": "in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+      "root_cause": "Data augmentation plays a crucial role in these methods, significantly influencing the quality of the pseudo-labels generated.",
+      "why_existing_methods_fail": "in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+      "affected_scenario": "With the inherently sub-optimal WSVG model, the initial pseudo-labels are often imprecise and missing complete GT boundaries (e.g., the blue line).",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "However, in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "method_core_mechanism": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "method_components": [
+        "Video Our",
+        "GT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0196"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new perspective in this paper:",
+      "method_core_mechanism": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+      "method_components": [
+        "new perspective in this paper:"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0068"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "two-step method, EtC (Expand then Clarify)",
+      "method_core_mechanism": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+      "method_components": [
+        "JOURNAL OF LATEX CLASS FILES",
+        "JOURNAL",
+        "OF",
+        "LATEX",
+        "CLASS",
+        "FILES",
+        "VOL"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0100"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint. targets these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0196",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "new perspective in this paper: targets these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint. targets Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0196",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "new perspective in this paper: targets Explicit supervision-based WSVG methods have emerged to tackle existing limitations by generating pseudotemporal boundaries, thus bridging the gap between video and boundary-level understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "new perspective in this paper: targets in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "two-step method, EtC (Expand then Clarify) targets in video data augmentation, there’s a risk of losing segments critical to the ground truth (Fig.1(b)). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0100",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "compared_to": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "why_it_matters": "It directly targets these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "new perspective in this paper:",
+      "compared_to": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "why_it_matters": "It directly targets these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "two-step method, EtC (Expand then Clarify)",
+      "compared_to": "these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.",
+      "why_it_matters": "It directly targets these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new perspective in this paper:",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "We present a new perspective in this paper: to improve suboptimized localization models, it’s crucial to supply additional valuable information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two-step method, EtC (Expand then Clarify)",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a two-step method, EtC (Expand then Clarify), which first expands the initial pseudo boundaries to the overinclusive boundaries with additional useful information and JOURNAL OF LATEX CLASS FILES, VOL.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for 37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "baseline": "EtC: Temporal Boundary Expand then Clarify for Weakly Supervised Video Grounding with Multimodal Large Language Model",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "37.4s Boundary 63.1s GT 27.7s 55.1s Video Our method's explicit constraint.",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these methods tend to overly focus on the most distinct parts of the video or query, leading to sub-optimal WSVG models and issues with partial grounding.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_etc-temporal-boundary-expand-then-clarify-for-weakly-supervised-video-grounding_cda823064e\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_etc-temporal-boundary-expand-then-clarify-for-weakly-supervised-video-grounding_cda823064e\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

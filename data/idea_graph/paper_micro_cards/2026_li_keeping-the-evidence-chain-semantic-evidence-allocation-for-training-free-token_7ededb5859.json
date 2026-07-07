@@ -1,0 +1,752 @@
+{
+  "paper_id": "2026_li_keeping-the-evidence-chain-semantic-evidence-allocation-for-training-free-token_7ededb5859",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_keeping-the-evidence-chain-semantic-evidence-allocation-for-training-free-token_7ededb5859",
+  "title": "Keeping the Evidence Chain: Semantic Evidence Allocation for Training-Free Token Pruning in Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Jiaqi Li",
+    "Shuntian Zheng",
+    "Yixian Shen",
+    "Jia-Hong Huang",
+    "Xiaoman Lu",
+    "Minzhe Ni",
+    "Yu Guan"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) localizes the temporal boundaries of a query-relevant moment in long, untrimmed videos, making video-language-model (VLM) pipelines prohibitively expensive.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video Temporal Grounding (VTG) aims to localize the start and end timestamps of a moment in an untrimmed video that matches a language query .",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "Video Temporal Grounding (VTG) aims to localize the start and end timestamps of a moment in an untrimmed video that matches a language query [10,29,39, 54].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "As a core capability for practical video interaction, VTG supports moment retrieval, highlight discovery, and query-driven video summarization, where users 2 J.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "As a core capability for practical video interaction, VTG supports moment retrieval, highlight discovery, and query-driven video summarization, where users 2 J.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In practice, existing training-free pruning baselines are borrowed from Video Question Answering (VideoQA) and can be categorized by their objectives into Visual Redundancy (VR), Visual Saliency (VS), and Query Relevance (QR).",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In practice, existing training-free pruning baselines are borrowed from Video Question Answering (VideoQA) and can be categorized by their objectives into Visual Redundancy (VR), Visual Saliency (VS), and Query Relevance (QR).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling [40], yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "pruning strategies designed for VTG remain under-explored.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, pruning strategies designed for VTG remain under-explored.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "While effective for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame [13,20, 43], VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time [8,44].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries .",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "While effective for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries [4].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This produces insufficient temporal coverage and weakens the evidence continuity, making it difficult to track evolving events.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "This produces insufficient temporal coverage and weakens the evidence continuity, making it difficult to track evolving events.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be...",
+        "scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "While effective for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame [13,20, 43], VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time [8,44].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As a result, naively transferring VideoQA pruning tends to discard temporally critical...",
+        "scenario": "As a result, naively transferring VideoQA pruning tends to discard temporally critical cues and leads to severe performance drops, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "As a result, naively transferring VideoQA pruning tends to discard temporally critical cues and leads to severe performance drops, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "A video is typically tokenized into thousands of patch tokens, and the attention cost scales quadratically with sequence length .",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "A video is typically tokenized into thousands of patch tokens, and the attention cost scales quadratically with sequence length [11,35,38].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As described in , many visual tokens are redundant and contribute little to performance and thus can be safely removed without compromising accuracy.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "As described in [17,18], many visual tokens are redundant and contribute little to performance and thus can be safely removed without compromising accuracy.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In practice, existing training-free pruning baselines are borrowed from Video Question Answering (VideoQA) and can be categorized by their objectives into Visual Redundancy (VR), Visual Saliency (VS), and Query Relevance (QR).",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In practice, existing training-free pruning baselines are borrowed from Video Question Answering (VideoQA) and can be categorized by their objectives into Visual Redundancy (VR), Visual Saliency (VS), and Query Relevance (QR).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "deploying VLM-based VTG remains expensive.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that deploying VLM-based VTG remains expensive?",
+      "failure_mode": "deploying VLM-based VTG remains expensive.",
+      "root_cause": "Recently, VTG methods have begun to leverage Video-Language Models (VLMs), benefiting from their strong cross-modal understanding and reasoning ability, and have achieved promising performance on diverse VTG benchmarks .",
+      "why_existing_methods_fail": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+      "affected_scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive?",
+      "failure_mode": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+      "root_cause": "A video is typically tokenized into thousands of patch tokens, and the attention cost scales quadratically with sequence length .",
+      "why_existing_methods_fail": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+      "affected_scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "This challenge is amplified for long videos: precise boundary localization often requires dense sampling [40], yet increasing the sampling rate quickly makes prefill consumption prohibitive.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "pruning strategies designed for VTG remain under-explored.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that pruning strategies designed for VTG remain under-explored?",
+      "failure_mode": "pruning strategies designed for VTG remain under-explored.",
+      "root_cause": "This naturally motivates training-free visual token pruning to reduce computation.",
+      "why_existing_methods_fail": "pruning strategies designed for VTG remain under-explored.",
+      "affected_scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, pruning strategies designed for VTG remain under-explored.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason?",
+      "failure_mode": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason...",
+      "root_cause": "A straightforward attempt is to directly apply these VideoQA pruning objectives to VTG.",
+      "why_existing_methods_fail": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "affected_scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "While effective for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame [13,20, 43], VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time [8,44].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries ?",
+      "failure_mode": "for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries .",
+      "root_cause": "VR removes duplicate content by merging or discarding visually similar Keeping the Evidence Chain 3 tokens.",
+      "why_existing_methods_fail": "for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries .",
+      "affected_scenario": "for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason about how events evolve over time .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "While effective for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries [4].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "SemVID, a trainingfree pruning framework tailored for VTG",
+      "method_core_mechanism": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+      "method_components": [
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "SemVID, a training-free pruning framework tailored for VTG",
+      "method_core_mechanism": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+      "method_components": [
+        "VTG",
+        "ER",
+        "CS"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SemVID, a trainingfree pruning framework tailored for VTG targets deploying VLM-based VTG remains expensive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "SemVID, a training-free pruning framework tailored for VTG targets deploying VLM-based VTG remains expensive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "SemVID, a training-free pruning framework tailored for VTG targets This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SemVID, a trainingfree pruning framework tailored for VTG targets This challenge is amplified for long videos: precise boundary localization often requires dense sampling , yet increasing the sampling rate quickly makes prefill consumption prohibitive. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "SemVID, a training-free pruning framework tailored for VTG targets pruning strategies designed for VTG remain under-explored. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SemVID, a trainingfree pruning framework tailored for VTG targets pruning strategies designed for VTG remain under-explored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "SemVID, a trainingfree pruning framework tailored for VTG targets for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "SemVID, a training-free pruning framework tailored for VTG targets for perception-oriented tasks (e.g., object/attribute recognition) that can often be answered from a single informative frame , VTG fundamentally differs: it requires temporally coherent evidence to localize event boundaries and to reason... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "SemVID, a training-free pruning framework tailored for VTG targets for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries . by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "SemVID, a trainingfree pruning framework tailored for VTG targets for compression, its query-agnostic criterion can suppress small yet decisive evidence near event boundaries . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0116",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "SemVID, a trainingfree pruning framework tailored for VTG",
+      "compared_to": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+      "why_it_matters": "It directly targets deploying VLM-based VTG remains expensive.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "SemVID, a training-free pruning framework tailored for VTG",
+      "compared_to": "Despite recent progress, deploying VLM-based VTG remains expensive.",
+      "why_it_matters": "It directly targets deploying VLM-based VTG remains expensive.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SemVID, a trainingfree pruning framework tailored for VTG",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To address the aforementioned challenges, we propose SemVID, a trainingfree pruning framework tailored for VTG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "SemVID, a training-free pruning framework tailored for VTG",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "– We propose SemVID, a training-free pruning framework tailored for VTG, which explicitly optimizes ER and CS by constructing a role-aware token set that preserves query-critical evidence and maintains cross-frame connectivity.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SemVID, a trainingfree pruning framework tailored for VTG",
+      "baseline": "Keeping the Evidence Chain: Semantic Evidence Allocation for Training-Free Token Pruning in Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "SemVID, a trainingfree pruning framework tailored for VTG",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting deploying VLM-based VTG remains expensive.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_keeping-the-evidence-chain-semantic-evidence-allocation-for-training-free-token_7ededb5859\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_keeping-the-evidence-chain-semantic-evidence-allocation-for-training-free-token_7ededb5859\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

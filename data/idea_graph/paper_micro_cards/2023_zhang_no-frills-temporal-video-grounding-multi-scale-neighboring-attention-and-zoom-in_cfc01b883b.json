@@ -1,0 +1,499 @@
+{
+  "paper_id": "2023_zhang_no-frills-temporal-video-grounding-multi-scale-neighboring-attention-and-zoom-in_cfc01b883b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zhang_no-frills-temporal-video-grounding-multi-scale-neighboring-attention-and-zoom-in_cfc01b883b",
+  "title": "No-frills Temporal Video Grounding: Multi-Scale Neighboring Attention and Zoom-in Boundary Detection",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Qi Zhang",
+    "Sipeng Zheng",
+    "Qin Jin"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal video grounding (TVG) aims to retrieve the time interval of a language query from an untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Temporal video grounding (TVG) involves retrieving a corresponding video clip (e.g., represented by a frame interval [ts, te]) from an untrimmed video (e.g., represented by a frame interval [0, T]) in response to a language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Temporal video grounding (TVG) [10, 1, 45] involves retrieving a corresponding video clip (e.g., represented by a frame interval [ts, te]) from an untrimmed video (e.g., represented by a frame interval [0, T]) in response to a language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Typically, the semantics of the query are related to only a small portion of the long video.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Typically, the semantics of the query are related to only a small portion of the long video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As such, the TVG task is characterized by a low semantic noise ratio (SNR), which is defined as the ratio of the target clip interval to the untrimmed video interval, i.e.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As such, the TVG task is characterized by a low semantic noise ratio (SNR), which is defined as the ratio of the target clip interval to the untrimmed video interval, i.e.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "SNR = (te−ts) T .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "SNR = (te−ts) T .",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "For example, in Ego4D-NLQ , almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For example, in Ego4D-NLQ [11], almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such conditions.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such conditions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Dense frame sampling can effectively enhance video understanding in high SNR scenarios, however, increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Dense frame sampling can effectively enhance video understanding in high SNR scenarios, however, increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "# Introduction Temporal video grounding (TVG) involves retrieving a corresponding video...",
+        "scenario": "# Introduction Temporal video grounding (TVG) involves retrieving a corresponding video clip (e.g., represented by a frame interval [ts, te]) from an untrimmed video (e.g., represented by a frame interval [0, T]) in response to a language query.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Temporal video grounding (TVG) [10, 1, 45] involves retrieving a corresponding video clip (e.g., represented by a frame interval [ts, te]) from an untrimmed video (e.g., represented by a frame interval [0, T]) in response to a language query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Figure 1, a significant proportion of TVG trials across different benchmarks...",
+        "scenario": "As shown in Figure 1, a significant proportion of TVG trials across different benchmarks suffer from low SNR.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, a significant proportion of TVG trials across different benchmarks suffer from low SNR.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, in Ego4D-NLQ , almost all trials have an SNR The initial NA version was...",
+        "scenario": "For example, in Ego4D-NLQ , almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For example, in Ego4D-NLQ [11], almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0]...",
+        "scenario": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0] R1@0.5 (%) Percentage (%) semantic noise ratio Charades ActivityNet Ego4D 2D-TAN IANet TVG benchmarks TVG methods Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0] R1@0.5 (%) Percentage (%) semantic noise ratio Charades ActivityNet Ego4D 2D-TAN IANet TVG benchmarks TVG methods Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0] R1@0.5 (%) Percentage (%) semantic noise ratio Charades ActivityNet Ego4D 2D-TAN IANet TVG benchmarks TVG methods Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0] R1@0.5 (%) Percentage (%) semantic noise ratio Charades ActivityNet Ego4D 2D-TAN IANet TVG benchmarks TVG methods Figure 1.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As shown in Figure 1, when SNR drops from [0.4,0.6] to [0.2,0.4], it leads to a nearly 30% performance drop on the R1@0.5 metric for state-of-the-art methods .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, when SNR drops from [0.4,0.6] to [0.2,0.4], it leads to a nearly 30% performance drop on the R1@0.5 metric for state-of-the-art methods [21, 44].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This is due to the semantic asymmetry between the query and the untrimmed video, which is further exacerbated by the low SNR.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "This is due to the semantic asymmetry between the query and the untrimmed video, which is further exacerbated by the low SNR.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV004",
+            "section": "Abstract",
+            "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022?",
+      "failure_mode": "ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+      "root_cause": "among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+      "why_existing_methods_fail": "For example, in Ego4D-NLQ , almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+      "affected_scenario": "As shown in Figure 1, a significant proportion of TVG trials across different benchmarks suffer from low SNR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "For example, in Ego4D-NLQ [11], almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such?",
+      "failure_mode": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such...",
+      "root_cause": "it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such conditions.",
+      "why_existing_methods_fail": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such conditions.",
+      "affected_scenario": "0 20 40 60 80 100 0 20 40 60 80 100 [0.0,0.2] [0.2,0.4] [0.4,0.6] [0.6,0.8] [0.8,1.0] R1@0.5 (%) Percentage (%) semantic noise ratio Charades ActivityNet Ego4D 2D-TAN IANet TVG benchmarks TVG methods Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such conditions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0099"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that increasing frame sampling in low SNR tasks may actually have a negative impact on the performance?",
+      "failure_mode": "increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+      "root_cause": "In contrast to trimmed video tasks such as text-video retrieval , which generally have high SNR, tasks with low SNR such as TVG require a more nuanced approach.",
+      "why_existing_methods_fail": "Dense frame sampling can effectively enhance video understanding in high SNR scenarios, however, increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+      "affected_scenario": "# Introduction Temporal video grounding (TVG) involves retrieving a corresponding video clip (e.g., represented by a frame interval [ts, te]) from an untrimmed video (e.g., represented by a frame interval [0, T]) in response to a language query.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Dense frame sampling can effectively enhance video understanding in high SNR scenarios, however, increasing frame sampling in low SNR tasks may actually have a negative impact on the performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M05",
+      "legacy_macro_method_name": "Boundary Refinement and Temporal Clustering",
+      "micro_method_name": "no-frills TVG model",
+      "method_core_mechanism": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+      "method_components": [
+        "TVG",
+        "namely multi-scale neighboring attention and zoom-in boundary detection."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV004"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0106"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "no-frills TVG model targets ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0106",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "no-frills TVG model targets Such low SNR property is at the heart of the challenges in the TVG task, as it is extremely difficult for a TVG model to strike a balance between capturing detailed spatial-temporal visual information and suppressing noise under such... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0099",
+      "micro_method_cluster_id": "MM0106",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "no-frills TVG model targets increasing frame sampling in low SNR tasks may actually have a negative impact on the performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0042",
+      "micro_method_cluster_id": "MM0106",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Boundary Refinement and Temporal Clustering",
+      "what_is_new": "no-frills TVG model",
+      "compared_to": "For example, in Ego4D-NLQ , almost all trials have an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.",
+      "why_it_matters": "It directly targets ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "no-frills TVG model",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we propose a no-frills TVG model that consists of two core modules, namely multi-scale neighboring attention and zoom-in boundary detection.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for no-frills TVG model",
+      "baseline": "No-frills Temporal Video Grounding: Multi-Scale Neighboring Attention and Zoom-in Boundary Detection",
+      "dataset": "ActivityNet, Ego4D",
+      "module_to_modify": "no-frills TVG model",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting ve an SNR The initial NA version was among the final winners for Natural Language Queries Challenge in IEEE / CVF Computer Vision and Pattern Recognition Conference Ego4D Workshop, 2022.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Ego4D"
+  ],
+  "metrics": [
+    "R1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zhang_no-frills-temporal-video-grounding-multi-scale-neighboring-attention-and-zoom-in_cfc01b883b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_zhang_no-frills-temporal-video-grounding-multi-scale-neighboring-attention-and-zoom-in_cfc01b883b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

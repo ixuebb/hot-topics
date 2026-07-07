@@ -1,0 +1,712 @@
+{
+  "paper_id": "2022_mo_multi-scale-self-contrastive-learning-with-hard-negative-mining-for-weakly-super_7744e003a5",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_mo_multi-scale-self-contrastive-learning-with-hard-negative-mining-for-weakly-super_7744e003a5",
+  "title": "Multi-Scale Self-Contrastive Learning with Hard Negative Mining for Weakly-Supervised Query-based Video Grounding",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Shentong Mo",
+    "Daizong Liu",
+    "Wei Hu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Query-based video grounding is an important yet challenging task in video understanding, which aims to localize the target segment in an untrimmed video according to a sentence query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Query-based video grounding has attracted increasing attention due to its wide spectrum of applications in video understanding .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Query-based video grounding has attracted increasing attention due to its wide spectrum of applications in video understanding [5, 11, 24, 30].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the...",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Most previous works [6, 10, 19, 20, 36, 39] have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the...",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Most previous works [6, 10, 19, 20, 36, 39] have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This task aims to determine the start and end timestamps of a target segment in an...",
+        "scenario": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "step 2 step 1 iteratively negative segment mining Figure 1.",
+        "scenario": "step 2 step 1 iteratively negative segment mining Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "step 2 step 1 iteratively negative segment mining Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise...",
+        "scenario": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Such manual annotation is quite labor-intensive and time-consuming, thus limiting the wide applicability of query-based video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Such manual annotation is quite labor-intensive and time-consuming, thus limiting the wide applicability of query-based video grounding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Further, as for the positive (i.e., correct) proposals covering the accurate foreground frames, they are of high similarity and require more sophisticated intra-modal recognition capabilities to distinguish.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Further, as for the positive (i.e., correct) proposals covering the accurate foreground frames, they are of high similarity [41] and require more sophisticated intra-modal recognition capabilities to distinguish.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person...",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query semantics.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more accurate segment localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a multi-scale hard negative mining in the self-contrastive learning to learn discriminative framewise representations by adaptively sampling hard negatives in the frame-scale and the segment-scale respectively, which captures both local and...",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "• We propose a multi-scale hard negative mining in the self-contrastive learning to learn discriminative framewise representations by adaptively sampling hard negatives in the frame-scale and the segment-scale respectively, which captures both local and nonlocal intrinsic patterns.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query)?",
+      "failure_mode": "requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "root_cause": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+      "why_existing_methods_fail": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "affected_scenario": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Most previous works [6, 10, 19, 20, 36, 39] have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models?",
+      "failure_mode": "the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+      "root_cause": "These methods generally pre-deﬁne multiple segment proposals, and employ video-level annotations as supervision to learn the segment-query matching scores for selecting the best one.",
+      "why_existing_methods_fail": "the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+      "affected_scenario": "This task aims to determine the start and end timestamps of a target segment in an untrimmed video that contains an activity semantically corresponding to a given sentence description, as shown in Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim",
+      "method_core_mechanism": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+      "method_components": [
+        "Multi-scale Self- Contrastive Learning (MSCL)",
+        "Multi-scale Self- Contrastive Learning",
+        "MSCL"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0109"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame",
+      "method_core_mechanism": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+      "method_components": [
+        "to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0036"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well",
+      "method_core_mechanism": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with...",
+      "method_components": [
+        "as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query semantics.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0036"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "self-contrastive learning with multi-scale hard negative mining strategy",
+      "method_core_mechanism": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+      "method_components": [
+        "self-contrastive learning with multi-scale hard negative mining strategy"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0109"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel self-contrastive learning framework for weakly-supervised query-based video grounding",
+      "method_core_mechanism": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more accurate segment localization.",
+      "method_components": [
+        "novel self-contrastive learning framework for weakly-supervised query-based video grounding"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more accurate segment localization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0109"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well targets requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query). by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query semantics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim targets requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0109",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame targets the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well targets the generated segment proposals are redundant and contain many negative (i.e., false) samples, resulting in inferior effectiveness and efﬁciency of the models. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query semantics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim",
+      "compared_to": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "why_it_matters": "It directly targets requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame",
+      "compared_to": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "why_it_matters": "It directly targets requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).."
+    },
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well",
+      "compared_to": "Most previous works have achieved signiﬁcant performance by addressing querybased video grounding in a fully-supervised manner, which however requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).",
+      "why_it_matters": "It directly targets requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+      "can_transfer_to": [
+        "false_negative"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aiming to learn ﬁne-grained frame-wise seman Time line: 1.90s 8.10s Query: Person walks through the doorway.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+      "can_transfer_to": [
+        "proposal_dependency",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "In particular, instead of relying on redundant segment proposals for matching and selection, we propose to learn more ﬁnegrained frame-wise matching scores to predict whether each frame is the foreground frame.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with...",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Firstly, since we only resort to video-level annotations with no access to the frame-level knowledge, we propose frame-wise matching score prediction to estimate the score of each frame matched to the video-level annotations in a weakly-supervised manner, as well as the frame-wise matching weight via an attention mechanism in order to choose possible foreground frames with query semantics.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "self-contrastive learning with multi-scale hard negative mining strategy",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+      "can_transfer_to": [
+        "false_negative"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Secondly, in order to improve the frame-wise score prediction by enhancing the frame-wise representations, we propose a self-contrastive learning with multi-scale hard negative mining strategy, which especially discriminates frames adjacent to the ground truth target segment—referred to as hard negative samples as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel self-contrastive learning framework for weakly-supervised query-based video grounding",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more accurate segment localization.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose a novel self-contrastive learning framework for weakly-supervised query-based video grounding, which predicts ﬁne-grained frame-wise matching scores referring to the query semantics for more accurate segment localization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim",
+      "baseline": "Multi-Scale Self-Contrastive Learning with Hard Negative Mining for Weakly-Supervised Query-based Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel Multi-scale Self- Contrastive Learning (MSCL) paradigm with hard negative mining strategy for weakly-supervised query-based video grounding, aim",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting requires a large amount of segment-level annotations (location of the target segment in the video according to the semantic of the matched query).."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_mo_multi-scale-self-contrastive-learning-with-hard-negative-mining-for-weakly-super_7744e003a5\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_mo_multi-scale-self-contrastive-learning-with-hard-negative-mining-for-weakly-super_7744e003a5\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

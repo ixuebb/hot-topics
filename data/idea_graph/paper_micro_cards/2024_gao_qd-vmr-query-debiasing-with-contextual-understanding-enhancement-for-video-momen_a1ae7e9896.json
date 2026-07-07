@@ -1,0 +1,998 @@
+{
+  "paper_id": "2024_gao_qd-vmr-query-debiasing-with-contextual-understanding-enhancement-for-video-momen_a1ae7e9896",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gao_qd-vmr-query-debiasing-with-contextual-understanding-enhancement-for-video-momen_a1ae7e9896",
+  "title": "QD-VMR: Query Debiasing with Contextual Understanding Enhancement for Video Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Chenghua Gao",
+    "Min Li",
+    "Jianshuo Liu",
+    "Junxing Ren",
+    "Lin Chen",
+    "Li Liu",
+    "Bo Meng",
+    "Jitao Fu",
+    "Wenwen Su"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (VMR) aims to retrieve relevant moments of an untrimmed video corresponding to the query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (Gao et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Based on DETR (",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Based on DETR (Carion et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "2020), which leverages a transformer-based model to detect target objects in images, previous studies such as Moment- DETR and QD-DETR (",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "2020), which leverages a transformer-based model to detect target objects in images, previous studies such as Moment- DETR (Lei, Berg, and Bansal 2021) and QD-DETR (Moon et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "2023b) achieve the tasks of VMR and Highlight Detection (HD) by applying well-designed datasets and corresponding annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "2023b) achieve the tasks of VMR and Highlight Detection (HD) by applying well-designed datasets and corresponding annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (Gao et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (Moon et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "1(a), given a video and the query “Two buddies hang out above the cloudline after walking up to a viewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "1(a), given a video and the query “Two buddies hang out above the cloudline after walking up to a viewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up to a viewpoint on a mountain”.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the given query lacks any semantic information related to chatting and vlogging, which may lead to semantic inaccuracies in moment retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, the given query lacks any semantic information related to chatting and vlogging, which may lead to semantic inaccuracies in moment retrieval.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias...",
+        "scenario": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Based on DETR (",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Based on DETR (Carion et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(a) We use the global partial aligner to align the target moments in the video with the parts of the query that need to be focused.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "(a) We use the global partial aligner to align the target moments in the video with the parts of the query that need to be focused.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "to guide the video semantics further, and then predict results.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "to guide the video semantics further, and then predict results.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (?",
+      "failure_mode": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "root_cause": "a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "why_existing_methods_fail": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "affected_scenario": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (Gao et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR?",
+      "failure_mode": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "root_cause": "issues during VMR.",
+      "why_existing_methods_fail": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "affected_scenario": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions?",
+      "failure_mode": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+      "root_cause": "(a) We use the global partial aligner to align the target moments in the video with the parts of the query that need to be focused.",
+      "why_existing_methods_fail": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+      "affected_scenario": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "(b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (?",
+      "failure_mode": "due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (",
+      "root_cause": "the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (",
+      "why_existing_methods_fail": "due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (",
+      "affected_scenario": "Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging (Moon et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "iewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that iewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up?",
+      "failure_mode": "iewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up...",
+      "root_cause": "As shown in Fig.",
+      "why_existing_methods_fail": "1(a), given a video and the query “Two buddies hang out above the cloudline after walking up to a viewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the...",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "1(a), given a video and the query “Two buddies hang out above the cloudline after walking up to a viewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up to a viewpoint on a mountain”.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0046"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement",
+      "method_core_mechanism": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+      "method_components": [
+        "QD",
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0215"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Global Partial Aligner (GPA)",
+      "method_core_mechanism": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+      "method_components": [
+        "Global Partial Aligner (GPA)",
+        "Global Partial Aligner",
+        "GPA"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "clip features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0119"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M07",
+      "legacy_macro_method_name": "Open-Set or Refusal-Aware Modeling",
+      "micro_method_name": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features",
+      "method_core_mechanism": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+      "method_components": [
+        "Query Debiasing Module (QDM)",
+        "Visual Enhancement (VE)",
+        "Query Debiasing Module",
+        "Visual Enhancement",
+        "QDM",
+        "VE"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0071"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "QD-VMR",
+      "method_core_mechanism": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+      "method_components": [
+        "QD",
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0215"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video cli",
+      "method_core_mechanism": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+      "method_components": [
+        "Global Partial Aligner"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0119"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement targets # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Global Partial Aligner (GPA) targets # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0119",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement targets Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features targets Target Moments Focused Query Part Query Debiased Figure 1: We analyze the query bias issues during VMR. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0071",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement targets (b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features targets (b) We use the query debiasing module to generate the debiased query, with the underlined words being enhanced and the [bracketed] parts being expansions. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0071",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement targets due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging ( by operating on bias, context.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features targets due to the rich semantic information of video elements and the model’s insufficient and biased contextual understanding of the query, achieving precise video moment retrieval is challenging ( by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0071",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement targets iewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up... by operating on context.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0046",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Global Partial Aligner (GPA) targets iewpoint on a mountain”, if the model does not understand the context of the sentence and fails to focus on the word “after”, it will return corresponding video segments related to “Two buddies hang out above the cloudline” and “walking up... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0046",
+      "micro_method_cluster_id": "MM0119",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement",
+      "compared_to": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "why_it_matters": "It directly targets # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Global Partial Aligner (GPA)",
+      "compared_to": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "why_it_matters": "It directly targets # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (."
+    },
+    {
+      "axis": "Open-Set or Refusal-Aware Modeling",
+      "what_is_new": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features",
+      "compared_to": "# Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (",
+      "why_it_matters": "It directly targets # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+      "can_transfer_to": [
+        "bias",
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Global Partial Aligner (GPA)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "First, we introduce a Global Partial Aligner (GPA) that aligns video clips with query features and incorporates video-query contrastive learning to enhance the model’s cross-modal understanding capabilities.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+      "can_transfer_to": [
+        "bias"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, to tackle the query bias, we propose a Query Debiasing Module (QDM) to acquire debiased query features, and we use a Visual Enhancement (VE) to filter query-irrelevant video features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "QD-VMR",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "The contributions of this paper are summarized as follows: • We propose QD-VMR, which is the first video moment retrieval model that addresses the issue of query semantics ambiguous understanding, thereby improving the accuracy of video moment retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video cli",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Additionally, we introduce a Global Partial Aligner to ensure alignment between video and text modality, enabling the model to effectively discriminate the most relevant video clips.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement",
+      "baseline": "QD-VMR: Query Debiasing with Contextual Understanding Enhancement for Video Moment Retrieval",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "novel model named QD-VMR, the first query-debiasing video moment retrieval model with contextual understanding enhancement",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting # Introduction Video Moment Retrieval (VMR) is marked as a critical challenge in video understanding, aiming at locating specific moments from an untrimmed video with a given language query (."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "HD",
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gao_qd-vmr-query-debiasing-with-contextual-understanding-enhancement-for-video-momen_a1ae7e9896\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gao_qd-vmr-query-debiasing-with-contextual-understanding-enhancement-for-video-momen_a1ae7e9896\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

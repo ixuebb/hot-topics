@@ -1,0 +1,936 @@
+{
+  "paper_id": "2023_lan_curriculum-multi-negative-augmentation-for-debiased-video-grounding_1a14a5a619",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lan_curriculum-multi-negative-augmentation-for-debiased-video-grounding_1a14a5a619",
+  "title": "Curriculum Multi-Negative Augmentation for Debiased Video Grounding",
+  "year": 2023,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Xiaohan Lan",
+    "Yitian Yuan",
+    "Hong Chen",
+    "Xin Wang",
+    "Zequn Jie",
+    "Lin Ma",
+    "Zhi Wang",
+    "Wenwu Zhu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Grounding (VG) aims to locate the desired segment from a video given a sentence query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video grounding (VG), one of the video-and-language tasks that seeks to determine the start and end timestamps of a natural language-described segment (also named moment) from an untrimmed video, has attracted increasing interests of the...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video grounding (VG), one of the video-and-language tasks that seeks to determine the start and end timestamps of a natural language-described segment (also named moment) from an untrimmed video, has attracted increasing interests of the multimedia community over the past few years (Gao et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "2017;",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "2017; Lan et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As shown in Figure 1(a), taking a video and a descriptive sentence as inputs, a VG model needs to return the temporal locations of the target moment referring to the sentence query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a), taking a video and a descriptive sentence as inputs, a VG model needs to return the temporal locations of the target moment referring to the sentence query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Compared to other natural language-based video understanding tasks like video question answering and video captioning, the grounding accuracy in VG is a more intuitive metric to evaluate the video-sentence matching from the level of semantics.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Compared to other natural language-based video understanding tasks like video question answering and video captioning, the grounding accuracy in VG is a more intuitive metric to evaluate the video-sentence matching from the level of semantics.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "recent studies (",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, recent studies (Otani et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher grounding confidence...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher grounding confidence scores for those video clips/moments whose temporal positions appear more frequently among the training set’s ground-truth annotations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "However, not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the synthesized videos from the third self-shuffled NA strategy are harder to distinguish, since the clips in these videos are from the positive videos and they are still highly semantically relevant to the sentence query.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "However, the synthesized videos from the third self-shuffled NA strategy are harder to distinguish, since the clips in these videos are from the positive videos and they are still highly semantically relevant to the sentence query.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1(a), taking a video and a descriptive sentence as inputs, a VG model...",
+        "scenario": "As shown in Figure 1(a), taking a video and a descriptive sentence as inputs, a VG model needs to return the temporal locations of the target moment referring to the sentence query.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a), taking a video and a descriptive sentence as inputs, a VG model needs to return the temporal locations of the target moment referring to the sentence query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "\u0011\u0011\u0011 \u0011\u0011\u0011 \u0011\u0011\u0011 $\u0003SHUVRQ\u0003SLFNV\u0003XS\u0003D\u0003FDW\u0003RII\u0003RI\u0003D\u0003FKDLU\u0011 \u0013V \u0014\u0016\u0011\u001aV \u0014\u001a\u0011\u0017V \u0014\u001b\u0016\u0011\u0014V YLGHR TXHU\\...",
+        "scenario": "\u0011\u0011\u0011 \u0011\u0011\u0011 \u0011\u0011\u0011 $\u0003SHUVRQ\u0003SLFNV\u0003XS\u0003D\u0003FDW\u0003RII\u0003RI\u0003D\u0003FKDLU\u0011 \u0013V \u0014\u0016\u0011\u001aV \u0014\u001a\u0011\u0017V \u0014\u001b\u0016\u0011\u0014V YLGHR TXHU\\ WLPH D E 'LVWULEXWLRQ\u0003\u0003 DIWHU\u0003DGRSWLQJ\u0003\u0003 1HJDWLYH $XJPHQWDWLRQ\u0003\u0003 2ULJLQDO 'LVWULEXWLRQ\u0003 VWDUW\u0003WLPH VWDUW\u0003WLPH HQG\u0003WLPH HQG\u0003WLPH pos pos neg 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0 Figure 1: (a): VG task definition.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "\u0011\u0011\u0011 \u0011\u0011\u0011 \u0011\u0011\u0011 $\u0003SHUVRQ\u0003SLFNV\u0003XS\u0003D\u0003FDW\u0003RII\u0003RI\u0003D\u0003FKDLU\u0011 \u0013V \u0014\u0016\u0011\u001aV \u0014\u001a\u0011\u0017V \u0014\u001b\u0016\u0011\u0014V YLGHR TXHU\\ WLPH D E 'LVWULEXWLRQ\u0003\u0003 DIWHU\u0003DGRSWLQJ\u0003\u0003 1HJDWLYH $XJPHQWDWLRQ\u0003\u0003 2ULJLQDO 'LVWULEXWLRQ\u0003 VWDUW\u0003WLPH VWDUW\u0003WLPH HQG\u0003WLPH HQG\u0003WLPH pos pos neg 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0 Figure 1: (a): VG task definition.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "2021) start to doubt whether the performance gains of SOTA VG models come from more...",
+        "scenario": "2021) start to doubt whether the performance gains of SOTA VG models come from more powerful cross-modal semantic matching ability rather than exploiting some kind of shortcuts, e.g., the temporal annotation distribution biases in the training set.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "2021) start to doubt whether the performance gains of SOTA VG models come from more powerful cross-modal semantic matching ability rather than exploiting some kind of shortcuts, e.g., the temporal annotation distribution biases in the training set.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can...",
+        "scenario": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can balance the moment annotation distribution, and our objective function will encourage the model to give lower grounding confidence scores to those video moments which have weak or no semantic relevance to the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can balance the moment annotation distribution, and our objective function will encourage the model to give lower grounding confidence scores to those video moments which have weak or no semantic relevance to the sentence query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "recent studies (",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, recent studies (Otani et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "2020;",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "2020; Yuan et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We hope to debias the model by forcing it to fairly output low confidence scores for these video units that have no semantic relevance to the sentence query, and therefore make the model focus more on learning semantic matching relationships between videos...",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "We hope to debias the model by forcing it to fairly output low confidence scores for these video units that have no semantic relevance to the sentence query, and therefore make the model focus more on learning semantic matching relationships between videos and sentences rather than fitting temporal location biases in the dataset.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (Yuan et al.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations?",
+      "failure_mode": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "root_cause": "(b): Conceptual illustration of our data augmentation-based debiasing strategy for VG.",
+      "why_existing_methods_fail": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "affected_scenario": "\u0011\u0011\u0011 \u0011\u0011\u0011 \u0011\u0011\u0011 $\u0003SHUVRQ\u0003SLFNV\u0003XS\u0003D\u0003FDW\u0003RII\u0003RI\u0003D\u0003FKDLU\u0011 \u0013V \u0014\u0016\u0011\u001aV \u0014\u001a\u0011\u0017V \u0014\u001b\u0016\u0011\u0014V YLGHR TXHU\\ WLPH D E 'LVWULEXWLRQ\u0003\u0003 DIWHU\u0003DGRSWLQJ\u0003\u0003 1HJDWLYH $XJPHQWDWLRQ\u0003\u0003 2ULJLQDO 'LVWULEXWLRQ\u0003 VWDUW\u0003WLPH VWDUW\u0003WLPH HQG\u0003WLPH HQG\u0003WLPH pos pos neg 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0 Figure 1: (a): VG task definition.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "recent studies (",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that recent studies (?",
+      "failure_mode": "recent studies (",
+      "root_cause": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "why_existing_methods_fail": "recent studies (",
+      "affected_scenario": "\u0011\u0011\u0011 \u0011\u0011\u0011 \u0011\u0011\u0011 $\u0003SHUVRQ\u0003SLFNV\u0003XS\u0003D\u0003FDW\u0003RII\u0003RI\u0003D\u0003FKDLU\u0011 \u0013V \u0014\u0016\u0011\u001aV \u0014\u001a\u0011\u0017V \u0014\u001b\u0016\u0011\u0014V YLGHR TXHU\\ WLPH D E 'LVWULEXWLRQ\u0003\u0003 DIWHU\u0003DGRSWLQJ\u0003\u0003 1HJDWLYH $XJPHQWDWLRQ\u0003\u0003 2ULJLQDO 'LVWULEXWLRQ\u0003 VWDUW\u0003WLPH VWDUW\u0003WLPH HQG\u0003WLPH HQG\u0003WLPH pos pos neg 0.0 1.0 0.0 1.0 0.0 0.0 1.0 1.0 Figure 1: (a): VG task definition.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, recent studies (Otani et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher?",
+      "failure_mode": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher...",
+      "root_cause": "inputs, a biased model would still unreasonably produce higher grounding confidence scores for those video clips/moments whose temporal positions appear more frequently among the training set’s ground-truth annotations.",
+      "why_existing_methods_fail": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher grounding confidence scores for those video clips/moments whose temporal...",
+      "affected_scenario": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can balance the moment annotation distribution, and our objective function will encourage the model to give lower grounding confidence scores to those video moments which have weak or no semantic relevance to the...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher grounding confidence scores for those video clips/moments whose temporal positions appear more frequently among the training set’s ground-truth annotations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P04",
+      "legacy_macro_problem_name": "Query Ambiguity, Invalid Queries, and Open-Set Retrieval",
+      "micro_problem_name": "not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query)?",
+      "failure_mode": "not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+      "root_cause": "well as the corresponding sentence query).",
+      "why_existing_methods_fail": "not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+      "affected_scenario": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can balance the moment annotation distribution, and our objective function will encourage the model to give lower grounding confidence scores to those video moments which have weak or no semantic relevance to the...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "However, not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard?",
+      "failure_mode": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+      "root_cause": "not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query).",
+      "why_existing_methods_fail": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+      "affected_scenario": "As illustrated in Figure 1(b), these NA samples added in the model training procedure can balance the moment annotation distribution, and our objective function will encourage the model to give lower grounding confidence scores to those video moments which have weak or no semantic relevance to the...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework",
+      "method_core_mechanism": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+      "method_components": [
+        "Curriculum Multi-Negative Augmentation (NA)",
+        "Curriculum Multi-Negative Augmentation",
+        "VG",
+        "NA"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0164"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution",
+      "method_core_mechanism": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+      "method_components": [
+        "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0012"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+      "method_core_mechanism": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+      "method_components": [
+        "CD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (Yuan et al.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augme",
+      "method_core_mechanism": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+      "method_components": [
+        "VG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0014"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework targets Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations. by operating on augmentation, bias, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution targets Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations. by operating on augmentation.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework targets recent studies ( by operating on bias, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution targets recent studies ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework targets Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher... by operating on bias, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution targets Our motivation of designing such a curriculum Multi- NA framework comes from the following observation: even given a sentence query and a video semantically unrelated to it as inputs, a biased model would still unreasonably produce higher... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution targets not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework targets not all of the above negative video samples are equally semantic-irrelevant to the positive video (as well as the corresponding sentence query). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0164",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution targets Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0012",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets ( targets Actually, the difficulty of distinguishing the negative attributes of our created ‘pseudo’ video samples is from easy to hard. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (Yuan et al.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0072",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework",
+      "compared_to": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "why_it_matters": "It directly targets Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.."
+    },
+    {
+      "axis": "Coarse-to-Fine or Hierarchical Localization",
+      "what_is_new": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution",
+      "compared_to": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "why_it_matters": "It directly targets Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+      "compared_to": "Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.",
+      "why_it_matters": "It directly targets Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+      "can_transfer_to": [
+        "bias",
+        "domain_shift",
+        "weak_supervision",
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To discourage the standard VG model’s behavior of exploiting such temporal annotation biases and improve the model generalization ability, we present a simple yet effective Curriculum Multi-Negative Augmentation (NA) framework.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+      "can_transfer_to": [
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Therefore, we propose multiple negative augmentations in a hierarchical way to enrich the training set’s temporal label distribution.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "To prove the effectiveness of our method, we conduct experiments on the newly collected Charades-CD and ActivityNet-CD datasets (Yuan et al.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augme",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+      "can_transfer_to": [
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "• We propose a multi-stage curriculum VG training strategy for the hierarchically augmented samples, to alleviate the impact of noise contained in the negative augmentations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for simple yet effective Curriculum Multi-Negative Augmentation (NA) framework",
+      "baseline": "Curriculum Multi-Negative Augmentation for Debiased Video Grounding",
+      "dataset": "ActivityNet",
+      "module_to_modify": "simple yet effective Curriculum Multi-Negative Augmentation (NA) framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Our designed negative samples (shown in red dots) are able to balance the biased moment annotation distribution of positive samples (shown in black dots) with fair negative treatment to moment candidates at more diverse locations.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lan_curriculum-multi-negative-augmentation-for-debiased-video-grounding_1a14a5a619\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lan_curriculum-multi-negative-augmentation-for-debiased-video-grounding_1a14a5a619\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

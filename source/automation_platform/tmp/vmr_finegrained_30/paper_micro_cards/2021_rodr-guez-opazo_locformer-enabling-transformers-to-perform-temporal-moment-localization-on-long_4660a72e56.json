@@ -1,0 +1,715 @@
+{
+  "paper_id": "2021_rodr-guez-opazo_locformer-enabling-transformers-to-perform-temporal-moment-localization-on-long_4660a72e56",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_rodr-guez-opazo_locformer-enabling-transformers-to-perform-temporal-moment-localization-on-long_4660a72e56",
+  "title": "LocFormer: Enabling Transformers to Perform Temporal Moment Localization on Long Untrimmed Videos With a Feature Sampling Approach",
+  "year": 2021,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Cristian Rodríguez-Opazo",
+    "Edison Marrese-Taylor",
+    "Basura Fernando",
+    "Hiroya Takamura",
+    "Qi Wu"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Vision-and-language understanding is an important problem which has largely attracted the attention from both the computer vision (CV) and natural language processing (NLP) communities.",
+        "evidence": [
+          {
+            "evidence_id": "EV006",
+            "section": "Introduction",
+            "quote": "# Introduction Vision-and-language understanding is an important problem which has largely attracted the attention from both the computer vision (CV) and natural language processing (NLP) communities.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Among tasks in this area, the temporal localization of moments remains a fundamental and challenging one.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "Among tasks in this area, the temporal localization of moments remains a fundamental and challenging one.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Moreover, we also show how SBFS can be easily combined with prior work, improving their performance in all datasets, leading to a new state-of-the-art on Charades-STA.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Moreover, we also show how SBFS can be easily combined with prior work, improving their performance in all datasets, leading to a new state-of-the-art on Charades-STA.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This task aims to identify the start and end * Authors contributed equally 0 30 60 90120...",
+        "scenario": "This task aims to identify the start and end * Authors contributed equally 0 30 60 90120 180 240 300 360 420 0 8 16 24 32 40 48 56 64 Out-of-Memory Video Duration [s] GPU Memory [GB] LocFormer Transformer-base Transformer-base + sampling DORi Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "This task aims to identify the start and end * Authors contributed equally 0 30 60 90120 180 240 300 360 420 0 8 16 24 32 40 48 56 64 Out-of-Memory Video Duration [s] GPU Memory [GB] LocFormer Transformer-base Transformer-base + sampling DORi Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, TimeSformerlarge can only process inputs that are 24 seconds long2, ViVIT...",
+        "scenario": "For example, TimeSformerlarge can only process inputs that are 24 seconds long2, ViVIT and X-ViT can receive inputs that are up to 32 frames long, while other approaches like MERLOT and ClipBERT speciﬁcally sample a single or a few frames from the whole input video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "For example, TimeSformerlarge [3] can only process inputs that are 24 seconds long2, ViVIT [1] and X-ViT [4] can receive inputs that are up to 32 frames long, while other approaches like MERLOT [54] and ClipBERT [28] speciﬁcally sample a single or a few frames from the whole input video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal...",
+        "scenario": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "This issue has had a signiﬁcant impact on the NLP community, recently leading to the proposal of several model variations to better deal with longer inputs such as documents by using restricted, simpliﬁed or memory-efﬁcient versions of the attention component.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "This issue has had a signiﬁcant impact on the NLP community, recently leading to the proposal of several model variations to better deal with longer inputs such as documents [2,25,47] by using restricted, simpliﬁed or memory-efﬁcient versions of the attention component.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity,...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Proposal and Detector Dependence and Backbone and Feature-Extractor Dependence",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance?",
+      "failure_mode": "one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "root_cause": "model sizes increase to attain better performance.",
+      "why_existing_methods_fail": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "affected_scenario": "For example, TimeSformerlarge can only process inputs that are 24 seconds long2, ViVIT and X-ViT can receive inputs that are up to 32 frames long, while other approaches like MERLOT and ClipBERT speciﬁcally sample a single or a few frames from the whole input video.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some?",
+      "failure_mode": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some...",
+      "root_cause": "via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT , which we also incorporate into the model.",
+      "why_existing_methods_fail": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of...",
+      "affected_scenario": "This task aims to identify the start and end * Authors contributed equally 0 30 60 90120 180 240 300 360 420 0 8 16 24 32 40 48 56 64 Out-of-Memory Video Duration [s] GPU Memory [GB] LocFormer Transformer-base Transformer-base + sampling DORi Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding?",
+      "failure_mode": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+      "root_cause": "We believe our results highlight the importance of sampling techniques as a valid mechanism to obtain better coverage of long input videos while keeping memory usage under budget.",
+      "why_existing_methods_fail": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+      "affected_scenario": "This task aims to identify the start and end * Authors contributed equally 0 30 60 90120 180 240 300 360 420 0 8 16 24 32 40 48 56 64 Out-of-Memory Video Duration [s] GPU Memory [GB] LocFormer Transformer-base Transformer-base + sampling DORi Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "LOCFORMER, a Transformerbased model for the task of temporal moment localization",
+      "method_core_mechanism": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+      "method_components": [
+        "LOCFORMER, a Transformerbased model for the task of temporal moment localization"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0008"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set",
+      "method_core_mechanism": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+      "method_components": [
+        "allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "modular design",
+      "method_core_mechanism": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT , which we also...",
+      "method_components": [
+        "BERT",
+        "enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0010"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment",
+      "method_core_mechanism": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+      "method_components": [
+        "we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "LOCFORMER, a Transformerbased model for the task of temporal moment localization targets one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set targets one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0012",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "modular design targets Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some... by operating on backbone_dependency, bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU4",
+      "solves_how": "new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment targets Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment targets This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "modular design targets This ultimately provides a concrete direction for further research on tasks where it is necessary to cover long untrimmed videos, which include but are not limited to video grounding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0026",
+      "micro_method_cluster_id": "MM0010",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "LOCFORMER, a Transformerbased model for the task of temporal moment localization",
+      "compared_to": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "why_it_matters": "It directly targets one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set",
+      "compared_to": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "why_it_matters": "It directly targets one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "modular design",
+      "compared_to": "Despite their success, one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.",
+      "why_it_matters": "It directly targets one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "LOCFORMER, a Transformerbased model for the task of temporal moment localization",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In light of this, we present LOCFORMER, a Transformerbased model for the task of temporal moment localization which operates at a constant memory footprint regardless of the input length, as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "While bucketing enables us to keep the memory budget limited by effectively shortening the input sequence length to the number of buckets, the stochastic nature of our approach allows us to obtain a better coverage of the video with sufﬁcient stochasticity, obtaining a feature sample-set that is representative of the video content for the task at hand.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "modular design",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT , which we also...",
+      "can_transfer_to": [
+        "bias",
+        "backbone_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Secondly, we propose a modular design that separates the functionality inside the model, enabling us to learn an 2TimeSformer-base/large reads 8 frames at 32/4 fps respectively. inductive bias via supervising the behavior of some selfattention heads, but without interfering with the functionality of the heads of existing pre-trained models such as BERT [12], which we also incorporate into the model.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a new loss to induce the correct temporal order of the predicted starting and ending locations of the target moment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for LOCFORMER, a Transformerbased model for the task of temporal moment localization",
+      "baseline": "LocFormer: Enabling Transformers to Perform Temporal Moment Localization on Long Untrimmed Videos With a Feature Sampling Approach",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "LOCFORMER, a Transformerbased model for the task of temporal moment localization",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting one main drawback of these models is their compu --- Page 2 --tational cost, being a greatly limiting factor for many, with memory usage ballooning as model sizes increase to attain better performance.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "YouCook"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_rodr-guez-opazo_locformer-enabling-transformers-to-perform-temporal-moment-localization-on-long_4660a72e56\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_rodr-guez-opazo_locformer-enabling-transformers-to-perform-temporal-moment-localization-on-long_4660a72e56\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

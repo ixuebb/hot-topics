@@ -1,0 +1,862 @@
+{
+  "paper_id": "2026_yu_mamba-based-modulated-fusion-model-for-video-moment-retrieval_d99dbf0e60",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_mamba-based-modulated-fusion-model-for-video-moment-retrieval_d99dbf0e60",
+  "title": "Mamba-based modulated fusion model for video moment retrieval",
+  "year": 2026,
+  "venue_or_source": "Scientific Reports",
+  "authors": [
+    "Bing Yu",
+    "Jingyu Li",
+    "Youxian Di",
+    "Yingran Liu",
+    "Youdong Ding",
+    "Dongjin Huang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (VMR) serves as a fundamental task in video understanding, bridging vision and language by localizing the most relevant temporal segments in untrimmed videos according to a textual query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The rapid growth of digital media has made video a primary tool for communication, driving a strong demand for effective video retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV006",
+            "section": "Introduction",
+            "quote": "# Introduction The rapid growth of digital media has made video a primary tool for communication, driving a strong demand for effective video retrieval.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "However, finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Motivated by the success of DEtection TRansformer (DETR)2 in object detection, recent research has transitioned to end-to-end proposal-free frameworks3–5.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Motivated by the success of DEtection TRansformer (DETR)2 in object detection, recent research has transitioned to end-to-end proposal-free frameworks3–5.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "This concept has been extended to other vision tasks, including object detection and segmentation34,35 Recent research has successfully explored semanticguided Mamba fusion for robust object detection in challenging real-world environments36, showcasing the...",
+        "evidence": [
+          {
+            "evidence_id": "EV070",
+            "section": "Introduction",
+            "quote": "This concept has been extended to other vision tasks, including object detection and segmentation34,35 Recent research has successfully explored semanticguided Mamba fusion for robust object detection in challenging real-world environments36, showcasing the potential of SSMs as a general-purpose vision backbone.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "However, finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although Transformer-based methods have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Although Transformer-based methods have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the query only explicitly describes the first and last steps.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, the query only explicitly describes the first and last steps.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Illustrations of the difficulty of retrieving long, multi-step events from partially described queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Illustrations of the difficulty of retrieving long, multi-step events from partially described queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "First, it acts as a hybrid module that couples cross-attention ACCEPTED MANUSCRIPT...",
+        "scenario": "First, it acts as a hybrid module that couples cross-attention ACCEPTED MANUSCRIPT ARTICLE IN PRESS ARTICLE IN PRESS ARTICLE IN PRESS Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "First, it acts as a hybrid module that couples cross-attention ACCEPTED MANUSCRIPT ARTICLE IN PRESS ARTICLE IN PRESS ARTICLE IN PRESS Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Video Moment Retrieval (VMR) tackles this problem by localizing the exact video segment that matches a natural language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Video Moment Retrieval (VMR) tackles this problem by localizing the exact video segment that matches a natural language query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Motivated by the success of DEtection TRansformer (DETR)2 in object detection, recent research has transitioned to end-to-end proposal-free frameworks3–5.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Motivated by the success of DEtection TRansformer (DETR)2 in object detection, recent research has transitioned to end-to-end proposal-free frameworks3–5.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The standard attention mechanism is inherently permutation-invariant, treating a video as an unordered collection of frames rather than a structured temporal sequence.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "The standard attention mechanism is inherently permutation-invariant, treating a video as an unordered collection of frames rather than a structured temporal sequence.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual...",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content?",
+      "failure_mode": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "root_cause": "their massive scale and complex visual content.",
+      "why_existing_methods_fail": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV007"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV007",
+          "section": "Introduction",
+          "quote": "However, finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines?",
+      "failure_mode": "such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+      "root_cause": "multi-stage pipelines.",
+      "why_existing_methods_fail": "such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies?",
+      "failure_mode": "have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+      "root_cause": "These approaches directly regress temporal boundaries from a small set of learnable queries via a Transformer encoder–decoder, where the decoder’s cross-attention implicitly aligns each query with relevant video content.",
+      "why_existing_methods_fail": "Although Transformer-based methods have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Although Transformer-based methods have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the query only explicitly describes the first and last steps.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the query only explicitly describes the first and last steps?",
+      "failure_mode": "the query only explicitly describes the first and last steps.",
+      "root_cause": "1, for queries involving long and compound action sequences such as “After getting out the juicer, he juices the first orange half”, the target moment spans multiple sub-actions performed by the subject.",
+      "why_existing_methods_fail": "the query only explicitly describes the first and last steps.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, the query only explicitly describes the first and last steps.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions?",
+      "failure_mode": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+      "root_cause": "the query only explicitly describes the first and last steps.",
+      "why_existing_methods_fail": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi",
+      "method_core_mechanism": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+      "method_components": [
+        "Hybrid Mamba-based Network",
+        "HM",
+        "VMR",
+        "a novel framework for cross-modal fusion in VMR",
+        "aiming to inject powerful temporal reasoning into efficient fusion architectures."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "HM-Net, a novel two-level fusion architecture",
+      "method_core_mechanism": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+      "method_components": [
+        "HM",
+        "a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0033"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Hybrid Modulated Bi-Mamba (HMB) Block",
+      "method_core_mechanism": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+      "method_components": [
+        "Hybrid Modulated Bi-Mamba (HMB)",
+        "Hybrid Modulated Bi-Mamba",
+        "HMB",
+        "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0080"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi targets finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "HM-Net, a novel two-level fusion architecture targets finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0033",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi targets such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "HM-Net, a novel two-level fusion architecture targets such methods inherently suffer from a strong dependence on the quality of initial proposals, imprecise boundary predictions, and inefficiencies stemming from multi-stage pipelines. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0033",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi targets have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "HM-Net, a novel two-level fusion architecture targets have achieved notable improvements in cross-modal alignment, they still face fundamental challenges in modeling long-range temporal dependencies. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0033",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi targets the query only explicitly describes the first and last steps. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "HM-Net, a novel two-level fusion architecture targets the query only explicitly describes the first and last steps. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0033",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi targets Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "HM-Net, a novel two-level fusion architecture targets Consequently, these Transformer-based methods typically capture only part of the action sequence mentioned in the query, failing to comprehend the full event structure and resulting in inaccurate predictions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0001",
+      "micro_method_cluster_id": "MM0033",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi",
+      "compared_to": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "why_it_matters": "It directly targets finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "HM-Net, a novel two-level fusion architecture",
+      "compared_to": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "why_it_matters": "It directly targets finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Hybrid Modulated Bi-Mamba (HMB) Block",
+      "compared_to": "finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.",
+      "why_it_matters": "It directly targets finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+      "can_transfer_to": [
+        "cross_modal",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To overcome these challenges, we propose the Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusion architectures.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "HM-Net, a novel two-level fusion architecture",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are threefold: • We propose HM-Net, a novel two-level fusion architecture which enhances video representations with query guidance before cross-modal fusion, enabling more effective alignment between textual and visual modalities and improving localization in long and complex videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Hybrid Modulated Bi-Mamba (HMB) Block",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "• We propose a Hybrid Modulated Bi-Mamba (HMB) Block that unifies cross-attention with bidirectional Mamba modeling for fine-grained query–video alignment and causal progression and action ordering.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi",
+      "baseline": "Mamba-based modulated fusion model for video moment retrieval",
+      "dataset": "MAD, QVHighlights",
+      "module_to_modify": "Hybrid Mamba-based Network (HM-Net), a novel framework for cross-modal fusion in VMR, aiming to inject powerful temporal reasoning into efficient fusi",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting finding specific details within untrimmed videos remains challenging due to their massive scale and complex visual content.."
+    }
+  ],
+  "datasets": [
+    "MAD",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_mamba-based-modulated-fusion-model-for-video-moment-retrieval_d99dbf0e60\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_mamba-based-modulated-fusion-model-for-video-moment-retrieval_d99dbf0e60\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

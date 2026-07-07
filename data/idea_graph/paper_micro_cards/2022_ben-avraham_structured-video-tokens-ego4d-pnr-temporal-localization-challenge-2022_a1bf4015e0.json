@@ -1,0 +1,566 @@
+{
+  "paper_id": "2022_ben-avraham_structured-video-tokens-ego4d-pnr-temporal-localization-challenge-2022_a1bf4015e0",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_ben-avraham_structured-video-tokens-ego4d-pnr-temporal-localization-challenge-2022_a1bf4015e0",
+  "title": "Structured Video Tokens @ Ego4D PNR Temporal Localization Challenge 2022",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Elad Ben-Avraham",
+    "Roei Herzig",
+    "Karttikeya Mangalam",
+    "Amir Bar",
+    "Anna Rohrbach",
+    "Leonid Karlinsky",
+    "Trevor Darrell",
+    "Amir Globerson"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "A natural ﬁrst step towards image-video knowledge sharing is to use the same transformer model to process both.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "A natural ﬁrst step towards image-video knowledge sharing is to use the same transformer model to process both.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g.,...",
+        "scenario": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Hand Contact Contact Figure 1.",
+        "scenario": "Hand Contact Contact Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Hand Contact Contact Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP014",
+      "macro_problem_name": "Evidence Sufficiency, Uncertainty, and Abstention",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence?",
+      "failure_mode": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "root_cause": "The introduction attributes the failure to a mismatch between the available representation or supervision and the target temporal evidence.",
+      "why_existing_methods_fail": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "affected_scenario": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP014",
+      "macro_problem_name": "Evidence Sufficiency, Uncertainty, and Abstention",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos?",
+      "failure_mode": "this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+      "root_cause": "A natural ﬁrst step towards image-video knowledge sharing is to use the same transformer model to process both.",
+      "why_existing_methods_fail": "this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+      "affected_scenario": "It is intuitive that video models should beneﬁt from incorporating scene structure, e.g., the objects that appear in a video, their attributes, and the way they interact.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "approach",
+      "method_core_mechanism": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+      "method_components": [
+        "approach"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0042"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “ob",
+      "method_core_mechanism": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+      "method_components": [
+        "we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0204"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in...",
+      "method_core_mechanism": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+      "method_components": [
+        "HAnd-Object Graph (HAOG)",
+        "HAnd-Object Graph",
+        "HAOG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0213"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "approach targets # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “ob targets # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040",
+      "micro_method_cluster_id": "MM0204",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “ob targets this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040",
+      "micro_method_cluster_id": "MM0204",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "approach targets this still leaves two key questions: how to model structured information, and how to account for domain mismatch between images and videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0040",
+      "micro_method_cluster_id": "MM0042",
+      "macro_problem_id": "AP014",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "approach",
+      "compared_to": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "why_it_matters": "It directly targets # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “ob",
+      "compared_to": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "why_it_matters": "It directly targets # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in...",
+      "compared_to": "# Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.",
+      "why_it_matters": "It directly targets # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "approach",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this work, we propose an approach, which offers an effective mechanism to leverage image structure to improve video transformers.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “ob",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+      "can_transfer_to": [
+        "long_sparse",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Towards this end, we introduce two key concepts: (i) A set of transformer “objecttokens” – additional tokens initialized from learned embeddings (we refer to these embeddings as “object prompts”) that are meant to capture object-centric information in both still image and video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in...",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To formalize the image structure, we proposed the HAnd-Object Graph (HAOG), a simple representation of the interactions between hands and objects in the scene.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for approach",
+      "baseline": "Structured Video Tokens @ Ego4D PNR Temporal Localization Challenge 2022",
+      "dataset": "Ego4D",
+      "module_to_modify": "approach",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting # Introduction Semantic understanding of videos is a key challenge for machine vision and artiﬁcial intelligence.."
+    }
+  ],
+  "datasets": [
+    "Ego4D"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_ben-avraham_structured-video-tokens-ego4d-pnr-temporal-localization-challenge-2022_a1bf4015e0\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_ben-avraham_structured-video-tokens-ego4d-pnr-temporal-localization-challenge-2022_a1bf4015e0\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

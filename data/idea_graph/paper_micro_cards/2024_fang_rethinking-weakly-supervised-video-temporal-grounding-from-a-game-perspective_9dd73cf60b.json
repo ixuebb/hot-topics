@@ -1,0 +1,956 @@
+{
+  "paper_id": "2024_fang_rethinking-weakly-supervised-video-temporal-grounding-from-a-game-perspective_9dd73cf60b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_rethinking-weakly-supervised-video-temporal-grounding-from-a-game-perspective_9dd73cf60b",
+  "title": "Rethinking Weakly-Supervised Video Temporal Grounding From a Game Perspective",
+  "year": 2024,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Xiang Fang",
+    "Zeyu Xiong",
+    "Wanlong Fang",
+    "Xiaoye Qu",
+    "Chen Chen",
+    "Jianfeng Dong",
+    "Keke Tang",
+    "Pan Zhou",
+    "Yu Cheng",
+    "Daizong Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "This paper addresses the challenging task of weakly-supervised video temporal grounding.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding (VTG) aims to localize the start and end timestamps of a specific event moment described by a given language query in an untrimmed video [2, 50, 57, 97–99, 130–133, 149, 155, 156].",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding (VTG) aims to localize the start and end timestamps of a specific event moment described by a given language query in an untrimmed video [2, 50, 57, 97–99, 130–133, 149, 155, 156].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task enables us to efficiently find video moments of human interest instead of traversing the entire video, which has broad application potential in video surveillance [15–17, 20, 70–72, 80, 112, 114–116, 163, 164], video summarization [5, 6, 14, 18, 19,...",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "This task enables us to efficiently find video moments of human interest instead of traversing the entire video, which has broad application potential in video surveillance [15–17, 20, 70–72, 80, 112, 114–116, 163, 164], video summarization [5, 6, 14, 18, 19, 23–49, 54, 62, 65, 68, 73–76, 82, 85, 88, 113, 117, 118, 122–129, 135, 136, 139, 140, 143, 146, 147, 158, 159], etc.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although exising WS-VTG methods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Although exising WS-VTG methods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via sliding windows.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: – We reveal the limitations of existing WS-VTG methods, which rely on complex moment proposals and fail to capture fine-grained frame-word alignment for accurate boundary grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: – We reveal the limitations of existing WS-VTG methods, which rely on complex moment proposals and fail to capture fine-grained frame-word alignment for accurate boundary grounding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "As shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this way, they only model the coarse-grained cross-modal interaction of each proposal-query pair.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "In this way, they only model the coarse-grained cross-modal interaction of each proposal-query pair.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Experiments show that our method achieves superior performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "Experiments show that our method achieves superior performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult?",
+      "failure_mode": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "root_cause": "To alleviate the dense reliance, weakly-supervised VTG (WS-VTG) has received increasing attention , which only requires the knowledge of matched video-query pairs without detailed frame-wise annotations, which is more challenging than the fully-supervised...",
+      "why_existing_methods_fail": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "ethods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ethods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via?",
+      "failure_mode": "ethods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via...",
+      "root_cause": "frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via sliding windows.",
+      "why_existing_methods_fail": "Although exising WS-VTG methods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via sliding windows.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Although exising WS-VTG methods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via sliding windows.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "s rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that s rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal?",
+      "failure_mode": "s rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+      "root_cause": "Actually, in most cases, we expect to capture more fine-grained information for accurate boundary localization, such as how much the semantics of a specific frame helps or harms the query-guided cross-modal alignment.",
+      "why_existing_methods_fail": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Unfortunately, existing methods rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video?",
+      "failure_mode": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+      "root_cause": "they devise moment proposals regardless of the specific contents and difficulty of each video.",
+      "why_existing_methods_fail": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible?",
+      "failure_mode": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible...",
+      "root_cause": "game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+      "why_existing_methods_fail": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to address the WS-VTG task from a new game-theory perspective",
+      "method_core_mechanism": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+      "method_components": [
+        "WS",
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment",
+      "method_core_mechanism": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+      "method_components": [
+        "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0036"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet...",
+      "method_core_mechanism": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+      "method_components": [
+        "ActivityNet Caption",
+        "WS",
+        "VTG",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "achieves superior performance",
+      "method_core_mechanism": "Experiments show that our method achieves superior performance.",
+      "method_components": [
+        "achieves superior performance"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Experiments show that our method achieves superior performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "outperforms all compared methods by 4",
+      "method_core_mechanism": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+      "method_components": [
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to address the WS-VTG task from a new game-theory perspective targets Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment targets Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to address the WS-VTG task from a new game-theory perspective targets ethods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment targets ethods have achieved great progress, we argue that they still suffer from two inescapable limitations: 1) Firstly, as frame-wise annotation is not provided, these WS-VTG methods generally generate the moment proposals for all videos via... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0119",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to address the WS-VTG task from a new game-theory perspective targets s rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment targets s rely on Rethinking WS-VTG From a Game Perspective 3 proposal-level cross-modal learning cannot achieve this goal. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to address the WS-VTG task from a new game-theory perspective targets 2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment targets 2) Secondly, the performance of these proposal-based methods is severely limited by the quality of moment proposals as they devise moment proposals regardless of the specific contents and difficulty of each video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "to address the WS-VTG task from a new game-theory perspective targets To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible... by operating on cross_modal, uncertainty.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment targets To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0035",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to address the WS-VTG task from a new game-theory perspective",
+      "compared_to": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "why_it_matters": "It directly targets Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment",
+      "compared_to": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "why_it_matters": "It directly targets Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet...",
+      "compared_to": "Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.",
+      "why_it_matters": "It directly targets Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to address the WS-VTG task from a new game-theory perspective",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+      "can_transfer_to": [
+        "uncertainty",
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To tackle the above limitations, in this paper, we propose to address the WS-VTG task from a new game-theory perspective, which creatively models the subtle video frames and query words as game players to learn their uncertain but possible cross-modal interaction with diverse granularity and flexible combination.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To this end, we propose a novel gametheory based framework to learn the detailed frame-wise query-relevance scores for efficiently constructing the accurate moment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet...",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "– To verify the effectiveness of our framework, we conduct experiments on two challenging WS-VTG benchmarks, i.e., Charades-STA and ActivityNet Caption.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves superior performance",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Experiments show that our method achieves superior performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Experiments show that our method achieves superior performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "outperforms all compared methods by 4",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In representative cases, our method outperforms all compared methods by 4.53% on Charades-STA.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to address the WS-VTG task from a new game-theory perspective",
+      "baseline": "Rethinking Weakly-Supervised Video Temporal Grounding From a Game Perspective",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "to address the WS-VTG task from a new game-theory perspective",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Since there is no frame-wise annotation in WS-VTG, learning detailed framequery alignment is difficult.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_rethinking-weakly-supervised-video-temporal-grounding-from-a-game-perspective_9dd73cf60b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_fang_rethinking-weakly-supervised-video-temporal-grounding-from-a-game-perspective_9dd73cf60b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

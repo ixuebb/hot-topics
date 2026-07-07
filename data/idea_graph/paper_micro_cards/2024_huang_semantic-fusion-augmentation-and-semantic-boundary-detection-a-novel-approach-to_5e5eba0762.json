@@ -1,0 +1,947 @@
+{
+  "paper_id": "2024_huang_semantic-fusion-augmentation-and-semantic-boundary-detection-a-novel-approach-to_5e5eba0762",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_huang_semantic-fusion-augmentation-and-semantic-boundary-detection-a-novel-approach-to_5e5eba0762",
+  "title": "Semantic Fusion Augmentation and Semantic Boundary Detection: A Novel Approach to Multi-Target Video Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "",
+  "authors": [
+    "Cheng Huang",
+    "Yi-Lun Wu",
+    "Hong-Han Shuai",
+    "Ching-Chun Huang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Given an untrimmed video and a natural language query, video moment retrieval (VMR) aims to retrieve video moments described by the query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Although there has been notable progress in temporal action localization , these models can only identify predefined simple action classes, such as swimming or running.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Although there has been notable progress in temporal action localization [21,24,25], these models can only identify predefined simple action classes, such as swimming or running.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "A guy is playing the saxophone again.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "A guy is playing the saxophone again.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "a recent study by highlights the presence of false negative moments in VMR datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, a recent study by [14] highlights the presence of false negative moments in VMR datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "a limitation of their methods is the reliance on the existence of false negative moments in videos, which are then used as pseudo-labels to create multi-target samples.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "However, a limitation of their methods is the reliance on the existence of false negative moments in videos, which are then used as pseudo-labels to create multi-target samples.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target...",
+        "scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Although there has been notable progress in temporal action localization , these models can only identify predefined simple action classes, such as swimming or running.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Although there has been notable progress in temporal action localization [21,24,25], these models can only identify predefined simple action classes, such as swimming or running.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "A guy is playing the saxophone again.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "A guy is playing the saxophone again.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This study recollected five annotations for some testing samples in Charades-STA and ActivityNet Captions , allowing researchers to evaluate the multi-target performance of their models, which are solely trained on single-target samples.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "This study recollected five annotations for some testing samples in Charades-STA [5] and ActivityNet Captions [10], allowing researchers to evaluate the multi-target performance of their models, which are solely trained on single-target samples.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding?",
+      "failure_mode": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "root_cause": "The introduction attributes the failure to a mismatch between the available representation or supervision and the target temporal evidence.",
+      "why_existing_methods_fail": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "affected_scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone?",
+      "failure_mode": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+      "root_cause": "emerged as a more flex- A guy is playing the saxophone.",
+      "why_existing_methods_fail": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+      "affected_scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "a recent study by highlights the presence of false negative moments in VMR datasets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a recent study by highlights the presence of false negative moments in VMR datasets?",
+      "failure_mode": "a recent study by highlights the presence of false negative moments in VMR datasets.",
+      "root_cause": "The primary rationale behind this assumption is the nature of commonly used VMR datasets, which predominantly offer single-target samples.",
+      "why_existing_methods_fail": "a recent study by highlights the presence of false negative moments in VMR datasets.",
+      "affected_scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, a recent study by [14] highlights the presence of false negative moments in VMR datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation?",
+      "failure_mode": "training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "root_cause": "This study recollected five annotations for some testing samples in Charades-STA and ActivityNet Captions , allowing researchers to evaluate the multi-target performance of their models, which are solely trained on single-target samples.",
+      "why_existing_methods_fail": "training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "affected_scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled?",
+      "failure_mode": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+      "root_cause": "Their core concept is to perform multi-target training using only the original single-target annotations.",
+      "why_existing_methods_fail": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+      "affected_scenario": "Most of the existing Video Moment Retrieval (VMR) methods operate under the single-target assumption, which posits a one-to-one mapping between the input query and its target moment in a video (Figure 1a).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR",
+      "method_core_mechanism": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+      "method_components": [
+        "Semantic Boundary Detection (SFABD)",
+        "Semantic Fusion Augmentation",
+        "Semantic Boundary Detection",
+        "SFABD",
+        "VMR",
+        "we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0076"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to utilize feature-level mixup augmentation",
+      "method_core_mechanism": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+      "method_components": [
+        "to utilize feature-level mixup augmentation"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0172"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments",
+      "method_core_mechanism": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+      "method_components": [
+        "we propose using intra-video contrastive loss to utilize the property of multi-target labels"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel strategy for generating multitarget samples",
+      "method_core_mechanism": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+      "method_components": [
+        "novel strategy for generating multitarget samples"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0014"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination",
+      "method_core_mechanism": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+      "method_components": [
+        "• We propose an intra-video contrastive loss for multitarget samples"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR targets # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0076",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to utilize feature-level mixup augmentation targets # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR targets To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0076",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to utilize feature-level mixup augmentation targets To overcome this limitation, video moment retrieval with natural language query (VMR) has emerged as a more flex- A guy is playing the saxophone. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "novel strategy for generating multitarget samples targets a recent study by highlights the presence of false negative moments in VMR datasets. by operating on false_negative.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU5",
+      "solves_how": "intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination targets a recent study by highlights the presence of false negative moments in VMR datasets. by operating on false_negative.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR targets training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0076",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "to utilize feature-level mixup augmentation targets training solely on single-target samples can introduce a single-target prediction bias, where models tend This WACV paper is the Open Access version, provided by the Computer Vision Foundation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0172",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "novel strategy for generating multitarget samples targets They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled. by operating on false_negative.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0014",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU5",
+      "solves_how": "intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination targets They introduce an auxiliary model branch designed to detect false negative moments in videos that are not explicitly labeled. by operating on false_negative.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0022",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR",
+      "compared_to": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "why_it_matters": "It directly targets # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to utilize feature-level mixup augmentation",
+      "compared_to": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "why_it_matters": "It directly targets # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments",
+      "compared_to": "# Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.",
+      "why_it_matters": "It directly targets # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+      "can_transfer_to": [
+        "boundary",
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "To this end, we propose a general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to utilize feature-level mixup augmentation",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+      "can_transfer_to": [
+        "augmentation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Specifically, to generate multi-target samples, we propose to utilize feature-level mixup augmentation, which mixes the original positive moment and another randomly selected moment in the video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Then, we propose using intra-video contrastive loss to utilize the property of multi-target labels, ensuring the feature consistency between different positive moments.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel strategy for generating multitarget samples",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+      "can_transfer_to": [
+        "false_negative"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a novel strategy for generating multitarget samples that eliminates the necessity for false negative moments.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+      "can_transfer_to": [
+        "false_negative"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We propose an intra-video contrastive loss for multitarget samples, along with an adaptive strategy for false negative elimination.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR",
+      "baseline": "Semantic Fusion Augmentation and Semantic Boundary Detection: A Novel Approach to Multi-Target Video Moment Retrieval",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "general framework called Semantic Fusion Augmentation and Semantic Boundary Detection (SFABD) to better tackle multi-target VMR",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting # Introduction Recognizing and locating meaningful events within videos is a crucial challenge in computer vision since it demands the model ability of comprehensive understanding.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_huang_semantic-fusion-augmentation-and-semantic-boundary-detection-a-novel-approach-to_5e5eba0762\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_huang_semantic-fusion-augmentation-and-semantic-boundary-detection-a-novel-approach-to_5e5eba0762\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

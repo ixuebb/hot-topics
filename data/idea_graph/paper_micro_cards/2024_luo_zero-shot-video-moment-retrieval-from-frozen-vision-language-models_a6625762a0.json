@@ -1,0 +1,974 @@
+{
+  "paper_id": "2024_luo_zero-shot-video-moment-retrieval-from-frozen-vision-language-models_a6625762a0",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_zero-shot-video-moment-retrieval-from-frozen-vision-language-models_a6625762a0",
+  "title": "Zero-Shot Video Moment Retrieval from Frozen Vision-Language Models",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Dezhao Luo",
+    "Jiabo Huang",
+    "Shaogang Gong",
+    "Hailin Jin",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Accurate video moment retrieval (VMR) requires universal visual-textual correlations that can handle unknown vocabulary and unseen scenes.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given a natural video and sentence description, video moment retrieval (VMR) aims to localise a video moment based on the semantics of the sentence.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Given a natural video and sentence description, video moment retrieval (VMR) aims to localise a video moment based on the semantics of the sentence.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature Figure 1.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To further reduce the reliance on annotations, recent methods propose an unsupervised VMR to localise the moment with the query chosen from a database or self-generated queries .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "To further reduce the reliance on annotations, recent methods propose an unsupervised VMR to localise the moment with the query chosen from a database [21] or self-generated queries [25, 32].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Different from existing methods, we argue it can bring better generality by directly utilising pretrained models without any additional training on domainspecific datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Different from existing methods, we argue it can bring better generality by directly utilising pretrained models without any additional training on domainspecific datasets.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models .",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models [19, 34].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual...",
+        "scenario": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Specifically, PZVMR and VDI have explored CLIP by finetuning the pre-learned image-text...",
+        "scenario": "Specifically, PZVMR and VDI have explored CLIP by finetuning the pre-learned image-text correlation for moment --- Page 2 --text alignment learning, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Specifically, PZVMR[32] and VDI [22] have explored CLIP [26] by finetuning the pre-learned image-text correlation for moment --- Page 2 --text alignment learning, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "The finetuned moment-text alignment from limited video datasets (71K in...",
+        "scenario": "The finetuned moment-text alignment from limited video datasets (71K in ActivityNet-Captions ) is unlikely to be as generalisable as VLM pre-trained on large-scale data (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The finetuned moment-text alignment from limited video datasets (71K in ActivityNet-Captions [17]) is unlikely to be as generalisable as VLM pre-trained on large-scale data (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To address the problem of lacking fine-grained moment-text pairs for VMR tasks, previous methods propose a weakly-supervised setting, which aims to learn the moment-text pairs with weak supervision such as the video-text pairs.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "To address the problem of lacking fine-grained moment-text pairs for VMR tasks, previous methods [12, 43] propose a weakly-supervised setting, which aims to learn the moment-text pairs with weak supervision such as the video-text pairs.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This means capturing specific temporal information of the moments and understanding their various alignments to a sentence query.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "This means capturing specific temporal information of the moments and understanding their various alignments to a sentence query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Instead, we propose that the definition of suitable moment boundaries should be conditioned on the query, as different queries may emphasize different visual information.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Instead, we propose that the definition of suitable moment boundaries should be conditioned on the query, as different queries may emphasize different visual information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets?",
+      "failure_mode": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "root_cause": "lenging as it requires fine-grained moment-text pairs as the learning targets , which need to annotate not only a sentence but also the temporal position in the video corresponding to the sentence.",
+      "why_existing_methods_fail": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "affected_scenario": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models ?",
+      "failure_mode": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models .",
+      "root_cause": "Also, image-level models are less reliable to provide a temporal understanding of the video.",
+      "why_existing_methods_fail": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models .",
+      "affected_scenario": "The finetuned moment-text alignment from limited video datasets (71K in ActivityNet-Captions ) is unlikely to be as generalisable as VLM pre-trained on large-scale data (e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models [19, 34].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video?",
+      "failure_mode": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+      "root_cause": "moment-level features necessitate the ability to discriminate between different moments within a video.",
+      "why_existing_methods_fail": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+      "affected_scenario": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment?",
+      "failure_mode": "the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+      "root_cause": "This means capturing specific temporal information of the moments and understanding their various alignments to a sentence query.",
+      "why_existing_methods_fail": "the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+      "affected_scenario": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text?",
+      "failure_mode": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+      "root_cause": "the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+      "why_existing_methods_fail": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+      "affected_scenario": "This task is chal- *Corresponding authors Video moment Train Transfer learning x Visual encoder (a) Previous methods Sentence Textual encoder Text feature (b) Ours Sentence Textual encoder Text feature No train √ Visual encoder Query-conditional feature refinement Proposal generation Moment feature...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models",
+      "method_core_mechanism": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+      "method_components": [
+        "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0043"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "simple yet strong zero-shot VMR",
+      "method_core_mechanism": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0067"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig",
+      "method_core_mechanism": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+      "method_components": [
+        "VLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0043"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "conditional feature refinement module to generate boundary-aware features",
+      "method_core_mechanism": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+      "method_components": [
+        "conditional feature refinement module to generate boundary-aware features"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0197"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "bottom-up proposal generation module",
+      "method_core_mechanism": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+      "method_components": [
+        "bottom-up proposal generation module"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0197"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models targets Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0043",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet strong zero-shot VMR targets Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0067",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig targets Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models . by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0043",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet strong zero-shot VMR targets Even though there is still a difficulty in scaling up the fine-grained moment-text annotations, we emphasize the importance of incorporating large-scale video-text models . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0015",
+      "micro_method_cluster_id": "MM0067",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig targets The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0043",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet strong zero-shot VMR targets The main challenge lies in the discrepancies between videotext and moment-text domains, as moment-level features necessitate the ability to discriminate between different moments within a video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0067",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig targets the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0043",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU4",
+      "solves_how": "conditional feature refinement module to generate boundary-aware features targets the videotext model, originally designed to retrieve textual information for the entire video, struggles to provide accurate temporal boundaries for the target moment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0197",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig targets To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0043",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "conditional feature refinement module to generate boundary-aware features targets To address the challenge, we adopt snippets as the fundamental units in videos and adapt the video-text model to predict the correlation between snippets and text. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0077",
+      "micro_method_cluster_id": "MM0197",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM007"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models",
+      "compared_to": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "why_it_matters": "It directly targets Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "simple yet strong zero-shot VMR",
+      "compared_to": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "why_it_matters": "It directly targets Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig",
+      "compared_to": "Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.",
+      "why_it_matters": "It directly targets Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+      "can_transfer_to": [
+        "backbone_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Unlike previous methods (a) that require additional training to fine-tune pre-trained vision-language models, our method (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "simple yet strong zero-shot VMR",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "In this work, we propose a simple yet strong zero-shot VMR that fully satisfies the zero-shot requirement without the need for VMR data access.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our approach relies on the utilisation of the large-scale pre-trained video-text VLM for predicting moment-text alignments, as depicted in Fig.1 (b).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "conditional feature refinement module to generate boundary-aware features",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To identify moment boundaries for each simple-query, we propose a conditional feature refinement module to generate boundary-aware features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "bottom-up proposal generation module",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To generate proposals for the raw-query, we propose a bottom-up proposal generation module.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for (b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models",
+      "baseline": "Zero-Shot Video Moment Retrieval from Frozen Vision-Language Models",
+      "dataset": "ActivityNet",
+      "module_to_modify": "(b) leverages pre-trained visual-textual alignment to directly predict moment-text alignment, preserving the generality of pre-trained models",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Since assigning sentences in videos requires high accuracy, it is time-consuming and difficult to scale to web-sized datasets.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_zero-shot-video-moment-retrieval-from-frozen-vision-language-models_a6625762a0\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_zero-shot-video-moment-retrieval-from-frozen-vision-language-models_a6625762a0\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

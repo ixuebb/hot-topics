@@ -1,0 +1,803 @@
+{
+  "paper_id": "2022_xia_video-guided-curriculum-learning-for-spoken-video-grounding_2d783b7dec",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xia_video-guided-curriculum-learning-for-spoken-video-grounding_2d783b7dec",
+  "title": "Video-Guided Curriculum Learning for Spoken Video Grounding",
+  "year": 2022,
+  "venue_or_source": "Proceedings of the 30th ACM International Conference on Multimedia",
+  "authors": [
+    "Yan Xia",
+    "Zhou Zhao",
+    "Shangwei Ye",
+    "Yang Zhao",
+    "H Li",
+    "Yi Ren"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract In this paper, we introduce a new task, spoken video grounding (SVG), which aims to localize the desired video fragments from spoken language descriptions.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the explosive growth of videos on the Internet, systematically understanding video contents and quickly localizing the desired video fragments through a query has become increasingly important.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction With the explosive growth of videos on the Internet, systematically understanding video contents and quickly localizing the desired video fragments through a query has become increasingly important.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Existing datasets and approaches use text descriptions to locate the corresponding segments in the video, which have achieved promising results.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Existing datasets [8, 14] and approaches [13, 27, 49] use text descriptions to locate the corresponding segments in the video, which have achieved promising results.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Previous works have studied how to combine audio and vision together.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Previous works have studied how to combine audio and vision together.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan Xia et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "solely using instructional videos is limited to video events and spoken words.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, solely using instructional videos is limited to video events and spoken words.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the noise influence on these phonemes and syllables in the voice signals is limited.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "However, the noise influence on these phonemes and syllables in the voice signals is limited.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Thus some phonemes may fail to predict due to interference.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Thus some phonemes may fail to predict due to interference.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1: The overall of our proposed task.",
+        "scenario": "Figure 1: The overall of our proposed task.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Figure 1: The overall of our proposed task.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Figure 1: The overall of our proposed task.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Figure 1: The overall of our proposed task.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, in this paper, we bring up a novel spoken language video grounding task based on our new proposed dataset named ActivityNet Speech.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Therefore, in this paper, we bring up a novel spoken language video grounding task based on our new proposed dataset named ActivityNet Speech.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction?",
+      "failure_mode": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "root_cause": "Existing datasets and approaches use text descriptions to locate the corresponding segments in the video, which have achieved promising results.",
+      "why_existing_methods_fail": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "affected_scenario": "Figure 1: The overall of our proposed task.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan?",
+      "failure_mode": "spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan",
+      "root_cause": "They think the process is similar to how babies recognize words and visual objects .",
+      "why_existing_methods_fail": "spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan",
+      "affected_scenario": "Figure 1: The overall of our proposed task.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan Xia et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "solely using instructional videos is limited to video events and spoken words.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that solely using instructional videos is limited to video events and spoken words?",
+      "failure_mode": "solely using instructional videos is limited to video events and spoken words.",
+      "root_cause": "Thus and use instructional videos to learn the semantic connection between raw speech and visual entities without any ASR transcripts.",
+      "why_existing_methods_fail": "solely using instructional videos is limited to video events and spoken words.",
+      "affected_scenario": "Figure 1: The overall of our proposed task.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, solely using instructional videos is limited to video events and spoken words.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents?",
+      "failure_mode": "three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+      "root_cause": "background sounds and accents.",
+      "why_existing_methods_fail": "three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+      "affected_scenario": "Figure 1: The overall of our proposed task.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "However, three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "the noise influence on these phonemes and syllables in the voice signals is limited.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the noise influence on these phonemes and syllables in the voice signals is limited?",
+      "failure_mode": "the noise influence on these phonemes and syllables in the voice signals is limited.",
+      "root_cause": "’adapt’ and ’adopt’.",
+      "why_existing_methods_fail": "the noise influence on these phonemes and syllables in the voice signals is limited.",
+      "affected_scenario": "Figure 1: The overall of our proposed task.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "However, the noise influence on these phonemes and syllables in the voice signals is limited.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0132"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new task named spoken video grounding (SVG)",
+      "method_core_mechanism": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+      "method_components": [
+        "SVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "audio features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0068"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task",
+      "method_core_mechanism": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+      "method_components": [
+        "VGCL"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "audio features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0159"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language",
+      "method_core_mechanism": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+      "method_components": [
+        "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0170"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new task named spoken video grounding (SVG) targets with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task targets with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0159",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new task named spoken video grounding (SVG) targets spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task targets spoken language is more related to visual events rather than still MM ’22, October 10–14, 2022, Lisboa, Portugal Yan by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0159",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new task named spoken video grounding (SVG) targets solely using instructional videos is limited to video events and spoken words. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0068",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task targets solely using instructional videos is limited to video events and spoken words. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0159",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task targets three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0159",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language targets three limitations prevent it from being directly used in the spoken-to-video grounding task, specifically: 1) Utilizing ASR to recognize raw speech imposes several errors due to background sounds and accents. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0142",
+      "micro_method_cluster_id": "MM0170",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task targets the noise influence on these phonemes and syllables in the voice signals is limited. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0132",
+      "micro_method_cluster_id": "MM0159",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language targets the noise influence on these phonemes and syllables in the voice signals is limited. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0132",
+      "micro_method_cluster_id": "MM0170",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "new task named spoken video grounding (SVG)",
+      "compared_to": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "why_it_matters": "It directly targets with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task",
+      "compared_to": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "why_it_matters": "It directly targets with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language",
+      "compared_to": "with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.",
+      "why_it_matters": "It directly targets with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new task named spoken video grounding (SVG)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Thus in this paper, to investigate whether unsegmented spoken language can highlight corresponding segments in unconstrained videos, we propose a new task named spoken video grounding (SVG), which exploits raw speech audio as input to localize the starting and ending video frames.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To alleviate the abovementioned problems, we propose a videoguided curriculum learning (VGCL) strategy applied during the audio pretraining process to focus on the new task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our method is similar to the infants’ learning process when trying to understand the relationship between external visual events and spoken language.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new task named spoken video grounding (SVG)",
+      "baseline": "Video-Guided Curriculum Learning for Spoken Video Grounding",
+      "dataset": "ActivityNet",
+      "module_to_modify": "new task named spoken video grounding (SVG)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting with the development of the Automatic Speech Recognition (ASR) and Text To Speech (TTS), speech is becoming an essential medium for Humanto-machine interaction.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xia_video-guided-curriculum-learning-for-spoken-video-grounding_2d783b7dec\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xia_video-guided-curriculum-learning-for-spoken-video-grounding_2d783b7dec\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

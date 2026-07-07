@@ -1,0 +1,791 @@
+{
+  "paper_id": "2026_fang_markit-training-free-visual-markers-for-precise-video-temporal-grounding_7b4252b988",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_markit-training-free-visual-markers-for-precise-video-temporal-grounding_7b4252b988",
+  "title": "MarkIt: Training-Free Visual Markers for Precise Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "ArXiv.org",
+  "authors": [
+    "Pengcheng Fang",
+    "Yuxia Chen",
+    "Xiaohao Cai"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Experiments conducted on multiple mainstream moment retrieval and highlight detection benchmarks demonstrate that \\MarkIt {} achieves state-of-the-art results, delivering consistent temporal grounding improvements across a wide range of existing models.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding (VTG) is a fundamental task in video understanding that aims to localize the start and end timestamps of an event described by a natural-language query within an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding (VTG) is a fundamental task in video understanding that aims to localize the start and end timestamps of an event described by a natural-language query within an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "VTG requires models to align linguistic descriptions with temporally coherent visual evidence, which is challenging due to complex dynamics and ambiguous visual cues, demanding joint reasoning over visual semantics and temporal structures.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "VTG requires models to align linguistic descriptions with temporally coherent visual evidence, which is challenging due to complex dynamics and ambiguous visual cues, demanding joint reasoning over visual semantics and temporal structures.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "MARKIT operates entirely at inference time and does not require any modification to the parameters of Vid-LLMs, making it fully compatible with existing models as well as supervised fine-tuning pipelines.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "MARKIT operates entirely at inference time and does not require any modification to the parameters of Vid-LLMs, making it fully compatible with existing models as well as supervised fine-tuning pipelines.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Second, queries often involve specific entities or actions that must be consistently identified and tracked over time, despite occlusions, appearance variations, and the coexistence of multiple visually similar instances.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Second, queries often involve specific entities or actions that must be consistently identified and tracked over time, despite occlusions, appearance variations, and the coexistence of multiple visually similar instances.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "[7] Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Experimental results show that MARKIT achieves state-of-the-art results, delivering...",
+        "scenario": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, untrimmed videos lack explicit and precise temporal annotations, requiring models to infer relevant moments without reliable absolute or relative time references , .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "First, untrimmed videos lack explicit and precise temporal annotations, requiring models to infer relevant moments without reliable absolute or relative time references [5], [6].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "[7] Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker construction under open-world queries.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries?",
+      "failure_mode": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "root_cause": "Recent advances in video language large models (Vid- LLMs) have led to substantial progress in open-world video understanding with strong zero-shot recognition capabilities , , , .",
+      "why_existing_methods_fail": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "affected_scenario": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that difficulty arises from two tightly coupled challenges intrinsic to VTG?",
+      "failure_mode": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+      "root_cause": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "why_existing_methods_fail": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+      "affected_scenario": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "This difficulty arises from two tightly coupled challenges intrinsic to VTG.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "appearance variations, and the coexistence of multiple visually similar instances.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that appearance variations, and the coexistence of multiple visually similar instances?",
+      "failure_mode": "appearance variations, and the coexistence of multiple visually similar instances.",
+      "root_cause": "First, untrimmed videos lack explicit and precise temporal annotations, requiring models to infer relevant moments without reliable absolute or relative time references , .",
+      "why_existing_methods_fail": "Second, queries often involve specific entities or actions that must be consistently identified and tracked over time, despite occlusions, appearance variations, and the coexistence of multiple visually similar instances.",
+      "affected_scenario": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Second, queries often involve specific entities or actions that must be consistently identified and tracked over time, despite occlusions, appearance variations, and the coexistence of multiple visually similar instances.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking?",
+      "failure_mode": "Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+      "root_cause": "Second, queries often involve specific entities or actions that must be consistently identified and tracked over time, despite occlusions, appearance variations, and the coexistence of multiple visually similar instances.",
+      "why_existing_methods_fail": "Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+      "affected_scenario": "Experimental results show that MARKIT achieves state-of-the-art results, delivering consis --- Page 2 --tent temporal grounding improvements across a wide range of existing models (e.g., Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "[7] Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to externalize both temporal reference and visual correspondence directly into the video representation itself",
+      "method_core_mechanism": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+      "method_components": [
+        "to externalize both temporal reference and visual correspondence directly into the video representation itself"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0011"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "MARKIT, a training-free framework",
+      "method_core_mechanism": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+      "method_components": [
+        "MARKIT"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0029"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "MARKIT, a training-free and plug-andplay input rewriting framework",
+      "method_core_mechanism": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+      "method_components": [
+        "MARKIT",
+        "VTG",
+        "LLM",
+        "substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0053"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "scalable query-to-marker generation pipeline",
+      "method_core_mechanism": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker construction under open-world queries.",
+      "method_components": [
+        "scalable query-to-marker generation pipeline"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker construction under open-world queries.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0097"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "MARKIT, a training-free and plug-andplay input rewriting framework targets despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to externalize both temporal reference and visual correspondence directly into the video representation itself targets despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0011",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "MARKIT, a training-free and plug-andplay input rewriting framework targets This difficulty arises from two tightly coupled challenges intrinsic to VTG. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to externalize both temporal reference and visual correspondence directly into the video representation itself targets This difficulty arises from two tightly coupled challenges intrinsic to VTG. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0011",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to externalize both temporal reference and visual correspondence directly into the video representation itself targets appearance variations, and the coexistence of multiple visually similar instances. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0011",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "MARKIT, a training-free framework targets appearance variations, and the coexistence of multiple visually similar instances. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "MARKIT, a training-free and plug-andplay input rewriting framework targets Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to externalize both temporal reference and visual correspondence directly into the video representation itself targets Crucially, these two challenges are interdependent: failures in maintaining visual correspondence directly undermine temporal localization, while ambiguous temporal reasoning further complicates consistent entity tracking. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0078",
+      "micro_method_cluster_id": "MM0011",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to externalize both temporal reference and visual correspondence directly into the video representation itself",
+      "compared_to": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "why_it_matters": "It directly targets despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "MARKIT, a training-free framework",
+      "compared_to": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "why_it_matters": "It directly targets despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "MARKIT, a training-free and plug-andplay input rewriting framework",
+      "compared_to": "despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.",
+      "why_it_matters": "It directly targets despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to externalize both temporal reference and visual correspondence directly into the video representation itself",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "To address this entanglement, we propose to externalize both temporal reference and visual correspondence directly into the video representation itself.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "MARKIT, a training-free framework",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "We introduce MARKIT, a training-free framework that transforms an input video into a query-conditioned marked video, where explicit visual cues encode both temporal position and query-relevant entities.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "MARKIT, a training-free and plug-andplay input rewriting framework",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We introduce MARKIT, a training-free and plug-andplay input rewriting framework that injects explicit temporal references and query-aware visual correspondences into video inputs, substantially improving VTG without modifying Vid-LLM parameters and remaining compatible with supervised fine-tuning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "scalable query-to-marker generation pipeline",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker construction under open-world queries.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "• We propose a scalable query-to-marker generation pipeline that converts natural-language queries into canonical subject tags and grounds them into perframe instance masks via text-conditioned openvocabulary segmentation, enabling robust semantic marker construction under open-world queries.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to externalize both temporal reference and visual correspondence directly into the video representation itself",
+      "baseline": "MarkIt: Training-Free Visual Markers for Precise Video Temporal Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "to externalize both temporal reference and visual correspondence directly into the video representation itself",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting despite their success in highlevel understanding tasks, Vid-LLMs still struggle to produce precise and reliable temporal localization, often exhibiting temporal drift and hallucinated boundaries.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_markit-training-free-visual-markers-for-precise-video-temporal-grounding_7b4252b988\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fang_markit-training-free-visual-markers-for-precise-video-temporal-grounding_7b4252b988\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

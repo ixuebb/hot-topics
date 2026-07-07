@@ -1,0 +1,560 @@
+{
+  "paper_id": "2026_doan_a-two-stage-transformer-framework-for-temporal-localization-of-distracted-driver_58688cd482",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_doan_a-two-stage-transformer-framework-for-temporal-localization-of-distracted-driver_58688cd482",
+  "title": "A Two-stage Transformer Framework for Temporal Localization of Distracted Driver Behaviors",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Gia-Bao Doan",
+    "Nam-Khoa Huynh",
+    "Minh-Nhat-Huy Ho",
+    "Khanh-Thanh-Khoa Nguyen",
+    "Thanh-Hai Le"
+  ],
+  "task_scope": {
+    "primary_task": "Action Localization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Action Localization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "However, current temporal action localization techniques often struggle to balance accuracy with computational efficiency.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Ensuring driver attentiveness is a fundamental requirement for road safety, as human factors remain a dominant cause of traffic accidents across the globe.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Ensuring driver attentiveness is a fundamental requirement for road safety, as human factors remain a dominant cause of traffic accidents across the globe.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Among these factors, driver distraction—defined as any secondary activity that diverts visual, cognitive, or physical attention from the driving task—has been consistently identified as one of the most critical contributors to crash risk .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Among these factors, driver distraction—defined as any secondary activity that diverts visual, cognitive, or physical attention from the driving task—has been consistently identified as one of the most critical contributors to crash risk [1, 2].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "With the integration of in-cabin cameras in modern vehicles, the analysis of driver behavior has become increasingly feasible, enabling continuous monitoring of potentially unsafe actions such as mobile-phone manipulation, gaze aversion, eating, drinking, or...",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "With the integration of in-cabin cameras in modern vehicles, the analysis of driver behavior has become increasingly feasible, enabling continuous monitoring of potentially unsafe actions such as mobile-phone manipulation, gaze aversion, eating, drinking, or interacting with in-vehicle devices.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite recent advances in driver behavior analysis, accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Despite recent advances in driver behavior analysis, accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs [6, 7, 8], which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In response to these limitations, transformer-based architectures have emerged as powerful tools for temporal action localization, offering stronger modeling capacity for long-range dependencies compared to CNN-based or purely local methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "In response to these limitations, transformer-based architectures have emerged as powerful tools for temporal action localization, offering stronger modeling capacity for long-range dependencies compared to CNN-based or purely local methods.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [],
+    "core_problem_transition": [
+      {
+        "summary": "In-cabin videos typically suffer from illumination changes, shadows, occlusions generated by steering-wheel motion or hand movements, and significant inter-driver variability in posture and appearance .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In-cabin videos typically suffer from illumination changes, shadows, occlusions generated by steering-wheel motion or hand movements, and significant inter-driver variability in posture and appearance [3, 4].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Classical CNN-based systems, including ensemble architectures , are inherently limited because they operate primarily on spatial cues and lack the temporal modeling capacity required to characterize continuous, fine-grained driver behaviors.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Classical CNN-based systems, including ensemble architectures [5], are inherently limited because they operate primarily on spatial cues and lack the temporal modeling capacity required to characterize continuous, fine-grained driver behaviors.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs [6, 7, 8], which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that developing automated systems capable of reliably recognizing such behaviors is far from trivial?",
+      "failure_mode": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+      "root_cause": "With the integration of in-cabin cameras in modern vehicles, the analysis of driver behavior has become increasingly feasible, enabling continuous monitoring of potentially unsafe actions such as mobile-phone manipulation, gaze aversion, eating, drinking, or...",
+      "why_existing_methods_fail": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods?",
+      "failure_mode": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+      "root_cause": "In-cabin videos typically suffer from illumination changes, shadows, occlusions generated by steering-wheel motion or hand movements, and significant inter-driver variability in posture and appearance .",
+      "why_existing_methods_fail": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging?",
+      "failure_mode": "accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+      "root_cause": "Classical CNN-based systems, including ensemble architectures , are inherently limited because they operate primarily on spatial cues and lack the temporal modeling capacity required to characterize continuous, fine-grained driver behaviors.",
+      "why_existing_methods_fail": "Despite recent advances in driver behavior analysis, accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Despite recent advances in driver behavior analysis, accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "tion localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tion localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences?",
+      "failure_mode": "tion localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+      "root_cause": "Despite recent advances in driver behavior analysis, accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging.",
+      "why_existing_methods_fail": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Many existing temporal action localization approaches still rely on sliding-window or anchor-based designs [6, 7, 8], which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions?",
+      "failure_mode": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+      "root_cause": "Real-world driver-monitoring data further complicate this problem due to inconsistent video quality, sparse annotations, and frequent occlusions caused by steering-wheel motion or changes in driver appearance.",
+      "why_existing_methods_fail": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "aims to bridge the gap between theoretical research and practical deployment",
+      "method_core_mechanism": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+      "method_components": [
+        "aims to bridge the gap between theoretical research and practical deployment"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0130"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "aims to bridge the gap between theoretical research and practical deployment targets developing automated systems capable of reliably recognizing such behaviors is far from trivial. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0130",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "aims to bridge the gap between theoretical research and practical deployment targets Many distraction-related actions are subtle, brief, or partially hidden, making them difficult to capture using traditional vision-based or frame-level classification methods. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0130",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "aims to bridge the gap between theoretical research and practical deployment targets accurately localizing distraction-related actions in naturalistic in-cabin videos remains challenging. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0130",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "aims to bridge the gap between theoretical research and practical deployment targets tion localization approaches still rely on sliding-window or anchor-based designs , which struggle to accommodate the large variability in action duration across long, untrimmed driving sequences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0130",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "aims to bridge the gap between theoretical research and practical deployment targets These limitations underscore the need for a more robust and temporally adaptive framework capable of modeling fine-grained distraction behaviors under realistic driving conditions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0130",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "aims to bridge the gap between theoretical research and practical deployment",
+      "compared_to": "developing automated systems capable of reliably recognizing such behaviors is far from trivial.",
+      "why_it_matters": "It directly targets developing automated systems capable of reliably recognizing such behaviors is far from trivial.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "aims to bridge the gap between theoretical research and practical deployment",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To sum up, our approach aims to bridge the gap between theoretical research and practical deployment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for aims to bridge the gap between theoretical research and practical deployment",
+      "baseline": "A Two-stage Transformer Framework for Temporal Localization of Distracted Driver Behaviors",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "aims to bridge the gap between theoretical research and practical deployment",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting developing automated systems capable of reliably recognizing such behaviors is far from trivial.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_doan_a-two-stage-transformer-framework-for-temporal-localization-of-distracted-driver_58688cd482\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_doan_a-two-stage-transformer-framework-for-temporal-localization-of-distracted-driver_58688cd482\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

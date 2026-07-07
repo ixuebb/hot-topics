@@ -1,0 +1,483 @@
+{
+  "paper_id": "2022_diwan_zero-shot-video-moment-retrieval-with-off-the-shelf-models_e88854b4d1",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_diwan_zero-shot-video-moment-retrieval-with-off-the-shelf-models_e88854b4d1",
+  "title": "Zero-shot Video Moment Retrieval With Off-the-Shelf Models",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Anuj Diwan",
+    "Puyuan Peng",
+    "Raymond J. Mooney"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "We propose a zero-shot simple approach for one such task, Video Moment Retrieval (VMR), that does not perform any additional finetuning and simply repurposes off-the-shelf models trained on other tasks.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given a video and a natural language query, the task of Video Moment Retrieval (VMR) involves temporally localizing moments (i.e.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Given a video and a natural language query, the task of Video Moment Retrieval (VMR) involves temporally localizing moments (i.e.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "video segments) within the given video that are relevant to the query .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "video segments) within the given video that are relevant to the query (Hendricks et al., 2017; Escorcia et al., 2019; Lei et al., 2021).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This task is related to other tasks like Video Captioning , Dense Video Captioning and Image-Text Matching in the ﬁeld of vision-language research and although data and models from these tasks can beneﬁt VMR, there has been no prior work, to our knowledge, on...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This task is related to other tasks like Video Captioning (Xu et al., 2016), Dense Video Captioning (Wang et al., 2021) and Image-Text Matching (Radford et al., 2021) in the ﬁeld of vision-language research and although data and models from these tasks can beneﬁt VMR, there has been no prior work, to our knowledge, on using these models to solve VMR.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In summary, our contributions include: a) proposing novel zero-shot approaches for Video Moment Retrieval that only use off-the-shelf public models b) demonstrating that zero-shot approaches are extremely strong baselines for VMR and can even beat models...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In summary, our contributions include: a) proposing novel zero-shot approaches for Video Moment Retrieval that only use off-the-shelf public models b) demonstrating that zero-shot approaches are extremely strong baselines for VMR and can even beat models supervised on in-domain task data on some metrics and c) showing a length-based discrepancy in performance and improving performance for short moments beyond the best approach.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning (Roh et al., 2019); it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In addition, we run a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "In addition, we run a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This task has practical applications in many domains; for example, it can be used for...",
+        "scenario": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Furthermore, even assuming the existence of high-quality downstream task data, the...",
+        "scenario": "Furthermore, even assuming the existence of high-quality downstream task data, the ability of machine learning practitioners to ﬁnetune the best pretrained models on this data is dwindling due to the prohibitively large size of state-of-the-art pretrained Transformer models like CLIP , GPT-3 and...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Furthermore, even assuming the existence of high-quality downstream task data, the ability of machine learning practitioners to ﬁnetune the best pretrained models on this data is dwindling due to the prohibitively large size of state-of-the-art pretrained Transformer models like CLIP (Radford et al., 2021), GPT-3 (Brown et al., 2020) and PaLM (Chowdhery et al., 2022); additionally it is often impossible to ﬁnetune models if their weights are locked behind an API (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "We choose the task of Video Moment Retrieval as our task of interest for this case study.",
+        "scenario": "We choose the task of Video Moment Retrieval as our task of interest for this case study.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "We choose the task of Video Moment Retrieval as our task of interest for this case study.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Furthermore, even assuming the existence of high-quality downstream task data, the ability of machine learning practitioners to ﬁnetune the best pretrained models on this data is dwindling due to the prohibitively large size of state-of-the-art pretrained...",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Furthermore, even assuming the existence of high-quality downstream task data, the ability of machine learning practitioners to ﬁnetune the best pretrained models on this data is dwindling due to the prohibitively large size of state-of-the-art pretrained Transformer models like CLIP (Radford et al., 2021), GPT-3 (Brown et al., 2020) and PaLM (Chowdhery et al., 2022); additionally it is often impossible to ﬁnetune models if their weights are locked behind an API (e.g.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this work, we explore a three-step approach: a) generating moment proposals, b) performing moment-query matching and c) post-processing, all using off-the-shelf models in a novel zero-shot manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "In this work, we explore a three-step approach: a) generating moment proposals, b) performing moment-query matching and c) post-processing, all using off-the-shelf models in a novel zero-shot manner.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In summary, our contributions include: a) proposing novel zero-shot approaches for Video Moment Retrieval that only use off-the-shelf public models b) demonstrating that zero-shot approaches are extremely strong baselines for VMR and can even beat models...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "In summary, our contributions include: a) proposing novel zero-shot approaches for Video Moment Retrieval that only use off-the-shelf public models b) demonstrating that zero-shot approaches are extremely strong baselines for VMR and can even beat models supervised on in-domain task data on some metrics and c) showing a length-based discrepancy in performance and improving performance for short moments beyond the best approach.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go...",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that --- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available?",
+      "failure_mode": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+      "root_cause": "Workshop on Transfer Learning for Natural Language Processing, 2022, New Orleans.",
+      "why_existing_methods_fail": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+      "affected_scenario": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest?",
+      "failure_mode": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+      "root_cause": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+      "why_existing_methods_fail": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+      "affected_scenario": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning (Roh et al., 2019); it is quite expensive to collect high-quality human-annotated data for a given task of interest.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "n a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that n a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments?",
+      "failure_mode": "n a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+      "root_cause": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go...",
+      "why_existing_methods_fail": "In addition, we run a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+      "affected_scenario": "This task has practical applications in many domains; for example, it can be used for efﬁciently skipping to parts of the video that are most relevant; this is especially useful with long videos (sports events, television/news broadcasts, and so on).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "In addition, we run a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "still lags behind the current state-of-the-art model on QVHighlights, we hope",
+      "method_core_mechanism": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+      "method_components": [
+        "still lags behind the current state-of-the-art model on QVHighlights, we hope"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "still lags behind the current state-of-the-art model on QVHighlights, we hope targets --- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "still lags behind the current state-of-the-art model on QVHighlights, we hope targets It is becoming increasingly clear that data collection is a major bottleneck for progress in machine learning ; it is quite expensive to collect high-quality human-annotated data for a given task of interest. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "still lags behind the current state-of-the-art model on QVHighlights, we hope targets n a length-wise analysis of performance that shows that while all models (including ours) struggle to perform well on short moments, our models perform much better than state-of-the-art models on short moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0039",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "still lags behind the current state-of-the-art model on QVHighlights, we hope",
+      "compared_to": "--- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.",
+      "why_it_matters": "It directly targets --- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "still lags behind the current state-of-the-art model on QVHighlights, we hope",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Although our approach still lags behind the current state-of-the-art model on QVHighlights, we hope that our proposed future improvements described in Section 7 can help bridge the gap; we conduct an oracle experiment to check how far we can potentially go with shot-detection-based moment proposals.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for still lags behind the current state-of-the-art model on QVHighlights, we hope",
+      "baseline": "Zero-shot Video Moment Retrieval With Off-the-Shelf Models",
+      "dataset": "QVHighlights",
+      "module_to_modify": "still lags behind the current state-of-the-art model on QVHighlights, we hope",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting --- Page 2 --overarching bottlenecks by a) developing Zero-shot methods that require no downstream VMR task data at all and require no ﬁnetuning, only inference; and b) using only Off-the-shelf models whose weights are publicly available.."
+    }
+  ],
+  "datasets": [
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "Recall",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_diwan_zero-shot-video-moment-retrieval-with-off-the-shelf-models_e88854b4d1\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_diwan_zero-shot-video-moment-retrieval-with-off-the-shelf-models_e88854b4d1\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

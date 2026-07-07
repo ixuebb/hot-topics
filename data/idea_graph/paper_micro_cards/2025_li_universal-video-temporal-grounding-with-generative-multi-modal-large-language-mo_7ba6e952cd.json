@@ -1,0 +1,842 @@
+{
+  "paper_id": "2025_li_universal-video-temporal-grounding-with-generative-multi-modal-large-language-mo_7ba6e952cd",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_li_universal-video-temporal-grounding-with-generative-multi-modal-large-language-mo_7ba6e952cd",
+  "title": "Universal Video Temporal Grounding with Generative Multi-modal Large Language Models",
+  "year": 2025,
+  "venue_or_source": "NeurIPS 2025",
+  "authors": [
+    "Zeqian Li",
+    "Shangzhe Di",
+    "Zhonghua Zhai",
+    "Weilin Huang",
+    "Yanfeng Wang",
+    "Weidi Xie"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract This paper presents a computational model for universal video temporal grounding, which accurately localizes temporal moments in videos based on natural language queries (e.g., questions or descriptions).",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recent approaches typically adopt a two-stage framework: first localizing relevant temporal segments, then reasoning over the retrieved content.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recent approaches [30, 42] typically adopt a two-stage framework: first localizing relevant temporal segments, then reasoning over the retrieved content.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "For temporal grounding, we conduct experiments on two long-video and three short-video benchmarks, where our model consistently outperforms existing methods in both straightforward and complex retrieval scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "For temporal grounding, we conduct experiments on two long-video and three short-video benchmarks, where our model consistently outperforms existing methods in both straightforward and complex retrieval scenarios.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains .",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains [50].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual representations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10]...",
+        "scenario": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Recent approaches typically adopt a two-stage framework: first localizing relevant temporal segments, then reasoning over the retrieved content.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recent approaches [30, 42] typically adopt a two-stage framework: first localizing relevant temporal segments, then reasoning over the retrieved content.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this context, we advocate for developing a universal temporal grounding model, that is capable of accommodating videos across a wide range of viewpoints (egocentric and exocentric perspectives), topics (from cooking and daily activities to sports, movies,...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In this context, we advocate for developing a universal temporal grounding model, that is capable of accommodating videos across a wide range of viewpoints (egocentric and exocentric perspectives), topics (from cooking and daily activities to sports, movies, and games), and durations (from brief clips to multi-hour videos).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In 39th Conference on Neural Information Processing Systems .",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "In 39th Conference on Neural Information Processing Systems (NeurIPS 2025).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized...",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Section 3 presents ablation studies and comparisons to validate our approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Section 3 presents ablation studies and comparisons to validate our approach.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity?",
+      "failure_mode": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "root_cause": "complex temporal dependencies and varying information granularity.",
+      "why_existing_methods_fail": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "affected_scenario": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains ?",
+      "failure_mode": "existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains .",
+      "root_cause": "This retrieval-then-reasoning paradigm offers a structured and interpretable framework for tackling intricate video understanding tasks.",
+      "why_existing_methods_fail": "existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains .",
+      "affected_scenario": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains [50].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual?",
+      "failure_mode": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual...",
+      "root_cause": "limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual representations.",
+      "why_existing_methods_fail": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual representations.",
+      "affected_scenario": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual representations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens?",
+      "failure_mode": "their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+      "root_cause": "contrast, recent work leverages Multi-modal Large Language Models (MLLMs) , which excel at language understanding and demonstrate promising results on video temporal grounding.",
+      "why_existing_methods_fail": "their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+      "affected_scenario": "[00:09:20, 00:13:10] -> [00:10:05, 00:10:30] [00:00:00, 00:20:00] -> [00:09:20, 00:13:10] Figure 1: The UniTime framework empowers MLLMs with advanced universal temporal grounding capabilities.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "adaptive frame scaling mechanism",
+      "method_core_mechanism": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+      "method_components": [
+        "adaptive frame scaling mechanism"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0036"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "localizes the relevant video segment",
+      "method_core_mechanism": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+      "method_components": [
+        "localizes the relevant video segment"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0041"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos",
+      "method_core_mechanism": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+      "method_components": [
+        "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0065"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Section 3 presents ablation studies and comparisons to validate our approach.",
+      "method_core_mechanism": "Section 3 presents ablation studies and comparisons to validate our approach.",
+      "method_components": [
+        "Section 3 presents ablation studies and comparisons to validate our approach."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Section 3 presents ablation studies and comparisons to validate our approach.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0021"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves improved performance on both temporal grounding and long-video VideoQA benchmarks",
+      "method_core_mechanism": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+      "method_components": [
+        "achieves improved performance on both temporal grounding and long-video VideoQA benchmarks"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0095"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos targets # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "adaptive frame scaling mechanism targets # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "adaptive frame scaling mechanism targets existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "localizes the relevant video segment targets existing grounding models perform unsatisfactorily, often struggling to generalize across diverse video domains . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0041",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "adaptive frame scaling mechanism targets While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "localizes the relevant video segment targets While computationally efficient, these models often struggle to generalize to unseen content due to limited language encoding capabilities, hindering the understanding of complex or user-driven queries, and constrained visual... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0041",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos targets their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "adaptive frame scaling mechanism targets their applicability to long videos is hindered by short context windows and high memory demands, making them impractical for processing video inputs spanning tens of thousands of tokens. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0070",
+      "micro_method_cluster_id": "MM0036",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "adaptive frame scaling mechanism",
+      "compared_to": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "why_it_matters": "It directly targets # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "localizes the relevant video segment",
+      "compared_to": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "why_it_matters": "It directly targets # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos",
+      "compared_to": "# Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.",
+      "why_it_matters": "It directly targets # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "adaptive frame scaling mechanism",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To handle videos of varying lengths, we introduce an adaptive frame scaling mechanism that adjusts temporal and spatial granularity based on video duration.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "localizes the relevant video segment",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "For downstream VideoQA, we evaluate on four widely used long-video benchmarks using a retrieval-augmented protocol: first, our framework localizes the relevant video segment; then, an off-the-shelf VideoQA model answers the query based on the localized segment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+      "can_transfer_to": [
+        "long_sparse",
+        "domain_shift"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "Compared to prior approaches, our method demonstrates superior generalization, delivering more accurate and comprehensive video understanding, especially for long videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Section 3 presents ablation studies and comparisons to validate our approach.",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Section 3 presents ablation studies and comparisons to validate our approach.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Section 3 presents ablation studies and comparisons to validate our approach.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves improved performance on both temporal grounding and long-video VideoQA benchmarks",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "Overall, our method achieves improved performance on both temporal grounding and long-video VideoQA benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for adaptive frame scaling mechanism",
+      "baseline": "Universal Video Temporal Grounding with Generative Multi-modal Large Language Models",
+      "dataset": "Ego4D, LongVideoBench",
+      "module_to_modify": "adaptive frame scaling mechanism",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting # Introduction Understanding long videos presents fundamental challenges due to complex temporal dependencies and varying information granularity.."
+    }
+  ],
+  "datasets": [
+    "Ego4D",
+    "LongVideoBench",
+    "MLVU",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_li_universal-video-temporal-grounding-with-generative-multi-modal-large-language-mo_7ba6e952cd\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2025_li_universal-video-temporal-grounding-with-generative-multi-modal-large-language-mo_7ba6e952cd\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

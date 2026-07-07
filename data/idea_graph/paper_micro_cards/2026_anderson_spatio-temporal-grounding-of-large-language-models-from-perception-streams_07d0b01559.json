@@ -1,0 +1,763 @@
+{
+  "paper_id": "2026_anderson_spatio-temporal-grounding-of-large-language-models-from-perception-streams_07d0b01559",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_anderson_spatio-temporal-grounding-of-large-language-models-from-perception-streams_07d0b01559",
+  "title": "Spatio-Temporal Grounding of Large Language Models from Perception Streams",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Jacob Anderson",
+    "Bardh Hoxha",
+    "Georgios Fainekos",
+    "Hideki Okamoto",
+    "Danil Prokhorov"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The ability to comprehend and reason about how a dynamic, three-dimensional world evolves over time is fundamental to embodied AI—spanning household robotics, autonomous driving, and assistive manipulation.",
+        "evidence": [
+          {
+            "evidence_id": "EV005",
+            "section": "Introduction",
+            "quote": "# Introduction The ability to comprehend and reason about how a dynamic, three-dimensional world evolves over time is fundamental to embodied AI—spanning household robotics, autonomous driving, and assistive manipulation.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "To train and evaluate such systems we also need tooling that can query and annotate spatio-temporal events in video perception logs.",
+        "evidence": [
+          {
+            "evidence_id": "EV006",
+            "section": "Introduction",
+            "quote": "To train and evaluate such systems we also need tooling that can query and annotate spatio-temporal events in video perception logs.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Virtually all the prior works on spatio or spatio-temporal fine tuning use multiple choice question and answering for fine-tuning with much simpler spatio-temporal properties, or they do not explicitly reason about spatial relations .",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Virtually all the prior works on spatio or spatio-temporal fine tuning use multiple choice question and answering for fine-tuning with much simpler spatio-temporal properties, or they do not explicitly reason about spatial relations [8].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations [21, 24, 11, 20], lose track of temporal dynamics [9], and struggle when both aspects matter simultaneously [7].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "In more detail, given textual video object annotation data which must include object...",
+        "scenario": "In more detail, given textual video object annotation data which must include object classes and bounding box information, and which may include unique object identifiers, pixel depth information, or other attributes of interest, e.g., color.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "In more detail, given textual video object annotation data which must include object classes and bounding box information, and which may include unique object identifiers, pixel depth information, or other attributes of interest, e.g., color.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "It is important to highlight three benefits of our framework.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "It is important to highlight three benefits of our framework.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, our framework can be utilized on both real data and artificially generated data.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "First, our framework can be utilized on both real data and artificially generated data.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Third, our framework can also produce natural language explanations on why a pattern was matched on the annotated dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Third, our framework can also produce natural language explanations on why a pattern was matched on the annotated dataset.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously ?",
+      "failure_mode": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "root_cause": "LLMs and Visual Language Models (VLMs)1 already show promise as task-and-motion planners and low-cost annotators .",
+      "why_existing_methods_fail": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "affected_scenario": "In more detail, given textual video object annotation data which must include object classes and bounding box information, and which may include unique object identifiers, pixel depth information, or other attributes of interest, e.g., color.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations [21, 24, 11, 20], lose track of temporal dynamics [9], and struggle when both aspects matter simultaneously [7].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes?",
+      "failure_mode": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+      "root_cause": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "why_existing_methods_fail": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+      "affected_scenario": "In more detail, given textual video object annotation data which must include object classes and bounding box information, and which may include unique object identifiers, pixel depth information, or other attributes of interest, e.g., color.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning?",
+      "failure_mode": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+      "root_cause": "showed that Video LLMs – models coupling a video encoder with a language decoder – can improve reasoning skills through purely textual fine-tuning.",
+      "why_existing_methods_fail": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+      "affected_scenario": "In more detail, given textual video object annotation data which must include object classes and bounding box information, and which may include unique object identifiers, pixel depth information, or other attributes of interest, e.g., color.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "FESTS, a framework",
+      "method_core_mechanism": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+      "method_components": [
+        "FESTS",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we",
+      "method_core_mechanism": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "framework",
+      "method_core_mechanism": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+      "method_components": [
+        "framework"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0137"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "It is important to highlight three benefits of our framework.",
+      "method_core_mechanism": "It is important to highlight three benefits of our framework.",
+      "method_components": [
+        "It is important to highlight three benefits of our framework."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "It is important to highlight three benefits of our framework.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0052"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "can be utilized on both real data and artificially generated data",
+      "method_core_mechanism": "First, our framework can be utilized on both real data and artificially generated data.",
+      "method_components": [
+        "can be utilized on both real data and artificially generated data"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "First, our framework can be utilized on both real data and artificially generated data.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0062"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "FESTS, a framework targets Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously . by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we targets Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously . by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "FESTS, a framework targets For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we targets For instance, VLMs often confuse relative object ordering, fail to distinguish identical instances, and cannot reason about metric distance—shortcomings that translate directly into failure modes. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we targets Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "FESTS, a framework targets Their evidence suggests that temporal-reasoning bottlenecks lie in the LLM component rather than the video encoder, implying that stronger textual supervision can improve reasoning. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0041",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "FESTS, a framework",
+      "compared_to": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "why_it_matters": "It directly targets Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we",
+      "compared_to": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "why_it_matters": "It directly targets Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "framework",
+      "compared_to": "Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .",
+      "why_it_matters": "It directly targets Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "FESTS, a framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "In this paper, we present FESTS, a framework that injects rich, verifiable spatio-temporal supervision into an LLM, enabling it to answer – and explain – complex video queries.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our framework capitalises on this insight: by generating arbitrarily many SpREs-grounded (query, frames, match, explanation) tuples from any perception dataset, we fine-tune the LLM component to reason about both temporal orderings and spatial relations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "framework",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "We present a framework which automates query generation and data annotation with the goal of producing any desired size training dataset.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "It is important to highlight three benefits of our framework.",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "It is important to highlight three benefits of our framework.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "It is important to highlight three benefits of our framework.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "can be utilized on both real data and artificially generated data",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "First, our framework can be utilized on both real data and artificially generated data.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "First, our framework can be utilized on both real data and artificially generated data.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for FESTS, a framework",
+      "baseline": "Spatio-Temporal Grounding of Large Language Models from Perception Streams",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "FESTS, a framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Yet a growing body of work demonstrates that frontier models remain brittle: they mis-judge fine-grained spatial relations , lose track of temporal dynamics , and struggle when both aspects matter simultaneously .."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_anderson_spatio-temporal-grounding-of-large-language-models-from-perception-streams_07d0b01559\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_anderson_spatio-temporal-grounding-of-large-language-models-from-perception-streams_07d0b01559\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

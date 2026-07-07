@@ -1,0 +1,725 @@
+{
+  "paper_id": "2022_wang_negative-sample-matters-a-renaissance-of-metric-learning-for-temporal-grounding_1d25969cd5",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_wang_negative-sample-matters-a-renaissance-of-metric-learning-for-temporal-grounding_1d25969cd5",
+  "title": "Negative Sample Matters: A Renaissance of Metric Learning for Temporal Grounding",
+  "year": 2022,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Zhenzhi Wang",
+    "Limin Wang",
+    "Tao Wu",
+    "Tianhao Li",
+    "Gangshan Wu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Experiments show that our MMN achieves highly competitive performance compared with the state-of-the-art methods on four video grounding benchmarks.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video analysis is a fundamental problem in computer vision and has drawn increasing attention in recent years because of the potential applications in surveillance, robotics, and Internet videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video analysis is a fundamental problem in computer vision and has drawn increasing attention in recent years because of the potential applications in surveillance, robotics, and Internet videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "While considerable progress has been made in video classiﬁcation (",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "While considerable progress has been made in video classiﬁcation (Wang et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "2016, 2018;",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "2016, 2018; Feichtenhofer et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "2019;",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "2019; Wang et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video...",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "However, we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched...",
+        "scenario": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "2020) still tackle this problem in a detection/regression way with early-fusion designs,...",
+        "scenario": "2020) still tackle this problem in a detection/regression way with early-fusion designs, e.g., using the fused multi-modal features to predict the offset of action moments from anchors; or directly regressing the desired region on --- Page 2 --a globally aggregated multi-modal feature.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "2020) still tackle this problem in a detection/regression way with early-fusion designs, e.g., using the fused multi-modal features to predict the offset of action moments from anchors; or directly regressing the desired region on --- Page 2 --a globally aggregated multi-modal feature.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "So we adopt another embedding space for learning the cross-modal similarity for precisely...",
+        "scenario": "So we adopt another embedding space for learning the cross-modal similarity for precisely ranking moments based on the IoU supervision, which enables us to estimate ﬁner relations (i.e., a scalar instead of a binary signal) and accurately differentiate the correct pair among hard negatives (e.g.,...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV067",
+            "section": "Introduction",
+            "quote": "So we adopt another embedding space for learning the cross-modal similarity for precisely ranking moments based on the IoU supervision, which enables us to estimate ﬁner relations (i.e., a scalar instead of a binary signal) and accurately differentiate the correct pair among hard negatives (e.g., negative moments with high IoU).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "However, we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Intuitively, the auxiliary task, given a video moment with visually informative actions, training the model to contrast the matched query and unmatched descriptions, (Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "Intuitively, the auxiliary task, given a video moment with visually informative actions, training the model to contrast the matched query and unmatched descriptions, (Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+        "evidence": [
+          {
+            "evidence_id": "EV064",
+            "section": "Introduction",
+            "quote": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework shows advantages on both performance and training cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV070",
+            "section": "Introduction",
+            "quote": "Our framework shows advantages on both performance and training cost.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments?",
+      "failure_mode": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...",
+      "root_cause": "supervision (Fig.",
+      "why_existing_methods_fail": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+      "affected_scenario": "2020) still tackle this problem in a detection/regression way with early-fusion designs, e.g., using the fused multi-modal features to predict the offset of action moments from anchors; or directly regressing the desired region on --- Page 2 --a globally aggregated multi-modal feature.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding?",
+      "failure_mode": "we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+      "root_cause": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video...",
+      "why_existing_methods_fail": "we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+      "affected_scenario": "2020) still tackle this problem in a detection/regression way with early-fusion designs, e.g., using the fused multi-modal features to predict the offset of action moments from anchors; or directly regressing the desired region on --- Page 2 --a globally aggregated multi-modal feature.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "However, we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (pur",
+      "method_core_mechanism": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+      "method_components": [
+        "Positive Negative",
+        "Positive Negative Query Moment Matched",
+        "GT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0088"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to use this auxiliary task for the ﬁrst time in temporal grounding",
+      "method_core_mechanism": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+      "method_components": [
+        "to use this auxiliary task for the ﬁrst time in temporal grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0138"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+      "method_core_mechanism": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+      "method_components": [
+        "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV055"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0214"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme",
+      "method_core_mechanism": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+      "method_components": [
+        "shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0088"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "has less computation cost by sharing moment features among sentences inside each video",
+      "method_core_mechanism": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+      "method_components": [
+        "has less computation cost by sharing moment features among sentences inside each video"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV064"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV064",
+          "section": "Introduction",
+          "quote": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0077"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to use this auxiliary task for the ﬁrst time in temporal grounding targets These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0138",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU3",
+      "solves_how": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig. targets These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0214",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to use this auxiliary task for the ﬁrst time in temporal grounding targets we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0138",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig. targets we argue that the negative relations between the given moment and other unmatched descriptions are also important for learning a joint cross-modal embedding. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0017",
+      "micro_method_cluster_id": "MM0214",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (pur",
+      "compared_to": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+      "why_it_matters": "It directly targets These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to use this auxiliary task for the ﬁrst time in temporal grounding",
+      "compared_to": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+      "why_it_matters": "It directly targets These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+      "compared_to": "These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments from the same video as supervision (Fig.",
+      "why_it_matters": "It directly targets These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (pur",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(a) (b) Positive Negative (c) Positive Negative Query Moment Matched pairs Unmatched (inter-video) Unmatched (intra-video) Figure 1: (a) In addition to matching moments given a query, we propose a new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (purple) for the GT moment (red box).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to use this auxiliary task for the ﬁrst time in temporal grounding",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "We propose to use this auxiliary task for the ﬁrst time in temporal grounding, which shows advantages in less extra computational cost compared with previous auxiliary tasks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "Thus, supervisions are constructed in a symmetric form for two modalities by our approach (Fig.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Our framework shows several advantages: Firstly, the metric-learning perspective enables us to mine negative samples from a mutual matching scheme.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "has less computation cost by sharing moment features among sentences inside each video",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV064",
+          "section": "Introduction",
+          "quote": "Thus, our framework has less computation cost by sharing moment features among sentences inside each video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (pur",
+      "baseline": "Negative Sample Matters: A Renaissance of Metric Learning for Temporal Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "new auxiliary task named mutual matching to differentiate the matched query (red dash line) among unmatched queries intra- (green) or inter-video (pur",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting These indirect grounding methods typically ignore the essential relation between all cross-modal pairs (i.e., pairs of moment and language queries), and they only simply utilize the IoU-based scores between the given sentence and moments...."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_wang_negative-sample-matters-a-renaissance-of-metric-learning-for-temporal-grounding_1d25969cd5\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_wang_negative-sample-matters-a-renaissance-of-metric-learning-for-temporal-grounding_1d25969cd5\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

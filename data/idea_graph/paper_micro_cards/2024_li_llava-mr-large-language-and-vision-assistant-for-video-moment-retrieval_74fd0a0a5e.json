@@ -1,0 +1,922 @@
+{
+  "paper_id": "2024_li_llava-mr-large-language-and-vision-assistant-for-video-moment-retrieval_74fd0a0a5e",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_llava-mr-large-language-and-vision-assistant-for-video-moment-retrieval_74fd0a0a5e",
+  "title": "LLaVA-MR: Large Language-and-Vision Assistant for Video Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "Qeios",
+  "authors": [
+    "Jianping Li"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "Video Moment Retrieval (MR) seeks to locate specific time segments within an untrimmed video based on a natural language query describing an event, requiring the model to effectively understand the video content and precisely capture the transient details relevant to the query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 1/26 Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 1/26 Figure 1.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Advantages and Comparison of LLaVA-MR over prior work.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Advantages and Comparison of LLaVA-MR over prior work.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Advantages and Comparison of LLaVA-MR over prior work.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Advantages and Comparison of LLaVA-MR over prior work.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse frame sampling, leading...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse frame sampling, leading to poor temporal perception and coarse localization precision.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of...",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of brief moments within long videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "# Introduction Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M ·...",
+        "scenario": "# Introduction Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 1/26 Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 1/26 Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "BLIP represents a breakthrough by framing moment retrieval as an open-ended...",
+        "scenario": "BLIP represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "BLIP[7] represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "To address these challenges, we propose the Large Language-and-Vision Assistant for...",
+        "scenario": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Video Moment Retrieval (MR) seeks to locate specific time segments within an untrimmed video based on a natural language query describing an event, requiring the model to effectively understand the video content and precisely capture the transient details...",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Video Moment Retrieval (MR) seeks to locate specific time segments within an untrimmed video based on a natural language query describing an event, requiring the model to effectively understand the video content and precisely capture the transient details relevant to the query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "BLIP represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "BLIP[7] represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of...",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of brief moments within long videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences,...",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA[8] and QVHighlights[9].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method achieves state-of-the-art performance on the moment retrieval task across both the Charades-STA and QVHighlights datasets, demonstrating a greater advantage on more complex, longer videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Our method achieves state-of-the-art performance on the moment retrieval task across both the Charades-STA and QVHighlights datasets, demonstrating a greater advantage on more complex, longer videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information?",
+      "failure_mode": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "root_cause": "it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "why_existing_methods_fail": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data?",
+      "failure_mode": "these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+      "root_cause": "1(a), previous approaches, such as Moment-DTER, CGDETR, UniLoc, and UniMD, have primarily tackled this task by utilizing transformer structures to fuse image-text features, with task-specific prediction heads producing a fixed set of moment candidates.",
+      "why_existing_methods_fail": "these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse?",
+      "failure_mode": "this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse...",
+      "root_cause": "BLIP represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+      "why_existing_methods_fail": "this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse frame sampling, leading to poor temporal perception and coarse localization...",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse frame sampling, leading to poor temporal perception and coarse localization precision.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more?",
+      "failure_mode": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more...",
+      "root_cause": "this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse frame sampling, leading...",
+      "why_existing_methods_fail": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of brief moments within long videos.",
+      "affected_scenario": "BLIP represents a breakthrough by framing moment retrieval as an open-ended sequence-to-sequence problem with a generative MLLM, offering strong multimodal understanding and versatile adaptability, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more accurate localization of brief moments within long videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR)",
+      "method_core_mechanism": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+      "method_components": [
+        "Large Language-and-Vision Assistant",
+        "Moment Retrieval",
+        "LLaVA- MR",
+        "MR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0140"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion...",
+      "method_core_mechanism": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+      "method_components": [
+        "Informative Frame Selection (IFS)",
+        "Dynamic Token Compression (DTC)",
+        "Informative Frame Selection",
+        "Dynamic Token Compression",
+        "IFS",
+        "DTC"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0188"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights",
+      "method_core_mechanism": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights.",
+      "method_components": [
+        "Charades- STA",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA[8] and QVHighlights[9].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "LLaVA-MR",
+      "method_core_mechanism": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+      "method_components": [
+        "MR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0140"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dyna",
+      "method_core_mechanism": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+      "method_components": [
+        "Time Encoding (DFTE)",
+        "Informative Frame Selection (IFS)",
+        "Dynamic Token Compression (DTC)",
+        "Dense Frame",
+        "Time Encoding",
+        "Informative Frame Selection",
+        "Dynamic Token Compression",
+        "DFTE",
+        "IFS",
+        "DTC"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0188"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR) targets using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "LLaVA-MR targets using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR) targets these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion... targets these methods are limited by their reliance on frame-level feature extraction, which limits understanding, and the design of prediction heads reduces robustness when applied to new data. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0073",
+      "micro_method_cluster_id": "MM0188",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR) targets this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "LLaVA-MR targets this method is constrained by the limited context length of LLMs to Qeios, CC-BY 4.0 · Article, December 5, 2024 Qeios ID: VLXB6M · https://doi.org/10.32388/VLXB6M 2/26 --- Page 3 --process long sequences, which forces it to use sparse... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR) targets We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU4",
+      "solves_how": "LLaVA-MR targets We identify two key challenges limiting the effectiveness of MLLMs in moment retrieval: (1) improving their temporal awareness and perception to enable more precise alignment of video frames with time encoding, and (2) ensuring more... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0045",
+      "micro_method_cluster_id": "MM0140",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR)",
+      "compared_to": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "why_it_matters": "It directly targets using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.."
+    },
+    {
+      "axis": "Query-Conditioned Frame/Clip Selection",
+      "what_is_new": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion...",
+      "compared_to": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "why_it_matters": "It directly targets using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights",
+      "compared_to": "using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.",
+      "why_it_matters": "It directly targets using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose the Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR), which optimizes MLLMs for moment retrieval tasks by enhancing their ability to capture critical, brief moments within long video frame sequences, as illustrated in Fig.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion...",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+      "can_transfer_to": [
+        "long_sparse",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To precisely locate brief moments in long videos, we developed an Informative Frame Selection (IFS) strategy to capture short-lived visual and motion patterns, and applied Dynamic Token Compression (DTC) to reduce sequence length while preserving essential information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA and QVHighlights.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "Our approach achieves state-of-the-art results on widely used benchmarks, including Charades- STA[8] and QVHighlights[9].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "LLaVA-MR",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are the following: We propose LLaVA-MR, which applies MLLMs to the moment retrieval task, enhancing temporal awareness and effectively capturing critical, transient information in long videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dyna",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+      "can_transfer_to": [
+        "long_sparse",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "We introduce Dense Frame and Time Encoding (DFTE) to extract fine-grained spatial and temporal features, Informative Frame Selection (IFS) to capture critical dynamic moments, and Dynamic Token Compression (DTC) to compress redundant information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR)",
+      "baseline": "LLaVA-MR: Large Language-and-Vision Assistant for Video Moment Retrieval",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "Large Language-and-Vision Assistant for Moment Retrieval (LLaVA- MR)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting using MLLMs for moment retrieval in long-duration videos is still a major challenge, as it requires a deep understanding of visual changes and precise integration of temporal information.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_llava-mr-large-language-and-vision-assistant-for-video-moment-retrieval_74fd0a0a5e\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_llava-mr-large-language-and-vision-assistant-for-video-moment-retrieval_74fd0a0a5e\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

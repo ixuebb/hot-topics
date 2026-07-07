@@ -1,0 +1,869 @@
+{
+  "paper_id": "2026_tu_bridging-time-and-space-decoupled-spatio-temporal-alignment-for-video-grounding_299f32205c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_tu_bridging-time-and-space-decoupled-spatio-temporal-alignment-for-video-grounding_299f32205c",
+  "title": "Bridging Time and Space: Decoupled Spatio-Temporal Alignment for Video Grounding",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Xuezhen Tu",
+    "Jingyu Wu",
+    "Fangyu Kang",
+    "Qingpeng Nong",
+    "Kaijin Zhang",
+    "Chaoyue Niu",
+    "Fan Wu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-Temporal Video Grounding requires jointly localizing target objects across both temporal and spatial dimensions based on natural language queries, posing fundamental challenges for existing Multimodal Large Language Models (MLLMs).",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to identify and locate target objects across both the temporal and spatial dimensions of a video based on natural language queries .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to identify and locate target objects across both the temporal and spatial dimensions of a video based on natural language queries [67].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It has widespread utility in fields such as autonomous driving , video retrieval , and intelligent surveillance .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "It has widespread utility in fields such as autonomous driving [2, 42], video retrieval [13, 59], and intelligent surveillance [67].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Recently, Multimodal Large Language Models (MLLMs) significantly propel this task forward owing to their superior capabilities in multimodal semantic comprehension and structured reasoning .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recently, Multimodal Large Language Models (MLLMs) significantly propel this task forward owing to their superior capabilities in multimodal semantic comprehension and structured reasoning [9, 12, 48, 56].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands [2, 28, 46].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands [2, 28, 46].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We attribute these limitations to two challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "We attribute these limitations to two challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not suited for continuous...",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not suited for continuous spatial precision.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "As illustrated in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "We attribute these limitations to two challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "We attribute these limitations to two challenges.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The first is entangled spatio-temporal alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The first is entangled spatio-temporal alignment.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce the STSB mechanism with Explicit Temporal Alignment (ETA) to distill temporally aligned reasoning context into robust bridging queries, effectively mitigating the semantic isolation of decoupled architectures.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "We introduce the STSB mechanism with Explicit Temporal Alignment (ETA) to distill temporally aligned reasoning context into robust bridging queries, effectively mitigating the semantic isolation of decoupled architectures.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that there is still a significant gap between current MLLM-based methods and real-world demands ?",
+      "failure_mode": "there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "root_cause": "Recently, Multimodal Large Language Models (MLLMs) significantly propel this task forward owing to their superior capabilities in multimodal semantic comprehension and structured reasoning .",
+      "why_existing_methods_fail": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands [2, 28, 46].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision?",
+      "failure_mode": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+      "root_cause": "While recent works attempt to narrow this gap, they predominantly rely on MLLM-generated query embeddings for spatial grounding within coupled architectures.",
+      "why_existing_methods_fail": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "We attribute these limitations to two challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we attribute these limitations to two challenges?",
+      "failure_mode": "We attribute these limitations to two challenges.",
+      "root_cause": "The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision.",
+      "why_existing_methods_fail": "We attribute these limitations to two challenges.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We attribute these limitations to two challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not?",
+      "failure_mode": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not...",
+      "root_cause": "STVG inherently comprises two heterogeneous sub-tasks: temporal localization, which requires high-level semantic reasoning over event sequences and is naturally suited to MLLMs , and spatial localization, which demands pixel-precise coordinate prediction and...",
+      "why_existing_methods_fail": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not suited for continuous spatial precision.",
+      "affected_scenario": "As illustrated in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not suited for continuous spatial precision.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0064"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework",
+      "method_core_mechanism": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+      "method_components": [
+        "Bridge-based Spatio- Temporal Video Grounding Model",
+        "STG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Spatio-Temporal Semantic Bridging (STSB) mechanism",
+      "method_core_mechanism": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+      "method_components": [
+        "Spatio-Temporal Semantic Bridging (STSB)",
+        "Spatio-Temporal Semantic Bridging",
+        "STG",
+        "STSB"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0016"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "Query-Guided Spatial Localization (QGSL) module",
+      "method_core_mechanism": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+      "method_components": [
+        "Query-Guided Spatial Localization (QGSL)",
+        "Query-Guided Spatial Localization",
+        "QGSL"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0108"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "improves the average m_vIoU from 26",
+      "method_core_mechanism": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+      "method_components": [
+        "improves the average m_vIoU from 26"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0016"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG",
+      "method_core_mechanism": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+      "method_components": [
+        "STG",
+        "MLLM",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0027"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU5",
+      "solves_how": "Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG targets there is still a significant gap between current MLLM-based methods and real-world demands . by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework targets there is still a significant gap between current MLLM-based methods and real-world demands . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG targets The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework targets The lack of temporal-spatial decoupling bottlenecks their fine-grained spatial localization precision. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework targets We attribute these limitations to two challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Spatio-Temporal Semantic Bridging (STSB) mechanism targets We attribute these limitations to two challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0054",
+      "micro_method_cluster_id": "MM0016",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "Query-Guided Spatial Localization (QGSL) module targets Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not... by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0064",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU5",
+      "solves_how": "Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG targets Existing MLLMs that couple both tasks within the same autoregressive output space fail to exploit LLMs’ temporal reasoning strengths, while their coordinate regression objective, trained with cross entropy over discretized tokens, is not... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0064",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework",
+      "compared_to": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "why_it_matters": "It directly targets there is still a significant gap between current MLLM-based methods and real-world demands .."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "Spatio-Temporal Semantic Bridging (STSB) mechanism",
+      "compared_to": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "why_it_matters": "It directly targets there is still a significant gap between current MLLM-based methods and real-world demands .."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "Query-Guided Spatial Localization (QGSL) module",
+      "compared_to": "Despite these advances, there is still a significant gap between current MLLM-based methods and real-world demands .",
+      "why_it_matters": "It directly targets there is still a significant gap between current MLLM-based methods and real-world demands .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework that decouples temporal and spatial localization while ensuring semantic coherence.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Spatio-Temporal Semantic Bridging (STSB) mechanism",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Bridge-STG is driven by two pivotal designs: First, to bridge the architectural semantic gap, we introduce the Spatio-Temporal Semantic Bridging (STSB) mechanism.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Query-Guided Spatial Localization (QGSL) module",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Second, to tackle the dual-domain visual token redundancy, we propose the Query-Guided Spatial Localization (QGSL) module.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "improves the average m_vIoU from 26",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "By bridging the spatio-temporal gap and filtering visual redundancy, our method improves the average m_vIoU from 26.4 to 34.3 (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose Bridge-STG, an end-to-end decoupled MLLM framework for fine-grained STVG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework",
+      "baseline": "Bridging Time and Space: Decoupled Spatio-Temporal Alignment for Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "Bridge-STG (Bridge-based Spatio- Temporal Video Grounding Model), an end-to-end framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting there is still a significant gap between current MLLM-based methods and real-world demands .."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_tu_bridging-time-and-space-decoupled-spatio-temporal-alignment-for-video-grounding_299f32205c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_tu_bridging-time-and-space-decoupled-spatio-temporal-alignment-for-video-grounding_299f32205c\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

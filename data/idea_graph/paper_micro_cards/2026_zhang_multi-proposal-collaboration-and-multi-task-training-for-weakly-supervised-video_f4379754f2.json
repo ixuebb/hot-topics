@@ -1,0 +1,575 @@
+{
+  "paper_id": "2026_zhang_multi-proposal-collaboration-and-multi-task-training-for-weakly-supervised-video_f4379754f2",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_multi-proposal-collaboration-and-multi-task-training-for-weakly-supervised-video_f4379754f2",
+  "title": "Multi-proposal collaboration and multi-task training for weakly-supervised video moment retrieval",
+  "year": 2026,
+  "venue_or_source": "International Journal of Machine Learning and Cybernetics",
+  "authors": [
+    "Bolin Zhang",
+    "Chao Yang",
+    "Bin Jiang",
+    "Takahiro Komamizu",
+    "Ichiro Ide"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract This study focuses on weakly-supervised Video Moment Retrieval (VMR), aiming to identify a moment semantically similar to the given query within an untrimmed video using only video-level correspondences, without relying on temporal annotations during training.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) is a critical and challenging task that has numerous potential applications, such as video surveillance and robot manipulation .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) is a critical and challenging task that has numerous potential applications, such as video surveillance [1, 2] and robot manipulation [3].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The objective is to automatically identify the start and end boundaries of a target moment encompassing successive clips within an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "The objective is to automatically identify the start and end boundaries of a target moment encompassing successive clips within an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This moment should be semantically akin to a provided sentence query.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This moment should be semantically akin to a provided sentence query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.”...",
+        "scenario": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Consequently, the research community is increasingly drawn towards weakly-supervised settings [9–12] that rely only on video-level descriptions during training, making it a more practical method.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Consequently, the research community is increasingly drawn towards weakly-supervised settings [9–12] that rely only on video-level descriptions during training, making it a more practical method.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This is attributed to the presence of comparable backgrounds and video styles, making these instances more challenging to differentiate as negative samples.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "This is attributed to the presence of comparable backgrounds and video styles, making these instances more challenging to differentiate as negative samples.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+        "evidence": [
+          {
+            "evidence_id": "EV004",
+            "section": "Abstract",
+            "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Abstract",
+            "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence?",
+      "failure_mode": "its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+      "root_cause": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+      "why_existing_methods_fail": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+      "affected_scenario": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators?",
+      "failure_mode": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+      "root_cause": "their subjective nature and inconsistencies across different annotators.",
+      "why_existing_methods_fail": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+      "affected_scenario": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization?",
+      "failure_mode": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+      "root_cause": "They achieve this by maximizing the matching scores between associated queries and videos, while simultaneously attenuating the scores pertaining to unpaired instances.",
+      "why_existing_methods_fail": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+      "affected_scenario": "To illustrate, when given a query like “The man adds oil and salt to a pot on the stove.” along with a corresponding video, the goal is to retrieve the most suitable matching moment, as depicted in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT)",
+      "method_core_mechanism": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+      "method_components": [
+        "Multi-task Training (MCMT)",
+        "Multi-proposal Collaboration",
+        "Multi-task Training",
+        "MCMT"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV004"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0038"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva",
+      "method_core_mechanism": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+      "method_components": [
+        "we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "reconstruction",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Abstract",
+          "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0198"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva targets its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Abstract",
+          "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0198",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT) targets its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva targets Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Abstract",
+          "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0198",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT) targets Additionally, annotations are prone to inaccuracies in determining activity boundaries in videos due to their subjective nature and inconsistencies across different annotators. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT) targets They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva targets They also disregard the reality that distinguishing mismatched moments within the same video can present greater difficulty in the context of activity temporal localization. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Abstract",
+          "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0198",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT)",
+      "compared_to": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+      "why_it_matters": "It directly targets its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva",
+      "compared_to": "Despite remarkable progress recently made in fully-supervised VMR [4–8], its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.",
+      "why_it_matters": "It directly targets its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "To address these limitations, we present a novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieva",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+      "can_transfer_to": [
+        "reconstruction"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Abstract",
+          "quote": "During training, we introduce forward and inverse masked query reconstruction tasks to impose more substantial constraints on the network, promoting more robust and stable retrieval performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT)",
+      "baseline": "Multi-proposal collaboration and multi-task training for weakly-supervised video moment retrieval",
+      "dataset": "MAD",
+      "module_to_modify": "novel weakly-supervised method called Multi-proposal Collaboration and Multi-task Training (MCMT)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting its applicability to real-world large-scale scenarios is hindered by the labor-intensive and time-consuming process of annotating ground-truth temporal boundaries for each query sentence.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_multi-proposal-collaboration-and-multi-task-training-for-weakly-supervised-video_f4379754f2\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhang_multi-proposal-collaboration-and-multi-task-training-for-weakly-supervised-video_f4379754f2\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

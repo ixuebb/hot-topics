@@ -1,0 +1,744 @@
+{
+  "paper_id": "2024_mu_snag-scalable-and-accurate-video-grounding_18d1cc9bb6",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_mu_snag-scalable-and-accurate-video-grounding_18d1cc9bb6",
+  "title": "SnAG: Scalable and Accurate Video Grounding",
+  "year": 2024,
+  "venue_or_source": "CVPR 2024",
+  "authors": [
+    "Fangzhou Mu",
+    "Sicheng Mo",
+    "Yin Li"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "# Introduction Localizing moments within an untrimmed video based on text descriptions, also known as temporal video grounding, involves joint reasoning about visual, textual and temporal information, and thus remains a challenging problem in video understanding.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Localizing moments within an untrimmed video based on text descriptions, also known as temporal video grounding, involves joint reasoning about visual, textual and temporal information, and thus remains a challenging problem in video...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Localizing moments within an untrimmed video based on text descriptions, also known as temporal video grounding, involves joint reasoning about visual, textual and temporal information, and thus remains a challenging problem in video understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Video grounding is gaining traction amid the rapid advances in vision-language learning, with a range of applications such as intelligent personal assistants, human-robot interaction, and interactive video editing.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Video grounding is gaining traction amid the rapid advances in vision-language learning, with a range of applications such as intelligent personal assistants, human-robot interaction, and interactive video editing.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "18930 --- Page 2 --previous state of the art (SSRN ) by 3.61 absolute percentage points while being simpler in model design.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "18930 --- Page 2 --previous state of the art (SSRN [71]) by 3.61 absolute percentage points while being simpler in model design.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite recent progress, one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Despite recent progress, one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "On latest long-form video grounding benchmarks [16, 45], these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within...",
+        "scenario": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Previous methods (e.g., [46, 67]) are primarily designed for grounding only a few queries within short video snippets.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "the growing availability of long videos (e.g., on streaming platforms) and demand to...",
+        "scenario": "the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "* indicates equal contribution # Sentences / Second (on a single P100) R@5, tIoU=0.5 (%)...",
+        "scenario": "* indicates equal contribution # Sentences / Second (on a single P100) R@5, tIoU=0.5 (%) 0 10 40 50 20 30 0.0 2.5 5.0 7.5 10.0 12.5 15.0 2D-TAN VLG-Net CONE SnAG SOONet 1.5× faster +5% accurate Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "* indicates equal contribution # Sentences / Second (on a single P100) R@5, tIoU=0.5 (%) 0 10 40 50 20 30 0.0 2.5 5.0 7.5 10.0 12.5 15.0 2D-TAN VLG-Net CONE SnAG SOONet 1.5× faster +5% accurate Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Previous methods (e.g., [46, 67]) are primarily designed for grounding only a few queries within short video snippets.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "* indicates equal contribution # Sentences / Second (on a single P100) R@5, tIoU=0.5 (%) 0 10 40 50 20 30 0.0 2.5 5.0 7.5 10.0 12.5 15.0 2D-TAN VLG-Net CONE SnAG SOONet 1.5× faster +5% accurate Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "* indicates equal contribution # Sentences / Second (on a single P100) R@5, tIoU=0.5 (%) 0 10 40 50 20 30 0.0 2.5 5.0 7.5 10.0 12.5 15.0 2D-TAN VLG-Net CONE SnAG SOONet 1.5× faster +5% accurate Figure 1.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In this paper, we take a principled approach to studying the problem of scalable video grounding, focusing on the design of cross-modal fusion—a key model component that combines visual and textual information.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "In this paper, we take a principled approach to studying the problem of scalable video grounding, focusing on the design of cross-modal fusion—a key model component that combines visual and textual information.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries?",
+      "failure_mode": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "root_cause": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+      "why_existing_methods_fail": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "affected_scenario": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries)?",
+      "failure_mode": "one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+      "root_cause": "Video grounding is gaining traction amid the rapid advances in vision-language learning, with a range of applications such as intelligent personal assistants, human-robot interaction, and interactive video editing.",
+      "why_existing_methods_fail": "Despite recent progress, one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+      "affected_scenario": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "Despite recent progress, one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos?",
+      "failure_mode": "the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+      "root_cause": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+      "why_existing_methods_fail": "the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+      "affected_scenario": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that on latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation?",
+      "failure_mode": "On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+      "root_cause": "their high computational cost, and suffer major performance degradation.",
+      "why_existing_methods_fail": "On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+      "affected_scenario": "Previous methods (e.g., ) are primarily designed for grounding only a few queries within short video snippets.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "On latest long-form video grounding benchmarks [16, 45], these methods struggle to scale up due to their high computational cost, and suffer major performance degradation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "analysis",
+      "method_core_mechanism": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+      "method_components": [
+        "we present an analysis that connects the computational cost of video grounding models to their fusion schemes."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0077"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "SnAG, a scalable and accurate model for long-form video grounding",
+      "method_core_mechanism": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+      "method_components": [
+        "SnAG, a scalable and accurate model for long-form video grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0065"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding",
+      "method_core_mechanism": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+      "method_components": [
+        "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0077"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "analysis targets Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0077",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "SnAG, a scalable and accurate model for long-form video grounding targets Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "analysis targets one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0077",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "SnAG, a scalable and accurate model for long-form video grounding targets one largely overlooked aspect of video grounding is the scalability of models with respect to video duration and the number of text descriptions (i.e., queries). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "analysis targets the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0077",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "SnAG, a scalable and accurate model for long-form video grounding targets the growing availability of long videos (e.g., on streaming platforms) and demand to query their rich contents introduce a paradigm shift, necessitating efficient grounding of large volumes of queries in long videos. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "analysis targets On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0077",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "SnAG, a scalable and accurate model for long-form video grounding targets On latest long-form video grounding benchmarks , these methods struggle to scale up due to their high computational cost, and suffer major performance degradation. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0065",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "analysis",
+      "compared_to": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "why_it_matters": "It directly targets Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "SnAG, a scalable and accurate model for long-form video grounding",
+      "compared_to": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "why_it_matters": "It directly targets Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding",
+      "compared_to": "Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.",
+      "why_it_matters": "It directly targets Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "analysis",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Specifically, we present an analysis that connects the computational cost of video grounding models to their fusion schemes.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "SnAG, a scalable and accurate model for long-form video grounding",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Following these findings, we present SnAG, a scalable and accurate model for long-form video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "(1) We present one of the first studies to understand the effect of fusion schemes on the computational cost of video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for analysis",
+      "baseline": "SnAG: Scalable and Accurate Video Grounding",
+      "dataset": "Charades-STA, MAD",
+      "module_to_modify": "analysis",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Our analysis and empirical results challenge the widely adopted early fusion, showing that late fusion scales better in inference by amortizing the cost of long video processing among text queries.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "R@1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_mu_snag-scalable-and-accurate-video-grounding_18d1cc9bb6\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_mu_snag-scalable-and-accurate-video-grounding_18d1cc9bb6\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

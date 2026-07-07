@@ -1,0 +1,755 @@
+{
+  "paper_id": "2026_fan_groundvts-visual-token-sampling-in-multimodal-large-language-models-for-video-te_d73292f47f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fan_groundvts-visual-token-sampling-in-multimodal-large-language-models-for-video-te_d73292f47f",
+  "title": "GroundVTS: Visual Token Sampling in Multimodal Large Language Models for Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Rong Fan",
+    "Kaiyan Xiao",
+    "Minghao Zhu",
+    "Liuyi Wang",
+    "Kai Dai",
+    "Zhao Yang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Classification",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Classification",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "# Introduction Understanding complex video content is fundamental to a wide range of applications, including video classification [4, 9, 11, 62], video captioning [5, 23, 63], video question-answering (VQA) [52, 56, 57], and video temporal grounding (VTG) [7, 18, 19].",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Understanding complex video content is fundamental to a wide range of applications, including video classification , video captioning , video question-answering (VQA) , and video temporal grounding (VTG) .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Understanding complex video content is fundamental to a wide range of applications, including video classification [4, 9, 11, 62], video captioning [5, 23, 63], video question-answering (VQA) [52, 56, 57], and video temporal grounding (VTG) [7, 18, 19].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Among these applications, VTG is a representative task for fine-grained temporal understanding: it aims to precisely identify the video segment corresponding to a given natural-language query .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Among these applications, VTG is a representative task for fine-grained temporal understanding: it aims to precisely identify the video segment corresponding to a given natural-language query [7].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike the coarse selection used in prior work, VTS selectively retains visual tokens based on token-level similarity to the textual query, yielding a non-uniform token distribution across both temporal and spatial dimensions.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Unlike the coarse selection used in prior work, VTS selectively retains visual tokens based on token-level similarity to the textual query, yielding a non-uniform token distribution across both temporal and spatial dimensions.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "current Vid-LLMs still struggle with granular temporal understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "However, current Vid-LLMs still struggle with granular temporal understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "I cannot ground the exact timestamps.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "I cannot ground the exact timestamps.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a...",
+        "scenario": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Recently, several studies introduce query-guided frame sampling at the video input stage...",
+        "scenario": "Recently, several studies introduce query-guided frame sampling at the video input stage by attaching an external multimodal encoder (e.g., CLIP or a captioning model) to compute cross-modal similarity for frame selection (Figure 1(b)).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Recently, several studies [25, 46, 49] introduce query-guided frame sampling at the video input stage by attaching an external multimodal encoder (e.g., CLIP [38] or a captioning model) to compute cross-modal similarity for frame selection (Figure 1(b)).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Figure 1(c), GroundVTS introduces a Visual Token Sampling (VTS) module...",
+        "scenario": "As illustrated in Figure 1(c), GroundVTS introduces a Visual Token Sampling (VTS) module that operates after the visual encoder and multimodal projection layers.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1(c), GroundVTS introduces a Visual Token Sampling (VTS) module that operates after the visual encoder and multimodal projection layers.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Prior efforts to enhance Vid-LLMs for temporal grounding have introduced query-conditioned attention , temporal boundary regressors , and temporal modeling modules .",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Prior efforts to enhance Vid-LLMs for temporal grounding have introduced query-conditioned attention [58], temporal boundary regressors [30], and temporal modeling modules [3].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As illustrated in Figure 1(c), GroundVTS introduces a Visual Token Sampling (VTS) module that operates after the visual encoder and multimodal projection layers.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1(c), GroundVTS introduces a Visual Token Sampling (VTS) module that operates after the visual encoder and multimodal projection layers.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current Vid-LLMs still struggle with granular temporal understanding?",
+      "failure_mode": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "root_cause": "Building on this trend, many studies have developed video LLMs (Vid-LLMs) , achieving notable progress in general video reasoning.",
+      "why_existing_methods_fail": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "affected_scenario": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "However, current Vid-LLMs still struggle with granular temporal understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG?",
+      "failure_mode": "they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+      "root_cause": "Recently, several studies introduce query-guided frame sampling at the video input stage by attaching an external multimodal encoder (e.g., CLIP or a captioning model) to compute cross-modal similarity for frame selection (Figure 1(b)).",
+      "why_existing_methods_fail": "they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+      "affected_scenario": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity?",
+      "failure_mode": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+      "root_cause": "they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG.",
+      "why_existing_methods_fail": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+      "affected_scenario": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "I cannot ground the exact timestamps.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that i cannot ground the exact timestamps?",
+      "failure_mode": "I cannot ground the exact timestamps.",
+      "root_cause": "GT Frame sampling Missing key frame When does this person pour the milk?",
+      "why_existing_methods_fail": "I cannot ground the exact timestamps.",
+      "affected_scenario": "As shown in Figure 1(a), most existing approaches adopt uniform frame sampling, a dominant strategy in video understanding tasks.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "I cannot ground the exact timestamps.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "GroundVTS, a Vid-LLM architecture",
+      "method_core_mechanism": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "GroundVTS, a Vid-LLM framework with a query-guided VTS strategy",
+      "method_core_mechanism": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+      "method_components": [
+        "LLM",
+        "VTS",
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "progressive optimization strategy",
+      "method_core_mechanism": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+      "method_components": [
+        "VTS",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "GroundVTS, a Vid-LLM architecture targets current Vid-LLMs still struggle with granular temporal understanding. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "GroundVTS, a Vid-LLM framework with a query-guided VTS strategy targets current Vid-LLMs still struggle with granular temporal understanding. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "GroundVTS, a Vid-LLM architecture targets they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "progressive optimization strategy targets they perform coarse-grained filtering and depend on auxiliary encoders, limiting localization precision and adaptability for VTG. by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "GroundVTS, a Vid-LLM architecture targets To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity. by operating on long_sparse, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "progressive optimization strategy targets To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity. by operating on long_sparse, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "GroundVTS, a Vid-LLM architecture targets I cannot ground the exact timestamps. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "GroundVTS, a Vid-LLM framework with a query-guided VTS strategy targets I cannot ground the exact timestamps. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0034",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Query-Conditioned Frame/Clip Selection",
+      "what_is_new": "GroundVTS, a Vid-LLM architecture",
+      "compared_to": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "why_it_matters": "It directly targets current Vid-LLMs still struggle with granular temporal understanding.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "GroundVTS, a Vid-LLM framework with a query-guided VTS strategy",
+      "compared_to": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "why_it_matters": "It directly targets current Vid-LLMs still struggle with granular temporal understanding.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "progressive optimization strategy",
+      "compared_to": "current Vid-LLMs still struggle with granular temporal understanding.",
+      "why_it_matters": "It directly targets current Vid-LLMs still struggle with granular temporal understanding.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "GroundVTS, a Vid-LLM architecture",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose GroundVTS, a Vid-LLM architecture that performs query-guided visual token sampling at a finer granularity.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "GroundVTS, a Vid-LLM framework with a query-guided VTS strategy",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Our main contributions are summarized as follows: • We propose GroundVTS, a Vid-LLM framework with a query-guided VTS strategy that adaptively preserves critical spatio-temporal cues to sharpen temporal localization for VTG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "progressive optimization strategy",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "• We introduce a progressive optimization strategy that integrates the VTS module into existing Vid-LLM architectures, enabling effective adaptation to non-uniform visual token distributions while ensuring stable training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for GroundVTS, a Vid-LLM architecture",
+      "baseline": "GroundVTS: Visual Token Sampling in Multimodal Large Language Models for Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "GroundVTS, a Vid-LLM architecture",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting current Vid-LLMs still struggle with granular temporal understanding.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mAP",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fan_groundvts-visual-token-sampling-in-multimodal-large-language-models-for-video-te_d73292f47f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_fan_groundvts-visual-token-sampling-in-multimodal-large-language-models-for-video-te_d73292f47f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

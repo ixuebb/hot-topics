@@ -1,0 +1,426 @@
+{
+  "paper_id": "2022_togashi_axiou-an-axiomatically-justified-measure-for-video-moment-retrieval_eff0123198",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_togashi_axiou-an-axiomatically-justified-measure-for-video-moment-retrieval_eff0123198",
+  "title": "AxIoU: An Axiomatically Justified Measure for Video Moment Retrieval",
+  "year": 2022,
+  "venue_or_source": "CVPR 2022",
+  "authors": [
+    "Riku Togashi",
+    "Mayu Otani",
+    "Yuta Nakashima",
+    "Esa Rahtu",
+    "Janne Heikkilä",
+    "Tetsuya Sakai"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Video Moment Retrieval (VMR) is one such application, and the current practice is to use R@K,\\theta for evaluating VMR systems.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) has been explored to find relevant fragments of videos (i.e.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) has been explored to find relevant fragments of videos (i.e.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "video moments) based on a user’s textual query .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "video moments) based on a user’s textual query [10, 15].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Most existing VMR systems cast the problem of finding video moments into a ranking problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Most existing VMR systems [10, 22, 38, 39, 42] cast the problem of finding video moments into a ranking problem.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "For evaluating ranked lists of video moments, R@K, θ is widely adopted in the literature .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For evaluating ranked lists of video moments, R@K, θ is widely adopted in the literature [10].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity [2, 15, 26, 35].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "R@K, θ has two disadvantages as illustrated in Figure 1.",
+        "scenario": "R@K, θ has two disadvantages as illustrated in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "R@K, θ has two disadvantages as illustrated in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "\u001b\u001a\u0019\u0018\u0017\u0016 \u0015\u0017\u0014\u0013\u0012\u0017\u0014 \u0011\u0010 \u0015\u000f\u000e \u0012 \u0017 \u0012\u000e\u0014 \b\u0007\u0017 \u0017\u001b\u001a\u0019\u0018 \b\u0007\u0017 \u0017\u001b\u001a\u0006\u0019 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0017\u0011\u0012\u0015\u0002 \u000e\u0017\u0002\u0014\u000f\u000e...",
+        "scenario": "\u001b\u001a\u0019\u0018\u0017\u0016 \u0015\u0017\u0014\u0013\u0012\u0017\u0014 \u0011\u0010 \u0015\u000f\u000e \u0012 \u0017 \u0012\u000e\u0014 \b\u0007\u0017 \u0017\u001b\u001a\u0019\u0018 \b\u0007\u0017 \u0017\u001b\u001a\u0006\u0019 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0017\u0011\u0012\u0015\u0002 \u000e\u0017\u0002\u0014\u000f\u000e \u0002\u0017\u0001\u0011 \u0014 \u0012 \u0014 \u0012 \u001b\u001a\u0018\u0018\u0017\u0016 \u0015\u0017\u0014\u0013\u0012\u0017\u0014\u0013\u0010 \u0015\u000f\u000e \u0012 \u0017 \u0012\u000e\u0014 \u0002\u0014\u0012 \u0017 \u0002\u0014\u0012 \u0017 \u0014 \u0011\u0010\u0003  \u0006  \u0007 \u0015 \u0001\u000e \u0017\u0014\u0015\u0001\u0014\u0013\u0017 \u0012\u000e\u0014 Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "\u001b\u001a\u0019\u0018\u0017\u0016 \u0015\u0017\u0014\u0013\u0012\u0017\u0014 \u0011\u0010 \u0015\u000f\u000e \u0012 \u0017 \u0012\u000e\u0014 \b\u0007\u0017 \u0017\u001b\u001a\u0019\u0018 \b\u0007\u0017 \u0017\u001b\u001a\u0006\u0019 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0005\b\u0007\u0004\u0017\u001b\u001a\u0007\u0017 \u0017\u0003 \u0017\u0011\u0012\u0015\u0002 \u000e\u0017\u0002\u0014\u000f\u000e \u0002\u0017\u0001\u0011 \u0014 \u0012 \u0014 \u0012 \u001b\u001a\u0018\u0018\u0017\u0016 \u0015\u0017\u0014\u0013\u0012\u0017\u0014\u0013\u0010 \u0015\u000f\u000e \u0012 \u0017 \u0012\u000e\u0014 \u0002\u0014\u0012 \u0017 \u0002\u0014\u0012 \u0017 \u0014 \u0011\u0010\u0003  \u0006  \u0007 \u0015 \u0001\u000e \u0017\u0014\u0015\u0001\u0014\u0013\u0017 \u0012\u000e\u0014 Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a...",
+        "scenario": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a parameter setting and can conflict with each other; for example, a ranked list whose second moment achieves IoU = 0.71 is measured to be 1.0 in terms of 21076 R@2, 0.7 but to be 0.0 in terms of R@1, 0.7 when the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a parameter setting and can conflict with each other; for example, a ranked list whose second moment achieves IoU = 0.71 is measured to be 1.0 in terms of 21076 R@2, 0.7 but to be 0.0 in terms of R@1, 0.7 when the first moment has IoU = 0.69.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a parameter setting and can conflict with each other; for example, a ranked list whose second moment achieves IoU = 0.71 is measured to be 1.0 in terms of 21076 R@2, 0.7 but to...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a parameter setting and can conflict with each other; for example, a ranked list whose second moment achieves IoU = 0.71 is measured to be 1.0 in terms of 21076 R@2, 0.7 but to be 0.0 in terms of R@1, 0.7 when the first moment has IoU = 0.69.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that r@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity ?",
+      "failure_mode": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "root_cause": "the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "why_existing_methods_fail": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "affected_scenario": "Moreover, R@K, θ evaluates rather different aspects of system quality depending on a parameter setting and can conflict with each other; for example, a ranked list whose second moment achieves IoU = 0.71 is measured to be 1.0 in terms of 21076 R@2, 0.7 but to be 0.0 in terms of R@1, 0.7 when the...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity [2, 15, 26, 35].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0067"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "x- IoU whose measurements reflect the localisation quality (i",
+      "method_core_mechanism": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+      "method_components": [
+        "Ax- IoU"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0126"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU)",
+      "method_core_mechanism": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+      "method_components": [
+        "Average Max IoU",
+        "Ax- IoU",
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU) targets R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0067",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "x- IoU whose measurements reflect the localisation quality (i targets R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0067",
+      "micro_method_cluster_id": "MM0126",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "x- IoU whose measurements reflect the localisation quality (i",
+      "compared_to": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "why_it_matters": "It directly targets R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU)",
+      "compared_to": "R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .",
+      "why_it_matters": "It directly targets R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "x- IoU whose measurements reflect the localisation quality (i",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We propose Ax- IoU whose measurements reflect the localisation quality (i.e.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In this paper, we propose an alternative measure for evaluating VMR systems, called Average Max IoU (Ax- IoU), which does not suffer from the problems above with R@K, θ.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for x- IoU whose measurements reflect the localisation quality (i",
+      "baseline": "AxIoU: An Axiomatically Justified Measure for Video Moment Retrieval",
+      "dataset": "Charades-STA",
+      "module_to_modify": "x- IoU whose measurements reflect the localisation quality (i",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting R@K, θ cannot distinguish ranked lists with different quality due to the binary property, while leading to instability under a small number of evaluation samples and label ambiguity .."
+    }
+  ],
+  "datasets": [
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R@1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_togashi_axiou-an-axiomatically-justified-measure-for-video-moment-retrieval_eff0123198\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_togashi_axiou-an-axiomatically-justified-measure-for-video-moment-retrieval_eff0123198\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

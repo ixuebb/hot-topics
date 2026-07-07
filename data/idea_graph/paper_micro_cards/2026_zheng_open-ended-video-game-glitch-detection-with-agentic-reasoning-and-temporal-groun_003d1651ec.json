@@ -1,0 +1,683 @@
+{
+  "paper_id": "2026_zheng_open-ended-video-game-glitch-detection-with-agentic-reasoning-and-temporal-groun_003d1651ec",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_open-ended-video-game-glitch-detection-with-agentic-reasoning-and-temporal-groun_003d1651ec",
+  "title": "Open-Ended Video Game Glitch Detection with Agentic Reasoning and Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Muyang Zheng",
+    "Tong Zhou",
+    "Geyang Wu",
+    "Zihao Lin",
+    "Haibo Wang",
+    "Lifu Huang"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Game glitches are unintended failures in gameplay, such as broken physics, rendering artifacts, animation errors, collision failures, or logic inconsistencies .",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Game glitches are unintended failures in gameplay, such as broken physics, rendering artifacts, animation errors, collision failures, or logic inconsistencies [18, 38].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Detecting such glitches from gameplay videos is an important capability for game quality assurance (QA) , where testers typically examine gameplay sessions to inspect suspicious behaviors and summarize the issue with detailed bug reports.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Detecting such glitches from gameplay videos is an important capability for game quality assurance (QA) [33], where testers typically examine gameplay sessions to inspect suspicious behaviors and summarize the issue with detailed bug reports.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Even strong proprietary models such as gemini-2.0-flash [11] and claude-3.5-haiku [1] achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six open-source backbones is only 14.47%, highlighting the difficulty of jointly producing accurate open-ended glitch descriptions and precise temporal localization.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In contrast, GliDe consistently improves both semantic understanding and grounding across all evaluated backbones: averaged over six open-source models, it raises F1 from 14.47% to 36.05% and mIoU from 0.28 to 0.51, and all GliDe-enhanced models outperform...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In contrast, GliDe consistently improves both semantic understanding and grounding across all evaluated backbones: averaged over six open-source models, it raises F1 from 14.47% to 36.05% and mIoU from 0.28 to 0.51, and all GliDe-enhanced models outperform the reported proprietary baselines on the overall metrics.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Distinct from previous benchmarks for video understanding or video anomaly detection , which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and...",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Distinct from previous benchmarks for video understanding or video anomaly detection [22, 24, 29, 30, 39], which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Even strong proprietary models such as gemini-2.0-flash [11] and claude-3.5-haiku [1] achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six open-source backbones is only 14.47%, highlighting the difficulty of jointly producing accurate open-ended glitch descriptions and precise temporal localization.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Recent works have begun to explore game glitch understanding through tasks such as...",
+        "scenario": "Recent works have begun to explore game glitch understanding through tasks such as image-level glitch detection , text-only bug reasoning , and closed-form (e.g., multiple-choice or yes/no) question answering over gameplay videos .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recent works have begun to explore game glitch understanding through tasks such as image-level glitch detection [31, 32], text-only bug reasoning [35], and closed-form (e.g., multiple-choice or yes/no) question answering over gameplay videos [6, 7].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, an object such as “a boat flying through the sky” may indicate a physics...",
+        "scenario": "For example, an object such as “a boat flying through the sky” may indicate a physics failure in one game, but could be a perfectly valid event in another game with stylized or fantastical mechanics.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "For example, an object such as “a boat flying through the sky” may indicate a physics failure in one game, but could be a perfectly valid event in another game with stylized or fantastical mechanics.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Figure 1 shows typical examples in VideoGlitchBench, including single glitch, repeated...",
+        "scenario": "Figure 1 shows typical examples in VideoGlitchBench, including single glitch, repeated occurrences of the same glitch, and multiple glitches within one video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Figure 1 shows typical examples in VideoGlitchBench, including single glitch, repeated occurrences of the same glitch, and multiple glitches within one video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "First, a model must distinguish genuine glitches from behaviors that may appear abnormal visually but are actually consistent with the game’s design, mechanics, and world logic.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "First, a model must distinguish genuine glitches from behaviors that may appear abnormal visually but are actually consistent with the game’s design, mechanics, and world logic.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In contrast, GliDe consistently improves both semantic understanding and grounding across all evaluated backbones: averaged over six open-source models, it raises F1 from 14.47% to 36.05% and mIoU from 0.28 to 0.51, and all GliDe-enhanced models outperform...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In contrast, GliDe consistently improves both semantic understanding and grounding across all evaluated backbones: averaged over six open-source models, it raises F1 from 14.47% to 36.05% and mIoU from 0.28 to 0.51, and all GliDe-enhanced models outperform the reported proprietary baselines on the overall metrics.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: (1) We introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization, featuring Open-Ended Video Game Glitch Detection with Agentic Reasoning and...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: (1) We introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization, featuring Open-Ended Video Game Glitch Detection with Agentic Reasoning and Temporal Grounding Preprint, 2026, Under review Table 1: Comparison between VideoGlitchBench and existing game glitch datasets.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our main contributions are summarized as follows: (1) We introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization, featuring Open-Ended Video Game Glitch Detection with Agentic Reasoning and...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Our main contributions are summarized as follows: (1) We introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization, featuring Open-Ended Video Game Glitch Detection with Agentic Reasoning and Temporal Grounding Preprint, 2026, Under review Table 1: Comparison between VideoGlitchBench and existing game glitch datasets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP009",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges?",
+      "failure_mode": "ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "root_cause": "surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "why_existing_methods_fail": "Distinct from previous benchmarks for video understanding or video anomaly detection , which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "affected_scenario": "For example, an object such as “a boat flying through the sky” may indicate a physics failure in one game, but could be a perfectly valid event in another game with stylized or fantastical mechanics.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Distinct from previous benchmarks for video understanding or video anomaly detection [22, 24, 29, 30, 39], which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the?",
+      "failure_mode": "Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the...",
+      "root_cause": "gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six open-source backbones is only 14.47%,...",
+      "why_existing_methods_fail": "Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six open-source backbones is only 14.47%, highlighting the...",
+      "affected_scenario": "Recent works have begun to explore game glitch understanding through tasks such as image-level glitch detection , text-only bug reasoning , and closed-form (e.g., multiple-choice or yes/no) question answering over gameplay videos .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Even strong proprietary models such as gemini-2.0-flash [11] and claude-3.5-haiku [1] achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the average F1 across six open-source backbones is only 14.47%, highlighting the difficulty of jointly producing accurate open-ended glitch descriptions and precise temporal localization.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection?",
+      "failure_mode": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+      "root_cause": "a unified solution for context-aware, temporally grounded glitch detection.",
+      "why_existing_methods_fail": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+      "affected_scenario": "Recent works have begun to explore game glitch understanding through tasks such as image-level glitch detection , text-only bug reasoning , and closed-form (e.g., multiple-choice or yes/no) question answering over gameplay videos .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "open-ended video game glitch detection, a task in",
+      "method_core_mechanism": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+      "method_components": [
+        "open-ended video game glitch detection, a task in"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0180"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization",
+      "method_core_mechanism": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+      "method_components": [
+        "VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0180"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization",
+      "method_core_mechanism": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+      "method_components": [
+        "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0180"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization targets ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "open-ended video game glitch detection, a task in targets ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization targets Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "open-ended video game glitch detection, a task in targets Even strong proprietary models such as gemini-2.0-flash and claude-3.5-haiku achieve limited performance, with the best baseline reaching only 26.01% F1 and 0.47 mIoU, while the best vanilla open-source model achieves 21.62% F1 and the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization targets These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "open-ended video game glitch detection, a task in targets These results demonstrate both the difficulty of VideoGlitchBench and the effectiveness of GliDe as a unified solution for context-aware, temporally grounded glitch detection. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0064",
+      "micro_method_cluster_id": "MM0180",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "open-ended video game glitch detection, a task in",
+      "compared_to": "Distinct from previous benchmarks for video understanding or video anomaly detection , which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "why_it_matters": "It directly targets ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization",
+      "compared_to": "Distinct from previous benchmarks for video understanding or video anomaly detection , which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "why_it_matters": "It directly targets ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization",
+      "compared_to": "Distinct from previous benchmarks for video understanding or video anomaly detection , which mainly focus on identifying specific events in real-world scenes such as surveillance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.",
+      "why_it_matters": "It directly targets ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "open-ended video game glitch detection, a task in",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "To close this gap, we propose open-ended video game glitch detection, a task in which a model must reason over raw gameplay videos, identify glitches in an open-ended manner, describe them in natural language, and temporally localize their occurrence as evidence for follow-up analysis.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "To support research on this problem, we introduce VideoGlitchBench, the first benchmark for open-ended video game glitch detection with temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose GliDe, an agentic framework for open-ended video Game gLItch DEtection with temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for open-ended video game glitch detection, a task in",
+      "baseline": "Open-Ended Video Game Glitch Detection with Agentic Reasoning and Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "open-ended video game glitch detection, a task in",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting ance, traffic, or industrial monitoring, VideoGlitchBench reveals two unique and critical challenges.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_open-ended-video-game-glitch-detection-with-agentic-reasoning-and-temporal-groun_003d1651ec\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_open-ended-video-game-glitch-detection-with-agentic-reasoning-and-temporal-groun_003d1651ec\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

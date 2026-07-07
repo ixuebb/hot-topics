@@ -1,0 +1,561 @@
+{
+  "paper_id": "2026_ahn_evident-routing-mllm-adaptation-through-entity-grounded-visual-evidence-for-cros_682ece098b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ahn_evident-routing-mllm-adaptation-through-entity-grounded-visual-evidence-for-cros_682ece098b",
+  "title": "EVIDENT: Routing MLLM Adaptation through Entity-Grounded Visual Evidence for Cross-Domain Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Geo Ahn",
+    "Jiwook Han",
+    "Youngrae Kim",
+    "Joonseok Lee",
+    "Jinwoo Choi"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Fine-tuning MLLMs for Video Temporal Grounding (VTG) often improves in-domain performance but degrades sharply under domain shift.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Temporal Grounding (VTG) requires localizing the temporal extent of an event described by a natural language query in an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Video Temporal Grounding (VTG) requires localizing the temporal extent of an event described by a natural language query in an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "While the task has been studied extensively with specialist temporal localization models such as DETR-based architectures , Multimodal Large Language Models (MLLMs) have recently emerged as a compelling alternative .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "While the task has been studied extensively with specialist temporal localization models such as DETR-based architectures [22, 35, 29, 42], Multimodal Large Language Models (MLLMs) have recently emerged as a compelling alternative [15, 40, 11, 44, 33, 51].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike prior works that re-run instruction tuning to reshape MLLM representations into an entity-level form, our adapter design enables VTG learning grounded in entity-based visual representations at minimal cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Unlike prior works [46, 7, 24] that re-run instruction tuning to reshape MLLM representations into an entity-level form, our adapter design enables VTG learning grounded in entity-based visual representations at minimal cost.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "VTG exposes a critical adaptation paradox.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, VTG exposes a critical adaptation paradox.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias .",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias [6, 38, 12], query text bias [6, 25, 17], and appearance bias [4, 39].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization...",
+        "scenario": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Before VTG-specific fine-tuning, pretrained MLLMs exhibit coarse but domain-agnostic entity-attention capability: given a query, they can often attend to semantically relevant visual content across different visual distributions (Figure 2 (a)).",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Before VTG-specific fine-tuning, pretrained MLLMs exhibit coarse but domain-agnostic entity-attention capability: given a query, they can often attend to semantically relevant visual content across different visual distributions (Figure 2 (a)).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "VTG exposes a critical adaptation paradox.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that vTG exposes a critical adaptation paradox?",
+      "failure_mode": "VTG exposes a critical adaptation paradox.",
+      "root_cause": "Through large-scale image-text and video-text pre-training, they acquire broad visual-language alignment that can associate language queries with relevant visual entities across diverse video domains.",
+      "why_existing_methods_fail": "VTG exposes a critical adaptation paradox.",
+      "affected_scenario": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, VTG exposes a critical adaptation paradox.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias ?",
+      "failure_mode": "the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias .",
+      "root_cause": ", query text bias , and appearance bias .",
+      "why_existing_methods_fail": "the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias .",
+      "affected_scenario": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias [6, 38, 12], query text bias [6, 25, 17], and appearance bias [4, 39].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "tterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention?",
+      "failure_mode": "tterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+      "root_cause": "the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias .",
+      "why_existing_methods_fail": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+      "affected_scenario": "As a result, fine-tuning improves In-Domain (ID) localization but harms generalization under Out-of-Domain (OOD) scenarios where shortcuts no longer hold (Figure 1, Figure 2 (b)).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "These shortcuts cause fine-tuning to rely on source-specific patterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG",
+      "method_core_mechanism": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+      "method_components": [
+        "EVIDdence-grounded ENTity-attentive",
+        "EVIDENT",
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "Entity Bottleneck Adapter (EB Adapter)",
+      "method_core_mechanism": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+      "method_components": [
+        "Entity Bottleneck Adapter",
+        "EB Adapter",
+        "EB",
+        "MLLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0139"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG targets VTG exposes a critical adaptation paradox. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Entity Bottleneck Adapter (EB Adapter) targets VTG exposes a critical adaptation paradox. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0139",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG targets the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Entity Bottleneck Adapter (EB Adapter) targets the extremely high cost of VTG annotations limits the scale and diversity of supervision, leaving source-domain fine-tuning vulnerable to shortcut learning—including temporal location bias , query text bias , and appearance bias . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0139",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Entity Bottleneck Adapter (EB Adapter) targets tterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0139",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG targets tterns rather than the underlying entity-attention, so the learned localization knowledge fails to inherit the MLLM’s domain-agnostic entity-attention. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0123",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG",
+      "compared_to": "VTG exposes a critical adaptation paradox.",
+      "why_it_matters": "It directly targets VTG exposes a critical adaptation paradox.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "Entity Bottleneck Adapter (EB Adapter)",
+      "compared_to": "VTG exposes a critical adaptation paradox.",
+      "why_it_matters": "It directly targets VTG exposes a critical adaptation paradox.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+      "can_transfer_to": [
+        "domain_shift"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To this end, we propose EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Entity Bottleneck Adapter (EB Adapter)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "First, we propose an Entity Bottleneck Adapter (EB Adapter), which routes intermediate MLLM dense visual tokens through a compact set of entity slots to obtain domain-invariant representations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG",
+      "baseline": "EVIDENT: Routing MLLM Adaptation through Entity-Grounded Visual Evidence for Cross-Domain Video Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "EVIDENT, a parameter-efficient framework for EVIDdence-grounded ENTity-attentive adaptation for cross-domain VTG",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting VTG exposes a critical adaptation paradox.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ahn_evident-routing-mllm-adaptation-through-entity-grounded-visual-evidence-for-cros_682ece098b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_ahn_evident-routing-mllm-adaptation-through-entity-grounded-visual-evidence-for-cros_682ece098b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

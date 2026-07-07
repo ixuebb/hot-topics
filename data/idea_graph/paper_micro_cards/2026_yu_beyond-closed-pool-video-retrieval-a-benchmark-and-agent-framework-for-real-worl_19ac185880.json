@@ -1,0 +1,843 @@
+{
+  "paper_id": "2026_yu_beyond-closed-pool-video-retrieval-a-benchmark-and-agent-framework-for-real-worl_19ac185880",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_beyond-closed-pool-video-retrieval-a-benchmark-and-agent-framework-for-real-worl_19ac185880",
+  "title": "Beyond Closed-Pool Video Retrieval: A Benchmark and Agent Framework for Real-World Video Search and Moment Localization",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Tao Yu",
+    "Yujia Yang",
+    "Haopeng Jin",
+    "Junhao Gong",
+    "Xinlong Chen",
+    "Yuxuan Zhou",
+    "Shanbin Zhang",
+    "Jiabing Yang",
+    "Xinming Wang",
+    "He Yi",
+    "Ping Nie",
+    "Kai Zou",
+    "Zhang Zhang",
+    "Yan Huang",
+    "Liang Wang",
+    "Yeshani",
+    "Ruiwen Tao",
+    "Jin Ma",
+    "Haijin Liang",
+    "Jinwen Luo"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Experiments reveal that existing MLLMs still demonstrate insufficient capabilities in real-world Video Retrieval and Moment Localization based on fuzzy memories.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the rapid advancement of Multimodal Large Language Models (MLLMs) , video retrieval has witnessed significant breakthroughs.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction With the rapid advancement of Multimodal Large Language Models (MLLMs) [1, 2, 3], video retrieval has witnessed significant breakthroughs.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "current academic paradigms diverge sharply from real-world usage.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, current academic paradigms diverge sharply from real-world usage.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool [4, 5], real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "current academic paradigms diverge sharply from real-world usage.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, current academic paradigms diverge sharply from real-world usage.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While traditional methods typically focus on single-dimension similarity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional,...",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "While traditional methods typically focus on single-dimension similarity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment, Temporal Context, and Auditory Memory).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "First, regarding scope, they mainly focus on short clips within closed pools, failing to test retrieval in the vast, noisy open web .",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "First, regarding scope, they mainly focus on short clips within closed pools, failing to test retrieval in the vast, noisy open web [6, 7, 8].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "While research typically simplifies the task to aligning precise, single-dimensional...",
+        "scenario": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool [4, 5], real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "1 RVMS-Bench & RACLO Figure 1.",
+        "scenario": "1 RVMS-Bench & RACLO Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "1 RVMS-Bench & RACLO Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool [4, 5], real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In real-world settings, users confront a massive, uncurated repository rather than a pre-prepared candidate set.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "In real-world settings, users confront a massive, uncurated repository rather than a pre-prepared candidate set.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "in the wild remains unknown, often overestimated due to saturated scores on simplified tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "in the wild remains unknown, often overestimated due to saturated scores on simplified tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "current academic paradigms diverge sharply from real-world usage.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current academic paradigms diverge sharply from real-world usage?",
+      "failure_mode": "current academic paradigms diverge sharply from real-world usage.",
+      "root_cause": "# Introduction With the rapid advancement of Multimodal Large Language Models (MLLMs) , video retrieval has witnessed significant breakthroughs.",
+      "why_existing_methods_fail": "current academic paradigms diverge sharply from real-world usage.",
+      "affected_scenario": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "However, current academic paradigms diverge sharply from real-world usage.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues?",
+      "failure_mode": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+      "root_cause": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in...",
+      "why_existing_methods_fail": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+      "affected_scenario": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "ity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment,...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment,?",
+      "failure_mode": "ity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment,...",
+      "root_cause": "Comparison between traditional video retrieval benchmarks (left) and our proposed RVMS-Bench (right).",
+      "why_existing_methods_fail": "While traditional methods typically focus on single-dimension similarity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment, Temporal...",
+      "affected_scenario": "1 RVMS-Bench & RACLO Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "While traditional methods typically focus on single-dimension similarity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment, Temporal Context, and Auditory Memory).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic?",
+      "failure_mode": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+      "root_cause": "in the wild remains unknown, often overestimated due to saturated scores on simplified tasks.",
+      "why_existing_methods_fail": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+      "affected_scenario": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that currently, the community lacks a benchmark that accurately reflects this high-entropy setting?",
+      "failure_mode": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+      "root_cause": "Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic.",
+      "why_existing_methods_fail": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+      "affected_scenario": "While research typically simplifies the task to aligning precise, single-dimensional descriptions against a closed candidate pool , real-world users search the open internet using fuzzy, multi-dimensional memories of past viewing experiences (as shown in Figure 1).",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Currently, the community lacks a benchmark that accurately reflects this high-entropy setting.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework",
+      "method_core_mechanism": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+      "method_components": [
+        "Real-World Video Memory Search Benchmark",
+        "RVMS"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0046"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "RACLO, a retrieval agent based on abductive reasoning",
+      "method_core_mechanism": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+      "method_components": [
+        "RACLO"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0135"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise",
+      "method_core_mechanism": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise.",
+      "method_components": [
+        "ID"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0149"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "RACLO, a retrieval agent based on abductive reasoning targets current academic paradigms diverge sharply from real-world usage. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0135",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework targets current academic paradigms diverge sharply from real-world usage. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework targets This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "RACLO, a retrieval agent based on abductive reasoning targets This simplification reduces the core challenge to local semantic matching, ignoring the complexity of retrieving full-length videos using fragmented cues. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0135",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework targets ity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment,... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "RACLO, a retrieval agent based on abductive reasoning targets ity matching within a closed candidate pool of short clips, RVMS addresses the real-world challenge of retrieving full-length videos from the open internet using multi-dimensional, fragmented memory cues (Global Impression, Key Moment,... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0135",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework targets Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "RACLO, a retrieval agent based on abductive reasoning targets Methods optimized for local visual features struggle to transfer to hybrid internet queries involving complex temporal logic. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0135",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework targets Currently, the community lacks a benchmark that accurately reflects this high-entropy setting. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "RACLO, a retrieval agent based on abductive reasoning targets Currently, the community lacks a benchmark that accurately reflects this high-entropy setting. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0126",
+      "micro_method_cluster_id": "MM0135",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM010"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework",
+      "compared_to": "current academic paradigms diverge sharply from real-world usage.",
+      "why_it_matters": "It directly targets current academic paradigms diverge sharply from real-world usage.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "RACLO, a retrieval agent based on abductive reasoning",
+      "compared_to": "current academic paradigms diverge sharply from real-world usage.",
+      "why_it_matters": "It directly targets current academic paradigms diverge sharply from real-world usage.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise",
+      "compared_to": "current academic paradigms diverge sharply from real-world usage.",
+      "why_it_matters": "It directly targets current academic paradigms diverge sharply from real-world usage.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To bridge the gap, we introduce RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "RACLO, a retrieval agent based on abductive reasoning",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Complementing the data, we propose RACLO, a retrieval agent based on abductive reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Furthermore, considering the traditional ID-based matching fails due to video re-uploads and edits on the internet, we introduce a decoupled evaluation protocol for retrieval and localization, offering a robust measure of model performance against real-world noise.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework",
+      "baseline": "Beyond Closed-Pool Video Retrieval: A Benchmark and Agent Framework for Real-World Video Search and Moment Localization",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "RVMS-Bench (Real-World Video Memory Search Benchmark), a comprehensive system integrating high-quality internet video data with an agentic framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting current academic paradigms diverge sharply from real-world usage.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "Recall"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_beyond-closed-pool-video-retrieval-a-benchmark-and-agent-framework-for-real-worl_19ac185880\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_yu_beyond-closed-pool-video-retrieval-a-benchmark-and-agent-framework-for-real-worl_19ac185880\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,795 @@
+{
+  "paper_id": "2021_xu_boundary-sensitive-pre-training-for-temporal-localization-in-videos_06ab687b5b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_xu_boundary-sensitive-pre-training-for-temporal-localization-in-videos_06ab687b5b",
+  "title": "Boundary-Sensitive Pre-Training for Temporal Localization in Videos",
+  "year": 2021,
+  "venue_or_source": "ICCV 2021",
+  "authors": [
+    "Mengmeng Xu",
+    "Juan-Manuel Pérez-Rúa",
+    "Victor Escorcia",
+    "Brais Martínez",
+    "Xiatian Zhu",
+    "Li Zhang",
+    "Bernard Ghanem",
+    "Tao Xiang"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Recently, the focus on video analysis has shifted beyond trimmed video action classification to video temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Recently, the focus on video analysis has shifted beyond trimmed video action classification to video temporal localization.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground contained e.g., a particular action of interest.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This requires a video model *Work done during an internship at Samsung AI Centre.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "This requires a video model *Work done during an internship at Samsung AI Centre.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Pre-training Dataset Task KINETICS BSP (ours) Image Classification Action Recognition ✓ ✓ ?",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Pre-training Dataset Task KINETICS BSP (ours) Image Classification Action Recognition ✓ ✓ ?",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Therefore the rest of the untrimmed video cannot be treated as background.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Therefore the rest of the untrimmed video cannot be treated as background.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "However, this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In particular, the first key challenge boils down to how to obtain large scale training video data with temporal boundary information in a scalable and cheap manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "In particular, the first key challenge boils down to how to obtain large scale training video data with temporal boundary information in a scalable and cheap manner.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This approach not only solves the key challenge of lacking large pre-training data, but also facilitates the design of model pre-training. (III) Extensive experiments show that temporal action localization, video grounding, and step localization tasks can...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "This approach not only solves the key challenge of lacking large pre-training data, but also facilitates the design of model pre-training. (III) Extensive experiments show that temporal action localization, video grounding, and step localization tasks can significantly benefit from the proposed model pre-training, yielding compelling or new stateof-the-art performance on a number of benchmark datasets.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This is because in many real-world applications, instead of short (e.g., few seconds...",
+        "scenario": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground contained e.g., a particular action of...",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground contained e.g., a particular action of interest.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Temporal Localization ✓ Figure 1.",
+        "scenario": "Temporal Localization ✓ Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Temporal Localization ✓ Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "The wellestablished pre-training-then-fine-tuning paradigm for image and video...",
+        "scenario": "The wellestablished pre-training-then-fine-tuning paradigm for image and video classification model optimization is effective thanks to the availability of large related datasets (e.g., ImageNet and Kinetics).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The wellestablished pre-training-then-fine-tuning paradigm for image and video classification model optimization is effective thanks to the availability of large related datasets (e.g., ImageNet and Kinetics).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "In particular, a two-staged model training strategy is commonly adopted : first, a video...",
+        "scenario": "In particular, a two-staged model training strategy is commonly adopted : first, a video encoder is pre-trained on a large action classification dataset (e.g., Kinetics 1, Sports-1M ), then, a temporal localization head is trained on the target small-scale temporal localiza- 1Kinetics was created...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "In particular, a two-staged model training strategy is commonly adopted [19, 56, 18, 4]: first, a video encoder is pre-trained on a large action classification dataset (e.g., Kinetics [6]1, Sports-1M [28]), then, a temporal localization head is trained on the target small-scale temporal localiza- 1Kinetics was created by trimming 10s clips around a frame manually labelled as containing the target action.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "We solve this problem by introducing a novel boundary-sensitive pretext (BSP) task. to conduct temporal localization tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "We solve this problem by introducing a novel boundary-sensitive pretext (BSP) task. to conduct temporal localization tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "7220 --- Page 2 --tion dataset leaving the video encoder fixed.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "7220 --- Page 2 --tion dataset leaving the video encoder fixed.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This is because temporal boundaries’ labeling is much more expensive and tedious than video-level class labeling due to the need for manually examining every single frame2.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "This is because temporal boundaries’ labeling is much more expensive and tedious than video-level class labeling due to the need for manually examining every single frame2.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video...",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video synthesis method that can generate a large number of videos with temporal boundary information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations?",
+      "failure_mode": "existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "root_cause": "the lack of temporal boundary annotations.",
+      "why_existing_methods_fail": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "affected_scenario": "Temporal Localization ✓ Figure 1.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Therefore the rest of the untrimmed video cannot be treated as background.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that therefore the rest of the untrimmed video cannot be treated as background?",
+      "failure_mode": "Therefore the rest of the untrimmed video cannot be treated as background.",
+      "root_cause": "background.",
+      "why_existing_methods_fail": "Therefore the rest of the untrimmed video cannot be treated as background.",
+      "affected_scenario": "In particular, a two-staged model training strategy is commonly adopted : first, a video encoder is pre-trained on a large action classification dataset (e.g., Kinetics 1, Sports-1M ), then, a temporal localization head is trained on the target small-scale temporal localiza- 1Kinetics was created...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Therefore the rest of the untrimmed video cannot be treated as background.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that is not possible due to the lack of large scale video datasets with temporal boundary annotation?",
+      "failure_mode": "this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+      "root_cause": "the lack of large scale video datasets with temporal boundary annotation.",
+      "why_existing_methods_fail": "this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+      "affected_scenario": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground contained e.g., a particular action of...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "However, this is not possible due to the lack of large scale video datasets with temporal boundary annotation.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action?",
+      "failure_mode": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action...",
+      "root_cause": "the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+      "why_existing_methods_fail": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+      "affected_scenario": "This is because in many real-world applications, instead of short (e.g., few seconds long) video clips, long, untrimmed videos are often presented (e.g., from social media websites as YouTube, Instagram) with both non-interesting background and foreground contained e.g., a particular action of...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets",
+      "method_core_mechanism": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+      "method_components": [
+        "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "boundary, classification",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0005"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e",
+      "method_core_mechanism": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+      "method_components": [
+        "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "boundary, classification",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0005"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "scalable video synthesis method",
+      "method_core_mechanism": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video synthesis method that can generate a large number of videos with temporal boundary information.",
+      "method_components": [
+        "II"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV038"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video synthesis method that can generate a large number of videos with temporal boundary information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0003"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets targets existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations. by operating on boundary, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e targets existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0002",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets targets Therefore the rest of the untrimmed video cannot be treated as background. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e targets Therefore the rest of the untrimmed video cannot be treated as background. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0003",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets targets this is not possible due to the lack of large scale video datasets with temporal boundary annotation. by operating on boundary, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e targets this is not possible due to the lack of large scale video datasets with temporal boundary annotation. by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets targets Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action... by operating on boundary, weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e targets Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action... by operating on boundary.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets",
+      "compared_to": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "why_it_matters": "It directly targets existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e",
+      "compared_to": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "why_it_matters": "It directly targets existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "scalable video synthesis method",
+      "compared_to": "For video temporal localization tasks however, existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.",
+      "why_it_matters": "It directly targets existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+      "can_transfer_to": [
+        "boundary",
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Due to the difficulties in collecting a largescale video dataset with temporal boundary annotations, we propose to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "To that end, we introduce a simple yet effective method for generating three types of temporal boundary at large scale using existing action classification video data (e.g.Kinetics).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "scalable video synthesis method",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video synthesis method that can generate a large number of videos with temporal boundary information.",
+      "can_transfer_to": [
+        "boundary"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV038",
+          "section": "Introduction",
+          "quote": "The following contributions are made in this work: (I) We investigate the problem of model pre-training for temporal localization tasks in videos, which is largely understudied yet particularly significant to video analysis. (II) We propose a scalable video synthesis method that can generate a large number of videos with temporal boundary information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets",
+      "baseline": "Boundary-Sensitive Pre-Training for Temporal Localization in Videos",
+      "dataset": "MAD",
+      "module_to_modify": "to synthesize large-scale untrimmed videos with boundary annotations by transforming the existing trimmed video action classification datasets",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting existing datasets are either too small for model pre-training or less effective due to the lack of temporal boundary annotations.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_xu_boundary-sensitive-pre-training-for-temporal-localization-in-videos_06ab687b5b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_xu_boundary-sensitive-pre-training-for-temporal-localization-in-videos_06ab687b5b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

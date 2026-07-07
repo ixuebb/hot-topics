@@ -1,0 +1,877 @@
+{
+  "paper_id": "2023_lin_univtg-towards-unified-video-language-temporal-grounding_aef6339934",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lin_univtg-towards-unified-video-language-temporal-grounding_aef6339934",
+  "title": "UniVTG: Towards Unified Video-Language Temporal Grounding",
+  "year": 2023,
+  "venue_or_source": "ICCV 2023",
+  "authors": [
+    "Kevin Qinghong Lin",
+    "Pengchuan Zhang",
+    "Joya Chen",
+    "Shraman Pramanick",
+    "Difei Gao",
+    "Alex Jinpeng Wang",
+    "Rui Yan",
+    "Mike Zheng Shou"
+  ],
+  "task_scope": {
+    "primary_task": "Video Summarization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Summarization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Extensive experiments on three tasks (moment retrieval, highlight detection and video summarization) across seven datasets (QVHighlights, Charades-STA, TACoS, Ego4D, YouTube Highlights, TV-Sum, and QFVS) demonstrate the effectiveness and flexibility of our proposed framework.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction With the increasing interest in sharing daily lives, video has emerged as the most informative yet diverse visual form on social media.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction With the increasing interest in sharing daily lives, video has emerged as the most informative yet diverse visual form on social media.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "These videos are collected in a variety of settings, including untrimmed instructional videos , and well-edited vlogs .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "These videos are collected in a variety of settings, including untrimmed instructional videos [28], and well-edited vlogs [18].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "With massive scales and diverse video forms, automatically identifying relevant moments based on user queries has become a critical capability in the industry for efficient video browsing.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "With massive scales and diverse video forms, automatically identifying relevant moments based on user queries has become a critical capability in the industry for efficient video browsing.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "This significant demand has given rise to a number of video understanding tasks, including moment retrieval , highlight detection , and video summarization .",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This significant demand has given rise to a number of video understanding tasks, including moment retrieval [66, 63, 30], highlight detection [52, 16, 56], and video summarization [14, 45, 42].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite task-specific datasets and models have been developed, these tasks are typically studied separately.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Despite task-specific datasets [10, 5, 46, 45] and models [66, 63, 56] have been developed, these tasks are typically studied separately.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "we do not observe similar progress in video-language pretraining.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, we do not observe similar progress in video-language pretraining.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis in videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis in videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long...",
+        "scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In general, these tasks share a common objective of grounding various scale clips based on customized user queries, which we refer to as Video Temporal Grounding (VTG).",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "In general, these tasks share a common objective of grounding various scale clips based on customized user queries, which we refer to as Video Temporal Grounding (VTG).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Most works in this area are designed for video-level tasks such as videotext retrieval rather than temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Most works in this area are designed for video-level tasks such as videotext retrieval [54, 47] rather than temporal grounding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, we see a clear motivation to pursue a Unified VTG framework and propose our UniVTG, which aims to unify diversity in VTG along three directions: (i) From the label and task aspect, we first define a formulation for VTG where each video is...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Therefore, we see a clear motivation to pursue a Unified VTG framework and propose our UniVTG, which aims to unify diversity in VTG along three directions: (i) From the label and task aspect, we first define a formulation for VTG where each video is decomposed as a clip sequence that each clip is assigned three basic query-conditional elements.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these tasks are typically studied separately.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tasks are typically studied separately?",
+      "failure_mode": "these tasks are typically studied separately.",
+      "root_cause": "ment retrieval tends to localize consecutive temporal windows (interval-level) by giving natural sentences; highlight detection aims to pick out the key segment with highest worthiness (curve-level) that best reflects the video gist; video summarization...",
+      "why_existing_methods_fail": "Despite task-specific datasets and models have been developed, these tasks are typically studied separately.",
+      "affected_scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Despite task-specific datasets [10, 5, 46, 45] and models [66, 63, 56] have been developed, these tasks are typically studied separately.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "we do not observe similar progress in video-language pretraining.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we do not observe similar progress in video-language pretraining?",
+      "failure_mode": "we do not observe similar progress in video-language pretraining.",
+      "root_cause": "One notable work is GLIP , which develops a unified model via joint utilizing large-scale diverse image annotations such as image captions and bounding boxes for spatial grounding.",
+      "why_existing_methods_fail": "we do not observe similar progress in video-language pretraining.",
+      "affected_scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, we do not observe similar progress in video-language pretraining.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis?",
+      "failure_mode": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis...",
+      "root_cause": "the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis in videos.",
+      "why_existing_methods_fail": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis in videos.",
+      "affected_scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis in videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels?",
+      "failure_mode": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+      "root_cause": "Such a formulation enables us to unify various VTG labels and tasks under the same framework.",
+      "why_existing_methods_fail": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+      "affected_scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that • To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels?",
+      "failure_mode": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+      "root_cause": "a teacher to produce scalable pseudo temporal labels.",
+      "why_existing_methods_fail": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+      "affected_scenario": "UniVTG User Intent Moment Retrieval Highlight Detection Video Summarization A 10 min long video User Figure 1: Given a video and a specific user query, UniVTG serves as a general video browsing helper that assists users by returning different scale target clips to support various VTG tasks.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels",
+      "method_core_mechanism": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+      "method_components": [
+        "CLIP"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0157"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "flexible yet effective grounding model",
+      "method_core_mechanism": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+      "method_components": [
+        "flexible yet effective grounding model"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0044"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "unified VTG framework",
+      "method_core_mechanism": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+      "method_components": [
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0094"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "efficient annotation method",
+      "method_core_mechanism": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+      "method_components": [
+        "CLIP"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0157"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels targets these tasks are typically studied separately. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0157",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "flexible yet effective grounding model targets these tasks are typically studied separately. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0044",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels targets we do not observe similar progress in video-language pretraining. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0157",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "unified VTG framework targets we do not observe similar progress in video-language pretraining. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0094",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels targets 2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis... by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0157",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "unified VTG framework targets 2794 --- Page 2 --is largely due to the manual cost of fine-grained temporal annotations is expensive, making it challenging to obtain open-source, scalable yet diverse annotations to support grounding pretraining along the temporal axis... by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0094",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels targets Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0157",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "unified VTG framework targets Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0094",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "efficient annotation method targets • To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0157",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "unified VTG framework targets • To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0036",
+      "micro_method_cluster_id": "MM0094",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels",
+      "compared_to": "Despite task-specific datasets and models have been developed, these tasks are typically studied separately.",
+      "why_it_matters": "It directly targets these tasks are typically studied separately.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "flexible yet effective grounding model",
+      "compared_to": "Despite task-specific datasets and models have been developed, these tasks are typically studied separately.",
+      "why_it_matters": "It directly targets these tasks are typically studied separately.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "unified VTG framework",
+      "compared_to": "Despite task-specific datasets and models have been developed, these tasks are typically studied separately.",
+      "why_it_matters": "It directly targets these tasks are typically studied separately.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Moreover, to address the limitation of temporal labels, we propose a data annotation scheme based on CLIP [36] to produce scalable fine-grained pseudo labels.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "flexible yet effective grounding model",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "(ii) From the model aspect, we develop a flexible yet effective grounding model that inherits the principles of our formulation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "unified VTG framework",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We introduce a unified VTG framework that can fully leverage rich supervision from open-source, scalable yet diverse temporal annotations, such as point-level, interval-level, and curve-level labels.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "efficient annotation method",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• To address the limitations of pretraining corpus, we develop an efficient annotation method that uses CLIP as a teacher to produce scalable pseudo temporal labels.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels",
+      "baseline": "UniVTG: Towards Unified Video-Language Temporal Grounding",
+      "dataset": "Charades-STA, Ego4D",
+      "module_to_modify": "data annotation scheme based on CLIP to produce scalable fine-grained pseudo labels",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these tasks are typically studied separately.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "Ego4D",
+    "QVHighlights",
+    "TACoS",
+    "TVSum",
+    "YouTube Highlights"
+  ],
+  "metrics": [
+    "HD",
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lin_univtg-towards-unified-video-language-temporal-grounding_aef6339934\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_lin_univtg-towards-unified-video-language-temporal-grounding_aef6339934\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

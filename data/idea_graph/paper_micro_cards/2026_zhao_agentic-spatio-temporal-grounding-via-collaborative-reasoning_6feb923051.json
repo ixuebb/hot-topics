@@ -1,0 +1,742 @@
+{
+  "paper_id": "2026_zhao_agentic-spatio-temporal-grounding-via-collaborative-reasoning_6feb923051",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhao_agentic-spatio-temporal-grounding-via-collaborative-reasoning_6feb923051",
+  "title": "Agentic Spatio-Temporal Grounding via Collaborative Reasoning",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Heng Zhao",
+    "Yew-Soon Ong",
+    "Joey Tianyi Zhou"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-Temporal Video Grounding (STVG) aims to retrieve the spatio-temporal tube of a target object or person in a video given a text query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-Temporal Video Grounding (STVG) is to locate a target object both spatially and temporally according to a query text which usually contains static visual cues and dynamic action cues.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-Temporal Video Grounding (STVG) is to locate a target object both spatially and temporally according to a query text which usually contains static visual cues and dynamic action cues.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The task is highly relevant to real-world applications such as video surveillance, security and forensic analysis , video editing, media production and content creation , human-robot interaction and embodied AI , video search, retrieval and knowledge...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "The task is highly relevant to real-world applications such as video surveillance, security and forensic analysis [35, 49], video editing, media production and content creation [1, 13], human-robot interaction and embodied AI [34, 36, 40], video search, retrieval and knowledge discovery [26, 37] and so on.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Unlike static image data, video data exhibit high dimensionality in both space and time, where spatially there may be multiple target entities for disambiguation and temporally all visual contents may evolve continuously at different pace.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Unlike static image data, video data exhibit high dimensionality in both space and time, where spatially there may be multiple target entities for disambiguation and temporally all visual contents may evolve continuously at different pace.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems ( Figure 1c) are highly redundant because the spatial displacement of the same object between adjacent frames is limited.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems ( Figure 1c) are highly redundant because the spatial displacement of the same object between adjacent frames is limited.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify /...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame...",
+        "scenario": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems ( Figure 1c) are highly redundant because the spatial displacement of the same object between adjacent frames is limited.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a)...",
+        "scenario": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools...",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Concretely, as illustrated in Figure 1d, the Spatial Reasoning Agent (SRA) provides the...",
+        "scenario": "Concretely, as illustrated in Figure 1d, the Spatial Reasoning Agent (SRA) provides the spatial coordinates of the proposed candidate via spatial reasoning only once on a certain frame; by invoking tracking tools such as SAM , the candidate’s spatio-temporal tube , , Heng Zhao, Yew-Soon Ong, and...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Concretely, as illustrated in Figure 1d, the Spatial Reasoning Agent (SRA) provides the spatial coordinates of the proposed candidate via spatial reasoning only once on a certain frame; by invoking tracking tools such as SAM [28], the candidate’s spatio-temporal tube , , Heng Zhao, Yew-Soon Ong, and Joey Tianyi Zhou masks is retrieved and sent to TRA for verification.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify /...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(c) Joint-reasoning systems repeat spatial reasoning on each frame, leading to redundancy.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "(c) Joint-reasoning systems repeat spatial reasoning on each frame, leading to redundancy.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized...",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and...",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and bounding boxes.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated?",
+      "failure_mode": "a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...",
+      "root_cause": "a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems ( Figure 1c) are highly redundant because the spatial displacement of the same object between adjacent frames...",
+      "why_existing_methods_fail": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems (...",
+      "affected_scenario": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems ( Figure 1c) are highly redundant because the spatial displacement of the same object between adjacent frames is limited.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that t R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context?",
+      "failure_mode": "T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+      "root_cause": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial...",
+      "why_existing_methods_fail": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools Iteration tools …...",
+      "affected_scenario": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify / Localize) Reasoning (𝑡𝑠, 𝑡𝑒) S R A T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner?",
+      "failure_mode": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+      "root_cause": "In addition, these systems require dense spatial MLLM {𝒃𝑡} (𝑡𝑠, 𝑡𝑒) MLLM MLLM 𝑸𝒖𝒆𝒓𝒚 (a) Spatial Reasoning MLLM (𝑡𝑠, 𝑡𝑒) 𝒃𝑡 𝟏𝟐… 𝑻 𝑸𝒖𝒆𝒓𝒚 (b) Temporal Reasoning 𝒃1 𝒃2 𝒃𝑇 … Redundant MLLM … (𝑡𝑠, 𝑡𝑒) 𝟏 𝟐 𝑻 𝑸𝒖𝒆𝒓𝒚 (c) Joint Reasoning 𝟏𝟐… 𝑻 Reasoning (Verify /...",
+      "why_existing_methods_fail": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+      "affected_scenario": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "(b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild",
+      "method_core_mechanism": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate...",
+      "method_components": [
+        "Agentic Spatio-Temporal Grounder (ASTG)",
+        "Agentic Spatio-Temporal Grounder",
+        "ASTG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0029"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "visual memory for SRA to filter out the candidate tubes",
+      "method_core_mechanism": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+      "method_components": [
+        "SRA",
+        "TRA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0047"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "gentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve",
+      "method_core_mechanism": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and bounding boxes.",
+      "method_components": [
+        "Agentic Spatio-Temporal Grounder (ASTG)",
+        "Agentic Spatio-Temporal Grounder",
+        "ASTG",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and bounding boxes.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0029"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "visual memory and dialogue context to the agentic framework",
+      "method_core_mechanism": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+      "method_components": [
+        "visual memory and dialogue context to the agentic framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0047"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild targets a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "visual memory for SRA to filter out the candidate tubes targets a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0047",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU4",
+      "solves_how": "visual memory and dialogue context to the agentic framework targets T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context. by operating on context, reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0047",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild targets T R A tools Iteration tools … {𝒃𝑡} (d) ASTG (Ours) Figure 1: (a) Static spatial reasoning ignores dynamic temporal context. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild targets (b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0029",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "visual memory for SRA to filter out the candidate tubes targets (b) Temporal reasoning with holistic video input cannot infer spatial information in a dense manner. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0074",
+      "micro_method_cluster_id": "MM0047",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild",
+      "compared_to": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems (...",
+      "why_it_matters": "It directly targets a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "visual memory for SRA to filter out the candidate tubes",
+      "compared_to": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems (...",
+      "why_it_matters": "It directly targets a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "gentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve",
+      "compared_to": "This poses a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated spatial reasonings for each of the frames in joint-reasoning systems (...",
+      "why_it_matters": "It directly targets a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate...",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we propose Agentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild; where the spatial reasoning and temporal reasoning process are duly decoupled and assigned to two specialized agents who work together in a collaborative manner to achieve the joint-reasoning following a propose-and-evaluate paradigm.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "visual memory for SRA to filter out the candidate tubes",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Additionally, we propose a visual memory for SRA to filter out the candidate tubes that had been verified, effectively reducing the workload for TRA and the redundant reasoning steps.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "gentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and bounding boxes.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We summarize our contributions as follows: • We propose Agentic Spatio-Temporal Grounder (ASTG) for zero-shot and training-free STVG, an agentic framework with two agents working collaboratively to retrieve the finegrained target candidate tube masks and bounding boxes.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "visual memory and dialogue context to the agentic framework",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+      "can_transfer_to": [
+        "context",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "• We introduce a visual memory and dialogue context to the agentic framework, which enables the autonomous jointreasoning process and also adds transparency to the reasoning process where the intermediate results on the candidates can also serve as additional information for video analytics.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild",
+      "baseline": "Agentic Spatio-Temporal Grounding via Collaborative Reasoning",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "gentic Spatio-Temporal Grounder (ASTG): a training-free framework for spatio-temporal grounding in the wild",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting a dilemma for grounding systems: performing spatial reasoning on each frame individually ignores the temporal cues ( Figure 1a); analyzing the video as a whole cannot yield accurate spatial coordinates ( Figure 1b); and the repeated...."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhao_agentic-spatio-temporal-grounding-via-collaborative-reasoning_6feb923051\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zhao_agentic-spatio-temporal-grounding-via-collaborative-reasoning_6feb923051\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

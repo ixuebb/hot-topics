@@ -1,0 +1,379 @@
+{
+  "paper_id": "2026_jin_how-should-video-llms-output-time-an-analysis-of-efficient-temporal-grounding-pa_4205a0d519",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jin_how-should-video-llms-output-time-an-analysis-of-efficient-temporal-grounding-pa_4205a0d519",
+  "title": "How Should Video LLMs Output Time? An Analysis of Efficient Temporal Grounding Paradigms",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Shengji Jin",
+    "Yuanhao Zou",
+    "Victor Zhu",
+    "Zhengping Ji",
+    "Chen Chen"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract While Multimodal Large Language Models (MLLMs) have advanced Video Temporal Grounding (VTG), existing methods often couple output paradigms with different backbones, datasets, and training protocols.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding (VTG), the task of localizing temporal segments in a video matching a natural language query, has attracted growing research interest.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding (VTG), the task of localizing temporal segments in a video matching a natural language query, has attracted growing research interest.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Core tasks *Equal contribution.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Core tasks *Equal contribution.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "1Our code and models are publicly available: https://tgparadigms.github.io/ including moment retrieval , dense video captioning , highlight detection , and grounded video question answering all require models to produce precise temporal boundaries.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "1Our code and models are publicly available: https://tgparadigms.github.io/ including moment retrieval [1, 4], dense video captioning [11, 34], highlight detection [12], and grounded video question answering [32, 33] all require models to produce precise temporal boundaries.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "As multimodal large language models (MLLMs) increasingly serve as the backbone for these tasks, diverse temporal output formulations have been proposed .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "As multimodal large language models (MLLMs) increasingly serve as the backbone for these tasks, diverse temporal output formulations have been proposed [30].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "The survey [30] explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Based on the different temporal output formulation, existing approaches diverge into...",
+        "scenario": "Based on the different temporal output formulation, existing approaches diverge into three main paradigms (Figure 1): (a) text numeral generation, expressing timestamps as text numerals within the language modality ; (b) temporal token generation, introducing dedicated temporal tokens into the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Based on the different temporal output formulation, existing approaches diverge into three main paradigms (Figure 1): (a) text numeral generation, expressing timestamps as text numerals within the language modality [8, 14]; (b) temporal token generation, introducing dedicated temporal tokens into the vocabulary [5, 6, 22]; and (c) continuous temporal decoding, encompassing both regression modules that predict scalar timestamps from hidden states [19, 29] and distribution-based methods that convert temporal embeddings into probability distributions over time bins [37], both sharing the principle of mapping hidden representations to continuous temporal targets while differing in whether a dist",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "This raises a critical yet underexplored question: how should temporal predictions be formulated in the model’s output space?",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "This raises a critical yet underexplored question: how should temporal predictions be formulated in the model’s output space?",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "M-LLM Layers (a) Text Numeral Generation (b) Temporal Token Generation (c) Continuous Temporal Decoding Temporal Head Controlled Temporal Generation tstart 1 .",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "M-LLM Layers (a) Text Numeral Generation (b) Temporal Token Generation (c) Continuous Temporal Decoding Temporal Head Controlled Temporal Generation tstart 1 .",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+        "evidence": [
+          {
+            "evidence_id": "EV004",
+            "section": "Abstract",
+            "quote": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone?",
+      "failure_mode": "as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+      "root_cause": "summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+      "why_existing_methods_fail": "as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+      "affected_scenario": "Based on the different temporal output formulation, existing approaches diverge into three main paradigms (Figure 1): (a) text numeral generation, expressing timestamps as text numerals within the language modality ; (b) temporal token generation, introducing dedicated temporal tokens into the...",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge?",
+      "failure_mode": "survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+      "root_cause": "an open challenge.",
+      "why_existing_methods_fail": "The survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+      "affected_scenario": "Based on the different temporal output formulation, existing approaches diverge into three main paradigms (Figure 1): (a) text numeral generation, expressing timestamps as text numerals within the language modality ; (b) temporal token generation, introducing dedicated temporal tokens into the...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "The survey [30] explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal",
+      "method_core_mechanism": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+      "method_components": [
+        "Text Numeral Generation",
+        "Temporal Token Generation",
+        "Continuous Temporal Decoding",
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV004"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal targets as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal targets survey explicitly identifies this lack of controlled cross-paradigm comparison as an open challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal",
+      "compared_to": "as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.",
+      "why_it_matters": "It directly targets as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV004",
+          "section": "Abstract",
+          "quote": "In this paper, we present a controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal Decoding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal",
+      "baseline": "How Should Video LLMs Output Time? An Analysis of Efficient Temporal Grounding Paradigms",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "controlled empirical study comparing three dominant VTG output paradigms: Text Numeral Generation, Temporal Token Generation, and Continuous Temporal",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting as summarized in Table 1, each system uses its own backbone, data, and protocol, making it impossible to attribute performance differences to the output formulation alone.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "YouCook"
+  ],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jin_how-should-video-llms-output-time-an-analysis-of-efficient-temporal-grounding-pa_4205a0d519\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jin_how-should-video-llms-output-time-an-analysis-of-efficient-temporal-grounding-pa_4205a0d519\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

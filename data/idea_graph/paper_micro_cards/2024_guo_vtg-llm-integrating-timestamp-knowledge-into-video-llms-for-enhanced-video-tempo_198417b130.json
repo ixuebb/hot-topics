@@ -1,0 +1,734 @@
+{
+  "paper_id": "2024_guo_vtg-llm-integrating-timestamp-knowledge-into-video-llms-for-enhanced-video-tempo_198417b130",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_guo_vtg-llm-integrating-timestamp-knowledge-into-video-llms-for-enhanced-video-tempo_198417b130",
+  "title": "VTG-LLM: Integrating Timestamp Knowledge into Video LLMs for Enhanced Video Temporal Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Yongxin Guo",
+    "Jingyu Liu",
+    "Mingda Li",
+    "Cheng, Dingxin",
+    "Xiaoying Tang",
+    "Sui, Dianbo",
+    "Liu, Qingbin",
+    "Xi Chen",
+    "Zhao, Kevin"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG) strives to accurately pinpoint event timestamps in a specific video using linguistic queries, significantly impacting downstream tasks like video browsing and editing.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Temporal Grounding (VTG) is a crucial component of video understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Video Temporal Grounding (VTG) is a crucial component of video understanding.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It requires models to accurately pinpoint event timestamps within a video based on the given query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "It requires models to accurately pinpoint event timestamps within a video based on the given query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As a remedy, recent research has begun exploring the use of video LLMs (",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As a remedy, recent research has begun exploring the use of video LLMs (Lin et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Furthermore, the slot-based token compression method outperforms the naive token compression baselines such as sampling and cross-attention in our studied cases.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "Furthermore, the slot-based token compression method outperforms the naive token compression baselines such as sampling and cross-attention in our studied cases.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (Yang et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp information to help models...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp information to help models understand when the visual content occurs in the videos.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "However, models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, the number ’20’ can appear in both a counting context, such as ’There are 20...",
+        "scenario": "For example, the number ’20’ can appear in both a counting context, such as ’There are 20 people,’ and a temporal context like ’From 20-30 seconds.’ Although these digits have different meanings in these situations, they are forced to share the same decision boundary, making classification more...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "For example, the number ’20’ can appear in both a counting context, such as ’There are 20 people,’ and a temporal context like ’From 20-30 seconds.’ Although these digits have different meanings in these situations, they are forced to share the same decision boundary, making classification more challenging.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "… Visual Encoder Qformer t W f W t W f W t W f W 1t 1f 2t 3t 2f 3f Figure 1: Overview of...",
+        "scenario": "… Visual Encoder Qformer t W f W t W f W t W f W 1t 1f 2t 3t 2f 3f Figure 1: Overview of the VTG-LLM model.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "… Visual Encoder Qformer t W f W t W f W t W f W 1t 1f 2t 3t 2f 3f Figure 1: Overview of the VTG-LLM model.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "2023;",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "2023; Luo et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "• Concept shifts occur when varying input data produce identical output targets, potentially obscuring decision boundaries (",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "• Concept shifts occur when varying input data produce identical output targets, potentially obscuring decision boundaries (Moreno-Torres et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Therefore, due to the limited context length of LLMs, it is essential to develop effective token compression methods that enable the sampling of more frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Therefore, due to the limited context length of LLMs, it is essential to develop effective token compression methods that enable the sampling of more frames.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "(",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (?",
+      "failure_mode": "(",
+      "root_cause": "2015) demands that models output a series of timestamps, each associated with their corresponding video frames.",
+      "why_existing_methods_fail": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (",
+      "affected_scenario": "For example, the number ’20’ can appear in both a counting context, such as ’There are 20 people,’ and a temporal context like ’From 20-30 seconds.’ Although these digits have different meanings in these situations, they are forced to share the same decision boundary, making classification more...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (Yang et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp?",
+      "failure_mode": "several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp...",
+      "root_cause": "2023) for addressing VTG tasks due to their capacity to handle various tasks concurrently in a zero-shot manner.",
+      "why_existing_methods_fail": "several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp information to help models understand when the visual content occurs in the videos.",
+      "affected_scenario": "For example, the number ’20’ can appear in both a counting context, such as ’There are 20 people,’ and a temporal context like ’From 20-30 seconds.’ Although these digits have different meanings in these situations, they are forced to share the same decision boundary, making classification more...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "However, several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp information to help models understand when the visual content occurs in the videos.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models?",
+      "failure_mode": "models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+      "root_cause": "2023a;",
+      "why_existing_methods_fail": "models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+      "affected_scenario": "… Visual Encoder Qformer t W f W t W f W t W f W 1t 1f 2t 3t 2f 3f Figure 1: Overview of the VTG-LLM model.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "However, models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "novel video LLM model, VTG-LLM, comprising three components",
+      "method_core_mechanism": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens...",
+      "method_components": [
+        "LLM",
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0053"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "VTG-IT-120K, a dataset comprising 47",
+      "method_core_mechanism": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+      "method_components": [
+        "VTG",
+        "IT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "VTG-LLM, a versatile model aims to capture all four VTG tasks",
+      "method_core_mechanism": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+      "method_components": [
+        "VTG",
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV053"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0053"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51",
+      "method_core_mechanism": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+      "method_components": [
+        "VTG",
+        "IT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV055"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0032"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel video LLM model, VTG-LLM, comprising three components targets ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "VTG-IT-120K, a dataset comprising 47 targets ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel video LLM model, VTG-LLM, comprising three components targets several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "VTG-LLM, a versatile model aims to capture all four VTG tasks targets several persistent issues hinder the effectiveness of current video LLMs in understanding timestamp knowledge, which in turn affects their performance on VTG tasks: • Visual inputs should contain sufficient and accurate timestamp... by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0053",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel video LLM model, VTG-LLM, comprising three components targets models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040",
+      "micro_method_cluster_id": "MM0053",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "VTG-IT-120K, a dataset comprising 47 targets models cannot make reliable predictions on visual content that is not included in the sampled frames fed into language models. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0040",
+      "micro_method_cluster_id": "MM0032",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "novel video LLM model, VTG-LLM, comprising three components",
+      "compared_to": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (",
+      "why_it_matters": "It directly targets (."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "VTG-IT-120K, a dataset comprising 47",
+      "compared_to": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (",
+      "why_it_matters": "It directly targets (."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "VTG-LLM, a versatile model aims to capture all four VTG tasks",
+      "compared_to": "Despite significant efforts by traditional task-specific models designed for various VTG tasks (",
+      "why_it_matters": "It directly targets (."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel video LLM model, VTG-LLM, comprising three components",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens...",
+      "can_transfer_to": [
+        "long_sparse",
+        "reasoning",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "To address these issues, in this paper, we present a novel video LLM model, VTG-LLM, comprising three components that efficiently integrate timestamp knowledge into video LLMs, thereby enhancing their performance on VTG tasks: (1) we introduce a sequence-time embedding method that integrates accurate timestamp data into visual tokens; (2) we incorporate absolute-time tokens that specifically handle timestamp knowledge without introducing quantization errors; (3) we employ a lightweight and highperformance slot-based token compression method to decrease the number of visual tokens to a fixed length, allowing video LLMs to sample more video frames.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VTG-IT-120K, a dataset comprising 47",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "To address this issue, we introduce VTG-IT-120K, a dataset comprising 47.2K videos and 120K annotations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VTG-LLM, a versatile model aims to capture all four VTG tasks",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Our key contributions are summarized as follows: • We present VTG-LLM, a versatile model aims to capture all four VTG tasks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "• We present VTG-IT-120K, a high-quality instruction tuning dataset consisting of 51.9K re-annotated data annotations with superior quality.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel video LLM model, VTG-LLM, comprising three components",
+      "baseline": "VTG-LLM: Integrating Timestamp Knowledge into Video LLMs for Enhanced Video Temporal Grounding",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "novel video LLM model, VTG-LLM, comprising three components",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting (."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "YouCook"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_guo_vtg-llm-integrating-timestamp-knowledge-into-video-llms-for-enhanced-video-tempo_198417b130\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_guo_vtg-llm-integrating-timestamp-knowledge-into-video-llms-for-enhanced-video-tempo_198417b130\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

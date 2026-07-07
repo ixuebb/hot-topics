@@ -1,0 +1,698 @@
+{
+  "paper_id": "2021_su_stvgbert-a-visual-linguistic-transformer-based-framework-for-spatio-temporal-vid_423e4e8a16",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_su_stvgbert-a-visual-linguistic-transformer-based-framework-for-spatio-temporal-vid_423e4e8a16",
+  "title": "STVGBert: A Visual-Linguistic Transformer Based Framework for Spatio-Temporal Video Grounding",
+  "year": 2021,
+  "venue_or_source": "ICCV 2021",
+  "authors": [
+    "Rui Su",
+    "Qian Yu",
+    "Dong Xu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-temporal video grounding (STVG) aims to localize a spatio-temporal tube of a target object in an untrimmed video based on a query sentence.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Vision and language play important roles for human to understand the world.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Vision and language play important roles for human to understand the world.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning , dense video caption and visual grounding ) have attracted increasing attention from researchers.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning [15, 22], dense video caption [37, 36] and visual grounding [10, 35]) have attracted increasing attention from researchers.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Spatial-Temporal Video Grounding (STVG), which was introduced in the recent work , is a new and challenging vision-language task.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Spatial-Temporal Video Grounding (STVG), which was introduced in the recent work [39], is a new and challenging vision-language task.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Given an untrimmed video and a *Dong Xu is the corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Given an untrimmed video and a *Dong Xu is the corresponding author.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "However, these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "In recent years, with remarkable progress of deep neural networks, various...",
+        "scenario": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning , dense video caption and visual grounding ) have attracted increasing attention from researchers.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning [15, 22], dense video caption [37, 36] and visual grounding [10, 35]) have attracted increasing attention from researchers.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "(2) It is difﬁcult for a pre-trained object detector to be well generalized to any new datasets with unseen classes.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "(2) It is difﬁcult for a pre-trained object detector to be well generalized to any new datasets with unseen classes.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Moreover, 1533 --- Page 2 --we can also learn better representations by solving both spatial localization and temporal localization in an end-to-end optimized network.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Moreover, 1533 --- Page 2 --we can also learn better representations by solving both spatial localization and temporal localization in an end-to-end optimized network.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG and HC-STVG , and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG [39] and HC-STVG [25], and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(3) Comprehensive experiments conducted on two benchmark datasets, VidSTG and HC-STVG, demonstrate the effectiveness of our framework for the STVG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "(3) Comprehensive experiments conducted on two benchmark datasets, VidSTG and HC-STVG, demonstrate the effectiveness of our framework for the STVG task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals?",
+      "failure_mode": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "root_cause": "In most existing works, a pre-trained object detector is often required to pre-generate object proposals.",
+      "why_existing_methods_fail": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "affected_scenario": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning , dense video caption and visual grounding ) have attracted increasing attention from researchers.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "However, these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network?",
+      "failure_mode": "by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+      "root_cause": "each sub-task is handled by an independent network.",
+      "why_existing_methods_fail": "by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+      "affected_scenario": "In recent years, with remarkable progress of deep neural networks, various vision-language tasks (e.g., image captioning , dense video caption and visual grounding ) have attracted increasing attention from researchers.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task",
+      "method_core_mechanism": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+      "method_components": [
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0208"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features",
+      "method_core_mechanism": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+      "method_components": [
+        "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0071"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "outperforms all state-of-the-art methods",
+      "method_core_mechanism": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG and HC-STVG , and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+      "method_components": [
+        "HC",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG [39] and HC-STVG [25], and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task",
+      "method_core_mechanism": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+      "method_components": [
+        "new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0208"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time",
+      "method_core_mechanism": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+      "method_components": [
+        "ST"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0048"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task targets these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0208",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features targets these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0071",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task targets by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0208",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features targets by handling the two sub-tasks separately, the pipeline becomes more complicated as each sub-task is handled by an independent network. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0071",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task",
+      "compared_to": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "why_it_matters": "It directly targets these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features",
+      "compared_to": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "why_it_matters": "It directly targets these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "outperforms all state-of-the-art methods",
+      "compared_to": "these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.",
+      "why_it_matters": "It directly targets these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Motivated by the above observations, in this work, we propose a one-stage visual-linguistic transformer based framework STVGBert for the STVG task, which can directly generate spatio-temporal object tubes from the input videos and query descriptions without relying on any pretrained object detectors.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Speciﬁcally, our method ﬁrst takes a pair of video clip and textual query as the input to produce the cross-modal features.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "outperforms all state-of-the-art methods",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG and HC-STVG , and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "We evaluate our proposed framework STVGBert on two benchmark datasets, VidSTG [39] and HC-STVG [25], and the experiments demonstrate that our framework outperforms all state-of-the-art methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Our contributions can be summarized as follows: (1) We propose a new one-stage visual-linguistic transformer based framework STVGBert for the spatiotemporal video grounding task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "(2) We introduce a new cross-modal feature learning module, ST-ViLBert, to model spatio-temporal information and align cross-modal representation at the same time.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Backbone dependence",
+      "why": "Improvements may come from a stronger pretrained encoder rather than the proposed mechanism.",
+      "possible_defense": "Keep the backbone frozen and compare under identical extracted features."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for one-stage visual-linguistic transformer based framework STVGBert for the STVG task",
+      "baseline": "STVGBert: A Visual-Linguistic Transformer Based Framework for Spatio-Temporal Video Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "one-stage visual-linguistic transformer based framework STVGBert for the STVG task",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these approaches suffer from the following limitations: (1) The localization performance heavily relies on the quality of the pre-generated object proposals.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_su_stvgbert-a-visual-linguistic-transformer-based-framework-for-spatio-temporal-vid_423e4e8a16\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_su_stvgbert-a-visual-linguistic-transformer-based-framework-for-spatio-temporal-vid_423e4e8a16\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

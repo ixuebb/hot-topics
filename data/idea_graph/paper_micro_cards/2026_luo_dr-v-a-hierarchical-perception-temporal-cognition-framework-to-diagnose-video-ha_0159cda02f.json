@@ -1,0 +1,778 @@
+{
+  "paper_id": "2026_luo_dr-v-a-hierarchical-perception-temporal-cognition-framework-to-diagnose-video-ha_0159cda02f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_luo_dr-v-a-hierarchical-perception-temporal-cognition-framework-to-diagnose-video-ha_0159cda02f",
+  "title": "Dr.V : A Hierarchical Perception-Temporal-Cognition Framework to Diagnose Video Hallucination by Fine-Grained Spatial-Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "International Journal of Computer Vision",
+  "authors": [
+    "Meng Luo",
+    "Shengqiong Wu",
+    "Liqiang Jing",
+    "Tianjie Ju",
+    "Zheng Li",
+    "Jinxiang Lai",
+    "Tung‐Hsin Wu",
+    "Xinya Du",
+    "Jian Li",
+    "Siyuan Yan",
+    "Jiebo Luo",
+    "William Yang Wang",
+    "Hao Fei",
+    "Mong Li Lee",
+    "Wynne Hsu"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video understanding has long been a crucial research area in artificial intelligence, focusing on the interpretation of dynamic content in videos, which is inherently more complex than static images.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video understanding has long been a crucial research area in artificial intelligence, focusing on the interpretation of dynamic content in videos, which is inherently more complex than static images.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This complexity arises from the need to understand not only spatial visual semantics but also temporal sequences .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This complexity arises from the need to understand not only spatial visual semantics but also temporal sequences [2, 3, 27, 68].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Built upon the foundation of large language models , large video models (LVMs) have significantly propelled progress in comprehending video content, such as video question answering , video captioning .",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Built upon the foundation of large language models [1, 5, 21, 51], large video models (LVMs) [6, 9, 35, 49] have significantly propelled progress in comprehending video content, such as video question answering [15, 34, 65], video captioning [11, 16, 60].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Despite these advancements, the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect [7, 36, 63].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Despite these advancements, the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect [7, 36, 63].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• Lack of Granularity in Annotation and Analysis.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "• Lack of Granularity in Annotation and Analysis.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+        "scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Level 2: Temporal Hallucination, which involves misinterpretations of temporal dynamics,...",
+        "scenario": "Level 2: Temporal Hallucination, which involves misinterpretations of temporal dynamics, including action recognition, dynamic attribute recognition (e.g., speed, motion direction), dynamic relational inference, and event sequence understanding.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Level 2: Temporal Hallucination, which involves misinterpretations of temporal dynamics, including action recognition, dynamic attribute recognition (e.g., speed, motion direction), dynamic relational inference, and event sequence understanding.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As shown in Figure 2, and inspired by the proposed hierarchical hallucination taxonomy,...",
+        "scenario": "As shown in Figure 2, and inspired by the proposed hierarchical hallucination taxonomy, the core of Dr.V-Agent lies in a hierarchi-",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "As shown in Figure 2, and inspired by the proposed hierarchical hallucination taxonomy, the core of Dr.V-Agent lies in a hierarchi-",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To combat the hallucination issues in LVMs, it is essential to develop comprehensive and accurate evaluation protocols.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To combat the hallucination issues in LVMs, it is essential to develop comprehensive and accurate evaluation protocols.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Existing benchmarks, while strong in their respective niches, tend to address isolated aspects of hallucination.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Existing benchmarks, while strong in their respective niches, tend to address isolated aspects of hallucination.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP013",
+      "macro_problem_name": "Temporal Context Robustness and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P12",
+      "legacy_macro_problem_name": "Uncertainty, Calibration, and Rejection",
+      "micro_problem_name": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect ?",
+      "failure_mode": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "root_cause": "Built upon the foundation of large language models , large video models (LVMs) have significantly propelled progress in comprehending video content, such as video question answering , video captioning .",
+      "why_existing_methods_fail": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "affected_scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Despite these advancements, the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect [7, 36, 63].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP013",
+      "macro_problem_name": "Temporal Context Robustness and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "uch hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that uch hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios?",
+      "failure_mode": "uch hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+      "root_cause": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "why_existing_methods_fail": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+      "affected_scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Such hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP009",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies?",
+      "failure_mode": "despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+      "root_cause": "Other novel approaches have explored using synthetic videos to test for violations of common sense and physical laws , or have structured their evaluation along multiple dimensions like hallucination causes and question formats .",
+      "why_existing_methods_fail": "despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+      "affected_scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations?",
+      "failure_mode": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+      "root_cause": "Many common yet complex hallucination types, such as those involving dynamic attributes or nuanced context-based reasoning, remain underexplored.",
+      "why_existing_methods_fail": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+      "affected_scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "• Lack of Granularity in Annotation and Analysis.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that • Lack of Granularity in Annotation and Analysis?",
+      "failure_mode": "• Lack of Granularity in Annotation and Analysis.",
+      "root_cause": "The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations.",
+      "why_existing_methods_fail": "• Lack of Granularity in Annotation and Analysis.",
+      "affected_scenario": "As illustrated in Figure 1, the taxonomy comprises three levels.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "• Lack of Granularity in Annotation and Analysis.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "method_core_mechanism": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "method_components": [
+        "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0046"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "novel diagnostic model, Dr",
+      "method_core_mechanism": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+      "method_components": [
+        "novel diagnostic model, Dr"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0050"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations. targets the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel diagnostic model, Dr targets the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations. targets uch hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel diagnostic model, Dr targets uch hallucinations undermine the reliability and trustworthiness of LVMs, posing critical challenges to their deployment in real-world scenarios. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0043",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "AP013",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations. targets despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel diagnostic model, Dr targets despite these valuable contributions, we argue that the current landscape of video hallucination evaluation suffers from two critical limitations, which prevent a truly holistic assessment: • Fragmented and Incomplete Taxonomies. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0025",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "AP009",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel diagnostic model, Dr targets The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations. targets The coarse-grained or overly specialized categories used to date fail to capture the multi-dimensional nature of video hallucinations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations. targets • Lack of Granularity in Annotation and Analysis. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055",
+      "micro_method_cluster_id": "MM0046",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "novel diagnostic model, Dr targets • Lack of Granularity in Annotation and Analysis. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0055",
+      "micro_method_cluster_id": "MM0050",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "compared_to": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "why_it_matters": "It directly targets the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "novel diagnostic model, Dr",
+      "compared_to": "the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .",
+      "why_it_matters": "It directly targets the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel diagnostic model, Dr",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Motivated by aforementioned observations, we propose a novel diagnostic model, Dr.V-Agent, which emulates this hierarchical reasoning paradigm to identify and analyze hallucinations in LVMs.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "baseline": "Dr.V : A Hierarchical Perception-Temporal-Cognition Framework to Diagnose Video Hallucination by Fine-Grained Spatial-Temporal Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "To address the limitations of existing datasets, we introduce Dr.V-Bench, a novel benchmark designed to comprehensively evaluate video hallucinations.",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the generative nature of LVMs inevitably introduces a notable risk of “hallucinations” – generating content that is inconsistent with the video content, misaligned with user intent, or factually 1 --- Page 2 --incorrect .."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_luo_dr-v-a-hierarchical-perception-temporal-cognition-framework-to-diagnose-video-ha_0159cda02f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_luo_dr-v-a-hierarchical-perception-temporal-cognition-framework-to-diagnose-video-ha_0159cda02f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

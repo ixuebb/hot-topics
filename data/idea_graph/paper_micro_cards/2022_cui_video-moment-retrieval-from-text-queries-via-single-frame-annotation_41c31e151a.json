@@ -1,0 +1,667 @@
+{
+  "paper_id": "2022_cui_video-moment-retrieval-from-text-queries-via-single-frame-annotation_41c31e151a",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_cui_video-moment-retrieval-from-text-queries-via-single-frame-annotation_41c31e151a",
+  "title": "Video Moment Retrieval from Text Queries via Single Frame Annotation",
+  "year": 2022,
+  "venue_or_source": "Proceedings of the 45th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+  "authors": [
+    "Ran Cui",
+    "Tianwen Qian",
+    "Pai Peng",
+    "Elena Daskalaki",
+    "Jingjing Chen",
+    "Xiaowei Guo",
+    "Huyang Sun",
+    "Yu–Gang Jiang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval aims at finding the start and end timestamps of a moment (part of a video) described by a given natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video moment retrieval (VMR), initially proposed in , is the task of retrieving the segment described by a given natural language query from an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment retrieval (VMR), initially proposed in [1, 12], is the task of retrieving the segment described by a given natural language query from an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task, also known as natural language video localization and video temporal grounding , is a fundamental problem in computer vision understanding and visual information retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task, also known as natural language video localization [25, 48, 52] and video temporal grounding [5, 29], is a fundamental problem in computer vision understanding and visual information retrieval.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "As will be shown in the rest of this paper, ViGA significantly outperforms the state of the art of weakly supervised VMR, even comparable to fully supervised VMR when a high precision of retrieved segment is not required.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "As will be shown in the rest of this paper, ViGA significantly outperforms the state of the art of weakly supervised VMR, even comparable to fully supervised VMR when a high precision of retrieved segment is not required.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Differing to an earlier task video action localization [11, 22], which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This makes fully supervised VMR prone to subjective annotation noise.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "This makes fully supervised VMR prone to subjective annotation noise.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, to annotate the start and end of a query “the man turns the light on”, one...",
+        "scenario": "For example, to annotate the start and end of a query “the man turns the light on”, one might consider the very second that the switch is toggled should be the temporal interval, but another Query: He flips the eggs, making an omelette.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "For example, to annotate the start and end of a query “the man turns the light on”, one might consider the very second that the switch is toggled should be the temporal interval, but another Query: He flips the eggs, making an omelette.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Weakly Supervised Annotation Fully Supervised Annotation Glance Annotation 0 s 198.1 s...",
+        "scenario": "Weakly Supervised Annotation Fully Supervised Annotation Glance Annotation 0 s 198.1 s 114.9 s 156.5 s 138.3 s Figure 1: Illustration of different VMR training example annotation paradigms.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Weakly Supervised Annotation Fully Supervised Annotation Glance Annotation 0 s 198.1 s 114.9 s 156.5 s 138.3 s Figure 1: Illustration of different VMR training example annotation paradigms.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Figure 1, a training example under glance annotation is composed of...",
+        "scenario": "As illustrated in Figure 1, a training example under glance annotation is composed of (𝑉,𝑄,𝑔) in which 𝑔is any timestamp between 𝑠𝑡and 𝑒𝑑.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, a training example under glance annotation is composed of (𝑉,𝑄,𝑔) in which 𝑔is any timestamp between 𝑠𝑡and 𝑒𝑑.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "VMR can be widely applied in many scenarios such as video browsing websites and semantics based video search engines.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "VMR can be widely applied in many scenarios such as video browsing websites and semantics based video search engines.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To avoid these disadvantages, weakly supervised VMR is proposed , in which one example in the dataset is simply (𝑉,𝑄), and no start nor end annotation is available.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To avoid these disadvantages, weakly supervised VMR is proposed [28], in which one example in the dataset is simply (𝑉,𝑄), and no start nor end annotation is available.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In doing the training, the main objective is to obtain a proper cross-modal encoder to project 𝑉and 𝑄to a joint embedding space, which satisfies that the distance between the embeddings of corresponding (𝑉,𝑄)pos is closer and the distance between the...",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In doing the training, the main objective is to obtain a proper cross-modal encoder to project 𝑉and 𝑄to a joint embedding space, which satisfies that the distance between the embeddings of corresponding (𝑉,𝑄)pos is closer and the distance between the embeddings of other combinations (𝑉,𝑄)neg is farther.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus?",
+      "failure_mode": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...",
+      "root_cause": "a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+      "why_existing_methods_fail": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+      "affected_scenario": "For example, to annotate the start and end of a query “the man turns the light on”, one might consider the very second that the switch is toggled should be the temporal interval, but another Query: He flips the eggs, making an omelette.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Differing to an earlier task video action localization [11, 22], which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "This makes fully supervised VMR prone to subjective annotation noise.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that makes fully supervised VMR prone to subjective annotation noise?",
+      "failure_mode": "This makes fully supervised VMR prone to subjective annotation noise.",
+      "root_cause": "might start the annotation from when the man walks towards the switch.",
+      "why_existing_methods_fail": "This makes fully supervised VMR prone to subjective annotation noise.",
+      "affected_scenario": "As illustrated in Figure 1, a training example under glance annotation is composed of (𝑉,𝑄,𝑔) in which 𝑔is any timestamp between 𝑠𝑡and 𝑒𝑑.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "This makes fully supervised VMR prone to subjective annotation noise.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal?",
+      "failure_mode": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+      "root_cause": "the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+      "why_existing_methods_fail": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+      "affected_scenario": "For example, to annotate the start and end of a query “the man turns the light on”, one might consider the very second that the switch is toggled should be the temporal interval, but another Query: He flips the eggs, making an omelette.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA)",
+      "method_core_mechanism": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+      "method_components": [
+        "Glance Annotation"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0074"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "glance annotation, a new VMR annotating paradigm",
+      "method_core_mechanism": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0074"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "contrastive learning based method ViGA for glance annotated VMR",
+      "method_core_mechanism": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0074"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA) targets Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "glance annotation, a new VMR annotating paradigm targets Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA) targets This makes fully supervised VMR prone to subjective annotation noise. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "glance annotation, a new VMR annotating paradigm targets This makes fully supervised VMR prone to subjective annotation noise. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA) targets Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "glance annotation, a new VMR annotating paradigm targets Due to the lack of 𝑠𝑡and 𝑒𝑑, ViGA follows the multipleinstance learning (MIL) strategy widely adopted in weakly supervised VMR, which uses the correspondence between 𝑉and 𝑄as the supervision signal. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0008",
+      "micro_method_cluster_id": "MM0074",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA)",
+      "compared_to": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+      "why_it_matters": "It directly targets Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "glance annotation, a new VMR annotating paradigm",
+      "compared_to": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+      "why_it_matters": "It directly targets Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "contrastive learning based method ViGA for glance annotated VMR",
+      "compared_to": "Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus involving with more complex cross-modal contents understanding.",
+      "why_it_matters": "It directly targets Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "Under this setting, we propose a contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "glance annotation, a new VMR annotating paradigm",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: • We propose glance annotation, a new VMR annotating paradigm, which requires no more significant annotating effort than weakly supervised VMR, while provides more potential regarding the retrieval performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "contrastive learning based method ViGA for glance annotated VMR",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We propose a contrastive learning based method ViGA for glance annotated VMR, which achieves significantly better performance than weakly supervised methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA)",
+      "baseline": "Video Moment Retrieval from Text Queries via Single Frame Annotation",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "contrastive learning based method named Video moment retrieval via Glance Annotation (ViGA)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Differing to an earlier task video action localization , which aims at localizing pre-defined categorized actions from the video, VMR is considered as a more difficult task since the query is generalized to free natural language thus...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_cui_video-moment-retrieval-from-text-queries-via-single-frame-annotation_41c31e151a\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_cui_video-moment-retrieval-from-text-queries-via-single-frame-annotation_41c31e151a\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

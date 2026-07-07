@@ -1,0 +1,601 @@
+{
+  "paper_id": "2024_liu_r-2-tuning-efficient-image-to-video-transfer-learning-for-video-temporal-groundi_b7345acf9c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_r-2-tuning-efficient-image-to-video-transfer-learning-for-video-temporal-groundi_b7345acf9c",
+  "title": "$R^2$-Tuning: Efficient Image-to-Video Transfer Learning for Video Temporal Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Ye Liu",
+    "Jixuan He",
+    "Wanhua Li",
+    "Junsik Kim",
+    "Donglai Wei",
+    "Hanspeter Pfister",
+    "Chang Wen Chen"
+  ],
+  "task_scope": {
+    "primary_task": "Video Summarization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Summarization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "$R^2$-Tuning achieves state-of-the-art performance across three VTG tasks (i.e., moment retrieval, highlight detection, and video summarization) on six public benchmarks (i.e., QVHighlights, Charades-STA, Ego4D-NLQ, TACoS, YouTube Highlights, and TVSum) even without the additional backbone, demonstrating the significance and effectiveness of the proposed scheme.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video is becoming the major content media in our daily lives.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Video is becoming the major content media in our daily lives.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The variety of video domains has extended beyond daily activities but broader scenes such as egocentric and surveillance .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "The variety of video domains has extended beyond daily activities [5,26] but broader scenes such as egocentric [11] and surveillance [68].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Preliminary experiments in Figure 2 also demonstrate that the potential of spatialtemporal modeling for CLIP is not fully exploited by existing methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Preliminary experiments in Figure 2 also demonstrate that the potential of spatialtemporal modeling for CLIP is not fully exploited by existing methods.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Figure 1, VTG can be disentangled into three tasks based on different output...",
+        "scenario": "As shown in Figure 1, VTG can be disentangled into three tasks based on different output formats, i.e., moment retrieval (MR) for regressing start-end timestamps, highlight detection (HD) for predicting frame-level saliency curves, and video summarization (VS) for classifying disjoint shots.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, VTG can be disentangled into three tasks based on different output formats, i.e., moment retrieval (MR) [10,11,26,35] for regressing start-end timestamps, highlight detection (HD) [26,54] for predicting frame-level saliency curves, and video summarization (VS) [2,12,52] for classifying disjoint shots.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As a feasible compromise, an additional backbone (e.g., SlowFast ) is incorporated to...",
+        "scenario": "As a feasible compromise, an additional backbone (e.g., SlowFast ) is incorporated to complement the temporal information, followed by carefully designed modules such as textguided queries , dynamic anchors , and event reasoning .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As a feasible compromise, an additional backbone (e.g., SlowFast [9]) is incorporated to complement the temporal information, followed by carefully designed modules such as textguided queries [35], dynamic anchors [40], and event reasoning [18].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Second, queries for VTG could be of different granularities from coarse (e.g., the family...",
+        "scenario": "Second, queries for VTG could be of different granularities from coarse (e.g., the family is traveling) to fine (e.g., when did I take the golf club from the man with white hair).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Second, queries for VTG could be of different granularities from coarse (e.g., the family is traveling) to fine (e.g., when did I take the golf club from the man with white hair).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As illustrated in Figure 3 (d), based on a frozen CLIP , our method learns a side-block...",
+        "scenario": "As illustrated in Figure 3 (d), based on a frozen CLIP , our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "As a feasible compromise, an additional backbone (e.g., SlowFast ) is incorporated to complement the temporal information, followed by carefully designed modules such as textguided queries , dynamic anchors , and event reasoning .",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As a feasible compromise, an additional backbone (e.g., SlowFast [9]) is incorporated to complement the temporal information, followed by carefully designed modules such as textguided queries [35], dynamic anchors [40], and event reasoning [18].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, leveraging two backbones with similar capabilities is unintuitive and inefficient during inference.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "First, leveraging two backbones with similar capabilities is unintuitive and inefficient during inference.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "As illustrated in Figure 3 (d), based on a frozen CLIP , our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Further analysis also shows that our method can better handle multi-granularity information.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "Further analysis also shows that our method can better handle multi-granularity information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP012",
+      "macro_problem_name": "Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well?",
+      "failure_mode": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "root_cause": "CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "why_existing_methods_fail": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "affected_scenario": "As shown in Figure 1, VTG can be disentangled into three tasks based on different output formats, i.e., moment retrieval (MR) for regressing start-end timestamps, highlight detection (HD) for predicting frame-level saliency curves, and video summarization (VS) for classifying disjoint shots.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0079"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 3 (a)), whereas two natural drawbacks exist due to the sub-optimal design?",
+      "failure_mode": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+      "root_cause": "two natural drawbacks exist due to the sub-optimal design.",
+      "why_existing_methods_fail": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+      "affected_scenario": "As a feasible compromise, an additional backbone (e.g., SlowFast ) is incorporated to complement the temporal information, followed by carefully designed modules such as textguided queries , dynamic anchors , and event reasoning .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "3 (a)), whereas two natural drawbacks exist due to the sub-optimal design.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "learns a side-block (R2 Block) containing only 1",
+      "method_core_mechanism": "As illustrated in Figure 3 (d), based on a frozen CLIP , our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+      "method_components": [
+        "CLIP"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0117"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "can better handle multi-granularity information",
+      "method_core_mechanism": "Further analysis also shows that our method can better handle multi-granularity information.",
+      "method_components": [
+        "can better handle multi-granularity information"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Further analysis also shows that our method can better handle multi-granularity information.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video...",
+      "method_core_mechanism": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+      "method_components": [
+        "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0069"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "learns a side-block (R2 Block) containing only 1 targets due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0079",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP012",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "can better handle multi-granularity information targets due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Further analysis also shows that our method can better handle multi-granularity information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0079",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "AP012",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "learns a side-block (R2 Block) containing only 1 targets 3 (a)), whereas two natural drawbacks exist due to the sub-optimal design. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "can better handle multi-granularity information targets 3 (a)), whereas two natural drawbacks exist due to the sub-optimal design. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Further analysis also shows that our method can better handle multi-granularity information.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0020",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "learns a side-block (R2 Block) containing only 1",
+      "compared_to": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "why_it_matters": "It directly targets due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "can better handle multi-granularity information",
+      "compared_to": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "why_it_matters": "It directly targets due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video...",
+      "compared_to": "due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.",
+      "why_it_matters": "It directly targets due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "learns a side-block (R2 Block) containing only 1",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "As illustrated in Figure 3 (d), based on a frozen CLIP , our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 3 (d), based on a frozen CLIP [47], our method learns a side-block (R2 Block) containing only 1.5% of the total parameters to perform spatial-temporal modeling.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "can better handle multi-granularity information",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Further analysis also shows that our method can better handle multi-granularity information.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "Further analysis also shows that our method can better handle multi-granularity information.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video...",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "Overall, our contributions are summarized as: (1) We introduced R2-Tuning, a novel image-to-video transfer learning framework tailored for video temporal grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for learns a side-block (R2 Block) containing only 1",
+      "baseline": "$R^2$-Tuning: Efficient Image-to-Video Transfer Learning for Video Temporal Grounding",
+      "dataset": "Charades-STA, Ego4D",
+      "module_to_modify": "learns a side-block (R2 Block) containing only 1",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting due to CLIP’s misaligned pre-training objective (image-text contrast), these methods fail to capture temporal correlations well.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "Ego4D",
+    "QVHighlights",
+    "TACoS",
+    "TVSum",
+    "YouTube Highlights"
+  ],
+  "metrics": [
+    "HD",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_r-2-tuning-efficient-image-to-video-transfer-learning-for-video-temporal-groundi_b7345acf9c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liu_r-2-tuning-efficient-image-to-video-transfer-learning-for-video-temporal-groundi_b7345acf9c\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

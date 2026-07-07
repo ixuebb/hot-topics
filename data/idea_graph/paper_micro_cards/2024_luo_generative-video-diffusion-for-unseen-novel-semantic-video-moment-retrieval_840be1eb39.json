@@ -1,0 +1,985 @@
+{
+  "paper_id": "2024_luo_generative-video-diffusion-for-unseen-novel-semantic-video-moment-retrieval_840be1eb39",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_generative-video-diffusion-for-unseen-novel-semantic-video-moment-retrieval_840be1eb39",
+  "title": "Generative Video Diffusion for Unseen Novel Semantic Video Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Dezhao Luo",
+    "Shaogang Gong",
+    "Jiabo Huang",
+    "Hailin Jin",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval (VMR) aims to locate the most likely video moment(s) corresponding to a text query in untrimmed videos.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given an untrimmed video and a sentence query, video moment retrieval (VMR) aims to locate the most relevant video moment(s) semantically corresponding to the query.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Given an untrimmed video and a sentence query, video moment retrieval (VMR) aims to locate the most relevant video moment(s) semantically corresponding to the query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This *Corresponding authors Copyright © 2025, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "This *Corresponding authors Copyright © 2025, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "An unsolved critical problem of existing methods is how to select video hypothesis generation that can optimise VMR model learning to novel semantic concepts.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "An unsolved critical problem of existing methods is how to select video hypothesis generation that can optimise VMR model learning to novel semantic concepts.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Specifically, we enhance generation control with an instance-preserving video diffusion model, addressing the limitations of existing methods in maintaining video subjects while altering action details.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "Specifically, we enhance generation control with an instance-preserving video diffusion model, addressing the limitations of existing methods in maintaining video subjects while altering action details.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Existing methods (",
+        "evidence": [
+          {
+            "evidence_id": "EV098",
+            "section": "Introduction",
+            "quote": "Existing methods (Wu et al.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data...",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The second challenge is that existing generative video editing techniques (",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "The second challenge is that existing generative video editing techniques (Wu et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address the first challenge of moment generation by involving only ‘sentencereferred’ local visual variations while maintaining the background and the subject details from the original source video, we design a 2-stage video editing model for simultaneous...",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "To address the first challenge of moment generation by involving only ‘sentencereferred’ local visual variations while maintaining the background and the subject details from the original source video, we design a 2-stage video editing model for simultaneous accurate subject preservation and fine-grained detail change guided by unseen novel concepts.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion...",
+        "scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV086",
+            "section": "Introduction",
+            "quote": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v] person is walking in the road ResNet 2D-Attention Inference: [v] person [v] person is riding a bike Diffusion Encoder … Diffusion Decoder Figure 1: Our designed instance-preserving action editing model.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "2023) heavily rely on designing a delicate generation control, e.g., through an...",
+        "scenario": "2023) heavily rely on designing a delicate generation control, e.g., through an interactive selection of a target prompt, to produce plausible videos through trial-and-error.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV115",
+            "section": "Introduction",
+            "quote": "2023) heavily rely on designing a delicate generation control, e.g., through an interactive selection of a target prompt, to produce plausible videos through trial-and-error.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "In contrast to the biases in the moment location or length (",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "In contrast to the biases in the moment location or length (Hao et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "By ‘novel’, it means novel text vocabularies and their corresponding video moments both unseen in source domain training.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "By ‘novel’, it means novel text vocabularies and their corresponding video moments both unseen in source domain training.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics,...",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences...",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(2) We propose a Fine-grained Video Editing framework (FVE) to adapt a source domain video according to a target sentence of novel concepts as a controller for editing source domain videos to synthesise target moment-text associations for VMR training.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "(2) We propose a Fine-grained Video Editing framework (FVE) to adapt a source domain video according to a target sentence of novel concepts as a controller for editing source domain videos to synthesise target moment-text associations for VMR training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training?",
+      "failure_mode": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...",
+      "root_cause": "the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display...",
+      "why_existing_methods_fail": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+      "affected_scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain?",
+      "failure_mode": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+      "root_cause": "In contrast to the biases in the moment location or length (",
+      "why_existing_methods_fail": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+      "affected_scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background)?",
+      "failure_mode": "there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+      "root_cause": "To benefit novel semantic VMR, a potential approach is to generate videos conditioned on both source video moments and a target sentence of novel semantics/concepts.",
+      "why_existing_methods_fail": "there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+      "affected_scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact?",
+      "failure_mode": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+      "root_cause": "there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background).",
+      "why_existing_methods_fail": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+      "affected_scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP011",
+      "macro_problem_name": "Backbone and Feature-Extractor Dependence and Shortcut Bias and Spurious Context Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "The second challenge is that existing generative video editing techniques (",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the second challenge is that existing generative video editing techniques (?",
+      "failure_mode": "The second challenge is that existing generative video editing techniques (",
+      "root_cause": "This highlights the --- Page 2 --need for an instance-preserving video action editing method constrained by accurate subject specifics (fine-grained details).",
+      "why_existing_methods_fail": "The second challenge is that existing generative video editing techniques (",
+      "affected_scenario": "2024) proposed to input image Train: ResNet 2D-Attention … Diffusion Decoder Diffusion Encoder ResNet 2D-Attnetion Temporal- Attention ResNet 2D-Attention Temporal- Attention … DDIM Inversion Stage 1: Instance Descriptor Learning Stage 2: Temporal Encoding Freezing Layers Optimising Layers [v]...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "The second challenge is that existing generative video editing techniques (Wu et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema",
+      "method_core_mechanism": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "Fine-grained Video Editing framework (FVE)",
+      "method_core_mechanism": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+      "method_components": [
+        "Fine-grained Video Editing",
+        "FVE",
+        "VMR",
+        "we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality o",
+      "method_core_mechanism": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+      "method_components": [
+        "we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0103"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than",
+      "method_core_mechanism": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to only leverage target domain sentences containing unseen new semantics without any videos from the target domain",
+      "method_core_mechanism": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema targets Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Fine-grained Video Editing framework (FVE) targets Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "to only leverage target domain sentences containing unseen new semantics without any videos from the target domain targets 2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain. by operating on bias.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema targets 2022), we tackle a more intricate challenge: semantic biases across domains, where the semantic in the testing domain is novel to the training domain. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema targets there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Fine-grained Video Editing framework (FVE) targets there are several non-trivial challenges in synthesising a meaningful visual hypothesis for a VMR video displaying the same subject performing different actions in a similar environment (background). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema targets The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Fine-grained Video Editing framework (FVE) targets The first challenge lies in regulating the generation of a video moment based on novel semantics referenced in a target domain sentence while retaining other contextual information intact. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Fine-grained Video Editing framework (FVE) targets The second challenge is that existing generative video editing techniques ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema targets The second challenge is that existing generative video editing techniques ( by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0086",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP011",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema",
+      "compared_to": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+      "why_it_matters": "It directly targets Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "Fine-grained Video Editing framework (FVE)",
+      "compared_to": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+      "why_it_matters": "It directly targets Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality o",
+      "compared_to": "Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training and testing data display biases.",
+      "why_it_matters": "It directly targets Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2021) creating pseudo moment-text associations by generating textual descriptions for a target video, we propose a more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new semantics only, without any videos from the target domain.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Fine-grained Video Editing framework (FVE)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address these challenges, we introduce a Fine-grained Video Editing framework (FVE) which explores finegrained generative video diffusion to finely edit videos of seen semantics from the source domain, guided by target sentences of new unseen semantics, thus hypothesising more meaningful unseen target video moments featuring these novel semantics for VMR training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality o",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Firstly, we introduce a cross-modal relevance metric to assess the semantic relevance between the target prompt and the generated video moment, thereby ensuring the quality of the moment-text association.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "Lastly, we introduce the model performance disparity metric, emphasising the importance of enriching VMR training by selecting more diverse synthesised hypotheses rather than duplicating similar visual content to the source domain videos.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to only leverage target domain sentences containing unseen new semantics without any videos from the target domain",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+      "can_transfer_to": [
+        "bias"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "We make three contributions: (1) Instead of collecting moment-query pairs with novel semantic associations for VMR training in every new target domain in order to tackle the semantic bias across domains, we propose to only leverage target domain sentences containing unseen new semantics without any videos from the target domain.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema",
+      "baseline": "Generative Video Diffusion for Unseen Novel Semantic Video Moment Retrieval",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "more scalable and accessible approach to learning generalisable VMR to unseen novel semantics by exploring target domain sentences describing new sema",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Due to the lack of large-scale video moment-text datasets, VMR models are struggling to learn generalisable novel moment-text associations beyond the training source domains, resulting in an inferior cross-domain adaptation where training...."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_generative-video-diffusion-for-unseen-novel-semantic-video-moment-retrieval_840be1eb39\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_luo_generative-video-diffusion-for-unseen-novel-semantic-video-moment-retrieval_840be1eb39\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

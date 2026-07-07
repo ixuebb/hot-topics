@@ -1,0 +1,562 @@
+{
+  "paper_id": "2024_alkanat_density-guided-label-smoothing-for-temporal-localization-of-driving-actions_24896627db",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_alkanat_density-guided-label-smoothing-for-temporal-localization-of-driving-actions_24896627db",
+  "title": "Density-Guided Label Smoothing for Temporal Localization of Driving Actions",
+  "year": 2024,
+  "venue_or_source": "2022 IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops (CVPRW)",
+  "authors": [
+    "Tunç Alkanat",
+    "Erkut Akdag",
+    "Egor Bondarev",
+    "Peter H. N. de With"
+  ],
+  "task_scope": {
+    "primary_task": "Action Localization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Action Localization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "In this work, we focus on improving the overall performance by efficiently utilizing video action recognition networks and adapting these to the problem of action localization.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Efficient, fast, and safe transportation is one of the important foundations of modern society and a major driving factor of the economy.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Efficient, fast, and safe transportation is one of the important foundations of modern society and a major driving factor of the economy.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Every day, billions of people rely on various forms of transit, including road transportation.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Every day, billions of people rely on various forms of transit, including road transportation.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Many previous works on this subject are inspired by two-stage, proposalgeneration and classification methodologies that were initially devised for the problem of object detection .",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Many previous works on this subject are inspired by two-stage, proposalgeneration and classification methodologies that were initially devised for the problem of object detection [2,3].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "frequent use of road transportation also has drawbacks.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "However, frequent use of road transportation also has drawbacks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• An evaluation of the proposed method on the A2 test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "• An evaluation of the proposed method on the A2 test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "this automation Figure 1.",
+        "scenario": "this automation Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "However, this automation Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For instance, the annual road traffic deaths were estimated at 1.25 million in 2013 .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "For instance, the annual road traffic deaths were estimated at 1.25 million in 2013 [1].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In the current state, ADAS requires human supervision to ensure safety while gradually addressing increasingly complex driving tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "In the current state, ADAS requires human supervision to ensure safety while gradually addressing increasingly complex driving tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Our method shows promising results with an F1 score of 0.271.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Our method shows promising results with an F1 score of 0.271.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method shows promising results with an F1 score of 0.271.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Our method shows promising results with an F1 score of 0.271.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "frequent use of road transportation also has drawbacks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that frequent use of road transportation also has drawbacks?",
+      "failure_mode": "frequent use of road transportation also has drawbacks.",
+      "root_cause": "drawbacks.",
+      "why_existing_methods_fail": "frequent use of road transportation also has drawbacks.",
+      "affected_scenario": "this automation Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV009"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV009",
+          "section": "Introduction",
+          "quote": "However, frequent use of road transportation also has drawbacks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability?",
+      "failure_mode": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+      "root_cause": "the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+      "why_existing_methods_fail": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+      "affected_scenario": "this automation Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0035"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge?",
+      "failure_mode": "test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+      "root_cause": "• An efficient post-processing step that eliminates false positives and improves the overall performance.",
+      "why_existing_methods_fail": "• An evaluation of the proposed method on the A2 test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+      "affected_scenario": "this automation Figure 1.",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "• An evaluation of the proposed method on the A2 test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0027"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "density-guided label smoothing",
+      "method_core_mechanism": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+      "method_components": [
+        "density-guided label smoothing"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0108"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "shows promising results with an F1 score of 0",
+      "method_core_mechanism": "Our method shows promising results with an F1 score of 0.271.",
+      "method_components": [
+        "shows promising results with an F1 score of 0"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method shows promising results with an F1 score of 0.271.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0113"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "density-guided label smoothing targets frequent use of road transportation also has drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "shows promising results with an F1 score of 0 targets frequent use of road transportation also has drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method shows promising results with an F1 score of 0.271.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0113",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "density-guided label smoothing targets task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0035",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "shows promising results with an F1 score of 0 targets task is difficult due to the complex nature of the problem, variability of environmental conditions, and the strict requirements for high robustness and reliability. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method shows promising results with an F1 score of 0.271.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0035",
+      "micro_method_cluster_id": "MM0113",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "shows promising results with an F1 score of 0 targets test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method shows promising results with an F1 score of 0.271.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0027",
+      "micro_method_cluster_id": "MM0113",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "density-guided label smoothing targets test set of the naturalistic driving action recognition track of the 2022 NVIDIA AI City Challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0027",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "density-guided label smoothing",
+      "compared_to": "frequent use of road transportation also has drawbacks.",
+      "why_it_matters": "It directly targets frequent use of road transportation also has drawbacks.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "shows promising results with an F1 score of 0",
+      "compared_to": "frequent use of road transportation also has drawbacks.",
+      "why_it_matters": "It directly targets frequent use of road transportation also has drawbacks.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "density-guided label smoothing",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To alleviate this shortcoming, in this work, we propose density-guided label smoothing to improve localization performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "shows promising results with an F1 score of 0",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our method shows promising results with an F1 score of 0.271.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Our method shows promising results with an F1 score of 0.271.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for density-guided label smoothing",
+      "baseline": "Density-Guided Label Smoothing for Temporal Localization of Driving Actions",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "density-guided label smoothing",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting frequent use of road transportation also has drawbacks.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_alkanat_density-guided-label-smoothing-for-temporal-localization-of-driving-actions_24896627db\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_alkanat_density-guided-label-smoothing-for-temporal-localization-of-driving-actions_24896627db\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

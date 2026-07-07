@@ -1,0 +1,712 @@
+{
+  "paper_id": "2023_jang_knowing-where-to-focus-event-aware-transformer-for-video-grounding_4eab551f51",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jang_knowing-where-to-focus-event-aware-transformer-for-video-grounding_4eab551f51",
+  "title": "Knowing Where to Focus: Event-aware Transformer for Video Grounding",
+  "year": 2023,
+  "venue_or_source": "ICCV 2023",
+  "authors": [
+    "Jinhyun Jang",
+    "Jungin Park",
+    "Jin Kim",
+    "Hyeongjun Kwon",
+    "Kwanghoon Sohn"
+  ],
+  "task_scope": {
+    "primary_task": "Video Summarization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Summarization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "video summarization [52, 22], video retrieval [53, 71], text-to-video retrieval [6, 54]) has been explored to enable users to efficiently browse the information they want.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Over the decade, online video platforms have been explosively developed, with the number of videos uploaded every day growing exponentially.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Over the decade, online video platforms have been explosively developed, with the number of videos uploaded every day growing exponentially.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Accordingly, the amount of work for video search (e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Accordingly, the amount of work for video search (e.g.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "video summarization , video retrieval , text-to-video retrieval ) has been explored to enable users to efficiently browse the information they want.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "video summarization [52, 22], video retrieval [53, 71], text-to-video retrieval [6, 54]) has been explored to enable users to efficiently browse the information they want.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "While they have presented an efficient way to search videos by considering the whole content, providing a user-defined moment in a video is a different desire.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "While they have presented an efficient way to search videos by considering the whole content, providing a user-defined moment in a video is a different desire.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "they highly rely on the quality of hand-crafted components (e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "However, they highly rely on the quality of hand-crafted components (e.g.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths .",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "However, a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths [21, 61, 59, 23].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Accordingly, the amount of work for video search (e.g.",
+        "scenario": "Accordingly, the amount of work for video search (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Accordingly, the amount of work for video search (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Queries Moment Reasoning Video-Specific Moment Queries Moment Prediction Event Reasoning...",
+        "scenario": "Queries Moment Reasoning Video-Specific Moment Queries Moment Prediction Event Reasoning Video Text Frame PE (c) Ours Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Queries Moment Reasoning Video-Specific Moment Queries Moment Prediction Event Reasoning Video Text Frame PE (c) Ours Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Video grounding (also called natural language video moment localization) aims to localize...",
+        "scenario": "Video grounding (also called natural language video moment localization) aims to localize timestamps of a moment referring to a given natural language sentence in a video, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Video grounding (also called natural language video moment localization) aims to localize timestamps of a moment referring to a given natural language sentence in a video, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Most works have accomplished this by aligning sentence and heuristically pre-defined...",
+        "scenario": "Most works have accomplished this by aligning sentence and heuristically pre-defined temporal proposals (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Most works have accomplished this by aligning sentence and heuristically pre-defined temporal proposals (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "proposals, non-maximum suppression) to achieve a promising result.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "proposals, non-maximum suppression) to achieve a promising result.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Specifically, since moment queries are learned to contain general positional information, they produce a fixed input-agnostic search area during inference, as shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Specifically, since moment queries are learned to contain general positional information, they produce a fixed input-agnostic search area during inference, as shown in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In addition, the moment queries are controlled with equal contributions to aggregate video-sentence representations in the decoder layers, missing salient information and resulting in slow convergence.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "In addition, the moment queries are controlled with equal contributions to aggregate video-sentence representations in the decoder layers, missing salient information and resulting in slow convergence.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our key contributions are as follows: (i) We present a novel Event-aware Video Grounding Transformer (EaTR) that enhances the temporal reasoning capability of the moment queries by learning the video-specific event information.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "In summary, our key contributions are as follows: (i) We present a novel Event-aware Video Grounding Transformer (EaTR) that enhances the temporal reasoning capability of the moment queries by learning the video-specific event information.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "they highly rely on the quality of hand-crafted components (e.g.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they highly rely on the quality of hand-crafted components (e.g?",
+      "failure_mode": "they highly rely on the quality of hand-crafted components (e.g.",
+      "root_cause": "sliding windows , temporal anchors ) or directly learning sentence-frame interactions .",
+      "why_existing_methods_fail": "they highly rely on the quality of hand-crafted components (e.g.",
+      "affected_scenario": "Video grounding (also called natural language video moment localization) aims to localize timestamps of a moment referring to a given natural language sentence in a video, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "However, they highly rely on the quality of hand-crafted components (e.g.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks?",
+      "failure_mode": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+      "root_cause": "Each moment query probes and aggregates video-sentence representations through the crossattention mechanism where the final moment queries are used to predict the timestamps of the sentence-relevant moments.",
+      "why_existing_methods_fail": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+      "affected_scenario": "Accordingly, the amount of work for video search (e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths ?",
+      "failure_mode": "a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths .",
+      "root_cause": "Specifically, since moment queries are learned to contain general positional information, they produce a fixed input-agnostic search area during inference, as shown in Fig.",
+      "why_existing_methods_fail": "a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths .",
+      "affected_scenario": "Accordingly, the amount of work for video search (e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "However, a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths [21, 61, 59, 23].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0026"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "novel Event-aware Video Grounding TRansformer (EaTR)",
+      "method_core_mechanism": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+      "method_components": [
+        "Event-aware Video Grounding TRansformer"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0217"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti",
+      "method_core_mechanism": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+      "method_components": [
+        "we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV043"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0040"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "effective event reasoning and the gated fusion",
+      "method_core_mechanism": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+      "method_components": [
+        "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0219"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Event-aware Video Grounding TRansformer (EaTR) targets they highly rely on the quality of hand-crafted components (e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0004",
+      "micro_method_cluster_id": "MM0217",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti targets they highly rely on the quality of hand-crafted components (e.g. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0004",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Event-aware Video Grounding TRansformer (EaTR) targets While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0217",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti targets While they have achieved outperforming performance over the CNN-based approaches, the design choices of moment queries are still underexplored, exhibiting several drawbacks. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0001",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel Event-aware Video Grounding TRansformer (EaTR) targets a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0026",
+      "micro_method_cluster_id": "MM0217",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti targets a video is a complex visual stream that consists of multiple semantic units (i.e., events) with varying lengths . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0026",
+      "micro_method_cluster_id": "MM0040",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "novel Event-aware Video Grounding TRansformer (EaTR)",
+      "compared_to": "they highly rely on the quality of hand-crafted components (e.g.",
+      "why_it_matters": "It directly targets they highly rely on the quality of hand-crafted components (e.g.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti",
+      "compared_to": "they highly rely on the quality of hand-crafted components (e.g.",
+      "why_it_matters": "It directly targets they highly rely on the quality of hand-crafted components (e.g.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "effective event reasoning and the gated fusion",
+      "compared_to": "they highly rely on the quality of hand-crafted components (e.g.",
+      "why_it_matters": "It directly targets they highly rely on the quality of hand-crafted components (e.g.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel Event-aware Video Grounding TRansformer (EaTR)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "In this paper, we propose a novel Event-aware Video Grounding TRansformer (EaTR) that formulates a video as a set of event units and treats video-specific event units as dynamic moment queries.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referenti",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV043",
+          "section": "Introduction",
+          "quote": "To this end, we introduce a gated fusion transformer layer to effectively minimize the impact of the sentence-irrelevant moment queries and capture the most informative referential search area.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "effective event reasoning and the gated fusion",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(ii) We introduce effective event reasoning and the gated fusion that highlight the distinctive events in a given video and sentence.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel Event-aware Video Grounding TRansformer (EaTR)",
+      "baseline": "Knowing Where to Focus: Event-aware Transformer for Video Grounding",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "novel Event-aware Video Grounding TRansformer (EaTR)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting they highly rely on the quality of hand-crafted components (e.g.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "MAD",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "R1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jang_knowing-where-to-focus-event-aware-transformer-for-video-grounding_4eab551f51\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_jang_knowing-where-to-focus-event-aware-transformer-for-video-grounding_4eab551f51\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

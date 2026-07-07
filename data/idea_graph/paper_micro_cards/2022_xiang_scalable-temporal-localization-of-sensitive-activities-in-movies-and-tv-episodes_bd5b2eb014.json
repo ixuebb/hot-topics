@@ -1,0 +1,832 @@
+{
+  "paper_id": "2022_xiang_scalable-temporal-localization-of-sensitive-activities-in-movies-and-tv-episodes_bd5b2eb014",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xiang_scalable-temporal-localization-of-sensitive-activities-in-movies-and-tv-episodes_bd5b2eb014",
+  "title": "Scalable Temporal Localization of Sensitive Activities in Movies and TV Episodes",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Hao, Xiang",
+    "Jingxiang Chen",
+    "Shixing Chen",
+    "A. Ben Saad",
+    "Hamid, Raffay"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex,...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and Thumos14...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge [28] [25] [33] [30] [22] [24] [12] [6] [7] [1] have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 [3] and Thumos14 [15] have 64% and 29% foreground frames).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "A key challenge in building fully supervised models [2] [5] [37] [43] for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and Thumos14...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge [28] [25] [33] [30] [22] [24] [12] [6] [7] [1] have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 [3] and Thumos14 [15] have 64% and 29% foreground frames).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this challenge, our Coarse2Fine network decomposes the frame-level prediction into two parts.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To address this challenge, our Coarse2Fine network decomposes the frame-level prediction into two parts.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "To maintain trust with their customers and help them make more informed viewing choices,...",
+        "scenario": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To this end, we use our proposed Coarse2Fine network (see Figure 1 for illustration) to...",
+        "scenario": "To this end, we use our proposed Coarse2Fine network (see Figure 1 for illustration) to make frame-level predictions about whether any sensitive activity is observable in individual frames.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To this end, we use our proposed Coarse2Fine network (see Figure 1 for illustration) to make frame-level predictions about whether any sensitive activity is observable in individual frames.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Previous works employing background suppression or foreground modeling that indirectly...",
+        "scenario": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and Thumos14 have 64% and 29% foreground frames).",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge [28] [25] [33] [30] [22] [24] [12] [6] [7] [1] have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 [3] and Thumos14 [15] have 64% and 29% foreground frames).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex,...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "While weakly supervised temporal action localization methods do not pose this constraint, they are generally not as accurate as fully supervised localization approaches.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "While weakly supervised temporal action localization methods [33] [22] [25] do not pose this constraint, they are generally not as accurate as fully supervised localization approaches.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Most streaming services provide only video-level information about whether a movie or TV episode contains sensitive content.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Most streaming services provide only video-level information about whether a movie or TV episode contains sensitive content.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P09",
+      "legacy_macro_problem_name": "Scalability and Corpus-Level Retrieval",
+      "micro_problem_name": "oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services?",
+      "failure_mode": "oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "root_cause": "emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "why_existing_methods_fail": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "affected_scenario": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that a key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming?",
+      "failure_mode": "A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+      "root_cause": "Our work undertakes a dedicated and thorough analysis of sensitive activity localization in movies and TV episodes to enable scalable moderation of long-form video-content.",
+      "why_existing_methods_fail": "A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+      "affected_scenario": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "A key challenge in building fully supervised models [2] [5] [37] [43] for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry?",
+      "failure_mode": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+      "root_cause": "While weakly supervised temporal action localization methods do not pose this constraint, they are generally not as accurate as fully supervised localization approaches.",
+      "why_existing_methods_fail": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+      "affected_scenario": "To maintain trust with their customers and help them make more informed viewing choices, streaming services try to moderate their content and provide visibility to their customers about which parts of their videos contain age-appropriate material (e.g., sex, nudity, violence, or drug-use).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data)?",
+      "failure_mode": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+      "root_cause": "Our results demonstrate that this way of using weak and strong labels results in signiﬁcantly more accurate activity localization compared to existing approaches.",
+      "why_existing_methods_fail": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+      "affected_scenario": "To this end, we use our proposed Coarse2Fine network (see Figure 1 for illustration) to make frame-level predictions about whether any sensitive activity is observable in individual frames.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "ks employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ks employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and?",
+      "failure_mode": "ks employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and...",
+      "root_cause": "Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data).",
+      "why_existing_methods_fail": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and Thumos14 have 64% and 29% foreground frames).",
+      "affected_scenario": "To this end, we use our proposed Coarse2Fine network (see Figure 1 for illustration) to make frame-level predictions about whether any sensitive activity is observable in individual frames.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Previous works employing background suppression or foreground modeling that indirectly addresses this challenge [28] [25] [33] [30] [22] [24] [12] [6] [7] [1] have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 [3] and Thumos14 [15] have 64% and 29% foreground frames).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl",
+      "method_core_mechanism": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+      "method_components": [
+        "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0216"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar",
+      "method_core_mechanism": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+      "method_components": [
+        "TV"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0201"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "is able to offer 107",
+      "method_core_mechanism": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+      "method_components": [
+        "is able to offer 107"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl targets oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0216",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar targets oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0201",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl targets A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0216",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar targets A key challenge in building fully supervised models for sensitive activity localization is the large amounts of clip-level labels required to train them which is costly and time-consuming. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0201",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl targets To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0216",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar targets To address this challenge speciﬁcally for movies and TV episodes, it is helpful to keep in mind some of the standard practices in video-streaming industry. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0021",
+      "micro_method_cluster_id": "MM0201",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl targets Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059",
+      "micro_method_cluster_id": "MM0216",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar targets Another key challenge in localizing age-appropriate activities in movies and TV episodes is the severe labelimbalance caused due the rare-occurrence nature of such activities (∼2% of video-length in our data). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059",
+      "micro_method_cluster_id": "MM0201",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl targets ks employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059",
+      "micro_method_cluster_id": "MM0216",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar targets ks employing background suppression or foreground modeling that indirectly addresses this challenge have mainly focused on regular activities in short-form videos where the label-imbalance is not that severe (e.g., ActivityNet 1.3 and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0059",
+      "micro_method_cluster_id": "MM0201",
+      "macro_problem_id": "AP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl",
+      "compared_to": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "why_it_matters": "It directly targets oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar",
+      "compared_to": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "why_it_matters": "It directly targets oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "is able to offer 107",
+      "compared_to": "# Introduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.",
+      "why_it_matters": "It directly targets oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Our approach for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse clip-level labels based on the ﬁrst-occurrence of sensitive activities.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the lar",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "We show the effectiveness of our approach by presenting results using 41, 234 movies and TV episodes (∼3 years of video-content) from 521 sub-genres and 250 countries, making it by far the largest-scale empirical analysis of ageappropriate activity localization in long-form videos ever published.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is able to offer 107",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Our approach is able to offer 107.2% relative mAP improvement (from 5.5% to 11.4%) over existing state-of-the-art activity-localization approaches.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl",
+      "baseline": "Scalable Temporal Localization of Sensitive Activities in Movies and TV Episodes",
+      "dataset": "ActivityNet",
+      "module_to_modify": "for sensitive activity localization is particularly geared to make use of these readily obtainable videolevel labels in conjunction with the sparse cl",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting oduction Accurate and scalable content moderation has emerged as one of the most pressing challenges faced by all videostreaming services.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xiang_scalable-temporal-localization-of-sensitive-activities-in-movies-and-tv-episodes_bd5b2eb014\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xiang_scalable-temporal-localization-of-sensitive-activities-in-movies-and-tv-episodes_bd5b2eb014\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

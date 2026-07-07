@@ -1,0 +1,667 @@
+{
+  "paper_id": "2023_li_momentdiff-generative-video-moment-retrieval-from-random-to-real_6315370d91",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_momentdiff-generative-video-moment-retrieval-from-random-to-real_6315370d91",
+  "title": "MomentDiff: Generative Video Moment Retrieval from Random to Real",
+  "year": 2023,
+  "venue_or_source": "NeurIPS 2023",
+  "authors": [
+    "Pandeng Li",
+    "Chen-Wei Xie",
+    "Hongtao Xie",
+    "Liming Zhao",
+    "Lei Zhang",
+    "Yun Zheng",
+    "Deli Zhao",
+    "Yongdong Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval pursues an efficient and generalized solution to identify the specific temporal segments within an untrimmed video that correspond to a given language description.To achieve this goal, we provide a generative diffusion-based framework called MomentDiff, which simulates a typical human retrieval process from random browsing to gradual localization.Specifically, we first diffuse the real span to random noise, and learn to denoise the random noise to the original span with the guidance of similarity between text and video.This allows the model to learn a mapping from arbitrary random locations to real moments, enabling the ability to locate segments from",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video understanding [1–9] is a crucial problem in machine learning [10–16], which covers various video analysis tasks, such as video classification and action detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV005",
+            "section": "Introduction",
+            "quote": "# Introduction Video understanding [1–9] is a crucial problem in machine learning [10–16], which covers various video analysis tasks, such as video classification and action detection.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "both tasks above are limited to predicting predefined action categories.",
+        "evidence": [
+          {
+            "evidence_id": "EV006",
+            "section": "Introduction",
+            "quote": "But both tasks above are limited to predicting predefined action categories.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "A more natural and elaborate video understanding process is the ability for machines to match human language descriptions to specific activity segments in a complex video.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "A more natural and elaborate video understanding process is the ability for machines to match human language descriptions to specific activity segments in a complex video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Hence, a series of studies [17–22] are conducted on Video Moment Retrieval (VMR), with the aim of identifying the moment boundaries ( i.e., the start and end time) within a given video that best semantically correspond to the text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Hence, a series of studies [17–22] are conducted on Video Moment Retrieval (VMR), with the aim of identifying the moment boundaries ( i.e., the start and end time) within a given video that best semantically correspond to the text query.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency [28].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "However, these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Noise intensity m VMD Predict spans ̂𝑐!\"# #𝑤!\"# Noise intensity m-1 VMD Predict spans ̂𝑐#...",
+        "scenario": "Noise intensity m VMD Predict spans ̂𝑐!\"# #𝑤!\"# Noise intensity m-1 VMD Predict spans ̂𝑐# #𝑤# Noise intensity 1 Fusion embedding … Timeline Top-1 Result Denoising & Ranking … (d) Inference Denoising Denoising (a) Dense: 2DTAN Text Video span score start end start end … Predefined video proposals …...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Noise intensity m VMD Predict spans ̂𝑐!\"# #𝑤!\"# Noise intensity m-1 VMD Predict spans ̂𝑐# #𝑤# Noise intensity 1 Fusion embedding … Timeline Top-1 Result Denoising & Ranking … (d) Inference Denoising Denoising (a) Dense: 2DTAN Text Video span score start end start end … Predefined video proposals … (b) Sparse: MomentDETR Text Video span score Decoder start end N learnable queries … (c) Random: MomentDiff Text Video span score Denoiser m start end N random spans … iterative Figure 1: (a) Proposal-predefined methods.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For example, these proposals or queries may tend to focus on video segments where...",
+        "scenario": "For example, these proposals or queries may tend to focus on video segments where locations in the dataset occur more often (i.e., yellow highlights in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "For example, these proposals or queries may tend to focus on video segments where locations in the dataset occur more often (i.e., yellow highlights in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To deal with this problem, a series of VMR works [29–36] have recently emerged, mainly discussing how to reduce the number of proposals and improve the quality of proposals.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "To deal with this problem, a series of VMR works [29–36] have recently emerged, mainly discussing how to reduce the number of proposals and improve the quality of proposals.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For example, these proposals or queries may tend to focus on video segments where locations in the dataset occur more often (i.e., yellow highlights in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "For example, these proposals or queries may tend to focus on video segments where locations in the dataset occur more often (i.e., yellow highlights in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency ?",
+      "failure_mode": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "root_cause": "(d) We model the VMR task as a process of gradually generating real temporal span from random noise.",
+      "why_existing_methods_fail": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency [28].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments?",
+      "failure_mode": "these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+      "root_cause": "1(b)) is to use sparse and learnable proposals [34–36] or queries (i.e., soft proposals) to model the statistics of the entire dataset and adaptively predict video segments.",
+      "why_existing_methods_fail": "these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+      "affected_scenario": "For example, these proposals or queries may tend to focus on video segments where locations in the dataset occur more often (i.e., yellow highlights in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "However, these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "generative perspective for the VMR task",
+      "method_core_mechanism": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+      "method_components": [
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "is",
+      "method_core_mechanism": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+      "method_components": [
+        "is"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0030"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "generative diffusion-based framework, named MomentDiff",
+      "method_core_mechanism": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+      "method_components": [
+        "we introduce a generative diffusion-based framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0120"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Video Moment Denoiser (VMD)",
+      "method_core_mechanism": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+      "method_components": [
+        "Video Moment Denoiser (VMD)",
+        "Video Moment Denoiser",
+        "VMD"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0199"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "generative perspective for the VMR task targets these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "is targets these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0032",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "generative perspective for the VMR task targets these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "is targets these proposal-learnable methods rely on a few specific proposals or queries to fit the location distribution of ground truth moments. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0009",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "generative perspective for the VMR task",
+      "compared_to": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "why_it_matters": "It directly targets these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "is",
+      "compared_to": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "why_it_matters": "It directly targets these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "generative diffusion-based framework, named MomentDiff",
+      "compared_to": "these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .",
+      "why_it_matters": "It directly targets these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "generative perspective for the VMR task",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To tackle the above issues, we propose a generative perspective for the VMR task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "A heuristic explanation of our method is that, it can be viewed as a way for humans to quickly retrieve moments of interest in a video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "generative diffusion-based framework, named MomentDiff",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To implement our idea, we introduce a generative diffusion-based framework, named MomentDiff.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Video Moment Denoiser (VMD)",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+      "can_transfer_to": [
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Finally, we develop a Video Moment Denoiser (VMD) that enhances noise perception and enables efficient generation with only a small number of random spans and flexible embedding learning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for generative perspective for the VMR task",
+      "baseline": "MomentDiff: Generative Video Moment Retrieval from Random to Real",
+      "dataset": "Charades-STA",
+      "module_to_modify": "generative perspective for the VMR task",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting these methods have a large redundancy of proposals and the numbers of positive and negative proposals are unbalanced, which limits the learning efficiency .."
+    }
+  ],
+  "datasets": [
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_momentdiff-generative-video-moment-retrieval-from-random-to-real_6315370d91\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_li_momentdiff-generative-video-moment-retrieval-from-random-to-real_6315370d91\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

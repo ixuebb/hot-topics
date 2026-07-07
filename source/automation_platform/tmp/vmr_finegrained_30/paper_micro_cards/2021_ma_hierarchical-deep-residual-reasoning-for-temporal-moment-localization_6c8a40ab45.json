@@ -1,0 +1,794 @@
+{
+  "paper_id": "2021_ma_hierarchical-deep-residual-reasoning-for-temporal-moment-localization_6c8a40ab45",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ma_hierarchical-deep-residual-reasoning-for-temporal-moment-localization_6c8a40ab45",
+  "title": "Hierarchical Deep Residual Reasoning for Temporal Moment Localization",
+  "year": 2021,
+  "venue_or_source": "arXiv",
+  "authors": [
+    "Ziyang Ma",
+    "Xianjing Han",
+    "Xuemeng Song",
+    "Yiran Cui",
+    "Liqiang Nie"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal Moment Localization (TML) in untrimmed videos is a challenging task in the field of multimedia, which aims at localizing the start and end points of the activity in the video, described by a sentence query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The explosive increasing of the video data in our daily life makes the processing and automatic understanding to the video significantly *Xuemeng Song is the corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction The explosive increasing of the video data in our daily life makes the processing and automatic understanding to the video significantly *Xuemeng Song is the corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Although existing methods have achieved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Although existing methods have achieved great success with either the graph neural network [19, 40, 42, 45] or the iterative attention [19, 26, 39], they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Nevertheless, they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although existing methods have achieved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Although existing methods have achieved great success with either the graph neural network [19, 40, 42, 45] or the iterative attention [19, 26, 39], they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "• Considering that different videos and sentences may have different levels of difficulty to be reasoned, we design the Res-BiGRUs for the self-adaptive feature fusion, which also avoids the information loss caused by the representation smoothing as a...",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "• Considering that different videos and sentences may have different levels of difficulty to be reasoned, we design the Res-BiGRUs for the self-adaptive feature fusion, which also avoids the information loss caused by the representation smoothing as a byproduct.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "ACM ISBN 978-1-4503-8607-4/21/12...$15.00 https://doi.org/10.1145/3469877.3490595 A...",
+        "scenario": "ACM ISBN 978-1-4503-8607-4/21/12...$15.00 https://doi.org/10.1145/3469877.3490595 A person walks in a doorway A person drinking some coffee Figure 1: Illustration of the multi-level representations of the sentence and video. necessary.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "ACM ISBN 978-1-4503-8607-4/21/12...$15.00 https://doi.org/10.1145/3469877.3490595 A person walks in a doorway A person drinking some coffee Figure 1: Illustration of the multi-level representations of the sentence and video. necessary.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Due to its huge application requirements in fields of security (e.g. surveillance) and...",
+        "scenario": "Due to its huge application requirements in fields of security (e.g. surveillance) and network media (e.g. fragment retrieval), the task of Temporal Moment Localization (TML) that aims at localizing the start and end points of the activity described by the sentence query in an untrimmed video,...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Due to its huge application requirements in fields of security (e.g. surveillance) and network media (e.g. fragment retrieval), the task of Temporal Moment Localization (TML) [2, 19, 21, 26] that aims at localizing the start and end points of the activity described by the sentence query in an untrimmed video, attracts the attention of plenty of researchers.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Since the representation of the sentence plays a pivotal role in TML, several efforts...",
+        "scenario": "Since the representation of the sentence plays a pivotal role in TML, several efforts have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Since the representation of the sentence plays a pivotal role in TML, several efforts [5, 8, 12, 17, 36, 43] have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For example, the sentence query “A man begins changing as he goes upstairs” is harder to...",
+        "scenario": "For example, the sentence query “A man begins changing as he goes upstairs” is harder to be understood by the model than “A man is eating”.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "For example, the sentence query “A man begins changing as he goes upstairs” is harder to be understood by the model than “A man is eating”.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Since the representation of the sentence plays a pivotal role in TML, several efforts have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Since the representation of the sentence plays a pivotal role in TML, several efforts [5, 8, 12, 17, 36, 43] have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In other words, they overlook the potential of the actions and objects in the sentence in localizing the target moment.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "In other words, they overlook the potential of the actions and objects in the sentence in localizing the target moment.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Intuitively, shorter and high-quality videos are easier to be analysed, compared with the longer and low-quality ones.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Intuitively, shorter and high-quality videos are easier to be analysed, compared with the longer and low-quality ones.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and...",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes the video and sentence into multilevel representations with different semantics to strengthen the temporal moment localization with hierarchical reasoning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Proposal and Detector Dependence and Backbone and Feature-Extractor Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning?",
+      "failure_mode": "sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "root_cause": "Accordingly, the task of TML is more challenging.",
+      "why_existing_methods_fail": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "affected_scenario": "ACM ISBN 978-1-4503-8607-4/21/12...$15.00 https://doi.org/10.1145/3469877.3490595 A person walks in a doorway A person drinking some coffee Figure 1: Illustration of the multi-level representations of the sentence and video. necessary.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Fine-Grained Cross-Modal Evidence Integration and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references?",
+      "failure_mode": "they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+      "root_cause": "Since the representation of the sentence plays a pivotal role in TML, several efforts have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+      "why_existing_methods_fail": "they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+      "affected_scenario": "Since the representation of the sentence plays a pivotal role in TML, several efforts have investigated the fine-grained (e.g., word-level and phrase-level) representations of the sentence, for localizing the target moments in video.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Nevertheless, they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Augmentation Reliability and Distribution Shift",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "eved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that eved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood?",
+      "failure_mode": "eved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+      "root_cause": "As two modalities are involved in the task of TML, one essential problem of TML is how to effectively fuse the representations of the two modalities to facilitate the localization of the target moment.",
+      "why_existing_methods_fail": "Although existing methods have achieved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+      "affected_scenario": "For example, the sentence query “A man begins changing as he goes upstairs” is harder to be understood by the model than “A man is eating”.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Although existing methods have achieved great success with either the graph neural network [19, 40, 42, 45] or the iterative attention [19, 26, 39], they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Augmentation Reliability and Distribution Shift",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones?",
+      "failure_mode": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+      "root_cause": "Intuitively, shorter and high-quality videos are easier to be analysed, compared with the longer and low-quality ones.",
+      "why_existing_methods_fail": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+      "affected_scenario": "For example, the sentence query “A man begins changing as he goes upstairs” is harder to be understood by the model than “A man is eating”.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s",
+      "method_core_mechanism": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+      "method_components": [
+        "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0027"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms: Modal / Fusion",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ",
+      "method_core_mechanism": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+      "method_components": [
+        "Hierarchical Deep Residual Reasoning (HDRR)",
+        "Hierarchical Deep Residual Reasoning",
+        "HDRR",
+        "TML",
+        "and design the Res-BiGRUs to boost the adaptive fusion of the two modalities."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Structured and Agentic Reasoning Mechanisms: Modal / Fusion",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Hierarchical Deep Residual Reasoning (HDRR) model",
+      "method_core_mechanism": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes the video and sentence into multilevel representations with different semantics to strengthen the temporal moment...",
+      "method_components": [
+        "Hierarchical Deep Residual Reasoning (HDRR)",
+        "Hierarchical Deep Residual Reasoning",
+        "HDRR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes the video and sentence into multilevel representations with different semantics to strengthen the temporal moment localization with hierarchical reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0015"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s targets sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning. by operating on representation.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ targets sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0030",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s targets they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ targets they neglect the fact that the key words in the sentence query referring to the target moment are usually actions and objects references. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0013",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s targets eved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ targets eved great success with either the graph neural network or the iterative attention , they neglect that the information embedded in different videos and sentences may have different levels of difficulty to be understood. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s targets Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ targets Analogously, the longer and complex sentences are also more difficult to be reasoned compared with the shorter ones. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0015",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s",
+      "compared_to": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "why_it_matters": "It directly targets sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ",
+      "compared_to": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "why_it_matters": "It directly targets sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Hierarchical Deep Residual Reasoning (HDRR) model",
+      "compared_to": "Although existing studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.",
+      "why_it_matters": "It directly targets sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+      "can_transfer_to": [
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "Toward address the above limitations, as shown in Figure 1, we propose to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained semantic-oriented (action- and objectoriented) representations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at differ",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Concretely, we introduce a Hierarchical Deep Residual Reasoning (HDRR) model to tackle the task of TML, as shown in Figure 2, where we represent the video and sentence at different levels to thoroughly capture the correlation between video clips and the sentence query, and design the Res-BiGRUs to boost the adaptive fusion of the two modalities.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Hierarchical Deep Residual Reasoning (HDRR) model",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes the video and sentence into multilevel representations with different semantics to strengthen the temporal moment...",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Based on the fused multi-level representations, we hierarchically localize the video moment according to the sentence query.The main contributions of our work are threefold: • We propose a Hierarchical Deep Residual Reasoning (HDRR) model, which decomposes the video and sentence into multilevel representations with different semantics to strengthen the temporal moment localization with hierarchical reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s",
+      "baseline": "Hierarchical Deep Residual Reasoning for Temporal Moment Localization",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "to explore the multi-level representations of the video and sentence, including not only the coarse global representation, but also the fine-grained s",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting sting studies have achieved promising progress, they mainly suffer from the following two limitations: 1) lack the explicit semantic-oriented representation learning.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "MAD"
+  ],
+  "metrics": [
+    "HD",
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ma_hierarchical-deep-residual-reasoning-for-temporal-moment-localization_6c8a40ab45\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ma_hierarchical-deep-residual-reasoning-for-temporal-moment-localization_6c8a40ab45\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

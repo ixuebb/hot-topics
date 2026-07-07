@@ -1,0 +1,641 @@
+{
+  "paper_id": "2024_cai_mllm-as-video-narrator-mitigating-modality-imbalance-in-video-moment-retrieval_4ce8c84cee",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cai_mllm-as-video-narrator-mitigating-modality-imbalance-in-video-moment-retrieval_4ce8c84cee",
+  "title": "MLLM as Video Narrator: Mitigating Modality Imbalance in Video Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Weitong Cai",
+    "Jiabo Huang",
+    "Shaogang Gong",
+    "Hailin Jin",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Moment Retrieval (VMR) aims to localize a specific temporal segment within an untrimmed long video given a natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Moment Retrieval (VMR) aims to identify moments of interest within untrimmed videos by predicting their temporal boundaries based on natural language query sentences describing specific activities .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Video Moment Retrieval (VMR) aims to identify moments of interest within untrimmed videos by predicting their temporal boundaries based on natural language query sentences describing specific activities [20, 7, 13].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, the cross-modal alignment knowledge provided by video-query training samples in existing datasets [22, 41] is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, the cross-modal alignment knowledge provided by video-query training samples in existing datasets [22, 41] is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a bed’).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "However, it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "depending on neighboring labeled sentences is frequently impractical in real-world scenarios with limited cross-modal annotations, thus constraining its scalability.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "However, depending on neighboring labeled sentences is frequently impractical in real-world scenarios with limited cross-modal annotations, thus constraining its scalability.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+        "scenario": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1: An illustration of the intrinsic modality imbalance problem in video-query...",
+        "scenario": "Figure 1: An illustration of the intrinsic modality imbalance problem in video-query samples.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Figure 1: An illustration of the intrinsic modality imbalance problem in video-query samples.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "rather than encompassing all the information within that moment (e.g., failing to mention...",
+        "scenario": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Additionally, despite the query being partially associated with its corresponding...",
+        "scenario": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a...",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a bed’).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, the cross-modal alignment knowledge provided by video-query training samples in existing datasets [22, 41] is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a bed’).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment?",
+      "failure_mode": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+      "root_cause": "# Introduction Video Moment Retrieval (VMR) aims to identify moments of interest within untrimmed videos by predicting their temporal boundaries based on natural language query sentences describing specific activities .",
+      "why_existing_methods_fail": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+      "affected_scenario": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning?",
+      "failure_mode": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+      "root_cause": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+      "why_existing_methods_fail": "the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+      "affected_scenario": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, the cross-modal alignment knowledge provided by video-query training samples in existing datasets [22, 41] is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’)?",
+      "failure_mode": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+      "root_cause": "‘mirror’ and ‘pile of clothes’).",
+      "why_existing_methods_fail": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+      "affected_scenario": "Figure 1: An illustration of the intrinsic modality imbalance problem in video-query samples.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a?",
+      "failure_mode": "the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a...",
+      "root_cause": "rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’).",
+      "why_existing_methods_fail": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in...",
+      "affected_scenario": "Figure 1: An illustration of the intrinsic modality imbalance problem in video-query samples.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Additionally, despite the query being partially associated with its corresponding moments, the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a bed’).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions?",
+      "failure_mode": "it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+      "root_cause": "One entails adjusting the syntax and/or wording of the ground-truth query to generate additional pairs and seeks to improve visual-textual alignment through contrastive learning .",
+      "why_existing_methods_fail": "it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+      "affected_scenario": "Specifically, firstly, in terms of semantic completeness, as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "However, it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno",
+      "method_core_mechanism": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+      "method_components": [
+        "Text-Enhanced Alignment (TEA)",
+        "MLLM-driven VMR",
+        "Text-Enhanced Alignment",
+        "MLLM",
+        "VMR",
+        "TEA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0099"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno targets This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0099",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno targets the cross-modal alignment knowledge provided by video-query training samples in existing datasets is not always adequate in both semantics completeness and diversity to facilitate precise and generalizable moment-text correlation learning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0099",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno targets rather than encompassing all the information within that moment (e.g., failing to mention details such as ‘mirror’ and ‘pile of clothes’). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0099",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno targets the extensive visual content outside the moment of interest within the same video lacks textual descriptions, thus unable to contribute to bridging cross-modal understanding (e.g., actions like ‘lying on a bed’ and ‘standing in front of a... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0027",
+      "micro_method_cluster_id": "MM0099",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno targets it relies on strong assumptions about the known and consistent characteristics of syntax or wording and tailors rules to such specific traits, which may falter when confronted with different distributions. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0134",
+      "micro_method_cluster_id": "MM0099",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno",
+      "compared_to": "This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.",
+      "why_it_matters": "It directly targets This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+      "can_transfer_to": [
+        "bias",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "In this work, we propose a novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual knowledge.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno",
+      "baseline": "MLLM as Video Narrator: Mitigating Modality Imbalance in Video Moment Retrieval",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel MLLM-driven VMR framework Text-Enhanced Alignment (TEA) to address the modality imbalance problem by enhancing the correlated visual-textual kno",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting This task poses a significant challenge in video understanding, requiring accurate comprehension of both visual and textual modalities and their precise alignment.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cai_mllm-as-video-narrator-mitigating-modality-imbalance-in-video-moment-retrieval_4ce8c84cee\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_cai_mllm-as-video-narrator-mitigating-modality-imbalance-in-video-moment-retrieval_4ce8c84cee\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

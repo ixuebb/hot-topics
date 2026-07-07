@@ -1,0 +1,398 @@
+{
+  "paper_id": "2022_shin_learning-to-combine-the-modalities-of-language-and-video-for-temporal-moment-loc_2d9b26af37",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_shin_learning-to-combine-the-modalities-of-language-and-video-for-temporal-moment-loc_2d9b26af37",
+  "title": "Learning to combine the modalities of language and video for temporal moment localization",
+  "year": 2022,
+  "venue_or_source": "Computer Vision and Image Understanding",
+  "authors": [
+    "Jungkyoo Shin",
+    "Jinyoung Moon"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal moment localization aims to retrieve the best video segment matching a moment specified by a query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Due to the great increase in online video consumption in recent years , video users require methods for temporal moment localization that are user friendly in order to view interesting video segments that they want to watch among large volumes...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "# Introduction Due to the great increase in online video consumption in recent years [1], video users require methods for temporal moment localization that are user friendly in order to view interesting video segments that they want to watch among large volumes of videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Most studies on temporal localization for understanding real-world untrimmed videos have dealt with temporal action localization, which aims to generate action proposals with precise temporal boundaries, including start and end times that cover the...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Most studies on temporal localization for understanding real-world untrimmed videos have dealt with temporal action localization, which aims to generate action proposals with precise temporal boundaries, including start and end times that cover the ground-truth action instances with high recall.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, the existing methods for temporal action localization and detection [2-8] are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "However, the existing methods for temporal action localization and detection [2-8] are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "First, some sentence queries that are temporally located at similar intervals within a...",
+        "scenario": "First, some sentence queries that are temporally located at similar intervals within a video can describe different spatial parts, including different objects and their actions, as shown in Fig 1 (a).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "First, some sentence queries that are temporally located at similar intervals within a video can describe different spatial parts, including different objects and their actions, as shown in Fig 1 (a).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Second, a sentence query can describe both its primary submoment and its contextual...",
+        "scenario": "Second, a sentence query can describe both its primary submoment and its contextual submoments, as shown in Fig 1 (b), which is located at a temporal interval including the primary moment * Corresponding author.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Second, a sentence query can describe both its primary submoment and its contextual submoments, as shown in Fig 1 (b), which is located at a temporal interval including the primary moment * Corresponding author.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To address this, methods for temporal moment localization, which aim to retrieve the best-matching video segment in an untrimmed video corresponding to a moment specified by a natural language query, were introduced in .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To address this, methods for temporal moment localization, which aim to retrieve the best-matching video segment in an untrimmed video corresponding to a moment specified by a natural language query, were introduced in [12-13].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a...",
+        "evidence": [
+          {
+            "evidence_id": "EV003",
+            "section": "Abstract",
+            "quote": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from...",
+        "evidence": [
+          {
+            "evidence_id": "EV005",
+            "section": "Abstract",
+            "quote": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment?",
+      "failure_mode": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+      "root_cause": "Most studies on temporal localization for understanding real-world untrimmed videos have dealt with temporal action localization, which aims to generate action proposals with precise temporal boundaries, including start and end times that cover the...",
+      "why_existing_methods_fail": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+      "affected_scenario": "First, some sentence queries that are temporally located at similar intervals within a video can describe different spatial parts, including different objects and their actions, as shown in Fig 1 (a).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "However, the existing methods for temporal action localization and detection [2-8] are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments",
+      "method_core_mechanism": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+      "method_components": [
+        "CM",
+        "LSTM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV003"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0030"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "two-stream attentive cross-modal interaction network (TACI)",
+      "method_core_mechanism": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+      "method_components": [
+        "TACI",
+        "CM",
+        "LSTM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features",
+        "moment proposals"
+      ],
+      "output_or_supervision": "boundary",
+      "linked_intro_evidence_ids": [
+        "EV005"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0024"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "two-stream attentive cross-modal interaction network (TACI) targets the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment. by operating on boundary, proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0024",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments targets the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0011",
+      "micro_method_cluster_id": "MM0030",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments",
+      "compared_to": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+      "why_it_matters": "It directly targets the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "two-stream attentive cross-modal interaction network (TACI)",
+      "compared_to": "the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.",
+      "why_it_matters": "It directly targets the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+      "can_transfer_to": [
+        "cross_modal",
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV003",
+          "section": "Abstract",
+          "quote": "To address these shortcomings, we introduce a novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments that focuses on the part of a video segment related to the part of a query, and accumulates the contextual information across the entire video recurrently.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "two-stream attentive cross-modal interaction network (TACI)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+      "can_transfer_to": [
+        "boundary",
+        "cross_modal",
+        "context",
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV005",
+          "section": "Abstract",
+          "quote": "To obtain more precise boundaries, we propose a two-stream attentive cross-modal interaction network (TACI) that generates two 2D proposal maps obtained globally from the integrated contextual features, which are generated by using CM-LSTM, and locally from boundary score sequences and then combines them into a final 2D map in an end-to-end manner.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments",
+      "baseline": "Learning to combine the modalities of language and video for temporal moment localization",
+      "dataset": "ActivityNet",
+      "module_to_modify": "novel recurrent unit, cross-modal long short-term memory (CM-LSTM), by mimicking the human cognitive process of localizing temporal moments",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting the existing methods for temporal action localization and detection are not sufficient for video users to identify a specific temporal video segment since predefined action labels have limited representation power for a video segment.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [
+    "Recall",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_shin_learning-to-combine-the-modalities-of-language-and-video-for-temporal-moment-loc_2d9b26af37\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_shin_learning-to-combine-the-modalities-of-language-and-video-for-temporal-moment-loc_2d9b26af37\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

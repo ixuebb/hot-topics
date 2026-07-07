@@ -1,0 +1,991 @@
+{
+  "paper_id": "2026_zheng_omnivtg-a-large-scale-dataset-and-training-paradigm-for-open-world-video-tempora_ed6f821f7f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_omnivtg-a-large-scale-dataset-and-training-paradigm-for-open-world-video-tempora_ed6f821f7f",
+  "title": "OmniVTG: A Large-Scale Dataset and Training Paradigm for Open-World Video Temporal Grounding",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Minghang Zheng",
+    "Zihao Yin",
+    "Yi Yang",
+    "Yuxin Peng",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video Temporal Grounding (VTG), the task of localizing video segments from text queries, struggles in open-world settings due to limited dataset scale and semantic diversity, causing performance gaps between common and rare concepts.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video Temporal Grounding (VTG) is the task of identifying the precise start and end timestamps of events described by a natural language query within an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction Video Temporal Grounding (VTG) is the task of identifying the precise start and end timestamps of events described by a natural language query within an untrimmed video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "With the development of deep learning and big data , this task is being increasing important for real-world applications, such as video search and automated content analysis.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "With the development of deep learning [2, 3, 17, 32, 47] and big data [7, 12, 20, 36], this task is being increasing important for real-world applications, such as video search and automated content analysis.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Real-world videos often contain a broad spectrum of events and concepts, ranging from common and everyday occurrences to rare, abstract, or even highly domain-specific phenomena.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Real-world videos often contain a broad spectrum of events and concepts, ranging from common and everyday occurrences to rare, abstract, or even highly domain-specific phenomena.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This reflects the limitations of existing datasets and models.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "This reflects the limitations of existing datasets and models.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Datasets relying on manual annotation [7, 12, 13] are expensive and laborious to create, making them difficult to scale.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Automated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Automated pipelines [23, 29] often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Mainstream datasets are often restricted to specific domains (e.g., indoor activities in...",
+        "scenario": "Mainstream datasets are often restricted to specific domains (e.g., indoor activities in Charades-STA ) or possess a narrow vocabulary as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Mainstream datasets are often restricted to specific domains (e.g., indoor activities in Charades-STA [7]) or possess a narrow vocabulary as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "To achieve automated annotation, we observed that the accuracy of timestamps generated...",
+        "scenario": "To achieve automated annotation, we observed that the accuracy of timestamps generated during dense captioning is significantly higher than that obtained through direct grounding for modern MLLM as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV038",
+            "section": "Introduction",
+            "quote": "To achieve automated annotation, we observed that the accuracy of timestamps generated during dense captioning is significantly higher than that obtained through direct grounding for modern MLLM [5] as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Real-world videos often contain a broad spectrum of events and concepts, ranging from common and everyday occurrences to rare, abstract, or even highly domain-specific phenomena.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Real-world videos often contain a broad spectrum of events and concepts, ranging from common and everyday occurrences to rare, abstract, or even highly domain-specific phenomena.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, limited semantic coverage.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "First, limited semantic coverage.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+        "evidence": [
+          {
+            "evidence_id": "EV056",
+            "section": "Introduction",
+            "quote": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in open-world scenarios, the challenge of VTG becomes significantly more complex?",
+      "failure_mode": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "root_cause": "With the development of deep learning and big data , this task is being increasing important for real-world applications, such as video search and automated content analysis.",
+      "why_existing_methods_fail": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "This reflects the limitations of existing datasets and models.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that reflects the limitations of existing datasets and models?",
+      "failure_mode": "This reflects the limitations of existing datasets and models.",
+      "root_cause": "1 (a), we find that the performance of existing Video Temporal Grounding MLLMs is significantly lower when handling these open-world scenarios, especially when they contain rare concepts.",
+      "why_existing_methods_fail": "This reflects the limitations of existing datasets and models.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "This reflects the limitations of existing datasets and models.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that public VTG datasets fall short of the open-world requirements, suffering from two primary limitations?",
+      "failure_mode": "public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+      "root_cause": "This reflects the limitations of existing datasets and models.",
+      "why_existing_methods_fail": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+      "affected_scenario": "As shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In terms of datasets, existing public VTG datasets fall short of the open-world requirements, suffering from two primary limitations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale?",
+      "failure_mode": "Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale.",
+      "root_cause": "Second, limited scale and quality.",
+      "why_existing_methods_fail": "Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale.",
+      "affected_scenario": "Mainstream datasets are often restricted to specific domains (e.g., indoor activities in Charades-STA ) or possess a narrow vocabulary as shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Datasets relying on manual annotation [7, 12, 13] are expensive and laborious to create, making them difficult to scale.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "utomated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that utomated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content?",
+      "failure_mode": "utomated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+      "root_cause": "Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale.",
+      "why_existing_methods_fail": "Automated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+      "affected_scenario": "Mainstream datasets are often restricted to specific domains (e.g., indoor activities in Charades-STA ) or possess a narrow vocabulary as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Automated pipelines [23, 29] often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage",
+      "method_core_mechanism": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+      "method_components": [
+        "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "Self-Correction Chainof-Thought (CoT)",
+      "method_core_mechanism": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+      "method_components": [
+        "Self-Correction Chainof-Thought"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0192"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy",
+      "method_core_mechanism": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+      "method_components": [
+        "Semantic Coverage Iterative Expansion"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV056"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV056",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding pre",
+      "method_core_mechanism": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+      "method_components": [
+        "Self-Correction Chain-of- Thought"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0192"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks",
+      "method_core_mechanism": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+      "method_components": [
+        "VTG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV058"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0067"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage targets In open-world scenarios, the challenge of VTG becomes significantly more complex. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Self-Correction Chainof-Thought (CoT) targets In open-world scenarios, the challenge of VTG becomes significantly more complex. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage targets This reflects the limitations of existing datasets and models. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Self-Correction Chainof-Thought (CoT) targets This reflects the limitations of existing datasets and models. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage targets public VTG datasets fall short of the open-world requirements, suffering from two primary limitations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Self-Correction Chainof-Thought (CoT) targets public VTG datasets fall short of the open-world requirements, suffering from two primary limitations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0068",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage targets Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Self-Correction Chainof-Thought (CoT) targets Datasets relying on manual annotation are expensive and laborious to create, making them difficult to scale. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage targets utomated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "Self-Correction Chainof-Thought (CoT) targets utomated pipelines often depend on sources like Automatic Speech Recognition (ASR), which cannot guarantee a precise match between the query (speech) and the visual content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0060",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage",
+      "compared_to": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "why_it_matters": "It directly targets In open-world scenarios, the challenge of VTG becomes significantly more complex.."
+    },
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "Self-Correction Chainof-Thought (CoT)",
+      "compared_to": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "why_it_matters": "It directly targets In open-world scenarios, the challenge of VTG becomes significantly more complex.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy",
+      "compared_to": "In open-world scenarios, the challenge of VTG becomes significantly more complex.",
+      "why_it_matters": "It directly targets In open-world scenarios, the challenge of VTG becomes significantly more complex.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To address these data limitations, we introduce OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Self-Correction Chainof-Thought (CoT)",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "Based on this observation, we propose a Self-Correction Chainof-Thought (CoT).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV056",
+          "section": "Introduction",
+          "quote": "Our contributions are summarized as follows: (1) We introduce OmniVTG, a large-scale, semantic-rich dataset constructed via a novel Semantic Coverage Iterative Expansion strategy.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding pre",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "(2) We propose a Self-Correction Chain-of- Thought mechanism by leveraging the model’s video understanding performance to reflect and refine its temporal grounding predictions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV058",
+          "section": "Introduction",
+          "quote": "(3) Comprehensive experiments show our approach not only excels at our manually annotated OmniVTG test set but also achieves state-of-the-art zero-shot performance on four public VTG benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage",
+      "baseline": "OmniVTG: A Large-Scale Dataset and Training Paradigm for Open-World Video Temporal Grounding",
+      "dataset": "Charades-STA",
+      "module_to_modify": "OmniVTG, a large-scale, semantic-rich open-world dataset designed to expand semantic coverage",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting In open-world scenarios, the challenge of VTG becomes significantly more complex.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_omnivtg-a-large-scale-dataset-and-training-paradigm-for-open-world-video-tempora_ed6f821f7f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_zheng_omnivtg-a-large-scale-dataset-and-training-paradigm-for-open-world-video-tempora_ed6f821f7f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

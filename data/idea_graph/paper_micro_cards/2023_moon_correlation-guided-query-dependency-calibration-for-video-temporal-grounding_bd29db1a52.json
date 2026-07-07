@@ -1,0 +1,594 @@
+{
+  "paper_id": "2023_moon_correlation-guided-query-dependency-calibration-for-video-temporal-grounding_bd29db1a52",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_moon_correlation-guided-query-dependency-calibration-for-video-temporal-grounding_bd29db1a52",
+  "title": "Correlation-Guided Query-Dependency Calibration for Video Temporal Grounding",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "WonJun Moon",
+    "Sangeek Hyun",
+    "SuBeen Lee",
+    "Jae‐Pil Heo"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "# Introduction Video temporal grounding is to detect temporal moments that align with user-specified language requests.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video temporal grounding is to detect temporal moments that align with user-specified language requests.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "# Introduction Video temporal grounding is to detect temporal moments that align with user-specified language requests.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Aside from the moment localization, recent works also explore how well each video clip corresponds with the text query.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Aside from the moment localization, recent works also explore how well each video clip corresponds with the text query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "To address these tasks, it is crucial to align the representation space across modalities.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To address these tasks, it is crucial to align the representation space across modalities.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In this regard, the use of transformers has become a common approach that facilitates easy integration of multimodal representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "In this regard, the use of transformers [1] has become a common approach that facilitates easy integration of multimodal representations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the query-relevant clips since the dummies occupy a portion of the attention degree on irrelevant clips.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the absence of word-level supervision, ours learns to attend more to salient words.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Despite the absence of word-level supervision, ours learns to attend more to salient words.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a...",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning, enabling the model to attend more to desired moments.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Yet, in moment retrieval scenarios where users seek specific video segments, we claim...",
+        "scenario": "Yet, in moment retrieval scenarios where users seek specific video segments, we claim that an undifferentiated degree of text-to-video attention (text involvement in video clips), as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Yet, in moment retrieval scenarios where users seek specific video segments, we claim that an undifferentiated degree of text-to-video attention (text involvement in video clips), as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "(a) Illustration of Attention (c) Clip-Word Correspondence (b) Clip-Text Correspondence Q...",
+        "scenario": "(a) Illustration of Attention (c) Clip-Word Correspondence (b) Clip-Text Correspondence Q K V Adaptive Cross-Attn (iii) CG-DETR (Ours) Cross-Attn (ii) QD-DETR Q K V (i) EaTR σ Query Attn Video Clips Self-Attn Q K V σ Query Attn Video Clips σ Query Attn Video Clips σ Query Attn Video Clips σ Query...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "(a) Illustration of Attention (c) Clip-Word Correspondence (b) Clip-Text Correspondence Q K V Adaptive Cross-Attn (iii) CG-DETR (Ours) Cross-Attn (ii) QD-DETR Q K V (i) EaTR σ Query Attn Video Clips Self-Attn Q K V σ Query Attn Video Clips σ Query Attn Video Clips σ Query Attn Video Clips σ Query Attn Video Clips “Hand” σ Query Attn Video Clips “points” GT Sum of Attn Video token Text token Dummy token Query Words : [ST], “Hand”, “points”, “to”, “different”, … , “.”, [ED] ✓ Video Clips: Figure 1: Comparison of degrees of text-to-video correlation in attention layers.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "We also investigate the fine-grained correlation between clips and words in column (c).",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "We also investigate the fine-grained correlation between clips and words in column (c).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a...",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning, enabling the model to attend more to desired moments.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "To this end, we first propose an Adaptive Cross-Attention layer (ACA) that modifies the operation of the cross-attention layer; by adding dummy tokens to the key in the multi-head attention, we adjust the intensity of text query’s clip-wise engagement based...",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To this end, we first propose an Adaptive Cross-Attention layer (ACA) that modifies the operation of the cross-attention layer; by adding dummy tokens to the key in the multi-head attention, we adjust the intensity of text query’s clip-wise engagement based on the ground truth relevance between video clips and a text query.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and...",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to?",
+      "failure_mode": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to...",
+      "root_cause": "In the middle column (b), we compare the clip-wise correspondence score to the text query (sum of attention weights over all words) with its corresponding GT (saliency scores).",
+      "why_existing_methods_fail": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the query-relevant clips since the dummies occupy a portion of the...",
+      "affected_scenario": "(a) Illustration of Attention (c) Clip-Word Correspondence (b) Clip-Text Correspondence Q K V Adaptive Cross-Attn (iii) CG-DETR (Ours) Cross-Attn (ii) QD-DETR Q K V (i) EaTR σ Query Attn Video Clips Self-Attn Q K V σ Query Attn Video Clips σ Query Attn Video Clips σ Query Attn Video Clips σ Query...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the query-relevant clips since the dummies occupy a portion of the attention degree on irrelevant clips.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "ours learns to attend more to salient words.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ours learns to attend more to salient words?",
+      "failure_mode": "ours learns to attend more to salient words.",
+      "root_cause": "We also investigate the fine-grained correlation between clips and words in column (c).",
+      "why_existing_methods_fail": "Despite the absence of word-level supervision, ours learns to attend more to salient words.",
+      "affected_scenario": "(a) Illustration of Attention (c) Clip-Word Correspondence (b) Clip-Text Correspondence Q K V Adaptive Cross-Attn (iii) CG-DETR (Ours) Cross-Attn (ii) QD-DETR Q K V (i) EaTR σ Query Attn Video Clips Self-Attn Q K V σ Query Attn Video Clips σ Query Attn Video Clips σ Query Attn Video Clips σ Query...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "Despite the absence of word-level supervision, ours learns to attend more to salient words.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "s-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning,...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that s-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning,?",
+      "failure_mode": "s-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning,...",
+      "root_cause": "Despite the absence of word-level supervision, ours learns to attend more to salient words.",
+      "why_existing_methods_fail": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning, enabling the...",
+      "affected_scenario": "Yet, in moment retrieval scenarios where users seek specific video segments, we claim that an undifferentiated degree of text-to-video attention (text involvement in video clips), as shown in Fig.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Building upon the observation that the exploration for optimal cross-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning, enabling the model to attend more to desired moments.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "moment-adaptive saliency detector",
+      "method_core_mechanism": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+      "method_components": [
+        "moment-adaptive saliency detector"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0166"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "daptive cross-attention with dummy tokens",
+      "method_core_mechanism": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive...",
+      "method_components": [
+        "CG",
+        "DETR",
+        "our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0080"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "moment-adaptive saliency detector targets While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to... by operating on cross_modal, ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "daptive cross-attention with dummy tokens targets While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0080",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "moment-adaptive saliency detector targets ours learns to attend more to salient words. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "daptive cross-attention with dummy tokens targets ours learns to attend more to salient words. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0080",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "moment-adaptive saliency detector targets s-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning,... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "daptive cross-attention with dummy tokens targets s-modal interaction among visual and textual representations remains a yet-to-be-explored challenge in temporal grounding, our Correlation-Guided DEtection TRansformer (CG-DETR) employs a novel paradigm of adaptive textual conditioning,... by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0080",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "moment-adaptive saliency detector",
+      "compared_to": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the query-relevant clips since the dummies occupy a portion of the...",
+      "why_it_matters": "It directly targets While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "daptive cross-attention with dummy tokens",
+      "compared_to": "While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to attend only the query-relevant clips since the dummies occupy a portion of the...",
+      "why_it_matters": "It directly targets While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "moment-adaptive saliency detector",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+      "can_transfer_to": [
+        "cross_modal",
+        "context",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "Lastly, we propose a moment-adaptive saliency detector that leverages instance-specific context and the magnitude of the cross-modal interaction whereas previous saliency detectors rely on learnable parameters.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "daptive cross-attention with dummy tokens",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive...",
+      "can_transfer_to": [
+        "cross_modal",
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "To sum up, our contributions are (i) We propose adaptive cross-attention with dummy tokens to enable the manipulation in the degree of video-text interaction with respect to their correlation, (ii) To further calibrate the interaction degree, we discover and distill the clip-word correlation from the aligned space at video-sentence level, (iii) We introduce a moment-adaptive saliency detector to exploit the calibrated degree of cross-modal interaction, and (iv) Extensive experiments demonstrate the effectiveness of CG-DETR.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for moment-adaptive saliency detector",
+      "baseline": "Correlation-Guided Query-Dependency Calibration for Video Temporal Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "moment-adaptive saliency detector",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting While the use of (i) self-attention or (ii) cross-attention fails to distinguish target clips based on the degree of cross-modal attention, (iii) ours with adaptive cross-attention exhibits a high activation level for the text query to...."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_moon_correlation-guided-query-dependency-calibration-for-video-temporal-grounding_bd29db1a52\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_moon_correlation-guided-query-dependency-calibration-for-video-temporal-grounding_bd29db1a52\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

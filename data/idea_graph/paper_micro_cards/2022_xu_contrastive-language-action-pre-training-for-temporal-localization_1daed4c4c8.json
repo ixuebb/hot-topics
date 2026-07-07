@@ -1,0 +1,670 @@
+{
+  "paper_id": "2022_xu_contrastive-language-action-pre-training-for-temporal-localization_1daed4c4c8",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xu_contrastive-language-action-pre-training-for-temporal-localization_1daed4c4c8",
+  "title": "Contrastive Language-Action Pre-training for Temporal Localization",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Mengmeng Xu",
+    "Erhan Gündoğdu",
+    "Maksim Lapin",
+    "Bernard Ghanem",
+    "Michael Donoser",
+    "Loris Bazzani"
+  ],
+  "task_scope": {
+    "primary_task": "Action Localization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Action Localization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "Our experiments show that the proposed approach improves the state-of-the-art on temporal action localization, few-shot temporal action localization, and video language grounding tasks.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Video content widely available on services such as Netflix, YouTube, and Amazon Video is in long form.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Video content widely available on services such as Netflix, YouTube, and Amazon Video is in long form.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "One of the fundamental building blocks for longform video understanding is temporal action localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "One of the fundamental building blocks for longform video understanding is temporal action localization.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "These limitations create a gap between the pre-training process and the actual downstream tasks [2,1], which is approached in previous work by using strong supervision during fine-tuning.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Recent methods relax this assumption by proposing visio-linguistic contrastive learning to learn a universal representation that can be used for zeroshot learning or fine-tuned for downstream tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Recent methods [37,61,36] relax this assumption by proposing visio-linguistic contrastive learning to learn a universal representation that can be used for zeroshot learning or fine-tuned for downstream tasks.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Our results for TAL on ActivityNet-1.3 show a significant improvement of 0.52% (±0.07) in terms of average mAP compared to the state of the art .",
+        "evidence": [
+          {
+            "evidence_id": "EV061",
+            "section": "Introduction",
+            "quote": "Our results for TAL on ActivityNet-1.3 show a significant improvement of 0.52% (±0.07) in terms of average mAP compared to the state of the art [2].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "These limitations create a gap between the pre-training process and the actual downstream tasks [2,1], which is approached in previous work by using strong supervision during fine-tuning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "However, they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "A video encoding network is typically pre-trained on an action classification task using...",
+        "scenario": "A video encoding network is typically pre-trained on an action classification task using short trimmed video clips (e.g., Kinetics 3 or Sports-1M ).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "A video encoding network is typically pre-trained on an action classification task using short trimmed video clips (e.g., Kinetics [8]3 or Sports-1M [23]).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "The video encoder in CLAP is not frozen during post-pre-training and is trained...",
+        "scenario": "The video encoder in CLAP is not frozen during post-pre-training and is trained end-to-end unlike previous contrastive learning approaches, e.g., VideoClip .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV054",
+            "section": "Introduction",
+            "quote": "The video encoder in CLAP is not frozen during post-pre-training and is trained end-to-end unlike previous contrastive learning approaches, e.g., VideoClip [61].",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Recent methods relax this assumption by proposing visio-linguistic contrastive learning to learn a universal representation that can be used for zeroshot learning or fine-tuned for downstream tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Recent methods [37,61,36] relax this assumption by proposing visio-linguistic contrastive learning to learn a universal representation that can be used for zeroshot learning or fine-tuned for downstream tasks.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Thus the video does not contain background information.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "Thus the video does not contain background information.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP and VideoClip .",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP [45] and VideoClip [61].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet ) with 20k videos unlike the contrastive video representation...",
+        "evidence": [
+          {
+            "evidence_id": "EV059",
+            "section": "Introduction",
+            "quote": "Our approach benefits from an action classification dataset (Kinetics-400 [25]) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet [20]) with 20k videos unlike the contrastive video representation learning approaches [37,61,36] that leverage a large dataset [38] containing 100M text-video clip pairs and assume availability of significant computational resources.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "On video language grounding, our method improves TSP on Charades-STA by 2.4% and on TACoS by 0.8% in mIoU.",
+        "evidence": [
+          {
+            "evidence_id": "EV065",
+            "section": "Introduction",
+            "quote": "On video language grounding, our method improves TSP [2] on Charades-STA by 2.4% and on TACoS [46] by 0.8% in mIoU.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning?",
+      "failure_mode": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "root_cause": "2) The classification task limits the expressiveness of the learned representations because the encoder is not well suited for the videos that contain activity or language outside of the pre-defined set of classes.",
+      "why_existing_methods_fail": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "affected_scenario": "A video encoding network is typically pre-trained on an action classification task using short trimmed video clips (e.g., Kinetics 3 or Sports-1M ).",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV042"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV042",
+          "section": "Introduction",
+          "quote": "These limitations create a gap between the pre-training process and the actual downstream tasks [2,1], which is approached in previous work by using strong supervision during fine-tuning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action?",
+      "failure_mode": "they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+      "root_cause": "created by trimming 10s clips around a frame manually labelled containing the target action.",
+      "why_existing_methods_fail": "they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+      "affected_scenario": "A video encoding network is typically pre-trained on an action classification task using short trimmed video clips (e.g., Kinetics 3 or Sports-1M ).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "However, they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca",
+      "method_core_mechanism": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+      "method_components": [
+        "TAL"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV050"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "loss function",
+      "method_core_mechanism": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP and VideoClip .",
+      "method_components": [
+        "CLIP",
+        "we introduce a loss function that masks out the video-language pairs that correspond to background"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP [45] and VideoClip [61].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of u",
+      "method_core_mechanism": "Our approach benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet ) with 20k videos unlike the contrastive video representation learning approaches that leverage a large dataset containing 100M text-video clip pairs and assume availability of...",
+      "method_components": [
+        "benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of u"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features",
+        "clip features"
+      ],
+      "output_or_supervision": "contrastive, classification",
+      "linked_intro_evidence_ids": [
+        "EV059"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "Our approach benefits from an action classification dataset (Kinetics-400 [25]) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet [20]) with 20k videos unlike the contrastive video representation learning approaches [37,61,36] that leverage a large dataset [38] containing 100M text-video clip pairs and assume availability of significant computational resources.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0093"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "improves TSP on Charades-STA by 2",
+      "method_core_mechanism": "On video language grounding, our method improves TSP on Charades-STA by 2.4% and on TACoS by 0.8% in mIoU.",
+      "method_components": [
+        "TSP",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV065"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV065",
+          "section": "Introduction",
+          "quote": "On video language grounding, our method improves TSP [2] on Charades-STA by 2.4% and on TACoS [46] by 0.8% in mIoU.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca targets These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "loss function targets These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP [45] and VideoClip [61].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca targets they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "loss function targets they require a large amount of data for pre-training and are not designed to 3 Kinetics was created by trimming 10s clips around a frame manually labelled containing the target action. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP [45] and VideoClip [61].",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0024",
+      "micro_method_cluster_id": "MM0002",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca",
+      "compared_to": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "why_it_matters": "It directly targets These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "loss function",
+      "compared_to": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "why_it_matters": "It directly targets These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of u",
+      "compared_to": "These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.",
+      "why_it_matters": "It directly targets These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV050",
+          "section": "Introduction",
+          "quote": "As a consequence, our method not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action categories or video language grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "loss function",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP and VideoClip .",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "Finally, we introduce a loss function that masks out the video-language pairs that correspond to background, which is different from CLIP [45] and VideoClip [61].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of u",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Our approach benefits from an action classification dataset (Kinetics-400 ) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet ) with 20k videos unlike the contrastive video representation learning approaches that leverage a large dataset containing 100M text-video clip pairs and assume availability of...",
+      "can_transfer_to": [
+        "multi_segment",
+        "weak_supervision",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "Our approach benefits from an action classification dataset (Kinetics-400 [25]) containing 400k trimmed video clips and a dataset with temporal action annotations of untrimmed videos (ActivityNet [20]) with 20k videos unlike the contrastive video representation learning approaches [37,61,36] that leverage a large dataset [38] containing 100M text-video clip pairs and assume availability of significant computational resources.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "improves TSP on Charades-STA by 2",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "On video language grounding, our method improves TSP on Charades-STA by 2.4% and on TACoS by 0.8% in mIoU.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV065",
+          "section": "Introduction",
+          "quote": "On video language grounding, our method improves TSP [2] on Charades-STA by 2.4% and on TACoS [46] by 0.8% in mIoU.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca",
+      "baseline": "Contrastive Language-Action Pre-training for Temporal Localization",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "not only leads to superior results on TAL when compared to the state of the art, but also can be transferred to downstream tasks with unseen action ca",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting These limitations create a gap between the pre-training process and the actual downstream tasks , which is approached in previous work by using strong supervision during fine-tuning.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "TACoS"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP",
+    "mIoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xu_contrastive-language-action-pre-training-for-temporal-localization_1daed4c4c8\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_xu_contrastive-language-action-pre-training-for-temporal-localization_1daed4c4c8\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

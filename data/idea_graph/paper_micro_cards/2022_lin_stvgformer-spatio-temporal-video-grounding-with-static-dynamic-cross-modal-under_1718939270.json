@@ -1,0 +1,725 @@
+{
+  "paper_id": "2022_lin_stvgformer-spatio-temporal-video-grounding-with-static-dynamic-cross-modal-under_1718939270",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_lin_stvgformer-spatio-temporal-video-grounding-with-static-dynamic-cross-modal-under_1718939270",
+  "title": "STVGFormer: Spatio-Temporal Video Grounding with Static-Dynamic Cross-Modal Understanding",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Zihang Lin",
+    "Chaolei Tan",
+    "Jianfang Hu",
+    "Zhi Jin",
+    "Tiancai Ye",
+    "Wei‐Shi Zheng"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "STVGFormer: Spatio-Temporal Video Grounding with Static-Dynamic Cross-Modal Understanding Zihang Lin1, Chaolei Tan1, Jian-Fang Hu1,3,∗, Zhi Jin1, Tiancai Ye2, Wei-Shi Zheng1 1Sun Yat-sen University, Guangzhou, China 2Tencent, Guangzhou, China 3Guangdong...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "STVGFormer: Spatio-Temporal Video Grounding with Static-Dynamic Cross-Modal Understanding Zihang Lin1, Chaolei Tan1, Jian-Fang Hu1,3,∗, Zhi Jin1, Tiancai Ye2, Wei-Shi Zheng1 1Sun Yat-sen University, Guangzhou, China 2Tencent, Guangzhou, China 3Guangdong Province Key Laboratory of Information Security Technology, Guangzhou, China {linzh59,tanchlei}@mail2.sysu.edu.cn,{hujf5,jinzh26}@mail.sysu.edu.cn,tiancaiye@tencent.com,wszheng@ieee.org The man in white clothes lifts the tray on the table with both hands and hands it to the person opposite.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer Predicted Tube (ෝ𝑡𝑠, ෝ𝑡𝑒) Dynamic Branch Language Encoder Interaction Query ෢ 𝑏1 ෢ 𝑏2 ෢ 𝑏𝑛 … Image Encoder Frame-Level Features Cross-Modal Transformer Static Branch ෢...",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer Predicted Tube (ෝ𝑡𝑠, ෝ𝑡𝑒) Dynamic Branch Language Encoder Interaction Query ෢ 𝑏1 ෢ 𝑏2 ෢ 𝑏𝑛 … Image Encoder Frame-Level Features Cross-Modal Transformer Static Branch ෢ 𝑏መ𝑡𝑠, ෣ 𝑏መ𝑡𝑠+1, ෢ 𝑏መ𝑡𝑒 … Video Spatial Grounding Figure 1: An overview of the proposed framework.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "We follow previous works[7–9, 11, 15] to use mean vIoU as the main evaluation metric.",
+        "evidence": [
+          {
+            "evidence_id": "EV099",
+            "section": "Introduction",
+            "quote": "We follow previous works[7–9, 11, 15] to use mean vIoU as the main evaluation metric.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track .",
+        "evidence": [
+          {
+            "evidence_id": "EV120",
+            "section": "Introduction",
+            "quote": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track (results can be found on http://picdataset.com:8000/challenge/leaderboard/hcvg2022).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer...",
+        "scenario": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer Predicted Tube (ෝ𝑡𝑠, ෝ𝑡𝑒) Dynamic Branch Language Encoder Interaction Query ෢ 𝑏1 ෢ 𝑏2 ෢ 𝑏𝑛 … Image Encoder Frame-Level Features Cross-Modal Transformer Static Branch ෢ 𝑏መ𝑡𝑠, ෣ 𝑏መ𝑡𝑠+1, ෢ 𝑏መ𝑡𝑒 … Video Spatial...",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer Predicted Tube (ෝ𝑡𝑠, ෝ𝑡𝑒) Dynamic Branch Language Encoder Interaction Query ෢ 𝑏1 ෢ 𝑏2 ෢ 𝑏𝑛 … Image Encoder Frame-Level Features Cross-Modal Transformer Static Branch ෢ 𝑏መ𝑡𝑠, ෣ 𝑏መ𝑡𝑠+1, ෢ 𝑏መ𝑡𝑒 … Video Spatial Grounding Figure 1: An overview of the proposed framework.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "As illustrated in Figure 1, our framework mainly consists of a static branch and a...",
+        "scenario": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Following the implementations in MDETR, we define our static branch as a stack of...",
+        "scenario": "Following the implementations in MDETR, we define our static branch as a stack of 𝑁cross-modal transformer encoder layers and 𝑁cross-modal transformer decoder layers, as presented in Figure 1 and 2 (a).",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Following the implementations in MDETR[5], we define our static branch as a stack of 𝑁cross-modal transformer encoder layers and 𝑁cross-modal transformer decoder layers, as presented in Figure 1 and 2 (a).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As illustrated in Figure 1, we first extract clip-level visual features...",
+        "scenario": "As illustrated in Figure 1, we first extract clip-level visual features 𝐹𝑐∈R𝑇×𝐻×𝑊×𝑐from𝑇uniformly sampled video clips by a pretrained 3D-CNN and employ an FC embedding layer to project the channel dimension from 𝑐to 𝑑.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, we first extract clip-level visual features 𝐹𝑐∈R𝑇×𝐻×𝑊×𝑐from𝑇uniformly sampled video clips by a pretrained 3D-CNN[2] and employ an FC embedding layer to project the channel dimension from 𝑐to 𝑑.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "CCS CONCEPTS • Computing methodologies →Visual content-based indexing and retrieval; Scene understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "CCS CONCEPTS • Computing methodologies →Visual content-based indexing and retrieval; Scene understanding.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "ACKNOWLEDGMENTS We would like to thank Bing Shuai for the helpful discussions.",
+        "evidence": [
+          {
+            "evidence_id": "EV121",
+            "section": "Introduction",
+            "quote": "ACKNOWLEDGMENTS We would like to thank Bing Shuai for the helpful discussions.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Our framework mainly consists of a static branch and a dynamic branch.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Our framework mainly consists of a static branch and a dynamic branch.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose a framework named STVG- Former to tackle this problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "We propose a framework named STVG- Former to tackle this problem.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Overall, our framework is concise but effective.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "Overall, our framework is concise but effective.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge?",
+      "failure_mode": "eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "root_cause": "We further design a novel static-dynamic interaction block to enable the static and dynamic branches to transfer useful and complementary information from each other, which is shown to be effective to improve the prediction on hard cases.",
+      "why_existing_methods_fail": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "affected_scenario": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track ?",
+      "failure_mode": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track .",
+      "root_cause": "We submitted the prediction results of the proposed STVGFormer to the HC-STVG track of the 4th Person in Context Workshop.",
+      "why_existing_methods_fail": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track .",
+      "affected_scenario": "Video Encoder Clip-level Features Temporal Grounding Space-Time Cross-Modal Transformer Predicted Tube (ෝ𝑡𝑠, ෝ𝑡𝑒) Dynamic Branch Language Encoder Interaction Query ෢ 𝑏1 ෢ 𝑏2 ෢ 𝑏𝑛 … Image Encoder Frame-Level Features Cross-Modal Transformer Static Branch ෢ 𝑏መ𝑡𝑠, ෣ 𝑏መ𝑡𝑠+1, ෢ 𝑏መ𝑡𝑒 … Video Spatial...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV120"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV120",
+          "section": "Introduction",
+          "quote": "The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track (results can be found on http://picdataset.com:8000/challenge/leaderboard/hcvg2022).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "mainly consists of a static branch and a dynamic branch",
+      "method_core_mechanism": "Our framework mainly consists of a static branch and a dynamic branch.",
+      "method_components": [
+        "mainly consists of a static branch and a dynamic branch"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Our framework mainly consists of a static branch and a dynamic branch.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0039"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "solution to human-centric spatio-temporal video grounding task",
+      "method_core_mechanism": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+      "method_components": [
+        "ABSTRACT In",
+        "ABSTRACT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "concise and effective framework named STVGFormer",
+      "method_core_mechanism": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+      "method_components": [
+        "concise and effective framework named STVGFormer"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0039"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "framework named STVG- Former to tackle this problem",
+      "method_core_mechanism": "We propose a framework named STVG- Former to tackle this problem.",
+      "method_components": [
+        "STVG- Former",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "We propose a framework named STVG- Former to tackle this problem.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understand",
+      "method_core_mechanism": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+      "method_components": [
+        "mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understand"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0039"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU4",
+      "solves_how": "framework named STVG- Former to tackle this problem targets eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "We propose a framework named STVG- Former to tackle this problem.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU5",
+      "solves_how": "mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understand targets eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111",
+      "micro_method_cluster_id": "MM0039",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "mainly consists of a static branch and a dynamic branch targets The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Our framework mainly consists of a static branch and a dynamic branch.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111",
+      "micro_method_cluster_id": "MM0039",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "solution to human-centric spatio-temporal video grounding task targets The naive STVGFormer achieved 36.8% vIoU on the test set and the 5-model-ensemble STVGFormer achieved 39.6% vIoU and won the first place in the HC-STVG track . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0111",
+      "micro_method_cluster_id": "MM0158",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "mainly consists of a static branch and a dynamic branch",
+      "compared_to": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "why_it_matters": "It directly targets eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "solution to human-centric spatio-temporal video grounding task",
+      "compared_to": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "why_it_matters": "It directly targets eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "concise and effective framework named STVGFormer",
+      "compared_to": "Our proposed method achieved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.",
+      "why_it_matters": "It directly targets eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "mainly consists of a static branch and a dynamic branch",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Our framework mainly consists of a static branch and a dynamic branch.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Our framework mainly consists of a static branch and a dynamic branch.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "solution to human-centric spatio-temporal video grounding task",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "ABSTRACT In this technical report, we introduce our solution to human-centric spatio-temporal video grounding task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "concise and effective framework named STVGFormer",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a concise and effective framework named STVGFormer, which models spatiotemporal visual-linguistic dependencies with a static branch and a dynamic branch.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "framework named STVG- Former to tackle this problem",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "We propose a framework named STVG- Former to tackle this problem.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "We propose a framework named STVG- Former to tackle this problem.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understand",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "As illustrated in Figure 1, our framework mainly consists of a static branch and a dynamic branch to model static and dynamic visual-linguistic dependencies for complete cross-modal understanding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for mainly consists of a static branch and a dynamic branch",
+      "baseline": "STVGFormer: Spatio-Temporal Video Grounding with Static-Dynamic Cross-Modal Understanding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "mainly consists of a static branch and a dynamic branch",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting eved 39.6% vIoU and won the first place in the HC-STVG track of the 4th Person in Context Challenge.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_lin_stvgformer-spatio-temporal-video-grounding-with-static-dynamic-cross-modal-under_1718939270\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_lin_stvgformer-spatio-temporal-video-grounding-with-static-dynamic-cross-modal-under_1718939270\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

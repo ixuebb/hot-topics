@@ -1,0 +1,472 @@
+{
+  "paper_id": "2023_yan_prompting-large-language-models-to-reformulate-queries-for-moment-localization_5325b8c832",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yan_prompting-large-language-models-to-reformulate-queries-for-moment-localization_5325b8c832",
+  "title": "Prompting Large Language Models to Reformulate Queries for Moment Localization",
+  "year": 2023,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Wenfeng Yan",
+    "Shaoxiang Chen",
+    "Zuxuan Wu",
+    "Yu–Gang Jiang"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract The task of moment localization is to localize a temporal moment in an untrimmed video for a given natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Given a video clip and a natural language query, the goal of the Ego4D NLQ task is to localize a temporal moment of the video clip where the answer to the query can be deduced.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Given a video clip and a natural language query, the goal of the Ego4D NLQ task [1] is to localize a temporal moment of the video clip where the answer to the query can be deduced.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions and TACoS , Ego4D NLQ uses a question sentence (e.g., “Did I turn off the cooker after I fried the meat?”) rather than a narrative sentence, which requires stronger reasoning...",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions [2] and TACoS [3], Ego4D NLQ uses a question sentence (e.g., “Did I turn off the cooker after I fried the meat?”) rather than a narrative sentence, which requires stronger reasoning ability and deeper comprehension of spatio-temporal relationship between objects, places, and people in the videos.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Moreover, compared to the duration of full video clips, most temporal windows are extremely short, further making the task a Video Clip Original Query: Did I turn off the cooker after I fried the meat?",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Moreover, compared to the duration of full video clips, most temporal windows are extremely short, further making the task a Video Clip Original Query: Did I turn off the cooker after I fried the meat?",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Reformulated Query: find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Reformulated Query: find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming...",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions and...",
+        "scenario": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions and TACoS , Ego4D NLQ uses a question sentence (e.g., “Did I turn off the cooker after I fried the meat?”) rather than a narrative sentence, which requires stronger reasoning ability and deeper comprehension of...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions [2] and TACoS [3], Ego4D NLQ uses a question sentence (e.g., “Did I turn off the cooker after I fried the meat?”) rather than a narrative sentence, which requires stronger reasoning ability and deeper comprehension of spatio-temporal relationship between objects, places, and people in the videos.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Localized Moment LLM (e.g., ChatGPT) Video Encoder Text Encoder Localization Model Figure...",
+        "scenario": "Localized Moment LLM (e.g., ChatGPT) Video Encoder Text Encoder Localization Model Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Localized Moment LLM (e.g., ChatGPT) Video Encoder Text Encoder Localization Model Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Recently, LLMs have shown great potential in natural language processing, i.e., understanding complex user queries and generating responses that align with human preference.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Recently, LLMs have shown great potential in natural language processing, i.e., understanding complex user queries and generating responses that align with human preference.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "The overall framework of our approach.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "The overall framework of our approach.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Since this is a work in progress, we present early results and analysis.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Since this is a work in progress, we present early results and analysis.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such reformulation procedure is time-consuming and expensive if performed by humans?",
+      "failure_mode": "such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "root_cause": "“find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "why_existing_methods_fail": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "affected_scenario": "In contrast to the traditional NLQ benchmark datasets such as ActivityNet Captions and TACoS , Ego4D NLQ uses a question sentence (e.g., “Did I turn off the cooker after I fried the meat?”) rather than a narrative sentence, which requires stronger reasoning ability and deeper comprehension of...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "The overall framework of our approach.",
+      "method_core_mechanism": "The overall framework of our approach.",
+      "method_components": [
+        "The overall framework of our approach."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "The overall framework of our approach.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0162"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "to reformulate the query into a series of localization instructions so",
+      "method_core_mechanism": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+      "method_components": [
+        "to reformulate the query into a series of localization instructions so"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0134"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "early results and analysis",
+      "method_core_mechanism": "Since this is a work in progress, we present early results and analysis.",
+      "method_components": [
+        "early results and analysis"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Since this is a work in progress, we present early results and analysis.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0113"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to reformulate the query into a series of localization instructions so targets such reformulation procedure is time-consuming and expensive if performed by humans. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0134",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "The overall framework of our approach. targets such reformulation procedure is time-consuming and expensive if performed by humans. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "The overall framework of our approach.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0162",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "The overall framework of our approach.",
+      "compared_to": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "why_it_matters": "It directly targets such reformulation procedure is time-consuming and expensive if performed by humans.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "to reformulate the query into a series of localization instructions so",
+      "compared_to": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "why_it_matters": "It directly targets such reformulation procedure is time-consuming and expensive if performed by humans.."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "early results and analysis",
+      "compared_to": "Thus the query can be reformulated into a better format such as “find the moment where I fried the meat, next find the moment after this where I interacted with the cooker and may turned off the cooker.” However, such reformulation procedure is time-consuming and expensive if performed by humans.",
+      "why_it_matters": "It directly targets such reformulation procedure is time-consuming and expensive if performed by humans.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "The overall framework of our approach.",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "The overall framework of our approach.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "The overall framework of our approach.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to reformulate the query into a series of localization instructions so",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To address this problem, we propose to reformulate the query into a series of localization instructions so that the model can learn to perform temporal localization step-by-step and reduce its burden of performing complex reasoning.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "early results and analysis",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Since this is a work in progress, we present early results and analysis.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Since this is a work in progress, we present early results and analysis.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for The overall framework of our approach.",
+      "baseline": "Prompting Large Language Models to Reformulate Queries for Moment Localization",
+      "dataset": "ActivityNet, Ego4D",
+      "module_to_modify": "The overall framework of our approach.",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting such reformulation procedure is time-consuming and expensive if performed by humans.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Ego4D",
+    "TACoS"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yan_prompting-large-language-models-to-reformulate-queries-for-moment-localization_5325b8c832\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yan_prompting-large-language-models-to-reformulate-queries-for-moment-localization_5325b8c832\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

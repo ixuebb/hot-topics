@@ -1,0 +1,982 @@
+{
+  "paper_id": "2026_liu_videotemp-o3-harmonizing-temporal-grounding-and-video-understanding-in-agentic-t_13fd1487e6",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_liu_videotemp-o3-harmonizing-temporal-grounding-and-video-understanding-in-agentic-t_13fd1487e6",
+  "title": "VideoTemp-o3: Harmonizing Temporal Grounding and Video Understanding in Agentic Thinking-with-Videos",
+  "year": 2026,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Wenqi Liu",
+    "Yunxiao Wang",
+    "Shijie Ma",
+    "Meng Liu",
+    "Qile Su",
+    "Tianke Zhang",
+    "Haonan Fan",
+    "Changyi Liu",
+    "Kaiyu Jiang",
+    "Jiankang Chen",
+    "Kaiyu Tang",
+    "Bin Wen",
+    "Fan Yang",
+    "Tingting Gao",
+    "Han Li",
+    "Yinwei Wei",
+    "Xuemeng Song"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "To solve these issues, we propose VideoTemp-o3, a unified agentic thinking-with-videos framework that jointly models video grounding and question answering.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Although Multimodal Large Language Models (MLLMs) have made remarkable advances, their internal knowledge remains static once trained, limiting their capacity to tackle complex tasks in dynamic environments.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Although Multimodal Large Language Models (MLLMs) (Bai et al., 2025; Team et al., 2025b;a) have made remarkable advances, their internal knowledge remains static once trained, limiting their capacity to tackle complex tasks in dynamic environments.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "To address this issue, recent works introduce agentic MLLMs capable of invoking external tools.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "To address this issue, recent works introduce agentic MLLMs capable of invoking external tools.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Many existing methods rely on multiple specialized models to separately perform temporal grounding and video question answering, incurring substantial inference overhead.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "Many existing methods rely on multiple specialized models to separately perform temporal grounding and video question answering, incurring substantial inference overhead.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Most methods follow a rigid procedure that the model blindly crops the video once and then immediately produces an answer, leading to unnecessary computation for short videos that could be answered directly, while lacking support for iterative grounding...",
+        "evidence": [
+          {
+            "evidence_id": "EV050",
+            "section": "Introduction",
+            "quote": "Most methods follow a rigid procedure that the model blindly crops the video once and then immediately produces an answer, leading to unnecessary computation for short videos that could be answered directly, while lacking support for iterative grounding refinement in challenging long-video scenarios.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "several critical limitations persist: (1) Workflow complexity.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "Despite these advancements, several critical limitations persist: (1) Workflow complexity.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+        "evidence": [
+          {
+            "evidence_id": "EV051",
+            "section": "Introduction",
+            "quote": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+        "evidence": [
+          {
+            "evidence_id": "EV055",
+            "section": "Introduction",
+            "quote": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "There is a lack of high-quality, multi-turn trajectories that exemplify localize-clip-answer behavior, hindering MLLMs from effectively internalizing the thinking-with-videos patterns.",
+        "evidence": [
+          {
+            "evidence_id": "EV056",
+            "section": "Introduction",
+            "quote": "There is a lack of high-quality, multi-turn trajectories that exemplify localize-clip-answer behavior, hindering MLLMs from effectively internalizing the thinking-with-videos patterns.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, when encountering up-to-date and knowledge-intensive questions, agentic...",
+        "scenario": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools .",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools (Wu et al., 2025; Narayan et al., 2025).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Now, I need to count the ships on this map.</think><tool_call></tool_call> Turn 1:...",
+        "scenario": "Now, I need to count the ships on this map.</think><tool_call></tool_call> Turn 1: Grounding Turn 2: Grounding Turn 3: Answer Timestamp Refine Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Now, I need to count the ships on this map.</think><tool_call>[215, 224]</tool_call> Turn 1: Grounding Turn 2: Grounding Turn 3: Answer Timestamp Refine Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Many existing methods rely on multiple specialized models to separately perform temporal grounding and video question answering, incurring substantial inference overhead.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "Many existing methods rely on multiple specialized models to separately perform temporal grounding and video question answering, incurring substantial inference overhead.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(3) Rigid pipelines.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "(3) Rigid pipelines.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+        "evidence": [
+          {
+            "evidence_id": "EV057",
+            "section": "Introduction",
+            "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+        "evidence": [
+          {
+            "evidence_id": "EV060",
+            "section": "Introduction",
+            "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+        "evidence": [
+          {
+            "evidence_id": "EV064",
+            "section": "Introduction",
+            "quote": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+        "evidence": [
+          {
+            "evidence_id": "EV065",
+            "section": "Introduction",
+            "quote": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+        "evidence": [
+          {
+            "evidence_id": "EV067",
+            "section": "Introduction",
+            "quote": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce a high-quality pipeline to curate a largescale long-video GQA dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV069",
+            "section": "Introduction",
+            "quote": "• We introduce a high-quality pipeline to curate a largescale long-video GQA dataset.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "several critical limitations persist: (1) Workflow complexity.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that several critical limitations persist: (1) Workflow complexity?",
+      "failure_mode": "several critical limitations persist: (1) Workflow complexity.",
+      "root_cause": "Finally, it produces a reliable answer grounded in the pertinent visual evidence.",
+      "why_existing_methods_fail": "several critical limitations persist: (1) Workflow complexity.",
+      "affected_scenario": "Now, I need to count the ships on this map.</think><tool_call></tool_call> Turn 1: Grounding Turn 2: Grounding Turn 3: Answer Timestamp Refine Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "Despite these advancements, several critical limitations persist: (1) Workflow complexity.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0028"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results?",
+      "failure_mode": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+      "root_cause": "(2) Imprecise grounding.",
+      "why_existing_methods_fail": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+      "affected_scenario": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that we attribute these limitations to three primary factors: (1) Suboptimal training strategies?",
+      "failure_mode": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+      "root_cause": "Most methods follow a rigid procedure that the model blindly crops the video once and then immediately produces an answer, leading to unnecessary computation for short videos that could be answered directly, while lacking support for iterative grounding...",
+      "why_existing_methods_fail": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+      "affected_scenario": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools .",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV051"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV051",
+          "section": "Introduction",
+          "quote": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals?",
+      "failure_mode": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+      "root_cause": "We attribute these limitations to three primary factors: (1) Suboptimal training strategies.",
+      "why_existing_methods_fail": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+      "affected_scenario": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools .",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV052"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (3) Lack of instructional trajectories to incentivize desirable patterns?",
+      "failure_mode": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+      "root_cause": "Current grounding annotations are generally shifted and are dominated by short videos.",
+      "why_existing_methods_fail": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+      "affected_scenario": "For example, when encountering up-to-date and knowledge-intensive questions, agentic models can proactively invoke search tools .",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV055"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV055",
+          "section": "Introduction",
+          "quote": "(3) Lack of instructional trajectories to incentivize desirable patterns.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "VideoTemp-o3, a unified thinking-with-videos framework",
+      "method_core_mechanism": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+      "method_components": [
+        "VideoTemp-o3, a unified thinking-with-videos framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV057"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0167"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "unified masking strategy for multi-turn supervision",
+      "method_core_mechanism": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+      "method_components": [
+        "unified masking strategy for multi-turn supervision"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV060"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0005"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses",
+      "method_core_mechanism": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+      "method_components": [
+        "GQA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV064"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV064",
+          "section": "Introduction",
+          "quote": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0046"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "VideoTemp-o3, an agentic thinkingwith-videos model",
+      "method_core_mechanism": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+      "method_components": [
+        "VideoTemp-o3, an agentic thinkingwith-videos model"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV065"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV065",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0167"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance",
+      "method_core_mechanism": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+      "method_components": [
+        "SFT",
+        "RL"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV067"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV067",
+          "section": "Introduction",
+          "quote": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "VideoTemp-o3, a unified thinking-with-videos framework targets several critical limitations persist: (1) Workflow complexity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0028",
+      "micro_method_cluster_id": "MM0167",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "unified masking strategy for multi-turn supervision targets several critical limitations persist: (1) Workflow complexity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0028",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "VideoTemp-o3, a unified thinking-with-videos framework targets Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0167",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "unified masking strategy for multi-turn supervision targets Many approaches struggle with precise grounding and offer limited mechanisms to evaluate or refine grounding results. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "VideoTemp-o3, a unified thinking-with-videos framework targets We attribute these limitations to three primary factors: (1) Suboptimal training strategies. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0167",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "unified masking strategy for multi-turn supervision targets We attribute these limitations to three primary factors: (1) Suboptimal training strategies. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "VideoTemp-o3, a unified thinking-with-videos framework targets Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0167",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "unified masking strategy for multi-turn supervision targets Existing SFT supervision and RL reward designs are insufficient to promote precise grounding or support iterative refinement of inaccurate intervals. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "VideoTemp-o3, a unified thinking-with-videos framework targets (3) Lack of instructional trajectories to incentivize desirable patterns. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0167",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "unified masking strategy for multi-turn supervision targets (3) Lack of instructional trajectories to incentivize desirable patterns. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0087",
+      "micro_method_cluster_id": "MM0005",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "VideoTemp-o3, a unified thinking-with-videos framework",
+      "compared_to": "several critical limitations persist: (1) Workflow complexity.",
+      "why_it_matters": "It directly targets several critical limitations persist: (1) Workflow complexity.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "unified masking strategy for multi-turn supervision",
+      "compared_to": "several critical limitations persist: (1) Workflow complexity.",
+      "why_it_matters": "It directly targets several critical limitations persist: (1) Workflow complexity.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses",
+      "compared_to": "several critical limitations persist: (1) Workflow complexity.",
+      "why_it_matters": "It directly targets several critical limitations persist: (1) Workflow complexity.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "VideoTemp-o3, a unified thinking-with-videos framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV057",
+          "section": "Introduction",
+          "quote": "To address these challenges, we propose VideoTemp-o3, a unified thinking-with-videos framework that jointly integrates video question answering (VideoQA) and temporal grounding within a single model.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "unified masking strategy for multi-turn supervision",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV060",
+          "section": "Introduction",
+          "quote": "To facilitate learning across both VideoQA and grounding, we introduce a unified masking strategy for multi-turn supervision that encourages exploration while preserving reliable learning signals.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV064",
+          "section": "Introduction",
+          "quote": "Finally, we introduce VideoTemp-Bench, a benchmark for evaluating GQA across videos of diverse durations, as well as in-depth analyses.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "VideoTemp-o3, an agentic thinkingwith-videos model",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV065",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We present VideoTemp-o3, an agentic thinkingwith-videos model that harmonizes temporal grounding and VideoQA within a single architecture.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV067",
+          "section": "Introduction",
+          "quote": "• We develop a cold-start SFT strategy and tailor-made RL rewards to enhance the model’s internal grounding performance.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for VideoTemp-o3, a unified thinking-with-videos framework",
+      "baseline": "VideoTemp-o3: Harmonizing Temporal Grounding and Video Understanding in Agentic Thinking-with-Videos",
+      "dataset": "MAD",
+      "module_to_modify": "VideoTemp-o3, a unified thinking-with-videos framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting several critical limitations persist: (1) Workflow complexity.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_liu_videotemp-o3-harmonizing-temporal-grounding-and-video-understanding-in-agentic-t_13fd1487e6\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_liu_videotemp-o3-harmonizing-temporal-grounding-and-video-understanding-in-agentic-t_13fd1487e6\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

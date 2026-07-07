@@ -1,0 +1,819 @@
+{
+  "paper_id": "2026_li_video-opd-efficient-post-training-of-multimodal-large-language-models-for-tempor_f8f6cef7eb",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_video-opd-efficient-post-training-of-multimodal-large-language-models-for-tempor_f8f6cef7eb",
+  "title": "Video-OPD: Efficient Post-Training of Multimodal Large Language Models for Temporal Video Grounding via On-Policy Distillation",
+  "year": 2026,
+  "venue_or_source": "Open MIND",
+  "authors": [
+    "Jiaze Li",
+    "Hao Yin",
+    "Haoran Xu",
+    "Boshen Xu",
+    "Wenhui Tan",
+    "Zewen He",
+    "Jianzhong Ju",
+    "Zhenbo Luo",
+    "Jian Luan"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Reinforcement learning has emerged as a principled post-training paradigm for Temporal Video Grounding (TVG) due to its on-policy optimization, yet existing GRPO-based methods remain fundamentally constrained by sparse reward signals and substantial computational overhead.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video understanding is a fundamental objective in multimodal learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Video understanding is a fundamental objective in multimodal learning.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "(, 2013; Darrell & Pentland, 1MiLM Plus, Xiaomi Inc.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "(Gaidon et al., 2013; Darrell & Pentland, 1MiLM Plus, Xiaomi Inc.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "2Zhejiang University 3Renmin University of China.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "2Zhejiang University 3Renmin University of China.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Correspondence to: Jianzhong Ju <jujianzhong@xiaomi.com>.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Correspondence to: Jianzhong Ju <jujianzhong@xiaomi.com>.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "1993) One of its core challenges is Temporal Video Grounding (TVG) (Gao et al., 2017; Zhang et al., 2023), which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "However, as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual contexts and...",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual contexts and multi-rollout training.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG...",
+        "scenario": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "However, as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement...",
+        "scenario": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "By explicitly aligning linguistic semantics with fine-grained temporal visual content, TVG enables precise temporal reasoning and semantic interpretation of videos.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "By explicitly aligning linguistic semantics with fine-grained temporal visual content, TVG enables precise temporal reasoning and semantic interpretation of videos.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, Group Relative Policy Optimization (GRPO) provides only sequence-level supervision, yielding a single, fixed-size reward per episode regardless of trajectory length.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "First, Group Relative Policy Optimization (GRPO) (Shao et al., 2024) provides only sequence-level supervision, yielding a single, fixed-size reward per episode regardless of trajectory length.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Blue crowns denote strengths, while red crowns indicate weaknesses.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Blue crowns denote strengths, while red crowns indicate weaknesses.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion...",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and...",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing...",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight?",
+      "failure_mode": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "root_cause": "identifying when two people are engaged in a fight.",
+      "why_existing_methods_fail": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "affected_scenario": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "1993) One of its core challenges is Temporal Video Grounding (TVG) (Gao et al., 2017; Zhang et al., 2023), which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors?",
+      "failure_mode": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "root_cause": "illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "why_existing_methods_fail": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "affected_scenario": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "However, as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG)?",
+      "failure_mode": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+      "root_cause": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion...",
+      "why_existing_methods_fail": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+      "affected_scenario": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual?",
+      "failure_mode": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual...",
+      "root_cause": "sparse reward signals, and prohibitive computational overhead induced by long visual contexts and multi-rollout training.",
+      "why_existing_methods_fail": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual contexts and multi-rollout training.",
+      "affected_scenario": "as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors.",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual contexts and multi-rollout training.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P",
+      "method_core_mechanism": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group...",
+      "method_components": [
+        "Efficient Post-Training",
+        "Temporal Video Grounding",
+        "On-Policy Distillation",
+        "Group Relative Policy Optimization",
+        "Supervised Fine Tuning",
+        "OPD",
+        "LLM",
+        "a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0191"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum",
+      "method_core_mechanism": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+      "method_components": [
+        "Teacher-Validated Disagreement Focusing (TVDF)",
+        "Teacher-Validated Disagreement Focusing",
+        "OPD",
+        "TVDF"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0191"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "Video-OPD, an efficient post-training framework for TVG",
+      "method_core_mechanism": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+      "method_components": [
+        "OPD",
+        "TVG",
+        "KL"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0191"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "TVDF, a lightweight training curriculum",
+      "method_core_mechanism": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+      "method_components": [
+        "TVDF",
+        "OPD"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0191"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P targets 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum targets 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P targets as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum targets as illustrated in Figure 1, existing RL-based posttraining methods remain limited for TVG due to two key factors. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P targets Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG). by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum targets Limitations of Supervised Fine-Tuning (SFT) and Group Relative Policy Optimization (GRPO) on Temporal Video Grounding (TVG). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0005",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "Video-OPD, an efficient post-training framework for TVG targets In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual... by operating on long_sparse.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU4",
+      "solves_how": "TVDF, a lightweight training curriculum targets In summary, this paper presents four key contributions: • We identify two limitations of GRPO-based post-training for TVG: inefficient optimization due to sparse reward signals, and prohibitive computational overhead induced by long visual... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0136",
+      "micro_method_cluster_id": "MM0191",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P",
+      "compared_to": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "why_it_matters": "It directly targets 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.."
+    },
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum",
+      "compared_to": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "why_it_matters": "It directly targets 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "Video-OPD, an efficient post-training framework for TVG",
+      "compared_to": "1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.",
+      "why_it_matters": "It directly targets 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group...",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Motivated by these challenges, we propose Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-Policy Distillation user question Video-LLM intersection-overunion (IoU) reward sparse learning signals on-policy sampling multiple rollouts reasoning content temporal segments Group Relative Policy Optimization update policy video frames user question Video-LLM dense learning signals off-policy sampling cross-entropy loss reasoning content temporal segments Supervised Fine Tuning update policy video frames Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "Building upon Video-OPD, we introduce Teacher-Validated Disagreement Focusing (TVDF), a lightweight training curriculum that further improves optimization efficiency.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Video-OPD, an efficient post-training framework for TVG",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+      "can_transfer_to": [
+        "long_sparse"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "• We propose Video-OPD, an efficient post-training framework for TVG that replaces sparse sequence-level rewards with dense token-level supervision derived from a frontier teacher via a reverse KL objective, enabling more effective credit assignment and faster convergence.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "TVDF, a lightweight training curriculum",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "• We introduce TVDF, a lightweight training curriculum that further improves the efficiency of Video-OPD by validating teacher reliability using ground-truth annotations and prioritizing on-policy trajectories with large teacher–student disagreement, allowing more effective use of labeled data without direct supervision.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P",
+      "baseline": "Video-OPD: Efficient Post-Training of Multimodal Large Language Models for Temporal Video Grounding via On-Policy Distillation",
+      "dataset": "ActivityNet, QVHighlights",
+      "module_to_modify": "Video-OPD, a highly efficient reinforcement learning framework for 1 Video-OPD: Efficient Post-Training of MLLMs for Temporal Video Grounding via On-P",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting 1993) One of its core challenges is Temporal Video Grounding (TVG) , which aims to localize the temporal segments in a video that correspond to natural language queries, such as identifying when two people are engaged in a fight.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "IoU",
+    "R1"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_video-opd-efficient-post-training-of-multimodal-large-language-models-for-tempor_f8f6cef7eb\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_li_video-opd-efficient-post-training-of-multimodal-large-language-models-for-tempor_f8f6cef7eb\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

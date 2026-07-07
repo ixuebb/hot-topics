@@ -1,0 +1,737 @@
+{
+  "paper_id": "2021_yu_cross-interaction-network-for-natural-language-guided-video-moment-retrieval_8a286bfb60",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_yu_cross-interaction-network-for-natural-language-guided-video-moment-retrieval_8a286bfb60",
+  "title": "Cross Interaction Network for Natural Language Guided Video Moment Retrieval",
+  "year": 2021,
+  "venue_or_source": "",
+  "authors": [
+    "Xinli Yu",
+    "Mohsen Malmir",
+    "Xin He",
+    "Jiangning Chen",
+    "Tong Wang",
+    "Yue Wu",
+    "Yue Liu",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "# Introduction Natural language guided video moment retrieval (VMR) refers to the general process of retrieving relevant video contents associated with the text queries.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Natural language guided video moment retrieval (VMR) refers to the general process of retrieving relevant video contents associated with the text queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction Natural language guided video moment retrieval (VMR) refers to the general process of retrieving relevant video contents associated with the text queries.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Manual search is a very time consuming process, and with the surge of user-generated video clips, it calls for an automated solution to retrieve video segments given any text descriptions.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Manual search is a very time consuming process, and with the surge of user-generated video clips, it calls for an automated solution to retrieve video segments given any text descriptions.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "However, it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "For example, localizing the query “mixing the ingredients” in the video requires the...",
+        "scenario": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, resolving “the first time a cat jumps up” requires not only the...",
+        "scenario": "For example, resolving “the first time a cat jumps up” requires not only the understanding of what “cat” and “jump” refer to but also the chronological event order indicated by the word \"first\".",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "For example, resolving “the first time a cat jumps up” requires not only the understanding of what “cat” and “jump” refer to but also the chronological event order indicated by the word \"first\".",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism...",
+        "scenario": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT , which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Our simple yet effective architecture enables speedy training completion within 1 hour on...",
+        "scenario": "Our simple yet effective architecture enables speedy training completion within 1 hour on an AWS P3.2xlarge GPU instance, and other methods mentioned above are found to take much longer time, for example LGI takes about 3 hours with the same setting.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "Our simple yet effective architecture enables speedy training completion within 1 hour on an AWS P3.2xlarge GPU instance, and other methods mentioned above are found to take much longer time, for example LGI [11] takes about 3 hours with the same setting.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Methods without iterative message passing are still overly complicated with multiple stacked layers.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Methods [11, 16, 17] without iterative message passing are still overly complicated with multiple stacked layers.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT , which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP012",
+      "macro_problem_name": "Augmentation Reliability and Distribution Shift and Invalid Query and Open-Set Temporal Retrieval",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text?",
+      "failure_mode": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "root_cause": "Manual search is a very time consuming process, and with the surge of user-generated video clips, it calls for an automated solution to retrieve video segments given any text descriptions.",
+      "why_existing_methods_fail": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "affected_scenario": "For example, localizing the query “mixing the ingredients” in the video requires the understanding of what “ingredients” refer to, and being able to resolve the “mixing” action.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it is computationally expensive and introduces many additional meta parameters for the number of iterative stages?",
+      "failure_mode": "it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+      "root_cause": "This iterative procedure enriches the representation of each frame by incorporating information across all frames and query words.",
+      "why_existing_methods_fail": "it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+      "affected_scenario": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT , which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "However, it is computationally expensive and introduces many additional meta parameters for the number of iterative stages.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0056"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+      "method_core_mechanism": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT , which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+      "method_components": [
+        "CI",
+        "MHA",
+        "BERT",
+        "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+        "which is just a single-layer attention module"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0080"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods",
+      "method_core_mechanism": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+      "method_components": [
+        "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from",
+      "method_core_mechanism": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+      "method_components": [
+        "the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0080"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "multi-task training objective, including 1) start/end prediction task",
+      "method_core_mechanism": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+      "method_components": [
+        "multi-task training objective, including 1) start/end prediction task"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0154"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0",
+      "method_core_mechanism": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+      "method_components": [
+        "SOTA",
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT targets correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0080",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods targets correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0107",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP012",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT targets it is computationally expensive and introduces many additional meta parameters for the number of iterative stages. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0056",
+      "micro_method_cluster_id": "MM0080",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods targets it is computationally expensive and introduces many additional meta parameters for the number of iterative stages. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0056",
+      "micro_method_cluster_id": "MM0090",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+      "compared_to": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "why_it_matters": "It directly targets correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods",
+      "compared_to": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "why_it_matters": "It directly targets correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from",
+      "compared_to": "correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.",
+      "why_it_matters": "It directly targets correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT , which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "We propose to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT [9], which is just a single-layer attention module, Moreover, by utilizing CI-MHA, Figure 1: Overall architecture of our model for video moment retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is much simpler and verified to achieve higher accuracy compared to complex state of arts methods",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Our approach is much simpler and verified to achieve higher accuracy compared to complex state of arts methods.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "In summary, the key contributions of this work are two-fold: • We propose to use the cross interaction multi-head attention mechanism under an early fusion scheme to associate video features with natural language query from both directions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-task training objective, including 1) start/end prediction task",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "• We propose a multi-task training objective, including 1) start/end prediction task that predicts the target start/end positions, and 2) moment segmentation task that predicts if a frame belongs to the ground-truth time interval.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Meanwhile, our method is able to achieve superior SOTA performance on R@1 metrics, surpassing the SOTA on high IoU metrics (R@1, IoU=0.7) by 3.52% absolute (11.09% relative) on the Charades-STA dataset.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+      "baseline": "Cross Interaction Network for Natural Language Guided Video Moment Retrieval",
+      "dataset": "Charades-STA",
+      "module_to_modify": "to fuse with a cross interaction multi-head attention (CI-MHA) mechanism inspired by ViL-BERT",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting correctly identifying the most relevant time interval is a challenging cross-modality problem that requires comprehensive understanding of both the video and the text.."
+    }
+  ],
+  "datasets": [
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "R@1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_yu_cross-interaction-network-for-natural-language-guided-video-moment-retrieval_8a286bfb60\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_yu_cross-interaction-network-for-natural-language-guided-video-moment-retrieval_8a286bfb60\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

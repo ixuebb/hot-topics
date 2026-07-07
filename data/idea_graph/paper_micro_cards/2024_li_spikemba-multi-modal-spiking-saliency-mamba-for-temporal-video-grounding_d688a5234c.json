@@ -1,0 +1,954 @@
+{
+  "paper_id": "2024_li_spikemba-multi-modal-spiking-saliency-mamba-for-temporal-video-grounding_d688a5234c",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_spikemba-multi-modal-spiking-saliency-mamba-for-temporal-video-grounding_d688a5234c",
+  "title": "SpikeMba: Multi-Modal Spiking Saliency Mamba for Temporal Video Grounding",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Wenrui Li",
+    "Xiaopeng Hong",
+    "Xiong, Ruiqin",
+    "Fan, Xiaopeng"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Temporal video grounding (TVG) is a critical task in video content understanding, requiring precise alignment between video content and natural language instructions.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The widespread adoption of the internet and smart devices has dramatically increased the production and consumption of video data.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction The widespread adoption of the internet and smart devices has dramatically increased the production and consumption of video data.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Concurrently, demand for retrieving and understanding video content has grown.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Concurrently, demand for retrieving and understanding video content has grown.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Within this context, video temporal localization has emerged as a key research area.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Within this context, video temporal localization has emerged as a key research area.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Although current methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Although current methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features...",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This suggests that a secondary proposal (prediction #2), which might better reflect the video content, often receives a lower prediction score despite being closer to the correct interpretation.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "This suggests that a secondary proposal (prediction #2), which might better reflect the video content, often receives a lower prediction score despite being closer to the correct interpretation.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment...",
+        "scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To tackle the aforementioned challenges, we propose a novel network architecture, as...",
+        "scenario": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "develop a unified framework with scalable pseudo supervision, establishing an effective grounding model to benefit temporal grounding pretraining with various labels.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "[1] develop a unified framework with scalable pseudo supervision, establishing an effective grounding model to benefit temporal grounding pretraining with various labels.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Confidence Bias towards Salient Objects: In complex Preprint.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Confidence Bias towards Salient Objects: In complex Preprint.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV046",
+            "section": "Introduction",
+            "quote": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description?",
+      "failure_mode": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "root_cause": "Within this context, video temporal localization has emerged as a key research area.",
+      "why_existing_methods_fail": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "affected_scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features?",
+      "failure_mode": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+      "root_cause": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "why_existing_methods_fail": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+      "affected_scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "rrent methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that rrent methods in video content localization show significant performance, they still face challenges with several key issues: 1)?",
+      "failure_mode": "rrent methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+      "root_cause": "Additionally, several studies have focused on the semantic relevance between video clips and textual queries.",
+      "why_existing_methods_fail": "Although current methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+      "affected_scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "Although current methods in video content localization show significant performance, they still face challenges with several key issues: 1).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "iency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right).",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that iency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right)?",
+      "failure_mode": "iency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right).",
+      "root_cause": "Query: Person opens the door to let a dog in.",
+      "why_existing_methods_fail": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency Detector Spiking...",
+      "affected_scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that results in an excessive focus on these objects, often neglecting the video’s overall content?",
+      "failure_mode": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+      "root_cause": "video environments, models tend to identify multiple potential proposal sets because of drastic changes in salient objects.",
+      "why_existing_methods_fail": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+      "affected_scenario": "Relevant Slots Concat Relevant Slots Concat Contextual Moment Reasoner Contextual Moment Reasoner Contextual Moment Reasoner Saliency Proposal Set t=1 t=2 t=3 t=4 Multi-modal Relevant Mamba Video Frame： Prediction #2 18.8s 23.1s Grounding Moment Features Spiking Saliency Detector Spiking Saliency...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "This results in an excessive focus on these objects, often neglecting the video’s overall content.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "novel network architecture, as illustrated in Fig",
+      "method_core_mechanism": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+      "method_components": [
+        "novel network architecture, as illustrated in Fig"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0104"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge",
+      "method_core_mechanism": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+      "method_components": [
+        "Relevant Slots"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0228"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M11",
+      "legacy_macro_method_name": "State-Space, Mamba, or Efficient Sequence Modeling",
+      "micro_method_name": "multi-modal spiking saliency mamba for temporal video grounding",
+      "method_core_mechanism": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+      "method_components": [
+        "multi-modal spiking saliency mamba for temporal video grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV046"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0222"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "spiking saliency detector",
+      "method_core_mechanism": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+      "method_components": [
+        "spiking saliency detector"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0166"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M11",
+      "legacy_macro_method_name": "State-Space, Mamba, or Efficient Sequence Modeling",
+      "micro_method_name": "multi-modal relevant mamba block based on state space models (SSMs)",
+      "method_core_mechanism": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+      "method_components": [
+        "multi-modal relevant mamba block based on state space models (SSMs)"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV052"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0222"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel network architecture, as illustrated in Fig targets The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0104",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge targets The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0228",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel network architecture, as illustrated in Fig targets Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0104",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge targets Addressing this challenge depends on efficiently aligning and understanding multimodal spatio-temporal features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0228",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel network architecture, as illustrated in Fig targets rrent methods in video content localization show significant performance, they still face challenges with several key issues: 1). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0104",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge targets rrent methods in video content localization show significant performance, they still face challenges with several key issues: 1). by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0228",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "multi-modal spiking saliency mamba for temporal video grounding targets iency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right). by operating on ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0222",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU4",
+      "solves_how": "spiking saliency detector targets iency Detector Spiking Saliency Detector SNN × 𝑁 × 𝑁 × 𝑀 Figure 1: An illustration of the challenges in video grounding task (left) and the overall architecture of our proposed model (right). by operating on ranking_selection.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU4",
+      "solves_how": "spiking saliency detector targets This results in an excessive focus on these objects, often neglecting the video’s overall content. by operating on proposal_dependency.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel network architecture, as illustrated in Fig targets This results in an excessive focus on these objects, often neglecting the video’s overall content. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0088",
+      "micro_method_cluster_id": "MM0104",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "novel network architecture, as illustrated in Fig",
+      "compared_to": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "why_it_matters": "It directly targets The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge",
+      "compared_to": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "why_it_matters": "It directly targets The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.."
+    },
+    {
+      "axis": "State-Space, Mamba, or Efficient Sequence Modeling",
+      "what_is_new": "multi-modal spiking saliency mamba for temporal video grounding",
+      "compared_to": "The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.",
+      "why_it_matters": "It directly targets The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel network architecture, as illustrated in Fig",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "To tackle the aforementioned challenges, we propose a novel network architecture, as illustrated in Fig.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "learnable tensors, known as Relevant Slots, to encode learned prior knowledge",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "To optimize this process, we introduce learnable tensors, known as Relevant Slots, to encode learned prior knowledge.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-modal spiking saliency mamba for temporal video grounding",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+      "can_transfer_to": [
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV046",
+          "section": "Introduction",
+          "quote": "In this paper, we present a multi-modal spiking saliency mamba for temporal video grounding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "spiking saliency detector",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+      "can_transfer_to": [
+        "proposal_dependency",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "To capture saliency proposal clues more effectively, we introduce a spiking saliency detector.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "multi-modal relevant mamba block based on state space models (SSMs)",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV052",
+          "section": "Introduction",
+          "quote": "Finally, we introduce the multi-modal relevant mamba block based on state space models (SSMs).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel network architecture, as illustrated in Fig",
+      "baseline": "SpikeMba: Multi-Modal Spiking Saliency Mamba for Temporal Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel network architecture, as illustrated in Fig",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting The main challenge in video temporal localization involves understanding the complex relationships between video content and natural language instructions, and pinpointing the exact segments that match a given description.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_spikemba-multi-modal-spiking-saliency-mamba-for-temporal-video-grounding_d688a5234c\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_li_spikemba-multi-modal-spiking-saliency-mamba-for-temporal-video-grounding_d688a5234c\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

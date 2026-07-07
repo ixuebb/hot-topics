@@ -1,0 +1,603 @@
+{
+  "paper_id": "2022_yang_tubedetr-spatio-temporal-video-grounding-with-transformers_701ed6ad41",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yang_tubedetr-spatio-temporal-video-grounding-with-transformers_701ed6ad41",
+  "title": "TubeDETR: Spatio-Temporal Video Grounding With Transformers",
+  "year": 2022,
+  "venue_or_source": "CVPR 2022",
+  "authors": [
+    "Antoine Yang",
+    "Antoine Miech",
+    "Josef Sivic",
+    "Ivan Laptev",
+    "Cordelia Schmid"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "We also evaluate our full approach on the spatio-temporal video grounding task and demonstrate improvements over the state of the art on the challenging VidSTG and HC-STVG benchmarks.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Grounding natural language in visual content is a fundamental skill to build powerful and explainable vision and language models.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Grounding natural language in visual content is a fundamental skill to build powerful and explainable vision and language models.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This goes beyond associating a global visual representation with a textual representation , as it requires to reason about detailed spatiotemporal visual representations and their association with natural language, as illustrated in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This goes beyond associating a global visual representation with a textual representation [56,61], as it requires to reason about detailed spatiotemporal visual representations and their association with natural language, as illustrated in Figure 1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Spatio-temporal video grounding, recently introduced in , is an interesting and challenging task that lies at the intersection of visual grounding and temporal localization .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Spatio-temporal video grounding, recently introduced in [100], is an interesting and challenging task that lies at the intersection of visual grounding [33, 58, 72] and temporal localization [9, 25, 30].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "This goes beyond associating a global visual representation with a textual representation...",
+        "scenario": "This goes beyond associating a global visual representation with a textual representation , as it requires to reason about detailed spatiotemporal visual representations and their association with natural language, as illustrated in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "This goes beyond associating a global visual representation with a textual representation [56,61], as it requires to reason about detailed spatiotemporal visual representations and their association with natural language, as illustrated in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Output spatio-temporal tube: Figure 1.",
+        "scenario": "Output spatio-temporal tube: Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Output spatio-temporal tube: Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Inspired by these works, and the fact that attentionbased architectures are an intuitive...",
+        "scenario": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [],
+    "method_transition": [
+      {
+        "summary": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG .",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG [100] and HC-STVG [70].",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(iii) We conduct comprehensive experiments on two benchmarks, VidSTG and HC-STVG, showing the effectiveness of our framework for the spatio-temporal video grounding task.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "(iii) We conduct comprehensive experiments on two benchmarks, VidSTG and HC-STVG, showing the effectiveness of our framework for the spatio-temporal video grounding task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models?",
+      "failure_mode": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "root_cause": "# Introduction Grounding natural language in visual content is a fundamental skill to build powerful and explainable vision and language models.",
+      "why_existing_methods_fail": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "affected_scenario": "This goes beyond associating a global visual representation with a textual representation , as it requires to reason about detailed spatiotemporal visual representations and their association with natural language, as illustrated in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV008"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV008",
+          "section": "Introduction",
+          "quote": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2",
+      "method_core_mechanism": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+      "method_components": [
+        "and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual...",
+        "we develop a transformer encoder-decoder model for spatio-temporal video grounding"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "temporal context",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0098"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "enables to use the same representations for both subtasks in order to learn powerful contextualized representations",
+      "method_core_mechanism": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+      "method_components": [
+        "enables to use the same representations for both subtasks in order to learn powerful contextualized representations"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0066"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG",
+      "method_core_mechanism": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG .",
+      "method_components": [
+        "HC",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG [100] and HC-STVG [70].",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "novel architecture for spatio-temporal video grounding",
+      "method_core_mechanism": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+      "method_components": [
+        "our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0158"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "dual-stream encoder",
+      "method_core_mechanism": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+      "method_components": [
+        "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0020"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2 targets In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models. by operating on temporal context.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "enables to use the same representations for both subtasks in order to learn powerful contextualized representations targets In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0066",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2",
+      "compared_to": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "why_it_matters": "It directly targets In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "enables to use the same representations for both subtasks in order to learn powerful contextualized representations",
+      "compared_to": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "why_it_matters": "It directly targets In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.."
+    },
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG",
+      "compared_to": "In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.",
+      "why_it_matters": "It directly targets In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+      "can_transfer_to": [
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "Inspired by these works, and the fact that attentionbased architectures are an intuitive choice for modelling multi-modal and spatio-temporal contextual relationships in videos, we develop a transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "enables to use the same representations for both subtasks in order to learn powerful contextualized representations",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+      "can_transfer_to": [
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "Our framework enables to use the same representations for both subtasks in order to learn powerful contextualized representations.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG and HC-STVG .",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Finally, we show that our method significantly improves over state-of-the-art methods on two benchmarks, VidSTG [100] and HC-STVG [70].",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel architecture for spatio-temporal video grounding",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "In summary, our contributions are three-fold: (i) We propose a novel architecture for spatio-temporal video grounding that performs this task with a space-time transformer decoder.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "dual-stream encoder",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "(ii) We propose a dual-stream encoder that efficiently encodes spatial and multi-modal interactions, based on a slow multi-modal stream and a lightweight fast visual stream.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2",
+      "baseline": "TubeDETR: Spatio-Temporal Video Grounding With Transformers",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "transformer encoder-decoder model for spatio-temporal video grounding, as illustrated in Figure 2",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting In particular, understanding the association of language with spatial regions and temporal boundaries in videos is particularly important to analyze and improve multi-modal video models.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yang_tubedetr-spatio-temporal-video-grounding-with-transformers_701ed6ad41\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_yang_tubedetr-spatio-temporal-video-grounding-with-transformers_701ed6ad41\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

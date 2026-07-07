@@ -1,0 +1,688 @@
+{
+  "paper_id": "2024_bao_vid-morp-video-moment-retrieval-pretraining-from-unlabeled-videos-in-the-wild_efb9ecef6d",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_bao_vid-morp-video-moment-retrieval-pretraining-from-unlabeled-videos-in-the-wild_efb9ecef6d",
+  "title": "Vid-Morp: Video Moment Retrieval Pretraining from Unlabeled Videos in the Wild",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Peijun Bao",
+    "Chenqi Kong",
+    "Shao, Zihao",
+    "Eng‐Poh Ng",
+    "M.H. Er",
+    "Alex C. Kot"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Given a natural language query, video moment retrieval aims to localize the described temporal moment in an untrimmed video.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction G IVEN a natural language query and an untrimmed video, the task of Video Moment Retrieval (VMR) , aims to temporally localize the video moment described by the language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction G IVEN a natural language query and an untrimmed video, the task of Video Moment Retrieval (VMR) [1], [2] aims to temporally localize the video moment described by the language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "VMR is one of the most fundamental tasks in video understanding and has a wide range of realworld applications –, such as video summarization, robot manipulation, and video surveillance analysis.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "VMR is one of the most fundamental tasks in video understanding and has a wide range of realworld applications [3]–[6], such as video summarization, robot manipulation, and video surveillance analysis.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In recent years, the performance of VMR has been improved by deep learning techniques – and the availability of manually annotated data , .",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "In recent years, the performance of VMR has been improved by deep learning techniques [7]–[18] and the availability of manually annotated data [1], [2].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "To tackle this challenge, recent studies [22]–[24] shift focus to unlabeled videos, exploring unsupervised learning.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets [1], [2], [25].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "However, due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+        "scenario": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Additionally, such annotations often exhibit language and temporal biases [19]–[21] (e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "To this end, as shown in Fig.",
+        "scenario": "To this end, as shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To this end, as shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As illustrated in Fig.",
+        "scenario": "As illustrated in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "As illustrated in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Additionally, such annotations often exhibit language and temporal biases [19]–[21] (e.g.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets [1], [2], [25].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This dependency inherently introduces human labor, as annotators must manually pre-clean these videos, which restricts the scalability of these methods.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "This dependency inherently introduces human labor, as annotators must manually pre-clean these videos, which restricts the scalability of these methods.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable?",
+      "failure_mode": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+      "root_cause": "In recent years, the performance of VMR has been improved by deep learning techniques – and the availability of manually annotated data , .",
+      "why_existing_methods_fail": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+      "affected_scenario": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning?",
+      "failure_mode": "To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning.",
+      "root_cause": "biases in query style and temporal boundary distribution), limiting their practical applicability.",
+      "why_existing_methods_fail": "To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning.",
+      "affected_scenario": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "To tackle this challenge, recent studies [22]–[24] shift focus to unlabeled videos, exploring unsupervised learning.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP006",
+      "macro_problem_name": "Shortcut Bias and Spurious Context Dependence and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , ?",
+      "failure_mode": "share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , .",
+      "root_cause": "To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning.",
+      "why_existing_methods_fail": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , .",
+      "affected_scenario": "Additionally, such annotations often exhibit language and temporal biases – (e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "These methods, however, share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets [1], [2], [25].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges?",
+      "failure_mode": "due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+      "root_cause": "the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+      "why_existing_methods_fail": "due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+      "affected_scenario": "To this end, as shown in Fig.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "However, due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore",
+      "method_core_mechanism": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+      "method_components": [
+        "Video Moment Retrieval Pretraining",
+        "Nanyang Technological University"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0195"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "Refinement and Correction (ReCorrect) algorithm",
+      "method_core_mechanism": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+      "method_components": [
+        "Refinement and Correction (ReCorrect) algorithm"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0192"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore targets collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "Refinement and Correction (ReCorrect) algorithm targets collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0091",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore targets To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "Refinement and Correction (ReCorrect) algorithm targets To tackle this challenge, recent studies – shift focus to unlabeled videos, exploring unsupervised learning. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore targets share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "Refinement and Correction (ReCorrect) algorithm targets share a common limitation: they depend on unlabeled videos drawn from well-annotated datasets , , . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0118",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP006",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "Refinement and Correction (ReCorrect) algorithm targets due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0192",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore targets due to the minimal human involvement in creating these samples, directly pretraining on them poses significant challenges. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0093",
+      "micro_method_cluster_id": "MM0195",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Benchmark or Dataset Construction",
+      "what_is_new": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore",
+      "compared_to": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+      "why_it_matters": "It directly targets collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "Refinement and Correction (ReCorrect) algorithm",
+      "compared_to": "collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.",
+      "why_it_matters": "It directly targets collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "1, we introduce Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Refinement and Correction (ReCorrect) algorithm",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "To address these issues, we propose the Refinement and Correction (ReCorrect) algorithm, which consists of two main phases: semantics-guided refinement and memoryconsensus correction.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore",
+      "baseline": "Vid-Morp: Video Moment Retrieval Pretraining from Unlabeled Videos in the Wild",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "Video Moment Retrieval Pretraining (Vid-Morp), a large-scale • Nanyang Technological University, Singapore",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting collecting these annotations, including sentence queries and temporal boundaries, remains expensive, labor-intensive, and not scalable.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_bao_vid-morp-video-moment-retrieval-pretraining-from-unlabeled-videos-in-the-wild_efb9ecef6d\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_bao_vid-morp-video-moment-retrieval-pretraining-from-unlabeled-videos-in-the-wild_efb9ecef6d\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

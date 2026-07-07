@@ -1,0 +1,624 @@
+{
+  "paper_id": "2024_chen_timemarker-a-versatile-video-llm-for-long-and-short-video-understanding-with-sup_bbf79235bf",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_timemarker-a-versatile-video-llm-for-long-and-short-video-understanding-with-sup_bbf79235bf",
+  "title": "TimeMarker: A Versatile Video-LLM for Long and Short Video Understanding with Superior Temporal Localization Ability",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Shimin Chen",
+    "Lan, Xiaohan",
+    "Yitian Yuan",
+    "Zequn Jie",
+    "Lin Ma"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The recent surge in the development of large language models (LLMs) has significantly propelled the progress of multimodal large language models (LMMs) , especially in visionlanguage tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "# Introduction The recent surge in the development of large language models (LLMs) [1, 5, 11, 46, 53, 66] has significantly propelled the progress of multimodal large language models (LMMs) [3, 8, 25, 26, 32, 37, 62, 75], especially in visionlanguage tasks.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Videos, as rich sources of visual information, are crucial for understanding and interacting with realworld scenarios.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Videos, as rich sources of visual information, are crucial for understanding and interacting with realworld scenarios.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "The motivation of our proposed TimeMarker.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "The motivation of our proposed TimeMarker.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "However, current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This gap becomes evident when these models, despite being trained on extensive video captioning and question-answering (QA) datasets, fail to accurately place precise temporal references within video content .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "This gap becomes evident when these models, despite being trained on extensive video captioning and question-answering (QA) datasets, fail to accurately place precise temporal references within video content [18, 30, 43, 56].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "However, these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "this approach can result in the loss of detailed information.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, this approach can result in the loss of detailed information.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a...",
+        "scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods [27, 32, 40, 41] sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "This method interleaves textual temporal separator tokens (e.g., ‘second{2.0}’ indicates...",
+        "scenario": "This method interleaves textual temporal separator tokens (e.g., ‘second{2.0}’ indicates that a particular video frame is at the 2.0 second mark of the video) with video frame tokens, explicitly encoding the absolute temporal positions of video frames.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "This method interleaves textual temporal separator tokens (e.g., ‘second{2.0}’ indicates that a particular video frame is at the 2.0 second mark of the video) with video frame tokens, explicitly encoding the absolute temporal positions of video frames.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "As shown in Figure 1, these tokens act as precise time markers, enabling the model to...",
+        "scenario": "As shown in Figure 1, these tokens act as precise time markers, enabling the model to identify and reference specific moments within the video accurately.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, these tokens act as precise time markers, enabling the model to identify and reference specific moments within the video accurately.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Benchmark Excellence: As shown in Figure 2, TimeMarker achieves state-of-the-art...",
+        "scenario": "Benchmark Excellence: As shown in Figure 2, TimeMarker achieves state-of-the-art performance across multiple public video benchmarks, excelling in both short Figure 2.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Benchmark Excellence: As shown in Figure 2, TimeMarker achieves state-of-the-art performance across multiple public video benchmarks, excelling in both short Figure 2.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "The motivation of our proposed TimeMarker.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "The motivation of our proposed TimeMarker.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "The ability to search and locate specific moments within a video is critical for extracting relevant information from vast and redundant content and for providing accurate evidence-based answers to specific questions.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The ability to search and locate specific moments within a video is critical for extracting relevant information from vast and redundant content and for providing accurate evidence-based answers to specific questions.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging?",
+      "failure_mode": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+      "root_cause": "these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+      "why_existing_methods_fail": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+      "affected_scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work?",
+      "failure_mode": "current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+      "root_cause": "Videos, as rich sources of visual information, are crucial for understanding and interacting with realworld scenarios.",
+      "why_existing_methods_fail": "current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+      "affected_scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "However, current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "fail to accurately place precise temporal references within video content .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that fail to accurately place precise temporal references within video content ?",
+      "failure_mode": "fail to accurately place precise temporal references within video content .",
+      "root_cause": "tion and detection.",
+      "why_existing_methods_fail": "This gap becomes evident when these models, despite being trained on extensive video captioning and question-answering (QA) datasets, fail to accurately place precise temporal references within video content .",
+      "affected_scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "This gap becomes evident when these models, despite being trained on extensive video captioning and question-answering (QA) datasets, fail to accurately place precise temporal references within video content [18, 30, 43, 56].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs?",
+      "failure_mode": "these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+      "root_cause": "the order of events – rather than absolute time points, such as the exact second an event occurs.",
+      "why_existing_methods_fail": "these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+      "affected_scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "However, these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP004",
+      "macro_problem_name": "Temporal Context Robustness and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths?",
+      "failure_mode": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+      "root_cause": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+      "why_existing_methods_fail": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+      "affected_scenario": "Limited by --- Page 2 --the context length of LLMs or GPU capacity, some methods sample a small, fixed number of frames to extract features, focusing on short videos (e.g., within 3 minutes).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l",
+      "method_core_mechanism": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+      "method_components": [
+        "LLM"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0059"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l targets This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l targets current video-language models primarily focus on visual perception and reasoning, often overlooking the essential aspect of temporal localiza- *These authors contributed equally to this work. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l targets fail to accurately place precise temporal references within video content . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l targets these approaches often focus on relative timing – such as the order of events – rather than absolute time points, such as the exact second an event occurs. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l targets In addition to the lack of absolute temporal perception, another challenge for video-LLMs is their ability to understand videos of different lengths. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0009",
+      "micro_method_cluster_id": "MM0059",
+      "macro_problem_id": "AP004",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l",
+      "compared_to": "This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.",
+      "why_it_matters": "It directly targets This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To tackle these challenges, we present TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal localization.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l",
+      "baseline": "TimeMarker: A Versatile Video-LLM for Long and Short Video Understanding with Superior Temporal Localization Ability",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "TimeMarker, a versatile Video-LLM crafted for high-quality dialogue based on content from videos of varying lengths, with a strong focus on temporal l",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting This lack of precise temporal grounding (localization) can lead to less interpretable and verifiable responses, making subsequent temporal reasoning and inference more challenging.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_timemarker-a-versatile-video-llm-for-long-and-short-video-understanding-with-sup_bbf79235bf\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_timemarker-a-versatile-video-llm-for-long-and-short-video-understanding-with-sup_bbf79235bf\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

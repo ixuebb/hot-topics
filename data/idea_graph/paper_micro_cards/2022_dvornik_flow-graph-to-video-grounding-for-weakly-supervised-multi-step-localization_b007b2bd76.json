@@ -1,0 +1,729 @@
+{
+  "paper_id": "2022_dvornik_flow-graph-to-video-grounding-for-weakly-supervised-multi-step-localization_b007b2bd76",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_dvornik_flow-graph-to-video-grounding-for-weakly-supervised-multi-step-localization_b007b2bd76",
+  "title": "Flow Graph to Video Grounding for Weakly-Supervised Multi-step Localization",
+  "year": 2022,
+  "venue_or_source": "Lecture notes in computer science",
+  "authors": [
+    "Nikita Dvornik",
+    "Isma Hadji",
+    "Haï Vu Pham",
+    "Dhaivat Bhatt",
+    "Brais Martínez",
+    "Afsaneh Fazly",
+    "Allan D. Jepson"
+  ],
+  "task_scope": {
+    "primary_task": "Video Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "To this end, we introduce the new problem of flow graph to video grounding.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Understanding video content from procedural activities has recently seen a surge in interest with various applications including future anticipation , procedure planning , question answering and multi-step localization .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Understanding video content from procedural activities has recently seen a surge in interest with various applications including future anticipation [34,13], procedure planning [5,1], question answering [43] and multi-step localization [45,38,24,23,10].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "In this work, we tackle multi-step localization, i.e., inferring the temporal location of procedure steps present in the video.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "In this work, we tackle multi-step localization, i.e., inferring the temporal location of procedure steps present in the video.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "We propose a new graph-to-sequence grounding algorithm (i.e., Graph2Vid) and show that Graph2Vid outperforms baseline approaches in step localization performance and efficiency.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "We propose a new graph-to-sequence grounding algorithm (i.e., Graph2Vid) and show that Graph2Vid outperforms baseline approaches in step localization performance and efficiency.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Since fully-supervised approaches [12,22,38] entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "all such alignment-based approaches share a common issue.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, all such alignment-based approaches share a common issue.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "(top) instructional videos do not always strictly follow a prototypical procedure order...",
+        "scenario": "(top) instructional videos do not always strictly follow a prototypical procedure order (e.g., recipe).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "(top) instructional videos do not always strictly follow a prototypical procedure order (e.g., recipe).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, in the task of making a pizza, one can either start with steps related to...",
+        "scenario": "For example, in the task of making a pizza, one can either start with steps related to making dough, then steps involved in making the sauce, or vice-versa, before finally putting the two preparations together.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "For example, in the task of making a pizza, one can either start with steps related to making dough, then steps involved in making the sauce, or vice-versa, before finally putting the two preparations together.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Since the general procedure (e.g., recipe) does not define a unique order of steps, the...",
+        "scenario": "Since the general procedure (e.g., recipe) does not define a unique order of steps, the alignment-based approaches rely on human annotations to provide the exact steps order for each video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Since the general procedure (e.g., recipe) does not define a unique order of steps, the alignment-based approaches rely on human annotations to provide the exact steps order for each video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Instead, it uses the general procedure description, common to all the videos of the same...",
+        "scenario": "Instead, it uses the general procedure description, common to all the videos of the same category (e.g., the recipe of making pizza independent of the video sequence), to localize procedure steps present in any video.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "Instead, it uses the general procedure description, common to all the videos of the same category (e.g., the recipe of making pizza independent of the video sequence), to localize procedure steps present in any video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "The alignment-based approaches are of particular interest here as for each video they only require the knowledge of step order to yield framewise step localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "The alignment-based approaches [30,4,10] are of particular interest here as for each video they only require the knowledge of step order to yield framewise step localization.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "They all assume that a given procedure follows a strict order, which is often not the case.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "They all assume that a given procedure follows a strict order, which is often not the case.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose to represent a procedure using a flow graph , i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "We propose to represent a procedure using a flow graph [33,18], i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose a new graph-to-sequence grounding algorithm (i.e., Graph2Vid) and show that Graph2Vid outperforms baseline approaches in step localization performance and efficiency.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "We propose a new graph-to-sequence grounding algorithm (i.e., Graph2Vid) and show that Graph2Vid outperforms baseline approaches in step localization performance and efficiency.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision?",
+      "failure_mode": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "root_cause": "In this work, we tackle multi-step localization, i.e., inferring the temporal location of procedure steps present in the video.",
+      "why_existing_methods_fail": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "affected_scenario": "(top) instructional videos do not always strictly follow a prototypical procedure order (e.g., recipe).",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Since fully-supervised approaches [12,22,38] entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "all such alignment-based approaches share a common issue.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that all such alignment-based approaches share a common issue?",
+      "failure_mode": "all such alignment-based approaches share a common issue.",
+      "root_cause": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+      "why_existing_methods_fail": "all such alignment-based approaches share a common issue.",
+      "affected_scenario": "(top) instructional videos do not always strictly follow a prototypical procedure order (e.g., recipe).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, all such alignment-based approaches share a common issue.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "new setup where procedural text is parsed into a flow graph",
+      "method_core_mechanism": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+      "method_components": [
+        "new setup where procedural text is parsed into a flow graph"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0160"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "new approach for step localization",
+      "method_core_mechanism": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+      "method_components": [
+        "new approach for step localization"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0003"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to represent a procedure using a flow graph , i",
+      "method_core_mechanism": "We propose to represent a procedure using a flow graph , i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+      "method_components": [
+        "to represent a procedure using a flow graph , i"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We propose to represent a procedure using a flow graph [33,18], i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0160"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "novel solution for graph-to-sequence grounding - Graph2Vid",
+      "method_core_mechanism": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+      "method_components": [
+        "novel solution for graph-to-sequence grounding - Graph2Vid"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0200"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs",
+      "method_core_mechanism": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+      "method_components": [
+        "flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0003"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new setup where procedural text is parsed into a flow graph targets Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043",
+      "micro_method_cluster_id": "MM0160",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "new approach for step localization targets Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new setup where procedural text is parsed into a flow graph targets all such alignment-based approaches share a common issue. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043",
+      "micro_method_cluster_id": "MM0160",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "new approach for step localization targets all such alignment-based approaches share a common issue. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0043",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "new setup where procedural text is parsed into a flow graph",
+      "compared_to": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "why_it_matters": "It directly targets Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "new approach for step localization",
+      "compared_to": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "why_it_matters": "It directly targets Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to represent a procedure using a flow graph , i",
+      "compared_to": "Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.",
+      "why_it_matters": "It directly targets Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new setup where procedural text is parsed into a flow graph",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "(bottom) Therefore, we propose a new setup where procedural text is parsed into a flow graph that is consequently grounded to the video to temporally localize all steps using our novel algorithm.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "new approach for step localization",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "To this end, we propose a new approach for step localization that does not rely on per-video step order annotation.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to represent a procedure using a flow graph , i",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We propose to represent a procedure using a flow graph , i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "We propose to represent a procedure using a flow graph [33,18], i.e., a graph-based procedure representation that encodes the partial order of instruction steps and captures all the feasible ways to execute a procedure.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel solution for graph-to-sequence grounding - Graph2Vid",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "To achieve our goal of step localization from flow graphs, we introduce a novel solution for graph-to-sequence grounding - Graph2Vid.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce flow graph to video grounding - a new task of multi-step localization in instructional videos given generic procedure flow graphs.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new setup where procedural text is parsed into a flow graph",
+      "baseline": "Flow Graph to Video Grounding for Weakly-Supervised Multi-step Localization",
+      "dataset": "MAD",
+      "module_to_modify": "new setup where procedural text is parsed into a flow graph",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Since fully-supervised approaches entail expensive labeling efforts, several recent works perform step localization with weak supervision.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_dvornik_flow-graph-to-video-grounding-for-weakly-supervised-multi-step-localization_b007b2bd76\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_dvornik_flow-graph-to-video-grounding-for-weakly-supervised-multi-step-localization_b007b2bd76\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

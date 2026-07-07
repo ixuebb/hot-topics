@@ -1,0 +1,593 @@
+{
+  "paper_id": "2024_munakata_language-based-audio-moment-retrieval_ac62858e3b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_munakata_language-based-audio-moment-retrieval_ac62858e3b",
+  "title": "Language-based Audio Moment Retrieval",
+  "year": 2024,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Hokuto Munakata",
+    "Taichi Nishimura",
+    "Shota Nakada",
+    "Tatsuya Komatsu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "This model captures temporal dependencies within audio features, inspired by similar video moment retrieval tasks, thus surpassing conventional clip-level audio retrieval methods.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Language-based audio retrieval, referred to simply as audio retrieval, is to search for desired audio from an audio database using a natural language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Language-based audio retrieval, referred to simply as audio retrieval, is to search for desired audio from an audio database using a natural language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Researchers pay attention to this technology because of its wide range of applications, such as a retrieval system of sound archives and sound effects .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Researchers pay attention to this technology because of its wide range of applications, such as a retrieval system of sound archives and sound effects [1].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Because previous works use audio-text datasets consisting of short audio (5 to 30 seconds), they proposed a method for retrieving short audio from natural languages.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Because previous works use audio-text datasets consisting of short audio (5 to 30 seconds), they proposed a method for retrieving short audio from natural languages.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "However, this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Potential applications include, for example, highlight moment detection for sports...",
+        "scenario": "Potential applications include, for example, highlight moment detection for sports broadcasts and criminal moment detection for surveillance systems.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Potential applications include, for example, highlight moment detection for sports broadcasts and criminal moment detection for surveillance systems.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Figure 1 shows the retrieval system we envision to implement the application.",
+        "scenario": "Figure 1 shows the retrieval system we envision to implement the application.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "Figure 1 shows the retrieval system we envision to implement the application.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Input long audio Freq.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Input long audio Freq.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Video moment retrieval (VMR) is a similar task that retrieves specific moments from a long video –.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "Video moment retrieval (VMR) is a similar task that retrieves specific moments from a long video [11]–[17].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips?",
+      "failure_mode": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "root_cause": "it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "why_existing_methods_fail": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "affected_scenario": "Figure 1 shows the retrieval system we envision to implement the application.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "However, this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored?",
+      "failure_mode": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+      "root_cause": "Given a long audio and text query, the system retrieves relevant moments as start and end time stamps.",
+      "why_existing_methods_fail": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+      "affected_scenario": "Potential applications include, for example, highlight moment detection for sports broadcasts and criminal moment detection for surveillance systems.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations?",
+      "failure_mode": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+      "root_cause": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+      "why_existing_methods_fail": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+      "affected_scenario": "Potential applications include, for example, highlight moment detection for sports broadcasts and criminal moment detection for surveillance systems.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR",
+      "method_core_mechanism": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+      "method_components": [
+        "AMR",
+        "VMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "audio features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0215"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval",
+      "method_core_mechanism": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+      "method_components": [
+        "DETR-based AMR",
+        "Audio Moment DETR",
+        "DETR",
+        "AMR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "audio features",
+        "clip features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0008"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR targets this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval targets this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR targets To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval targets To address this limitation, we can draw inspiration from the field of the video domain, where modeling temporal dependencies is well explored. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR targets Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0215",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval targets Given the lack of prior work in AMR, we first build a dataset dedicated to AMR, namely Clotho-Moment, which consists of large-scale simulated audio recordings with moment annotations. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0008",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM010"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR",
+      "compared_to": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "why_it_matters": "It directly targets this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval",
+      "compared_to": "this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.",
+      "why_it_matters": "It directly targets this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "In this paper, we propose and design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "Then, we propose DETR-based AMR models named Audio Moment DETR as a fundamental framework for the AMR tasks, moving beyond the conventional audio clip retrieval.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR",
+      "baseline": "Language-based Audio Moment Retrieval",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "d design a new task called audio moment retrieval (AMR) inspired by the methodologies and successes seen in VMR",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting this approach is sub-optimal because it processes the audio clip sequence independently, failing to capture the temporal dependencies between the clips.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "MR",
+    "Recall",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_munakata_language-based-audio-moment-retrieval_ac62858e3b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_munakata_language-based-audio-moment-retrieval_ac62858e3b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

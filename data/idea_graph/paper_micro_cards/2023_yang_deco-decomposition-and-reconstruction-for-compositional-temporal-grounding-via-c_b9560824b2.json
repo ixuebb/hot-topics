@@ -1,0 +1,814 @@
+{
+  "paper_id": "2023_yang_deco-decomposition-and-reconstruction-for-compositional-temporal-grounding-via-c_b9560824b2",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yang_deco-decomposition-and-reconstruction-for-compositional-temporal-grounding-via-c_b9560824b2",
+  "title": "DeCo: Decomposition and Reconstruction for Compositional Temporal Grounding via Coarse-To-Fine Contrastive Ranking",
+  "year": 2023,
+  "venue_or_source": "CVPR 2023",
+  "authors": [
+    "Lijin Yang",
+    "Quan Kong",
+    "Hsuan-Kung Yang",
+    "Wadim Kehl",
+    "Yoichi Sato",
+    "Norimasa Kobori"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Cross-modal reconstruction discrepancy can test query-video inconsistency or insufficient evidence.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Over the last years, robust results have been shown for the detection of predefined, simpler action classes in video .",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Over the last years, robust results have been shown for the detection of predefined, simpler action classes in video [11,38,41,48].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "On the other hand, the detection of dense action, e.g.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "On the other hand, the detection of dense action, e.g.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Several recent methods encode both sentence and video segments into unstructured global representations and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "Several recent methods [12,47,50] encode both sentence and video segments into unstructured global representations and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Experiments on Charades-CG and ActivityNet- CG demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Experiments on Charades-CG and ActivityNet- CG [17] demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations [16].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "However, both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "On the other hand, the detection of dense action, e.g.",
+        "scenario": "On the other hand, the detection of dense action, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "On the other hand, the detection of dense action, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "𝑊\" 𝑊# [Verb] [Noun] Learnable prompt Query A = selected global sentence Query B =...",
+        "scenario": "𝑊\" 𝑊# [Verb] [Noun] Learnable prompt Query A = selected global sentence Query B = different global sentence from A Sub-sentences (primitive events) Query A Query B Query A “News reporter in blue are giving news about people cutting dogs’ hair and trimming dogs’ nails.” Masking Positive anchor A...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "𝑊\" 𝑊# [Verb] [Noun] Learnable prompt Query A = selected global sentence Query B = different global sentence from A Sub-sentences (primitive events) Query A Query B Query A “News reporter in blue are giving news about people cutting dogs’ hair and trimming dogs’ nails.” Masking Positive anchor A Negative AB [Verb] from A, [Noun] from B Negative B [Verb] from B, [Noun] from B [Verb] from A, [Noun] from A Reconstruction logits Query A > positive A >negative AB >negative B Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "* Work done while Lijin Yang was an Intern at Woven by Toyota.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "* Work done while Lijin Yang was an Intern at Woven by Toyota.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Fundamentally, most complex actions consist of a series of simpler events, and thus a dense action can be treated as a composition of known event primitives .",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Fundamentally, most complex actions consist of a series of simpler events, and thus a dense action can be treated as a composition of known event primitives [13,25,26].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Similar to the above approach of correspondence learning via global information, composite representations learn from paired monolithic video and language respectively, through large-scale self-supervised pre-training .",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Similar to the above approach of correspondence learning via global information, composite representations learn from paired monolithic video and language respectively, through large-scale self-supervised pre-training [32].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but...",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Experiments on Charades-CG and ActivityNet- CG demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+        "evidence": [
+          {
+            "evidence_id": "EV053",
+            "section": "Introduction",
+            "quote": "Experiments on Charades-CG and ActivityNet- CG [17] demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP003",
+      "macro_problem_name": "Time / Evidence Failure / Particles",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations ?",
+      "failure_mode": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "root_cause": "the large diversity of possible language descriptions and semantic associations .",
+      "why_existing_methods_fail": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "affected_scenario": "On the other hand, the detection of dense action, e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations [16].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0020"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P03",
+      "legacy_macro_problem_name": "Long-Video Evidence Sparsity and Efficient Selection",
+      "micro_problem_name": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that they produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns?",
+      "failure_mode": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+      "root_cause": "Recent work in this area treats complex actions as monolithic events via end-to-end predictions .",
+      "why_existing_methods_fail": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+      "affected_scenario": "On the other hand, the detection of dense action, e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP011",
+      "macro_problem_name": "Cross-Modal Consistency and Reconstruction",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required?",
+      "failure_mode": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+      "root_cause": "Several recent methods encode both sentence and video segments into unstructured global representations and then devise specific cross-modal interaction modules to fuse them for final prediction.",
+      "why_existing_methods_fail": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+      "affected_scenario": "On the other hand, the detection of dense action, e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP006",
+      "macro_problem_name": "Domain Adaptation and Generalization and Sparse Evidence Discovery in Long Videos",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that in either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity?",
+      "failure_mode": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+      "root_cause": "its combinatorial complexity.",
+      "why_existing_methods_fail": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+      "affected_scenario": "On the other hand, the detection of dense action, e.g.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0007"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP007",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces?",
+      "failure_mode": "both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+      "root_cause": "Specifically, the composite representation is extracted from a graph that is structured with primitive elements, and these elements serve as a common representation for vision-language correspondence learning.",
+      "why_existing_methods_fail": "both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+      "affected_scenario": "On the other hand, the detection of dense action, e.g.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV037"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV037",
+          "section": "Introduction",
+          "quote": "However, both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen",
+      "method_core_mechanism": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+      "method_components": [
+        "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0092"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "to learn correspondence by decomposing and reconstructing them under weak supervision",
+      "method_core_mechanism": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+      "method_components": [
+        "to learn correspondence by decomposing and reconstructing them under weak supervision"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0186"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "significantly outperforms existing methods about compositional temporal grounding tasks",
+      "method_core_mechanism": "Experiments on Charades-CG and ActivityNet- CG demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+      "method_components": [
+        "ActivityNet- CG",
+        "CG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV053"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Experiments on Charades-CG and ActivityNet- CG [17] demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0185"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen targets action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0020",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "AP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to learn correspondence by decomposing and reconstructing them under weak supervision targets action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0020",
+      "micro_method_cluster_id": "MM0186",
+      "macro_problem_id": "AP003",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen targets They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to learn correspondence by decomposing and reconstructing them under weak supervision targets They produce a single label to densely describe a long video sequence, and they are difficult to scale up to more varied patterns. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008",
+      "micro_method_cluster_id": "MM0186",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen targets Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "to learn correspondence by decomposing and reconstructing them under weak supervision targets Unfortunately, such global representations fail to explicitly model video structure and language compositions, and fail for cases where higher granularity is required. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0049",
+      "micro_method_cluster_id": "MM0186",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen targets In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0007",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "to learn correspondence by decomposing and reconstructing them under weak supervision targets In either case, the main challenge of utilizing datasets of limited action size to achieve generalization towards novel actions remains challenging due to its combinatorial complexity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0007",
+      "micro_method_cluster_id": "MM0186",
+      "macro_problem_id": "AP006",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU3",
+      "solves_how": "significantly outperforms existing methods about compositional temporal grounding tasks targets both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Experiments on Charades-CG and ActivityNet- CG [17] demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008",
+      "micro_method_cluster_id": "MM0185",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen targets both the global and compositional approaches disregard the granularity of the action composition during the learning phase, and can have issues when generalizing to more varied action spaces. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0008",
+      "micro_method_cluster_id": "MM0092",
+      "macro_problem_id": "AP007",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen",
+      "compared_to": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "why_it_matters": "It directly targets action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .."
+    },
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "to learn correspondence by decomposing and reconstructing them under weak supervision",
+      "compared_to": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "why_it_matters": "It directly targets action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "significantly outperforms existing methods about compositional temporal grounding tasks",
+      "compared_to": "action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .",
+      "why_it_matters": "It directly targets action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "Concretely, we propose to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsentences, and then learn correspondences not only globally across query and video, but also between the subsentences and their related primitive sequences from the video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to learn correspondence by decomposing and reconstructing them under weak supervision",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Since there is no ground truth to relate subsentences and their corresponding sequences, we propose to learn correspondence by decomposing and reconstructing them under weak supervision.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "significantly outperforms existing methods about compositional temporal grounding tasks",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "Experiments on Charades-CG and ActivityNet- CG demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV053",
+          "section": "Introduction",
+          "quote": "Experiments on Charades-CG and ActivityNet- CG [17] demonstrate our method significantly outperforms existing methods about compositional temporal grounding tasks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen",
+      "baseline": "DeCo: Decomposition and Reconstruction for Compositional Temporal Grounding via Coarse-To-Fine Contrastive Ranking",
+      "dataset": "ActivityNet",
+      "module_to_modify": "to learn a composite representation in a coarseto-fine manner, where we first decompose the whole query sentence into several simple phrases as subsen",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting action contents described by a rich description, still poses a significant challenge due to the large diversity of possible language descriptions and semantic associations .."
+    }
+  ],
+  "datasets": [
+    "ActivityNet"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yang_deco-decomposition-and-reconstruction-for-compositional-temporal-grounding-via-c_b9560824b2\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2023_yang_deco-decomposition-and-reconstruction-for-compositional-temporal-grounding-via-c_b9560824b2\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

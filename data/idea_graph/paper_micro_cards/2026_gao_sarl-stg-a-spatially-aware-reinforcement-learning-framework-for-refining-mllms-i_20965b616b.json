@@ -1,0 +1,736 @@
+{
+  "paper_id": "2026_gao_sarl-stg-a-spatially-aware-reinforcement-learning-framework-for-refining-mllms-i_20965b616b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gao_sarl-stg-a-spatially-aware-reinforcement-learning-framework-for-refining-mllms-i_20965b616b",
+  "title": "SARL-STG: A Spatially Aware Reinforcement Learning Framework for Refining MLLMs in Spatio-Temporal Video Grounding",
+  "year": 2026,
+  "venue_or_source": "CVPR 2026",
+  "authors": [
+    "Hong Gao",
+    "Xiangkai Xu",
+    "Bin Zhong",
+    "Junjie Yin",
+    "Fangyu Kang",
+    "Yutong Xu",
+    "Xiugang Dong",
+    "Xurui Gao",
+    "Min-Ling Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-Temporal Video Grounding (STVG) requires models to localize objects both spatially and temporally.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to localize both the temporal interval and spatial region of objects described in natural language queries .",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to localize both the temporal interval and spatial region of objects described in natural language queries [53].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Recent attempts using Multimodal Large Language Models (MLLMs) have shown promise in capturing complex associations, yet their reliance on extensive supervised fine-tuning compromises their inherent semantic understanding and open-world generalization ,...",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Recent attempts using Multimodal Large Language Models (MLLMs) [1, 21, 42] have shown promise in capturing complex associations, yet their reliance on extensive supervised fine-tuning compromises their inherent semantic understanding and open-world generalization [16, 32], delivering inferior accuracy compared to task-specific baselines.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal and spatial grounding...",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Existing approaches broadly fall into two categories: single-stage models [9, 10] that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models [35, 54] that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries .",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries [2].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This semantic complexity creates a cascading challenge: spatial grounding critically depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "This semantic complexity creates a cascading challenge: spatial grounding critically depends on accurate temporal grounding [28, 41], yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the...",
+        "scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Comparison of query semantics between Video Temporal Grounding (VTG) and Spatio-Temporal Video Grounding (STVG).",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Comparison of query semantics between Video Temporal Grounding (VTG) and Spatio-Temporal Video Grounding (STVG).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Recent attempts using Multimodal Large Language Models (MLLMs) have shown promise in capturing complex associations, yet their reliance on extensive supervised fine-tuning compromises their inherent semantic understanding and open-world generalization ,...",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Recent attempts using Multimodal Large Language Models (MLLMs) [1, 21, 42] have shown promise in capturing complex associations, yet their reliance on extensive supervised fine-tuning compromises their inherent semantic understanding and open-world generalization [16, 32], delivering inferior accuracy compared to task-specific baselines.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding , we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal?",
+      "failure_mode": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal...",
+      "root_cause": "heavy dataset-specific fine-tuning, and two-stage models that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+      "why_existing_methods_fail": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+      "affected_scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "problem_type": "inference",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Existing approaches broadly fall into two categories: single-stage models [9, 10] that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models [35, 54] that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "ask requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that ask requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author?",
+      "failure_mode": "ask requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+      "root_cause": "# Introduction Spatio-Temporal Video Grounding (STVG) aims to localize both the temporal interval and spatial region of objects described in natural language queries .",
+      "why_existing_methods_fail": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+      "affected_scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV010"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV010",
+          "section": "Introduction",
+          "quote": "This task requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries ?",
+      "failure_mode": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries .",
+      "root_cause": "Recent attempts using Multimodal Large Language Models (MLLMs) have shown promise in capturing complex associations, yet their reliance on extensive supervised fine-tuning compromises their inherent semantic understanding and open-world generalization ,...",
+      "why_existing_methods_fail": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries .",
+      "affected_scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries [2].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "lly depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that lly depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG?",
+      "failure_mode": "lly depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+      "root_cause": "24630 1, STVG queries differ substantially from traditional Video Temporal Grounding (VTG) queries—they contain richer spatial information including object attributes, interaction behaviors, and detailed environmental context that demand sophisticated spatial...",
+      "why_existing_methods_fail": "This semantic complexity creates a cascading challenge: spatial grounding critically depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+      "affected_scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "This semantic complexity creates a cascading challenge: spatial grounding critically depends on accurate temporal grounding [28, 41], yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP003",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities?",
+      "failure_mode": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+      "root_cause": "Consequently, even minor temporal misalignment propagates to spatial predictions, causing irreversible accuracy degradation.",
+      "why_existing_methods_fail": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+      "affected_scenario": "As illustrated in Figure This CVPR paper is the Open Access version, provided by the Computer Vision Foundation.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "SARL-STG, the first RL-based framework specifically designed for STVG",
+      "method_core_mechanism": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding , we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+      "method_components": [
+        "Verifiable Rewards (RLVR)",
+        "Reinforcement Learning",
+        "Verifiable Rewards",
+        "RLVR",
+        "SARL",
+        "STG",
+        "RL",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV023"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M08",
+      "legacy_macro_method_name": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "micro_method_name": "SARL-STG, the first RL-based framework for STVG",
+      "method_core_mechanism": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+      "method_components": [
+        "SARL",
+        "STG",
+        "RL",
+        "STVG",
+        "MLLM",
+        "SFT"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0018"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SARL-STG, the first RL-based framework specifically designed for STVG targets Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "SARL-STG, the first RL-based framework for STVG targets Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SARL-STG, the first RL-based framework specifically designed for STVG targets ask requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "SARL-STG, the first RL-based framework for STVG targets ask requires integration of temporal reasoning and spatial perception, posing significant challenges for current vision- *Corresponding author. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SARL-STG, the first RL-based framework specifically designed for STVG targets The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries . by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "SARL-STG, the first RL-based framework for STVG targets The fundamental bottleneck in STVG lies in models’ inadequate understanding of fine-grained spatial semantics within natural language queries . by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "SARL-STG, the first RL-based framework specifically designed for STVG targets lly depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "SARL-STG, the first RL-based framework for STVG targets lly depends on accurate temporal grounding , yet temporal models trained on VTG paradigms fail to capture the spatial cues essential for STVG. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "SARL-STG, the first RL-based framework specifically designed for STVG targets The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "SARL-STG, the first RL-based framework for STVG targets The key challenge, therefore, is to enhance models’ spatial semantic understanding to refine temporal boundaries while maintaining robust multimodal reasoning capabilities. by operating on reasoning.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0038",
+      "micro_method_cluster_id": "MM0018",
+      "macro_problem_id": "EP003",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "SARL-STG, the first RL-based framework specifically designed for STVG",
+      "compared_to": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+      "why_it_matters": "It directly targets Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal...."
+    },
+    {
+      "axis": "LLM Reasoning, Agentic Workflows, or RL Post-Training",
+      "what_is_new": "SARL-STG, the first RL-based framework for STVG",
+      "compared_to": "Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal and spatial grounding but accumulate errors during multi-stage inference.",
+      "why_it_matters": "It directly targets Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SARL-STG, the first RL-based framework specifically designed for STVG",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding , we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+      "can_transfer_to": [
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV023",
+          "section": "Introduction",
+          "quote": "To address this core challenge, inspired by recent successes of Reinforcement Learning with Verifiable Rewards (RLVR) in enhancing reasoning and grounding [6, 45], we propose SARL-STG, the first RL-based framework specifically designed for STVG.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "SARL-STG, the first RL-based framework for STVG",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+      "can_transfer_to": [
+        "open_set",
+        "reasoning"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "In summary, our main contributions are as follows: • We propose SARL-STG, the first RL-based framework for STVG that integrates a pretrained MLLM with an open-set detector through dedicated spatio-temporal interaction, trained via a two-stage paradigm combining large-scale SFT with precision-focused RL refinement.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Backbone dependence",
+      "why": "Improvements may come from a stronger pretrained encoder rather than the proposed mechanism.",
+      "possible_defense": "Keep the backbone frozen and compare under identical extracted features."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SARL-STG, the first RL-based framework specifically designed for STVG",
+      "baseline": "SARL-STG: A Spatially Aware Reinforcement Learning Framework for Refining MLLMs in Spatio-Temporal Video Grounding",
+      "dataset": "Charades-STA",
+      "module_to_modify": "SARL-STG, the first RL-based framework specifically designed for STVG",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Existing approaches broadly fall into two categories: single-stage models that jointly predict spatio-temporal boundaries with limited generalization due to heavy dataset-specific fine-tuning, and two-stage models that decouple temporal...."
+    }
+  ],
+  "datasets": [
+    "Charades-STA"
+  ],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gao_sarl-stg-a-spatially-aware-reinforcement-learning-framework-for-refining-mllms-i_20965b616b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_gao_sarl-stg-a-spatially-aware-reinforcement-learning-framework-for-refining-mllms-i_20965b616b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

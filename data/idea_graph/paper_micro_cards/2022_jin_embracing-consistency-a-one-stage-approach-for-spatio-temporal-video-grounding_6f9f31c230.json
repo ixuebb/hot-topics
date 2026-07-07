@@ -1,0 +1,867 @@
+{
+  "paper_id": "2022_jin_embracing-consistency-a-one-stage-approach-for-spatio-temporal-video-grounding_6f9f31c230",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jin_embracing-consistency-a-one-stage-approach-for-spatio-temporal-video-grounding_6f9f31c230",
+  "title": "Embracing Consistency: A One-Stage Approach for Spatio-Temporal Video Grounding",
+  "year": 2022,
+  "venue_or_source": "NeurIPS 2022",
+  "authors": [
+    "Yang Jin",
+    "yongzhi li",
+    "Zehuan Yuan",
+    "Yadong Mu"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Spatio-Temporal video grounding (STVG) focuses on retrieving the spatio-temporal tube of a specific object depicted by a free-form textual expression.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Visual grounding is a prominent and fundamental task in the multi-modal understanding ﬁeld.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Visual grounding is a prominent and fundamental task in the multi-modal understanding ﬁeld.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "It aims to localize a region from the visual content speciﬁed by a given natural language query.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "It aims to localize a region from the visual content speciﬁed by a given natural language query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Existing methods simply treat STVG as a parallel image grounding problem, leading to inconsistent predictions (highlighted in red).",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "Existing methods simply treat STVG as a parallel image grounding problem, leading to inconsistent predictions (highlighted in red).",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "existing methods only attend the cross-modal fusion with local short-term video context.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, existing methods [48, 29, 33] only attend the cross-modal fusion with local short-term video context.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Even in the very recent method , the alignment is still considered at frame-level.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Even in the very recent method [40], the alignment is still considered at frame-level.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing methods only attend the cross-modal fusion with local short-term video context.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, existing methods [48, 29, 33] only attend the cross-modal fusion with local short-term video context.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "As shown in Figure 1, they separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "As shown in Figure 1, they separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Formally, given an untrimmed video and a textual description of an object, this task aims...",
+        "scenario": "Formally, given an untrimmed video and a textual description of an object, this task aims at producing a spatio-temporal tube (i.e., a sequence of bounding boxes) for the queried target object (See Figure 1).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Formally, given an untrimmed video and a textual description of an object, this task aims at producing a spatio-temporal tube (i.e., a sequence of bounding boxes) for the queried target object (See Figure 1).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "The majority of current approaches streamline the spatio-temporal video grounding as a...",
+        "scenario": "The majority of current approaches streamline the spatio-temporal video grounding as a two-stage pipeline, where the object proposals or tubelets are ﬁrstly generated by a pre-trained object detector (e.g., Faster RCNN ) and then all the candidates are ranked according to the similarity with the...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The majority of current approaches [38, 34, 4, 48, 47] streamline the spatio-temporal video grounding as a two-stage pipeline, where the object proposals or tubelets are ﬁrstly generated by a pre-trained object detector (e.g., Faster RCNN [25]) and then all the candidates are ranked according to the similarity with the query.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Query Sentence: An adult in blue grabs a ball on the basketball court Output Tube...",
+        "scenario": "Query Sentence: An adult in blue grabs a ball on the basketball court Output Tube 𝑡𝑡𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠 𝑡𝑡𝑒𝑒𝑒𝑒𝑒𝑒 Inconsistent Prediction Parallel Frame Grounding Figure 1: An illustration of spatio-temporal video grounding task (left) and the inconsistency prediction in previous approaches (right).",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Query Sentence: An adult in blue grabs a ball on the basketball court Output Tube 𝑡𝑡𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠𝑠 𝑡𝑡𝑒𝑒𝑒𝑒𝑒𝑒 Inconsistent Prediction Parallel Frame Grounding Figure 1: An illustration of spatio-temporal video grounding task (left) and the inconsistency prediction in previous approaches (right).",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "For example, given the query of “An adult in blue grabs a ball on the basketball court”...",
+        "scenario": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+        "what_it_reveals": "The example shows that the model must reason under missing or incomplete evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "36th Conference on Neural Information Processing Systems .",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "36th Conference on Neural Information Processing Systems (NeurIPS 2022).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(1) Feature alignment inconsistency.",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "(1) Feature alignment inconsistency.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Accordingly, the cross-modal feature alignment should be performed between the whole video and the querying sentence.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Accordingly, the cross-modal feature alignment should be performed between the whole video and the querying sentence.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+        "evidence": [
+          {
+            "evidence_id": "EV044",
+            "section": "Introduction",
+            "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV049",
+            "section": "Introduction",
+            "quote": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author?",
+      "failure_mode": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "root_cause": "The majority of current approaches streamline the spatio-temporal video grounding as a two-stage pipeline, where the object proposals or tubelets are ﬁrstly generated by a pre-trained object detector (e.g., Faster RCNN ) and then all the candidates are ranked...",
+      "why_existing_methods_fail": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "affected_scenario": "Formally, given an untrimmed video and a textual description of an object, this task aims at producing a spatio-temporal tube (i.e., a sequence of bounding boxes) for the queried target object (See Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned?",
+      "failure_mode": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+      "root_cause": "They directly produce the bounding box at each frame as well as predict the starting and ending boundary based on the fused cross-modal features.",
+      "why_existing_methods_fail": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+      "affected_scenario": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that an adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the?",
+      "failure_mode": "An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the...",
+      "root_cause": "in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+      "why_existing_methods_fail": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+      "affected_scenario": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "existing methods only attend the cross-modal fusion with local short-term video context.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that only attend the cross-modal fusion with local short-term video context?",
+      "failure_mode": "existing methods only attend the cross-modal fusion with local short-term video context.",
+      "root_cause": "Accordingly, the cross-modal feature alignment should be performed between the whole video and the querying sentence.",
+      "why_existing_methods_fail": "existing methods only attend the cross-modal fusion with local short-term video context.",
+      "affected_scenario": "For example, given the query of “An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the ball.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "However, existing methods [48, 29, 33] only attend the cross-modal fusion with local short-term video context.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "y separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that y separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames?",
+      "failure_mode": "y separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+      "root_cause": "shown in Figure 1, they separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+      "why_existing_methods_fail": "As shown in Figure 1, they separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+      "affected_scenario": "Formally, given an untrimmed video and a textual description of an object, this task aims at producing a spatio-temporal tube (i.e., a sequence of bounding boxes) for the queried target object (See Figure 1).",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "As shown in Figure 1, they separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with",
+      "method_core_mechanism": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+      "method_components": [
+        "Spatio-Temporal Consistency-Aware Transformer (STCAT)",
+        "Spatio-Temporal Consistency-Aware Transformer",
+        "STCAT",
+        "STVG",
+        "we present an effective one-stage transformer-fashion encoder-decoder based framework"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0098"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "cross-modal spatio-temporal encoder to fuse the global video context and textual description",
+      "method_core_mechanism": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+      "method_components": [
+        "we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "visual and textual information",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV044"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0048"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task",
+      "method_core_mechanism": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+      "method_components": [
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV049"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0001"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with targets this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "cross-modal spatio-temporal encoder to fuse the global video context and textual description targets this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author. by operating on visual and textual information.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0048",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "cross-modal spatio-temporal encoder to fuse the global video context and textual description targets Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0048",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU3",
+      "solves_how": "novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task targets Though promising results have been achieved, most of these one-stage approaches have the following drawbacks that need to be concerned. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with targets An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "cross-modal spatio-temporal encoder to fuse the global video context and textual description targets An adult in blue grabs a ball on the basketball court” as in Figure 1, the target “adult” cannot be determined without a perception of the whole video content, since there are two adults in blue but only one of them eventually grabs the... by operating on visual and textual information.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0048",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "cross-modal spatio-temporal encoder to fuse the global video context and textual description targets existing methods only attend the cross-modal fusion with local short-term video context. by operating on context, cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0048",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU3",
+      "solves_how": "novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task targets existing methods only attend the cross-modal fusion with local short-term video context. by operating on cross_modal.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0100",
+      "micro_method_cluster_id": "MM0001",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with targets y separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0098",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "cross-modal spatio-temporal encoder to fuse the global video context and textual description targets y separately generate a bounding box with respect to the query on every single frame, yet neglect the consistency among frames. by operating on visual and textual information.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0048",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with",
+      "compared_to": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "why_it_matters": "It directly targets this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "cross-modal spatio-temporal encoder to fuse the global video context and textual description",
+      "compared_to": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "why_it_matters": "It directly targets this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.."
+    },
+    {
+      "axis": "Multi-Modal Fusion and Feature Enhancement",
+      "what_is_new": "novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task",
+      "compared_to": "this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.",
+      "why_it_matters": "It directly targets this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "In this paper, we present an effective one-stage transformer-fashion encoder-decoder based [35] framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with the aforementioned issues in the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "cross-modal spatio-temporal encoder to fuse the global video context and textual description",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+      "can_transfer_to": [
+        "cross_modal",
+        "context"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV044",
+          "section": "Introduction",
+          "quote": "Moreover, in order to adaptively obtain the above-mentioned query by considering the interactions between visual and textual information, we propose a cross-modal spatio-temporal encoder to fuse the global video context and textual description.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+      "can_transfer_to": [
+        "cross_modal",
+        "reconstruction"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV049",
+          "section": "Introduction",
+          "quote": "(1) We propose a novel multimodal template mechanism to mitigate the prediction inconsistency issue in the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with",
+      "baseline": "Embracing Consistency: A One-Stage Approach for Spatio-Temporal Video Grounding",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "effective one-stage transformer-fashion encoder-decoder based framework, dubbed as Spatio-Temporal Consistency-Aware Transformer (STCAT) to cope with",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting this simple design leads to an inevitable deﬁciency: the grounding ∗Corresponding Author.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jin_embracing-consistency-a-one-stage-approach-for-spatio-temporal-video-grounding_6f9f31c230\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jin_embracing-consistency-a-one-stage-approach-for-spatio-temporal-video-grounding_6f9f31c230\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

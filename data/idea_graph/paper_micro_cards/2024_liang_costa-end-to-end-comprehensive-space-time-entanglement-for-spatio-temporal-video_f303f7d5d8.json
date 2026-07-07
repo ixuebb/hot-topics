@@ -1,0 +1,822 @@
+{
+  "paper_id": "2024_liang_costa-end-to-end-comprehensive-space-time-entanglement-for-spatio-temporal-video_f303f7d5d8",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_costa-end-to-end-comprehensive-space-time-entanglement-for-spatio-temporal-video_f303f7d5d8",
+  "title": "CoSTA: End-to-End Comprehensive Space-Time Entanglement for Spatio-Temporal Video Grounding",
+  "year": 2024,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Yaoyuan Liang",
+    "Xiao Liang",
+    "Yansong Tang",
+    "Zhao Yang",
+    "Ziran Li",
+    "Jingang Wang",
+    "Wenbo Ding",
+    "Shao‐Lun Huang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Temporal Grounding",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract This paper studies the spatio-temporal video grounding task, which aims to localize a spatio-temporal tube in an untrimmed video based on the given text description of an event.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Spatio-temporal video grounding (STVG) (",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction Spatio-temporal video grounding (STVG) (Huang et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "2018; Su, Yu, and Xu 2021;",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "2018; Su, Yu, and Xu 2021; Yang et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Left: Existing methods have comparable performance with ours on spatial-only grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV073",
+            "section": "Introduction",
+            "quote": "Left: Existing methods have comparable performance with ours on spatial-only grounding.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+        "evidence": [
+          {
+            "evidence_id": "EV061",
+            "section": "Introduction",
+            "quote": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1: The task of spatio-temporal video grounding takes an untrimmed video and a text...",
+        "scenario": "Figure 1: The task of spatio-temporal video grounding takes an untrimmed video and a text description as inputs, and predicts a spatio-temporal tube that corresponds to the event and the object described.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Figure 1: The task of spatio-temporal video grounding takes an untrimmed video and a text description as inputs, and predicts a spatio-temporal tube that corresponds to the event and the object described.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "2022) employs a spatial encoder (e.g., 2D CNN) to extract frame-wise video features and...",
+        "scenario": "2022) employs a spatial encoder (e.g., 2D CNN) to extract frame-wise video features and decodes the results in a parallel way.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "2022) employs a spatial encoder (e.g., 2D CNN) to extract frame-wise video features and decodes the results in a parallel way.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on...",
+        "scenario": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 3324 --- Page 2 --based object detection systems (e.g., (",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 3324 --- Page 2 --based object detection systems (e.g., (Carion et al.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "As shown in Fig.",
+        "scenario": "As shown in Fig.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV066",
+            "section": "Introduction",
+            "quote": "As shown in Fig.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "*These authors contributed equally.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "*These authors contributed equally.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 3324 --- Page 2 --based object detection systems (e.g., (",
+        "evidence": [
+          {
+            "evidence_id": "EV042",
+            "section": "Introduction",
+            "quote": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 3324 --- Page 2 --based object detection systems (e.g., (Carion et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Moreover, at the parallel tube decoding stage of the existing approaches, the absence of mutual awareness between spatial location of the object and time boundary of the event potentially leads to an inconsistency in spatial grounding over consecutive frames...",
+        "evidence": [
+          {
+            "evidence_id": "EV062",
+            "section": "Introduction",
+            "quote": "Moreover, at the parallel tube decoding stage of the existing approaches, the absence of mutual awareness between spatial location of the object and time boundary of the event potentially leads to an inconsistency in spatial grounding over consecutive frames (depicted in Fig.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (Jin et al.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "2022) in comparison with those of our method.",
+        "evidence": [
+          {
+            "evidence_id": "EV059",
+            "section": "Introduction",
+            "quote": "2022) in comparison with those of our method.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+        "evidence": [
+          {
+            "evidence_id": "EV063",
+            "section": "Introduction",
+            "quote": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Figure 2: Comparisons between our method and other stateof-the-art methods (",
+        "evidence": [
+          {
+            "evidence_id": "EV070",
+            "section": "Introduction",
+            "quote": "Figure 2: Comparisons between our method and other stateof-the-art methods (Yang et al.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Right: Our method obtains significantly higher vIoU while having a faster convergence rate.",
+        "evidence": [
+          {
+            "evidence_id": "EV074",
+            "section": "Introduction",
+            "quote": "Right: Our method obtains significantly higher vIoU while having a faster convergence rate.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that as a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features?",
+      "failure_mode": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "root_cause": "a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "why_existing_methods_fail": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "affected_scenario": "Figure 1: The task of spatio-temporal video grounding takes an untrimmed video and a text description as inputs, and predicts a spatio-temporal tube that corresponds to the event and the object described.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures?",
+      "failure_mode": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+      "root_cause": "The proposals are then ranked based on crossmodal similarity measures, from which one proposal is selected as the prediction.",
+      "why_existing_methods_fail": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+      "affected_scenario": "Meanwhile, the success of end-to-end Transformer- The Thirty-Eighth AAAI Conference on Artiﬁcial Intelligence (AAAI-24) 3324 --- Page 2 --based object detection systems (e.g., (",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "linked_example_ids": [
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP007",
+      "macro_problem_name": "Proposal and Detector Dependence and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that it can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU?",
+      "failure_mode": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+      "root_cause": "measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+      "why_existing_methods_fail": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+      "affected_scenario": "Figure 1: The task of spatio-temporal video grounding takes an untrimmed video and a text description as inputs, and predicts a spatio-temporal tube that corresponds to the event and the object described.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV061"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV061",
+          "section": "Introduction",
+          "quote": "It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "(in red) and by",
+      "method_core_mechanism": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (",
+      "method_components": [
+        "(in red) and by"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (Jin et al.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0021"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+      "method_core_mechanism": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+      "method_components": [
+        "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0078"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "2022) in comparison with those of our method.",
+      "method_core_mechanism": "2022) in comparison with those of our method.",
+      "method_components": [
+        "2022) in comparison with those of our method."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV059"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "2022) in comparison with those of our method.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0078"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task",
+      "method_core_mechanism": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+      "method_components": [
+        "Comprehensive Space-Time",
+        "STVG"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV063"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV063",
+          "section": "Introduction",
+          "quote": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0027"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "and other stateof-the-art methods (",
+      "method_core_mechanism": "Figure 2: Comparisons between our method and other stateof-the-art methods (",
+      "method_components": [
+        "and other stateof-the-art methods ("
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV070"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV070",
+          "section": "Introduction",
+          "quote": "Figure 2: Comparisons between our method and other stateof-the-art methods (Yang et al.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0090"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "(in red) and by targets As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (Jin et al.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0021",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison. targets As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "(in red) and by targets Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (Jin et al.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0021",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM007"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison. targets Such approaches heavily rely on the pre-trained tube extractor and cannot recover from proposal failures. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0019",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU3",
+      "solves_how": "2022) in comparison with those of our method. targets It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "2022) in comparison with those of our method.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0078",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU4",
+      "solves_how": "Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task targets It can be seen that the existing approaches perform well as measured by sIoU but struggle to obtain a high vIoU, and by comparison, our proposed method achieves a significantly higher vIoU. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV063",
+          "section": "Introduction",
+          "quote": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0018",
+      "micro_method_cluster_id": "MM0027",
+      "macro_problem_id": "EP007",
+      "macro_method_id": "EM002"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "(in red) and by",
+      "compared_to": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "why_it_matters": "It directly targets As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.."
+    },
+    {
+      "axis": "Object/Event/Spatio-Temporal Modules",
+      "what_is_new": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+      "compared_to": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "why_it_matters": "It directly targets As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "2022) in comparison with those of our method.",
+      "compared_to": "As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.",
+      "why_it_matters": "It directly targets As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "(in red) and by",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "(c) The spatiotemporal tubes predicted by our method (in red) and by that of (Jin et al.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "2022) (in yellow), highlighting our method’s temporal consistency in object grounding by comparison.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "2022) in comparison with those of our method.",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "2022) in comparison with those of our method.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV059",
+          "section": "Introduction",
+          "quote": "2022) in comparison with those of our method.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV063",
+          "section": "Introduction",
+          "quote": "To address the issues above, we propose Comprehensive Space-Time entAnglement (CoSTA), an end-to-end framework for the STVG task.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "and other stateof-the-art methods (",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Figure 2: Comparisons between our method and other stateof-the-art methods (",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV070",
+          "section": "Introduction",
+          "quote": "Figure 2: Comparisons between our method and other stateof-the-art methods (Yang et al.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for (in red) and by",
+      "baseline": "CoSTA: End-to-End Comprehensive Space-Time Entanglement for Spatio-Temporal Video Grounding",
+      "dataset": "MAD",
+      "module_to_modify": "(in red) and by",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting As a result, it poses a more difficult challenge in respect to multi-modal learning—the modeling and exploitation of spatio-temporal dependencies in visual features.."
+    }
+  ],
+  "datasets": [
+    "MAD"
+  ],
+  "metrics": [
+    "IoU"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_costa-end-to-end-comprehensive-space-time-entanglement-for-spatio-temporal-video_f303f7d5d8\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_liang_costa-end-to-end-comprehensive-space-time-entanglement-for-spatio-temporal-video_f303f7d5d8\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

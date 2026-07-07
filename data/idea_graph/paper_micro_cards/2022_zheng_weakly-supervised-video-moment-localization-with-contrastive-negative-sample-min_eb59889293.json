@@ -1,0 +1,1009 @@
+{
+  "paper_id": "2022_zheng_weakly-supervised-video-moment-localization-with-contrastive-negative-sample-min_eb59889293",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zheng_weakly-supervised-video-moment-localization-with-contrastive-negative-sample-min_eb59889293",
+  "title": "Weakly Supervised Video Moment Localization with Contrastive Negative Sample Mining",
+  "year": 2022,
+  "venue_or_source": "Proceedings of the AAAI Conference on Artificial Intelligence",
+  "authors": [
+    "Minghang Zheng",
+    "Yanjie Huang",
+    "Qing-Chao Chen",
+    "Yang Liu"
+  ],
+  "task_scope": {
+    "primary_task": "Moment Localization",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment localization aims at localizing the video segments which are most related to the given free-form natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video moment localization is an important yet challenging task with potential applications in video surveillance (",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment localization is an important yet challenging task with potential applications in video surveillance (Collins et al.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "2000), robot manipulation , etc.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "2000), robot manipulation (Kemp, Edsinger, and Torres-Jara 2007), etc.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Time Similarity Time Similarity (a) Existing methods Time Similarity (b) Ours methods Query: person take a timed picture.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Time Similarity Time Similarity (a) Existing methods Time Similarity (b) Ours methods Query: person take a timed picture.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of...",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while...",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019;",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019; Gao et al.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2021) have two limitations: Firstly, given a specific query, they mainly focus on distinguishing different videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "2021) have two limitations: Firstly, given a specific query, they mainly focus on distinguishing different videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to...",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal localization setup due to similar background and video style.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard...",
+        "scenario": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "Specifically, as shown in Figure 1(a), most exist- The Thirty-Sixth AAAI Conference on...",
+        "scenario": "Specifically, as shown in Figure 1(a), most exist- The Thirty-Sixth AAAI Conference on Artificial Intelligence (AAAI-22) 3517 --- Page 2 --ing multi-instance learning (MIL) based solutions learn the visual-text alignment in the video level by maximizing the matching scores of the paired sentences...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Specifically, as shown in Figure 1(a), most exist- The Thirty-Sixth AAAI Conference on Artificial Intelligence (AAAI-22) 3517 --- Page 2 --ing multi-instance learning (MIL) based solutions learn the visual-text alignment in the video level by maximizing the matching scores of the paired sentences and videos while suppressing that of the unpaired ones.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "for all of them, given a specific query, all the negative samples are collected from the...",
+        "scenario": "for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal...",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV034",
+            "section": "Introduction",
+            "quote": "However, for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal localization setup due to similar background and video style.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "Secondly, to mine the negative samples within the video, we treat the video segments that...",
+        "scenario": "Secondly, to mine the negative samples within the video, we treat the video segments that are not highlighted by Gaussian mask (marked by shaded orange segments in Figure 1(b)) as easy negative samples.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV043",
+            "section": "Introduction",
+            "quote": "Secondly, to mine the negative samples within the video, we treat the video segments that are not highlighted by Gaussian mask (marked by shaded orange segments in Figure 1(b)) as easy negative samples.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "All rights reserved.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "All rights reserved.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(b) We attach importance to mine positive and negative samples within the same video.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "(b) We attach importance to mine positive and negative samples within the same video.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "2019;",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "2019; Lin et al.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV039",
+            "section": "Introduction",
+            "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the...",
+        "evidence": [
+          {
+            "evidence_id": "EV041",
+            "section": "Introduction",
+            "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "2017) datasets demonstrate the effectiveness of our method in weakly supervised video moment localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV052",
+            "section": "Introduction",
+            "quote": "2017) datasets demonstrate the effectiveness of our method in weakly supervised video moment localization.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the?",
+      "failure_mode": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...",
+      "root_cause": "2021a;",
+      "why_existing_methods_fail": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+      "affected_scenario": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "guishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that guishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video?",
+      "failure_mode": "guishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+      "root_cause": "Time Similarity Time Similarity (a) Existing methods Time Similarity (b) Ours methods Query: person take a timed picture.",
+      "why_existing_methods_fail": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one...",
+      "affected_scenario": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different...",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019;",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019;?",
+      "failure_mode": "existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019;",
+      "root_cause": "Therefore the weakly supervised setting, where only video-level descriptions are available during training, is more practical and draws increasing attention from the community.",
+      "why_existing_methods_fail": "existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019;",
+      "affected_scenario": "2.2s Ground Truth 16.8s Ground Truth 3.0s 14.5s Easy negative Positive Easy negative Hard negative Positive Negative Figure 1: (a) Existing methods focus on distinguishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019; Gao et al.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "rent videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that rent videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video?",
+      "failure_mode": "rent videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video.",
+      "root_cause": "2020;",
+      "why_existing_methods_fail": "2021) have two limitations: Firstly, given a specific query, they mainly focus on distinguishing different videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video.",
+      "affected_scenario": "Specifically, as shown in Figure 1(a), most exist- The Thirty-Sixth AAAI Conference on Artificial Intelligence (AAAI-22) 3517 --- Page 2 --ing multi-instance learning (MIL) based solutions learn the visual-text alignment in the video level by maximizing the matching scores of the paired sentences...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "2021) have two limitations: Firstly, given a specific query, they mainly focus on distinguishing different videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP004",
+      "macro_problem_name": "Semantic Negative Construction and Distractor Control and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often?",
+      "failure_mode": "for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often...",
+      "root_cause": "it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal localization setup due to similar background and video style.",
+      "why_existing_methods_fail": "for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal localization setup due to...",
+      "affected_scenario": "Specifically, as shown in Figure 1(a), most exist- The Thirty-Sixth AAAI Conference on Artificial Intelligence (AAAI-22) 3517 --- Page 2 --ing multi-instance learning (MIL) based solutions learn the visual-text alignment in the video level by maximizing the matching scores of the paired sentences...",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV034"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV034",
+          "section": "Introduction",
+          "quote": "However, for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often much harder to distinguish in the activity temporal localization setup due to similar background and video style.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit",
+      "method_core_mechanism": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+      "method_components": [
+        "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV039"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0038"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M04",
+      "legacy_macro_method_name": "Transformer/DETR-Style Proposal Decoding",
+      "micro_method_name": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query",
+      "method_core_mechanism": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+      "method_components": [
+        "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query",
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV041"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0146"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Intra-Video Contrastive (IVC) Loss to ensure",
+      "method_core_mechanism": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+      "method_components": [
+        "Intra-Video Contrastive (IVC)",
+        "Intra-Video Contrastive",
+        "IVC",
+        "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as..."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "similarity, contrastive",
+      "linked_intro_evidence_ids": [
+        "EV045"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM009",
+      "macro_method_name": "Proposal Generation and Candidate Decoding and Ranking, Selection, and Hard-Mining Mechanisms",
+      "legacy_macro_method_id": "M15",
+      "legacy_macro_method_name": "Object/Event/Spatio-Temporal Modules",
+      "micro_method_name": "to generate a Gaussian mask as a proposal",
+      "method_core_mechanism": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+      "method_components": [
+        "to generate a Gaussian mask as a proposal"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "moment proposals"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0146"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss",
+      "method_core_mechanism": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+      "method_components": [
+        "Intra-Video Contrastive",
+        "we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss."
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "contrastive",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0002"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit targets annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query targets annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit targets guishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query targets guishing matched and unmatched video-query pairs (collected from different videos), while neglecting the matching level of different segments within one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit targets existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019; by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query targets existing weakly supervised solutions (Mithun, Paul, and Roy-Chowdhury 2019; by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit targets rent videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query targets rent videos by calculating the semantic consistency between the video and the query while neglecting the matching level of different video segments within one video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM009"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit targets for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0038",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query targets for all of them, given a specific query, all the negative samples are collected from the other videos, which is not optimal as it neglects the fact that the mismatched segments contained in the same video (as shown in Figure 1(b)) is often... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0059",
+      "micro_method_cluster_id": "MM0146",
+      "macro_problem_id": "EP004",
+      "macro_method_id": "EM009"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit",
+      "compared_to": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+      "why_it_matters": "It directly targets annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...."
+    },
+    {
+      "axis": "Transformer/DETR-Style Proposal Decoding",
+      "what_is_new": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query",
+      "compared_to": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+      "why_it_matters": "It directly targets annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Intra-Video Contrastive (IVC) Loss to ensure",
+      "compared_to": "annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the Advancement of Artificial Intelligence (www.aaai.org).",
+      "why_it_matters": "It directly targets annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+      "can_transfer_to": [
+        "false_negative",
+        "weak_supervision",
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV039",
+          "section": "Introduction",
+          "quote": "To address the above limitations, we introduce a novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples within the same video for training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV041",
+          "section": "Introduction",
+          "quote": "Firstly, to enable deeper coupling between the proposal generation procedure and the video-level supervision, we propose to generate a learnable Gaussian mask for each video, highlighting a video segment most relevant to the query, which serves as the positive sample.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Intra-Video Contrastive (IVC) Loss to ensure",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+      "can_transfer_to": [
+        "false_negative"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV045",
+          "section": "Introduction",
+          "quote": "We propose an Intra-Video Contrastive (IVC) Loss to ensure that the similarity with the query is sorted from large to small as positive, hard negative, and easy negative samples.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to generate a Gaussian mask as a proposal",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+      "can_transfer_to": [
+        "proposal_dependency"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "To sum up, the main contributions of our work are: • We propose to generate a Gaussian mask as a proposal, which can represent the temporal structure of an event and can be learned by the network.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "• In contrast to collecting negative samples from different videos, we propose to mine the hard and easy negatives within the same video and train the system with Intra-Video Contrastive loss.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit",
+      "baseline": "Weakly Supervised Video Moment Localization with Contrastive Negative Sample Mining",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "novel weakly supervised method for activity temporal localization by dynamically generating informative proposals and mining hard negative samples wit",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting annotating the ground truth temporal boundary for each query sentence is labor-intensive and time-consuming, which undermines fully supervised approaches in real-world large-scale *Corresponding author Copyright © 2022, Association for the...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA"
+  ],
+  "metrics": [
+    "Recall"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zheng_weakly-supervised-video-moment-localization-with-contrastive-negative-sample-min_eb59889293\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_zheng_weakly-supervised-video-moment-localization-with-contrastive-negative-sample-min_eb59889293\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

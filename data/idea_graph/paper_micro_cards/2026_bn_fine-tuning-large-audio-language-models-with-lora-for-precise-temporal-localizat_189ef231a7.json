@@ -1,0 +1,491 @@
+{
+  "paper_id": "2026_bn_fine-tuning-large-audio-language-models-with-lora-for-precise-temporal-localizat_189ef231a7",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_bn_fine-tuning-large-audio-language-models-with-lora-for-precise-temporal-localizat_189ef231a7",
+  "title": "Fine-Tuning Large Audio-Language Models with Lora for Precise Temporal Localization of Prolonged Exposure Therapy Elements",
+  "year": 2026,
+  "venue_or_source": "arXiv",
+  "authors": [
+    "Suhas BN",
+    "Andrew M. Sherrill",
+    "Jyoti Alaparthi",
+    "Dominik O. Mattioli",
+    "Rosa I. Arriaga",
+    "Christopher W. Wiese",
+    "Saeed Abdullah"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Post-Traumatic Stress Disorder (PTSD) is linked to multiple comorbidities and can severely impact quality of life.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction Post-Traumatic Stress Disorder (PTSD) is linked to multiple comorbidities and can severely impact quality of life.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Recovery is possible through treatments like Prolonged Exposure (PE) therapy, a gold-standard, evidence-based approach .",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Recovery is possible through treatments like Prolonged Exposure (PE) therapy, a gold-standard, evidence-based approach [1].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "While prior work has explored automated evaluation using speech and language processing , most approaches focus on utterance-level classification rather than precise temporal localization of extended therapeutic This work is supported by the National Science...",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "While prior work has explored automated evaluation using speech and language processing [3, 4, 5, 6], most approaches focus on utterance-level classification rather than precise temporal localization of extended therapeutic This work is supported by the National Science Foundation (NSF) under Grant No.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "trained PE clinicians are in short supply.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "However, trained PE clinicians are in short supply.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "The model is trained on fixedduration audio-transcript windows paired with task-specific...",
+        "scenario": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV023",
+            "section": "Introduction",
+            "quote": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Therapist fidelity, adherence to PE’s core components, is essential for effective outcomes , but assessing fidelity typically requires manual review of full sessions, making it time-consuming and hard to scale.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Therapist fidelity, adherence to PE’s core components, is essential for effective outcomes [2], but assessing fidelity typically requires manual review of full sessions, making it time-consuming and hard to scale.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "This paper introduces a framework for second-level temporal localization of key PE therapy fidelity phases, specifically : therapist orientation to imaginal exposure (P1), duration of imaginal exposure (P2), and post-imaginal processing (P3).",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "This paper introduces a framework for second-level temporal localization of key PE therapy fidelity phases, specifically [7, 8]: therapist orientation to imaginal exposure (P1), duration of imaginal exposure (P2), and post-imaginal processing (P3).",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "Our approach leverages Qwen2 Audio , a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) and quantization techniques (QLoRA) for computational efficiency.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "trained PE clinicians are in short supply.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that trained PE clinicians are in short supply?",
+      "failure_mode": "trained PE clinicians are in short supply.",
+      "root_cause": "Recovery is possible through treatments like Prolonged Exposure (PE) therapy, a gold-standard, evidence-based approach .",
+      "why_existing_methods_fail": "trained PE clinicians are in short supply.",
+      "affected_scenario": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "However, trained PE clinicians are in short supply.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that furthermore, the creation of large, finely annotated datasets remains a major bottleneck?",
+      "failure_mode": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+      "root_cause": "phases, an essential requirement for PE fidelity assessment.",
+      "why_existing_methods_fail": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+      "affected_scenario": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity?",
+      "failure_mode": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+      "root_cause": "Furthermore, the creation of large, finely annotated datasets remains a major bottleneck.",
+      "why_existing_methods_fail": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+      "affected_scenario": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P07",
+      "legacy_macro_problem_name": "LLM Temporal Reasoning and Time Output Instability",
+      "micro_problem_name": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters?",
+      "failure_mode": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+      "root_cause": "By distilling heavy server-side reasoning into a quantized local model, we ensure that patient audio, potentially the most sensitive biometric data, never leaves the secure inference environment, addressing a primary barrier to clinical AI adoption.",
+      "why_existing_methods_fail": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+      "affected_scenario": "The model is trained on fixedduration audio-transcript windows paired with task-specific prompts (e.g., “When did the Imaginal Exposure start?”) to predict the normalized offset of the target event.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "leverages Qwen2 Audio , a model",
+      "method_core_mechanism": "Our approach leverages Qwen2 Audio , a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) and quantization techniques (QLoRA) for computational efficiency.",
+      "method_components": [
+        "Low-Rank Adaptation"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "audio features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0044"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "leverages Qwen2 Audio , a model targets trained PE clinicians are in short supply. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045",
+      "micro_method_cluster_id": "MM0044",
+      "macro_problem_id": "AP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "leverages Qwen2 Audio , a model targets Furthermore, the creation of large, finely annotated datasets remains a major bottleneck. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045",
+      "micro_method_cluster_id": "MM0044",
+      "macro_problem_id": "AP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "leverages Qwen2 Audio , a model targets This bottleneck effectively restricts high-quality care to a fraction of patients; thus, automating fidelity is not merely a technical convenience but an ethical imperative for healthcare equity. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045",
+      "micro_method_cluster_id": "MM0044",
+      "macro_problem_id": "AP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "leverages Qwen2 Audio , a model targets To address annotation challenges, we employ a soft-supervision pipeline in which initial timestamps are proposed by a large language model (LLM) using session transcripts and subsequently verified by trained raters. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0045",
+      "micro_method_cluster_id": "MM0044",
+      "macro_problem_id": "AP008",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "leverages Qwen2 Audio , a model",
+      "compared_to": "trained PE clinicians are in short supply.",
+      "why_it_matters": "It directly targets trained PE clinicians are in short supply.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "leverages Qwen2 Audio , a model",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "Our approach leverages Qwen2 Audio , a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) and quantization techniques (QLoRA) for computational efficiency.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "Our approach leverages Qwen2 Audio [9], a model that jointly processes audio and transcript inputs, fine-tuned using Low-Rank Adaptation (LoRA) [10] and quantization techniques (QLoRA) [11] for computational efficiency.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for leverages Qwen2 Audio , a model",
+      "baseline": "Fine-Tuning Large Audio-Language Models with Lora for Precise Temporal Localization of Prolonged Exposure Therapy Elements",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "leverages Qwen2 Audio , a model",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting trained PE clinicians are in short supply.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_bn_fine-tuning-large-audio-language-models-with-lora-for-precise-temporal-localizat_189ef231a7\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_bn_fine-tuning-large-audio-language-models-with-lora-for-precise-temporal-localizat_189ef231a7\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

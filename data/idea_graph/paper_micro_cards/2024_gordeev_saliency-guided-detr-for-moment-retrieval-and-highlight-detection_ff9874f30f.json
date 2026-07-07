@@ -1,0 +1,939 @@
+{
+  "paper_id": "2024_gordeev_saliency-guided-detr-for-moment-retrieval-and-highlight-detection_ff9874f30f",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gordeev_saliency-guided-detr-for-moment-retrieval-and-highlight-detection_ff9874f30f",
+  "title": "Saliency-Guided DETR for Moment Retrieval and Highlight Detection",
+  "year": 2024,
+  "venue_or_source": "arXiv",
+  "authors": [
+    "Aleksandr Gordeev",
+    "Vladimir Dokholyan",
+    "Irina Tolstykh",
+    "Maksim Kuprashevich"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Existing approaches for video moment retrieval and highlight detection are not able to align text and video features efficiently, resulting in unsatisfying performance and limited production usage.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The task of searching for specific moments in a video based on a text query has always been in demand.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "# Introduction The task of searching for specific moments in a video based on a text query has always been in demand.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "With the rapid growth of video content, it has become increasingly relevant.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "With the rapid growth of video content, it has become increasingly relevant.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "For instance, in the entertainment industry, quickly *Equally contributed †Corresponding author 1https://gracikk-ds.github.io/sg-detr/ locating scenes of interest like epic battles in movies or specific landmarks in travel videos can greatly enhance content...",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "For instance, in the entertainment industry, quickly *Equally contributed †Corresponding author 1https://gracikk-ds.github.io/sg-detr/ locating scenes of interest like epic battles in movies or specific landmarks in travel videos can greatly enhance content accessibility and user engagement.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "In sports analytics, identifying key events can be very important for streaming platforms and spectators.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "In sports analytics, identifying key events can be very important for streaming platforms and spectators.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Most of the methods utilize frozen encoders, such as SlowFast and CLIP , to extract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Most of the methods utilize frozen encoders, such as SlowFast [8] and CLIP [29], to extract features from videos and text queries in the QVHighlights [17] benchmark, but they often fail to align these features effectively.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Some works, such as [22], have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "other architecture variants have also been proposed to address this problem.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "However, other architecture variants have also been proposed to address this problem.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Despite the high quality of the QVHighlights dataset’s annotations, its limited size necessitates additional data for effective model pretraining.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "Despite the high quality of the QVHighlights dataset’s annotations, its limited size necessitates additional data for effective model pretraining.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [],
+    "core_problem_transition": [
+      {
+        "summary": "Most of the methods utilize frozen encoders, such as SlowFast and CLIP , to extract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Most of the methods utilize frozen encoders, such as SlowFast [8] and CLIP [29], to extract features from videos and text queries in the QVHighlights [17] benchmark, but they often fail to align these features effectively.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "Some works, such as [22], have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "However, recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose a new model block that utilizes the advantages of the InternVideo2 aligned video-text encoder.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m , and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m [42], and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+        "evidence": [
+          {
+            "evidence_id": "EV035",
+            "section": "Introduction",
+            "quote": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "• We proposed a novel data generation approach and built a pre-training dataset with 150k samples.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "• We proposed a novel data generation approach and built a pre-training dataset with 150k samples.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Proposal and Detector Dependence",
+      "legacy_macro_problem_id": "P06",
+      "legacy_macro_problem_name": "Cross-Modal Semantic Alignment Gap",
+      "micro_problem_name": "existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and?",
+      "failure_mode": "existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...",
+      "root_cause": "Similarly, in security surveillance, rapid search of incidents like car accidents, crime cases, or safety violations in industrial settings is vital for timely response or investigations.",
+      "why_existing_methods_fail": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+      "affected_scenario": "",
+      "problem_type": "training",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP009",
+      "macro_problem_name": "Domain Adaptation and Generalization and Action-Sensitive Visual and Motion Representation",
+      "legacy_macro_problem_id": "P11",
+      "legacy_macro_problem_name": "Dataset, Benchmark, and Evaluation Mismatch",
+      "micro_problem_name": "tract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that tract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively?",
+      "failure_mode": "tract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+      "root_cause": "SlowFast and CLIP , to extract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+      "why_existing_methods_fail": "Most of the methods utilize frozen encoders, such as SlowFast and CLIP , to extract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively.",
+      "affected_scenario": "",
+      "problem_type": "evaluation",
+      "linked_intro_evidence_ids": [
+        "EV013"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV013",
+          "section": "Introduction",
+          "quote": "Most of the methods utilize frozen encoders, such as SlowFast [8] and CLIP [29], to extract features from videos and text queries in the QVHighlights [17] benchmark, but they often fail to align these features effectively.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement?",
+      "failure_mode": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+      "root_cause": ", have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+      "why_existing_methods_fail": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV014"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV014",
+          "section": "Introduction",
+          "quote": "Some works, such as [22], have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field?",
+      "failure_mode": "recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+      "root_cause": "Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement.",
+      "why_existing_methods_fail": "recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "However, recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "EP005",
+      "macro_problem_name": "Temporal Context Robustness and Representation Granularity and Semantic Structure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "other architecture variants have also been proposed to address this problem.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that other architecture variants have also been proposed to address this problem?",
+      "failure_mode": "other architecture variants have also been proposed to address this problem.",
+      "root_cause": "The resulting model, Moment-DETR , became a foundational development in the field, paving the way for further works .",
+      "why_existing_methods_fail": "other architecture variants have also been proposed to address this problem.",
+      "affected_scenario": "",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV020"
+      ],
+      "linked_example_ids": [],
+      "evidence": [
+        {
+          "evidence_id": "EV020",
+          "section": "Introduction",
+          "quote": "However, other architecture variants have also been proposed to address this problem.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM008",
+      "macro_method_name": "Reconstruction-Discrepancy Mechanisms and Representation Learning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "new model block",
+      "method_core_mechanism": "We propose a new model block that utilizes the advantages of the InternVideo2 aligned video-text encoder.",
+      "method_components": [
+        "We propose a new model block that utilizes the advantages of the InternVideo2 aligned video-text encoder."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV016"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0023"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them",
+      "method_core_mechanism": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+      "method_components": [
+        "Local Saliency Scores"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0166"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (",
+      "method_core_mechanism": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+      "method_components": [
+        "Saliency-Guided Cross Attention (SGCA)",
+        "Saliency-Guided Cross Attention",
+        "Local Saliency Scores",
+        "SGCA",
+        "we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction",
+        "where cross-attention scores are weighted by the Local Saliency Scores (Sec."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0080"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "novel data generation approach",
+      "method_core_mechanism": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m , and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+      "method_components": [
+        "FLT"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m [42], and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0112"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging...",
+      "method_core_mechanism": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+      "method_components": [
+        "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV035"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0052"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "new model block targets existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0023",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them targets existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0003",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "new model block targets tract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0023",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them targets tract features from videos and text queries in the QVHighlights benchmark, but they often fail to align these features effectively. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0025",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP009",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "new model block targets Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0023",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them targets Some works, such as , have attempted to address CLIP’s limitations and enhance the quality of video features and have even achieved some performance improvement. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "new model block targets recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0023",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM008"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them targets recent advances in foundational video models have enabled the use of more powerful encoders for both text and video, paving the way for novel architectural approaches in the moment retrieval field. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them targets other architecture variants have also been proposed to address this problem. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0166",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM004"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "new model block targets other architecture variants have also been proposed to address this problem. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0041",
+      "micro_method_cluster_id": "MM0023",
+      "macro_problem_id": "EP005",
+      "macro_method_id": "EM008"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "new model block",
+      "compared_to": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+      "why_it_matters": "It directly targets existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them",
+      "compared_to": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+      "why_it_matters": "It directly targets existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (",
+      "compared_to": "Despite this demand, existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and scalability, constraining their practical adoption.",
+      "why_it_matters": "It directly targets existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "new model block",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose a new model block that utilizes the advantages of the InternVideo2 aligned video-text encoder.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV016",
+          "section": "Introduction",
+          "quote": "We propose a new model block that utilizes the advantages of the InternVideo2 [43] aligned video-text encoder.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+      "can_transfer_to": [
+        "context",
+        "representation",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "Our approach starts with generating initial highlight scores termed as Local Saliency Scores by directly comparing text and video embeddings and then refining them by incorporating the global context of the entire video.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+      "can_transfer_to": [
+        "cross_modal",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "To focus the model on the most relevant content, we propose a Saliency-Guided Cross Attention (SGCA) mechanism for cross-modal interaction, where cross-attention scores are weighted by the Local Saliency Scores (Sec.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel data generation approach",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m , and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "To address this, we introduce a novel data generation approach that utilizes large video retrieval datasets, such as InterVid-FLT-10m [42], and leverages the impressive capabilities of foundational text-video models to create high-quality training data.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging...",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV035",
+          "section": "Introduction",
+          "quote": "The contributions of the work can be summarized as: • We developed a new architecture for moment retrieval and highlight detection tasks, leveraging the latest advancements in video-text alignment and object detection.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for new model block",
+      "baseline": "Saliency-Guided DETR for Moment Retrieval and Highlight Detection",
+      "dataset": "Charades-STA, QVHighlights",
+      "module_to_modify": "new model block",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting existing solutions for video moment retrieval (MR), which aims to localize specific video intervals, and highlight detection (HD), which focuses on assigning a relevance score to each video sub-clip, exhibit limited performance and...."
+    }
+  ],
+  "datasets": [
+    "Charades-STA",
+    "QVHighlights",
+    "TACoS"
+  ],
+  "metrics": [
+    "HD",
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gordeev_saliency-guided-detr-for-moment-retrieval-and-highlight-detection_ff9874f30f\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_gordeev_saliency-guided-detr-for-moment-retrieval-and-highlight-detection_ff9874f30f\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

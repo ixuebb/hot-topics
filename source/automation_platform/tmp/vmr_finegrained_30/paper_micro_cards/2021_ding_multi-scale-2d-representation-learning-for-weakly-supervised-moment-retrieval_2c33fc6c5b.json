@@ -1,0 +1,729 @@
+{
+  "paper_id": "2021_ding_multi-scale-2d-representation-learning-for-weakly-supervised-moment-retrieval_2c33fc6c5b",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_multi-scale-2d-representation-learning-for-weakly-supervised-moment-retrieval_2c33fc6c5b",
+  "title": "Multi-scale 2D Representation Learning for weakly-supervised moment retrieval",
+  "year": 2021,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Li Ding",
+    "Rui Wu",
+    "Yongqiang Tang",
+    "Zhizhong Zhang",
+    "Wensheng Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video moment retrieval aims to search the moment most relevant to a given language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications, e.g. video surveillance, sport analytics and shortterm video recommendation.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications, e.g. video surveillance, sport analytics and shortterm video recommendation.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Therefore, it has drawn much research interest in recent years, , , .",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "Therefore, it has drawn much research interest in recent years[4], [27], [23], [24].",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "This task aims to search the moment most relevant to the given text query in an untrimmed video.",
+        "evidence": [
+          {
+            "evidence_id": "EV014",
+            "section": "Introduction",
+            "quote": "This task aims to search the moment most relevant to the given text query in an untrimmed video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "1 as an example, given a text query ”A person is eating a sandwich. ”, we want to know when this event starts and ends in the whole video.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "1 as an example, given a text query ”A person is eating a sandwich. ”, we want to know when this event starts and ends in the whole video.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "However, manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "However, these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates with learned...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. [16] employed self-attention mechanism and update the features by aggregating the information from other candidates with learned weights, but it brings much computational cost. [26] constructed a candidate graph updated by graph neural network(gnn) [18], in which relations between moment candidates are implicitly represented by the edges between candidate nodes.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "the lack of temporal boundary annotations is not conductive to handle the variance of temporal scale and design loss function in training time, which makes it difﬁcult to directly transfer the proposed framework in these fully-supervised methods into the...",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "However, the lack of temporal boundary annotations is not conductive to handle the variance of temporal scale and design loss function in training time, which makes it difﬁcult to directly transfer the proposed framework in these fully-supervised methods into the weaklysupervised task.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "2D-TAN, such challenge is weakened by the strong supervision of massive accurate moment annotations, but we note that the single-scale 2D map applied in achieved limited success when generate more precise moment candidates, which contributes little to the...",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "2D-TAN, such challenge is weakened by the strong supervision of massive accurate moment annotations, but we note that the single-scale 2D map applied in [27] achieved limited success when generate more precise moment candidates, which contributes little to the weakly-supervised training.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications,...",
+        "scenario": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications, e.g. video surveillance, sport analytics and shortterm video recommendation.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications, e.g. video surveillance, sport analytics and shortterm video recommendation.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "For example, both text queries shown in Fig.1 are devoted to describing a similar event...",
+        "scenario": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "For the second issue, in fully-supervised setting, e.g.",
+        "scenario": "For the second issue, in fully-supervised setting, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "For the second issue, in fully-supervised setting, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "We evaluate our proposed method on two popular benchmark datasets for video moment...",
+        "scenario": "We evaluate our proposed method on two popular benchmark datasets for video moment retrieval, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV037",
+            "section": "Introduction",
+            "quote": "We evaluate our proposed method on two popular benchmark datasets for video moment retrieval, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "Besides, the temporal boundaries of moments are usually ambiguous to deﬁne, which brings more difﬁculties for accurate labelling.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "Besides, the temporal boundaries of moments are usually ambiguous to deﬁne, which brings more difﬁculties for accurate labelling.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Second, the present weakly-supervised moment retrieval methods generally overlook the fact that the variance of temporal scale of video moments is also an important inﬂuence factor for moments localization.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "Second, the present weakly-supervised moment retrieval methods generally overlook the fact that the variance of temporal scale of video moments is also an important inﬂuence factor for moments localization.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates with learned...",
+        "evidence": [
+          {
+            "evidence_id": "EV027",
+            "section": "Introduction",
+            "quote": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. [16] employed self-attention mechanism and update the features by aggregating the information from other candidates with learned weights, but it brings much computational cost. [26] constructed a candidate graph updated by graph neural network(gnn) [18], in which relations between moment candidates are implicitly represented by the edges between candidate nodes.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV036",
+            "section": "Introduction",
+            "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+        "evidence": [
+          {
+            "evidence_id": "EV040",
+            "section": "Introduction",
+            "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P02",
+      "legacy_macro_problem_name": "Boundary Ambiguity and Localization Precision",
+      "micro_problem_name": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that manually labelling temporal boundary of the moments is time-consuming and of high cost?",
+      "failure_mode": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+      "root_cause": "Most of these methods use a fully-supervised training manner, which requires accurate annotations of the start and end time points of the corresponding moments for given text queries.",
+      "why_existing_methods_fail": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+      "affected_scenario": "# Introduction Video moment retrieval can facilitate a lot of multimedia applications, e.g. video surveillance, sport analytics and shortterm video recommendation.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV018"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV018",
+          "section": "Introduction",
+          "quote": "However, manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P05",
+      "legacy_macro_problem_name": "Multi-Moment, Compositional, and Complex Query Grounding",
+      "micro_problem_name": "these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods process each moment candidate individually, thus the relations between video moments are inevitably neglected?",
+      "failure_mode": "these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+      "root_cause": "First, most existing weakly-supervised methods resort to projecting the text features and video features of moment candidates into some learned uniﬁed space, and then calculate the alignment score of candidates with text query, the larger score indicates the...",
+      "why_existing_methods_fail": "these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+      "affected_scenario": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV024"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV024",
+          "section": "Introduction",
+          "quote": "However, these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly?",
+      "failure_mode": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "root_cause": "Second, the present weakly-supervised moment retrieval methods generally overlook the fact that the variance of temporal scale of video moments is also an important inﬂuence factor for moments localization.",
+      "why_existing_methods_fail": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "affected_scenario": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "EP002",
+      "macro_problem_name": "Weak Supervision and Annotation Reliability and Boundary Structure and Temporal Precision",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that for the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates?",
+      "failure_mode": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates...",
+      "root_cause": "been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates with learned weights, but it brings much computational cost....",
+      "why_existing_methods_fail": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates with learned weights, but it brings much computational cost. constructed a...",
+      "affected_scenario": "For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV027"
+      ],
+      "linked_example_ids": [
+        "EX2",
+        "EX3"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV027",
+          "section": "Introduction",
+          "quote": "For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. [16] employed self-attention mechanism and update the features by aggregating the information from other candidates with learned weights, but it brings much computational cost. [26] constructed a candidate graph updated by graph neural network(gnn) [18], in which relations between moment candidates are implicitly represented by the edges between candidate nodes.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Multi-Scale Context Modeling",
+      "legacy_macro_method_id": "M13",
+      "legacy_macro_method_name": "Weak-Supervision and Pseudo-Label Correction",
+      "micro_method_name": "video caption module for each input moment candidate, and generate pseudo label for training",
+      "method_core_mechanism": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+      "method_components": [
+        "Moment Evaluation Module"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV036"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0003"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Cross-Modal Fusion and Alignment Mechanisms and Boundary-Aware Representation and Regression",
+      "legacy_macro_method_id": "M03",
+      "legacy_macro_method_name": "Coarse-to-Fine or Hierarchical Localization",
+      "micro_method_name": "novel multi-scale 2D temporal network",
+      "method_core_mechanism": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+      "method_components": [
+        "novel multi-scale 2D temporal network"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV040"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0017"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "video caption module for each input moment candidate, and generate pseudo label for training targets manually labelling temporal boundary of the moments is time-consuming and of high cost. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "novel multi-scale 2D temporal network targets manually labelling temporal boundary of the moments is time-consuming and of high cost. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0006",
+      "micro_method_cluster_id": "MM0017",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "video caption module for each input moment candidate, and generate pseudo label for training targets these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "novel multi-scale 2D temporal network targets these methods process each moment candidate individually, thus the relations between video moments are inevitably neglected. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0017",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "video caption module for each input moment candidate, and generate pseudo label for training targets For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "novel multi-scale 2D temporal network targets For example, both text queries shown in Fig.1 are devoted to describing a similar event of person eating sandwich, but the temporal lengths of the corresponding video moments varies greatly. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0017",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "video caption module for each input moment candidate, and generate pseudo label for training targets For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0003",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "novel multi-scale 2D temporal network targets For the ﬁrst issue, we spot that this issue has been concerned in several works for fully-supervised temporal action detection. employed self-attention mechanism and update the features by aggregating the information from other candidates... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0020",
+      "micro_method_cluster_id": "MM0017",
+      "macro_problem_id": "EP002",
+      "macro_method_id": "EM003"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Weak-Supervision and Pseudo-Label Correction",
+      "what_is_new": "video caption module for each input moment candidate, and generate pseudo label for training",
+      "compared_to": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+      "why_it_matters": "It directly targets manually labelling temporal boundary of the moments is time-consuming and of high cost.."
+    },
+    {
+      "axis": "Coarse-to-Fine or Hierarchical Localization",
+      "what_is_new": "novel multi-scale 2D temporal network",
+      "compared_to": "manually labelling temporal boundary of the moments is time-consuming and of high cost.",
+      "why_it_matters": "It directly targets manually labelling temporal boundary of the moments is time-consuming and of high cost.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "video caption module for each input moment candidate, and generate pseudo label for training",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+      "can_transfer_to": [
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV036",
+          "section": "Introduction",
+          "quote": "In the Moment Evaluation Module, we introduce the video caption module for each input moment candidate, and generate pseudo label for training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "novel multi-scale 2D temporal network",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV040",
+          "section": "Introduction",
+          "quote": "We introduce a novel multi-scale 2D temporal network, which elaborate multi-granularity moment candidates generation and captures temporal dependencies between moment candidates.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for video caption module for each input moment candidate, and generate pseudo label for training",
+      "baseline": "Multi-scale 2D Representation Learning for weakly-supervised moment retrieval",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "video caption module for each input moment candidate, and generate pseudo label for training",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting manually labelling temporal boundary of the moments is time-consuming and of high cost.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "MAD"
+  ],
+  "metrics": [
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_multi-scale-2d-representation-learning-for-weakly-supervised-moment-retrieval_2c33fc6c5b\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2021_ding_multi-scale-2d-representation-learning-for-weakly-supervised-moment-retrieval_2c33fc6c5b\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}

@@ -1,0 +1,945 @@
+{
+  "paper_id": "2024_chen_what-when-and-where-self-supervised-spatio-temporal-grounding-in-untrimmed-multi_337e342528",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_what-when-and-where-self-supervised-spatio-temporal-grounding-in-untrimmed-multi_337e342528",
+  "title": "What When and Where? Self-Supervised Spatio-Temporal Grounding in Untrimmed Multi-Action Videos from Narrated Instructions",
+  "year": 2024,
+  "venue_or_source": "CVPR 2024",
+  "authors": [
+    "Brian Chen",
+    "Nina Shvetsova",
+    "Andrew Rouditchenko",
+    "Daniel Kondermann",
+    "Samuel Thomas",
+    "Shih-Fu Chang",
+    "Rogerio Feris",
+    "James Glass",
+    "Hilde Kuehne"
+  ],
+  "task_scope": {
+    "primary_task": "General video temporal understanding",
+    "task_family": "adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "General video temporal understanding",
+    "why_in_or_out": "The local text does not establish a natural-language-conditioned moment retrieval task.",
+    "transferable_value": "Its temporal boundary mechanism may transfer to precise language-conditioned localization.",
+    "evidence": []
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Spatio-temporal grounding (STG) describes the challenging task of locating events in space and time within video data based on text referential expressions.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "Spatio-temporal grounding (STG) describes the challenging task of locating events in space and time within video data based on text referential expressions.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Methods in this ﬁeld usually rely on a combination of spatio-temporal bounding box annotation, together with a human-generated caption, describing the visual content of the bounding box , which limits their generalizability beyond the given training scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "Methods in this ﬁeld usually rely on a combination of spatio-temporal bounding box annotation, together with a human-generated caption, describing the visual content of the bounding box [23, 54], which limits their generalizability beyond the given training scenario.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "It shows that existing methods usually do well in one of the two aspects, spatial or temporal grounding.",
+        "evidence": [
+          {
+            "evidence_id": "EV045",
+            "section": "Introduction",
+            "quote": "It shows that existing methods usually do well in one of the two aspects, spatial or temporal grounding.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "This conceptually differs from previous works that typically use short videos of around 5-10 seconds.",
+        "evidence": [
+          {
+            "evidence_id": "EV058",
+            "section": "Introduction",
+            "quote": "This conceptually differs from previous works [10] that typically use short videos of around 5-10 seconds.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Baseline methods Temporal: MIL-NCE utilizes S3D and word2vec .",
+        "evidence": [
+          {
+            "evidence_id": "EV170",
+            "section": "Introduction",
+            "quote": "Baseline methods Temporal: MIL-NCE [36] utilizes S3D [53] and word2vec [37].",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "More descriptions of the baselines are given in the Appendix 8.1.",
+        "evidence": [
+          {
+            "evidence_id": "EV175",
+            "section": "Introduction",
+            "quote": "More descriptions of the baselines are given in the Appendix 8.1.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "those methods are not optimized to detect whether an event is present in a video.",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "However, those methods are not optimized to detect whether an event is present in a video.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "However, compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "these methods lack spatial localization ability .",
+        "evidence": [
+          {
+            "evidence_id": "EV073",
+            "section": "Introduction",
+            "quote": "However, these methods lack spatial localization ability [57, 61].",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+        "evidence": [
+          {
+            "evidence_id": "EV305",
+            "section": "Introduction",
+            "quote": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Training Setup: Unlabeled videos with narrated instructions \"To this we will add one...",
+        "scenario": "Training Setup: Unlabeled videos with narrated instructions \"To this we will add one carrot chopped into jong jullien …\" \"… you can use the forks to pull it a bit appart…\" \"… stir it a bit so it mixes well…\" background \"Mix egg\" Figure 1.",
+        "what_it_reveals": "The example shows that static context can distract the model from action-relevant temporal evidence.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Training Setup: Unlabeled videos with narrated instructions \"To this we will add one carrot chopped into jong jullien …\" \"… you can use the forks to pull it a bit appart…\" \"… stir it a bit so it mixes well…\" background \"Mix egg\" Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "A third line of work focuses on labelfree spatial grounding, e.g.",
+        "scenario": "A third line of work focuses on labelfree spatial grounding, e.g.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "A third line of work focuses on labelfree spatial grounding, e.g.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX3",
+        "example_name": "The goal is to correctly localize a referential expression in an image or each video...",
+        "scenario": "The goal is to correctly localize a referential expression in an image or each video frame, e.g., via a bounding box or a heatmap.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV024",
+            "section": "Introduction",
+            "quote": "The goal is to correctly localize a referential expression in an image or each video frame, e.g., via a bounding box or a heatmap.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX4",
+        "example_name": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in...",
+        "scenario": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "The assumption is thus that the evaluated expression is visible in the image or in all video frames.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "The assumption is thus that the evaluated expression is visible in the image or in all video frames.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "Further, as there is only a loose temporal correlation, the described activities might not be precisely aligned, can be scattered over multiple frames, or not be present at all .",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Further, as there is only a loose temporal correlation, the described activities might not be precisely aligned, can be scattered over multiple frames, or not be present at all [18, 36].",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "A Global-Local Framework for Spatio- Temporal Grounding 3.1.",
+        "evidence": [
+          {
+            "evidence_id": "EV074",
+            "section": "Introduction",
+            "quote": "A Global-Local Framework for Spatio- Temporal Grounding 3.1.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local...",
+        "evidence": [
+          {
+            "evidence_id": "EV047",
+            "section": "Introduction",
+            "quote": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local representation learning to learn the spatio-temporal extent of actions.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+        "evidence": [
+          {
+            "evidence_id": "EV048",
+            "section": "Introduction",
+            "quote": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+        "evidence": [
+          {
+            "evidence_id": "EV228",
+            "section": "Introduction",
+            "quote": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our method focuses on actions such as whisk and serve.",
+        "evidence": [
+          {
+            "evidence_id": "EV243",
+            "section": "Introduction",
+            "quote": "Our method focuses on actions such as whisk and serve.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP012",
+      "macro_problem_name": "Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "those methods are not optimized to detect whether an event is present in a video.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that those methods are not optimized to detect whether an event is present in a video?",
+      "failure_mode": "those methods are not optimized to detect whether an event is present in a video.",
+      "root_cause": "The goal is to correctly localize a referential expression in an image or each video frame, e.g., via a bounding box or a heatmap.",
+      "why_existing_methods_fail": "those methods are not optimized to detect whether an event is present in a video.",
+      "affected_scenario": "The goal is to correctly localize a referential expression in an image or each video frame, e.g., via a bounding box or a heatmap.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "linked_example_ids": [
+        "EX3",
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "However, those methods are not optimized to detect whether an event is present in a video.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0011"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP011",
+      "macro_problem_name": "Cross-Modal Consistency and Reconstruction",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events?",
+      "failure_mode": "compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+      "root_cause": "not all comments refer to visible events.",
+      "why_existing_methods_fail": "compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+      "affected_scenario": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV031"
+      ],
+      "linked_example_ids": [
+        "EX4"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV031",
+          "section": "Introduction",
+          "quote": "However, compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0017"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P10",
+      "legacy_macro_problem_name": "Spatio-Temporal and Object/Event-Level Grounding",
+      "micro_problem_name": "these methods lack spatial localization ability .",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that methods lack spatial localization ability ?",
+      "failure_mode": "these methods lack spatial localization ability .",
+      "root_cause": "Recent work such as MIL-NCE , MCN , and VideoCLIP utilize large-scale pretraining for grounding actions temporally via text-to-frame similarity on video datasets such as MiningYouTube or CrossTask without proposals.",
+      "why_existing_methods_fail": "these methods lack spatial localization ability .",
+      "affected_scenario": "Training Setup: Unlabeled videos with narrated instructions \"To this we will add one carrot chopped into jong jullien …\" \"… you can use the forks to pull it a bit appart…\" \"… stir it a bit so it mixes well…\" background \"Mix egg\" Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV073"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV073",
+          "section": "Introduction",
+          "quote": "However, these methods lack spatial localization ability [57, 61].",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP005",
+      "macro_problem_name": "Proposal and Detector Dependence and Weak Supervision and Annotation Reliability",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100?",
+      "failure_mode": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+      "root_cause": "2, 3, 12 Dima Damen, Hazel Doughty, Giovanni Maria Farinella, Antonino Furnari, Evangelos Kazakos, Jian Ma, Davide Moltisanti, Jonathan Munro, Toby Perrett, Will Price,",
+      "why_existing_methods_fail": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+      "affected_scenario": "Training Setup: Unlabeled videos with narrated instructions \"To this we will add one carrot chopped into jong jullien …\" \"… you can use the forks to pull it a bit appart…\" \"… stir it a bit so it mixes well…\" background \"Mix egg\" Figure 1.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV305"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV305",
+          "section": "Introduction",
+          "quote": "Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "grounding approach",
+      "method_core_mechanism": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+      "method_components": [
+        "ASR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0117"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "to speciﬁcally select frames to capture only those useful for training",
+      "method_core_mechanism": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+      "method_components": [
+        "to speciﬁcally select frames to capture only those useful for training"
+      ],
+      "training_or_inference_strategy": "training",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0035"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combi",
+      "method_core_mechanism": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local representation learning to learn the spatio-temporal extent of actions.",
+      "method_components": [
+        "framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combi"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV047"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local representation learning to learn the spatio-temporal extent of actions.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0031"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM004",
+      "macro_method_name": "Ranking, Selection, and Hard-Mining Mechanisms and Efficient Selection and Sparse Processing",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "frame selection strategy based on Sinkhorn-Knopp Optimal transport",
+      "method_core_mechanism": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+      "method_components": [
+        "Sinkhorn-Knopp Optimal"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV048"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0189"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM007",
+      "macro_method_name": "Boundary-Aware Representation and Regression and Proposal Generation and Candidate Decoding",
+      "legacy_macro_method_id": "M02",
+      "legacy_macro_method_name": "Query-Conditioned Frame/Clip Selection",
+      "micro_method_name": "(Figure 2(b) and Section 3",
+      "method_core_mechanism": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+      "method_components": [
+        "(Figure 2(b) and Section 3"
+      ],
+      "training_or_inference_strategy": "inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV228"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV228",
+          "section": "Introduction",
+          "quote": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0021"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "grounding approach targets those methods are not optimized to detect whether an event is present in a video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0011",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP012",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "to speciﬁcally select frames to capture only those useful for training targets those methods are not optimized to detect whether an event is present in a video. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0011",
+      "micro_method_cluster_id": "MM0035",
+      "macro_problem_id": "AP012",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "to speciﬁcally select frames to capture only those useful for training targets compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0017",
+      "micro_method_cluster_id": "MM0035",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "grounding approach targets compared to the hand-annotated video-caption setup of most spatio-temporal grounding methods, the ASR text can be noisy as not all comments refer to visible events. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0017",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP011",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "grounding approach targets these methods lack spatial localization ability . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "to speciﬁcally select frames to capture only those useful for training targets these methods lack spatial localization ability . by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080",
+      "micro_method_cluster_id": "MM0035",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "grounding approach targets Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080",
+      "micro_method_cluster_id": "MM0117",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "to speciﬁcally select frames to capture only those useful for training targets Rescaling egocentric vision: Collection, pipeline and challenges for epic-kitchens-100. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0080",
+      "micro_method_cluster_id": "MM0035",
+      "macro_problem_id": "AP005",
+      "macro_method_id": "EM001"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "grounding approach",
+      "compared_to": "those methods are not optimized to detect whether an event is present in a video.",
+      "why_it_matters": "It directly targets those methods are not optimized to detect whether an event is present in a video.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "to speciﬁcally select frames to capture only those useful for training",
+      "compared_to": "those methods are not optimized to detect whether an event is present in a video.",
+      "why_it_matters": "It directly targets those methods are not optimized to detect whether an event is present in a video.."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combi",
+      "compared_to": "those methods are not optimized to detect whether an event is present in a video.",
+      "why_it_matters": "It directly targets those methods are not optimized to detect whether an event is present in a video.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "grounding approach",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+      "can_transfer_to": [
+        "cross_modal"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "We propose a grounding approach that uses video-text pairs based on ASR transcripts in instructional videos and learns the spatial representation of free-text events as well as their temporal extent, as shown in Figure 1.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "to speciﬁcally select frames to capture only those useful for training",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Therefore, we propose to speciﬁcally select frames to capture only those useful for training.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combi",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local representation learning to learn the spatio-temporal extent of actions.",
+      "can_transfer_to": [
+        "cross_modal",
+        "weak_supervision",
+        "representation"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV047",
+          "section": "Introduction",
+          "quote": "We summarize the contributions of this work as follows1: (1) We propose a framework for spatio-temporal grounding in untrimmed videos based on weakly aligned multimodal supervision without human annotation, employing a combination of global and local representation learning to learn the spatio-temporal extent of actions.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "frame selection strategy based on Sinkhorn-Knopp Optimal transport",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+      "can_transfer_to": [
+        "long_sparse",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV048",
+          "section": "Introduction",
+          "quote": "(2) To facilitate this task, we propose a frame selection strategy based on Sinkhorn-Knopp Optimal transport that improves the quality of the acquired learning samples, leading to more effective supervision.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "(Figure 2(b) and Section 3",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+      "can_transfer_to": [
+        "long_sparse",
+        "ranking_selection"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV228",
+          "section": "Introduction",
+          "quote": "We perform an ablation on the possible frame selection strategies for our method (Figure 2(b) and Section 3.2).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for grounding approach",
+      "baseline": "What When and Where? Self-Supervised Spatio-Temporal Grounding in Untrimmed Multi-Action Videos from Narrated Instructions",
+      "dataset": "ActivityNet, Ego4D",
+      "module_to_modify": "grounding approach",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting those methods are not optimized to detect whether an event is present in a video.."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Ego4D",
+    "MAD",
+    "YouCook"
+  ],
+  "metrics": [
+    "IoU",
+    "MR",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_what-when-and-where-self-supervised-spatio-temporal-grounding-in-untrimmed-multi_337e342528\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2024_chen_what-when-and-where-self-supervised-spatio-temporal-grounding-in-untrimmed-multi_337e342528\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

@@ -1,0 +1,943 @@
+{
+  "paper_id": "2026_jeon_see-more-store-less-memory-efficient-resolution-for-video-moment-retrieval_315c2b76ca",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jeon_see-more-store-less-memory-efficient-resolution-for-video-moment-retrieval_315c2b76ca",
+  "title": "See More, Store Less: Memory-Efficient Resolution for Video Moment Retrieval",
+  "year": 2026,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Mingyu Jeon",
+    "Sungjin Han",
+    "Jaewon Hwang",
+    "Minchol Kwon",
+    "Jonghee Kim",
+    "Junyeong Kim"
+  ],
+  "task_scope": {
+    "primary_task": "Video Summarization",
+    "task_family": "temporal localization / adjacent video understanding",
+    "is_core_video_moment_retrieval": false,
+    "is_adjacent_task": true,
+    "adjacent_task_type": "Video Summarization",
+    "why_in_or_out": "The paper performs temporal localization but is not conditioned on a natural-language moment query.",
+    "transferable_value": "The temporal representation or localization mechanism may transfer after adding language conditioning.",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Introduction",
+        "quote": "Multimodal Large Language Models (MLLMs) have significantly advanced video understanding across a range of tasks, including video question answering, video summarization, and video moment retrieval.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "Multimodal Large Language Models (MLLMs) have significantly advanced video understanding across a range of tasks, including video question answering, video summarization, and video moment retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV007",
+            "section": "Introduction",
+            "quote": "Multimodal Large Language Models (MLLMs) have significantly advanced video understanding across a range of tasks, including video question answering, video summarization, and video moment retrieval.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "The task of Video Moment Retrieval (VMR) focuses on identifying and retrieving temporal segments within video content that semantically correspond to a given linguistic query.",
+        "evidence": [
+          {
+            "evidence_id": "EV008",
+            "section": "Introduction",
+            "quote": "The task of Video Moment Retrieval (VMR) focuses on identifying and retrieving temporal segments within video content that semantically correspond to a given linguistic query.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "In comparison, recent methodologies, Chrono and LLaVA-MR, have utilized an A100 GPU with 80GB of memory.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "In comparison, recent methodologies, Chrono and LLaVA-MR, have utilized an A100 GPU with 80GB of memory.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0...",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : [2, 4], [6, 8] MLLM (a) Sparse information resolution [4, 6] (b) Dense information resolution A cute dog A dog [4, 6], [6, 8] MLLM A walking dog A puppy [2, 4], [6, 8] (c) Dense informative resolution MLLM Figure 1: Illustrates how MLLMs can be applied to VMR while considering a notion of information resolution: (a) Random or sparse sampling may miss key scenes due to low information resolution.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "However, conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other...",
+        "scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : [2, 4], [6, 8] MLLM (a) Sparse information resolution [4, 6] (b) Dense information resolution A cute dog A dog [4, 6], [6, 8] MLLM A walking dog A puppy [2, 4], [6, 8] (c) Dense informative resolution MLLM Figure 1: Illustrates how MLLMs can be applied to VMR while considering a notion of information resolution: (a) Random or sparse sampling may miss key scenes due to low information resolution.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "(c) Our proposed SMORE yields dense and informative representation, preserving key details with query awareness.",
+        "evidence": [
+          {
+            "evidence_id": "EV013",
+            "section": "Introduction",
+            "quote": "(c) Our proposed SMORE yields dense and informative representation, preserving key details with query awareness.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "First, Captionbased approaches attempt to reduce memory load by condensing visual content into short textual representations.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "First, Captionbased approaches attempt to reduce memory load by condensing visual content into short textual representations.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+        "evidence": [
+          {
+            "evidence_id": "EV022",
+            "section": "Introduction",
+            "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+        "evidence": [
+          {
+            "evidence_id": "EV026",
+            "section": "Introduction",
+            "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+        "evidence": [
+          {
+            "evidence_id": "EV028",
+            "section": "Introduction",
+            "quote": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+        "evidence": [
+          {
+            "evidence_id": "EV032",
+            "section": "Introduction",
+            "quote": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+        "evidence": [
+          {
+            "evidence_id": "EV033",
+            "section": "Introduction",
+            "quote": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and?",
+      "failure_mode": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...",
+      "root_cause": "low information resolution.",
+      "why_existing_methods_fail": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse information resolution (b)...",
+      "affected_scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV011"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV011",
+          "section": "Introduction",
+          "quote": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : [2, 4], [6, 8] MLLM (a) Sparse information resolution [4, 6] (b) Dense information resolution A cute dog A dog [4, 6], [6, 8] MLLM A walking dog A puppy [2, 4], [6, 8] (c) Dense informative resolution MLLM Figure 1: Illustrates how MLLMs can be applied to VMR while considering a notion of information resolution: (a) Random or sparse sampling may miss key scenes due to low information resolution.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P08",
+      "legacy_macro_problem_name": "Domain Shift and Generalization",
+      "micro_problem_name": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that (b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval?",
+      "failure_mode": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+      "root_cause": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0...",
+      "why_existing_methods_fail": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+      "affected_scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV012"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV012",
+          "section": "Introduction",
+          "quote": "(b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that to address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences?",
+      "failure_mode": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+      "root_cause": "Answering (VQA).",
+      "why_existing_methods_fail": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+      "affected_scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent?",
+      "failure_mode": "conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+      "root_cause": "their lack of conditioning on user intent.",
+      "why_existing_methods_fail": "conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+      "affected_scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "However, conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "macro_problem_id": "AP001",
+      "macro_problem_name": "Compositional and Explicit Temporal Reasoning and Temporal Context Robustness",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that while the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences?",
+      "failure_mode": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+      "root_cause": "fundamental differences.",
+      "why_existing_methods_fail": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+      "affected_scenario": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse...",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "linked_example_ids": [
+        "EX1"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "SMORE (See MORE, store less), a novel framework",
+      "method_core_mechanism": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+      "method_components": [
+        "See MORE",
+        "SMORE",
+        "MORE"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV022"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0006"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M10",
+      "legacy_macro_method_name": "Contrastive or Cross-Modal Alignment",
+      "micro_method_name": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided",
+      "method_core_mechanism": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+      "method_components": [
+        "QA",
+        "our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts",
+        "and then generates captions with query-guided prompts to ensure semantic alignment."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "text query"
+      ],
+      "output_or_supervision": "classification",
+      "linked_intro_evidence_ids": [
+        "EV026"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0108"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM003",
+      "macro_method_name": "Multi-Scale Context Modeling and Data Augmentation and Context Diversification",
+      "legacy_macro_method_id": "M09",
+      "legacy_macro_method_name": "Memory, Graph, or Structure Alignment",
+      "micro_method_name": "structured visual compression strategy motivated by the observation",
+      "method_core_mechanism": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+      "method_components": [
+        "structured visual compression strategy motivated by the observation"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV028"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0014"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM010",
+      "macro_method_name": "Backbone Adaptation and Feature Enhancement and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "achieves a 3",
+      "method_core_mechanism": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+      "method_components": [
+        "SG",
+        "DETR"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV032"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0008"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM005",
+      "macro_method_name": "Debiasing and Invariance Learning and Evidential and Calibration Mechanisms",
+      "legacy_macro_method_id": "M14",
+      "legacy_macro_method_name": "Benchmark or Dataset Construction",
+      "micro_method_name": "consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks",
+      "method_core_mechanism": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+      "method_components": [
+        "STA"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV033"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0072"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "SMORE (See MORE, store less), a novel framework targets Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided targets Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and... by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "SMORE (See MORE, store less), a novel framework targets (b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU2",
+      "solves_how": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided targets (b) Zero-shot captioning offers dense coverage but lacks user intent, leading to less relevant captions for retrieval. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU1",
+      "solves_how": "SMORE (See MORE, store less), a novel framework targets To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU3",
+      "method_unit_id": "MU2",
+      "solves_how": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided targets To address these limitations, recent studies in VQA have proposed two primary strategies: (1) leveraging textual captions to abstract visual content, and (2) reducing temporal redundancy within frame sequences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU1",
+      "solves_how": "SMORE (See MORE, store less), a novel framework targets conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU4",
+      "method_unit_id": "MU2",
+      "solves_how": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided targets conventional captioning frameworks typically generate generic descriptions, often resulting in inherently sub-optimal captions due to their lack of conditioning on user intent. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU1",
+      "solves_how": "SMORE (See MORE, store less), a novel framework targets While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0006",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM002"
+    },
+    {
+      "problem_unit_id": "PU5",
+      "method_unit_id": "MU2",
+      "solves_how": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided targets While the above strategies have proven effective in VQA tasks, they cannot be directly applied to VMR due to fundamental differences. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "AMP0054",
+      "micro_method_cluster_id": "MM0108",
+      "macro_problem_id": "AP001",
+      "macro_method_id": "EM005"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "SMORE (See MORE, store less), a novel framework",
+      "compared_to": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse information resolution (b)...",
+      "why_it_matters": "It directly targets Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...."
+    },
+    {
+      "axis": "Contrastive or Cross-Modal Alignment",
+      "what_is_new": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided",
+      "compared_to": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse information resolution (b)...",
+      "why_it_matters": "It directly targets Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...."
+    },
+    {
+      "axis": "Memory, Graph, or Structure Alignment",
+      "what_is_new": "structured visual compression strategy motivated by the observation",
+      "compared_to": "Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and Query-guided captions 0 2 4 6 8 GT : , MLLM (a) Sparse information resolution (b)...",
+      "why_it_matters": "It directly targets Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "SMORE (See MORE, store less), a novel framework",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV022",
+          "section": "Introduction",
+          "quote": "To address these limitations, we propose SMORE (See MORE, store less), a novel framework that enhances query-video alignment and reduces visual redundancy.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV026",
+          "section": "Introduction",
+          "quote": "Specifically, our method first filters scenes through queryrelevance classification using question answering (QA)-based prompts, and then generates captions with query-guided prompts to ensure semantic alignment.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "structured visual compression strategy motivated by the observation",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV028",
+          "section": "Introduction",
+          "quote": "To improve memory efficiency, we propose a structured visual compression strategy motivated by the observation that not all video frames contribute equally to semantic understanding.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "achieves a 3",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV032",
+          "section": "Introduction",
+          "quote": "Despite such constraints, our method achieves a 3.35% mAP average improvement over Chrono on the QVHighlights benchmark and outperforms the current stateof-the-art model, SG-DETR, by 4.19% on R1@0.5.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV033",
+          "section": "Introduction",
+          "quote": "Moreover, our framework consistently achieves superior performance across all the evaluation metrics on the Charades-STA and ActivityNet-Captions benchmarks.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    },
+    {
+      "risk": "Task-transfer mismatch",
+      "why": "The source method was designed for an adjacent task without language-conditioned retrieval.",
+      "possible_defense": "Define the shared failure variable and add language conditioning in a minimal diagnostic first."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for SMORE (See MORE, store less), a novel framework",
+      "baseline": "See More, Store Less: Memory-Efficient Resolution for Video Moment Retrieval",
+      "dataset": "ActivityNet, Charades-STA",
+      "module_to_modify": "SMORE (See MORE, store less), a novel framework",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting Notably, such memory bottlenecks are not exclusive to VMR but also arise in other video-language tasks, including Video Question Query : A puppy is walking VMR Only frames Frames and zero-shot captions Selectively compressed frames and...."
+    }
+  ],
+  "datasets": [
+    "ActivityNet",
+    "Charades-STA",
+    "QVHighlights"
+  ],
+  "metrics": [
+    "MR",
+    "R1",
+    "mAP"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jeon_see-more-store-less-memory-efficient-resolution-for-video-moment-retrieval_315c2b76ca\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2026_jeon_see-more-store-less-memory-efficient-resolution-for-video-moment-retrieval_315c2b76ca\\introduction.md",
+    "full_text_fallback_used": true
+  }
+}

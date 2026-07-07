@@ -1,0 +1,711 @@
+{
+  "paper_id": "2022_jung_modal-specific-pseudo-query-generation-for-video-corpus-moment-retrieval_e4b5be8191",
+  "local_dir": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jung_modal-specific-pseudo-query-generation-for-video-corpus-moment-retrieval_e4b5be8191",
+  "title": "Modal-specific Pseudo Query Generation for Video Corpus Moment Retrieval",
+  "year": 2022,
+  "venue_or_source": "arXiv (Cornell University)",
+  "authors": [
+    "Minjoon Jung",
+    "Seong‐Ho Choi",
+    "Joo Chan Kim",
+    "Jin-Hwa Kim",
+    "Byoung‐Tak Zhang"
+  ],
+  "task_scope": {
+    "primary_task": "Video Moment Retrieval",
+    "task_family": "video moment retrieval / video temporal grounding",
+    "is_core_video_moment_retrieval": true,
+    "is_adjacent_task": false,
+    "adjacent_task_type": "",
+    "why_in_or_out": "The task explicitly localizes query-relevant temporal moments or highlights.",
+    "transferable_value": "",
+    "evidence": [
+      {
+        "evidence_id": "TASK01",
+        "section": "Abstract",
+        "quote": "# Abstract Video corpus moment retrieval (VCMR) is the task to retrieve the most relevant video moment from a large video corpus using a natural language query.",
+        "role": "task_scope",
+        "page": null
+      }
+    ]
+  },
+  "intro_motivation_chain": {
+    "background_setup": [
+      {
+        "summary": "# Introduction The increased interest in video understanding has gathered attention for solving related tasks such as video captioning , video question answering , and video retrieval over the past few years.",
+        "evidence": [
+          {
+            "evidence_id": "EV009",
+            "section": "Introduction",
+            "quote": "# Introduction The increased interest in video understanding has gathered attention for solving related tasks such as video captioning (Krishna et al., 2017), video question answering (Tapaswi et al., 2016; Lei et al., 2018; Kim et al., 2018), and video retrieval (Xu et al., 2016) over the past few years.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      },
+      {
+        "summary": "Video corpus moment retrieval (VCMR) is one of the challenging video understanding tasks, in which a model should 1) search for a related video and 2) localize the corresponding moment given a query sentence in a large video corpus.",
+        "evidence": [
+          {
+            "evidence_id": "EV010",
+            "section": "Introduction",
+            "quote": "Video corpus moment retrieval (VCMR) (Escorcia et al., 2019) is one of the challenging video understanding tasks, in which a model should 1) search for a related video and 2) localize the corresponding moment given a query sentence in a large video corpus.",
+            "role": "task_background",
+            "page": null
+          }
+        ],
+        "role": "task_background"
+      }
+    ],
+    "prior_work_summary": [
+      {
+        "summary": "Prior works have shown promising performances in VCMR using supervised , weakly-supervised (, ∗Corresponding authors.",
+        "evidence": [
+          {
+            "evidence_id": "EV011",
+            "section": "Introduction",
+            "quote": "Prior works have shown promising performances in VCMR using supervised (Lei et al., 2020; Zhang et al., 2020, 2021), weakly-supervised (Yoon et al., ∗Corresponding authors.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      },
+      {
+        "summary": "Our inspiration comes from the previous works that generate pseudo queries to solve their target task in an unsupervised manner.",
+        "evidence": [
+          {
+            "evidence_id": "EV020",
+            "section": "Introduction",
+            "quote": "Our inspiration comes from the previous works (Nam et al., 2021; Jiang et al., 2022; Changpinyo et al., 2022) that generate pseudo queries to solve their target task in an unsupervised manner.",
+            "role": "prior_work",
+            "page": null
+          }
+        ],
+        "role": "prior_work"
+      }
+    ],
+    "prior_work_limitation": [
+      {
+        "summary": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+        "evidence": [
+          {
+            "evidence_id": "EV015",
+            "section": "Introduction",
+            "quote": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      },
+      {
+        "summary": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+        "evidence": [
+          {
+            "evidence_id": "EV017",
+            "section": "Introduction",
+            "quote": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+            "role": "limitation",
+            "page": null
+          }
+        ],
+        "role": "limitation"
+      }
+    ],
+    "illustrative_examples": [
+      {
+        "example_id": "EX1",
+        "example_name": "Figure 1: Comparison with different supervision settings in VCMR.",
+        "scenario": "Figure 1: Comparison with different supervision settings in VCMR.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV012",
+            "section": "Introduction",
+            "quote": "Figure 1: Comparison with different supervision settings in VCMR.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      },
+      {
+        "example_id": "EX2",
+        "example_name": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions...",
+        "scenario": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions between characters, which widely 7769 --- Page 2 --exist but has rarely been studied in the VCMR task.",
+        "what_it_reveals": "The example makes the paper's failure mode concrete in a specific video-query scenario.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions between characters, which widely 7769 --- Page 2 --exist but has rarely been studied in the VCMR task.",
+            "role": "illustrative_failure_case",
+            "page": null
+          }
+        ],
+        "role": "illustrative_failure_case"
+      }
+    ],
+    "core_problem_transition": [
+      {
+        "summary": "To annotate these videos, humans first need to understand the diverse information in the video, and then select the candidate temporal moment and generate corresponding queries.",
+        "evidence": [
+          {
+            "evidence_id": "EV016",
+            "section": "Introduction",
+            "quote": "To annotate these videos, humans first need to understand the diverse information in the video, and then select the candidate temporal moment and generate corresponding queries.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      },
+      {
+        "summary": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions between characters, which widely 7769 --- Page 2 --exist but has rarely been studied in the VCMR task.",
+        "evidence": [
+          {
+            "evidence_id": "EV018",
+            "section": "Introduction",
+            "quote": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions between characters, which widely 7769 --- Page 2 --exist but has rarely been studied in the VCMR task.",
+            "role": "problem_transition",
+            "page": null
+          }
+        ],
+        "role": "problem_transition"
+      }
+    ],
+    "method_transition": [
+      {
+        "summary": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+        "evidence": [
+          {
+            "evidence_id": "EV019",
+            "section": "Introduction",
+            "quote": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+        "evidence": [
+          {
+            "evidence_id": "EV021",
+            "section": "Introduction",
+            "quote": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for...",
+        "evidence": [
+          {
+            "evidence_id": "EV025",
+            "section": "Introduction",
+            "quote": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for the corresponding video frames.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Our framework has several benefits as follows.",
+        "evidence": [
+          {
+            "evidence_id": "EV029",
+            "section": "Introduction",
+            "quote": "Our framework has several benefits as follows.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+        "evidence": [
+          {
+            "evidence_id": "EV030",
+            "section": "Introduction",
+            "quote": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      },
+      {
+        "summary": "Second, our framework generates high-quality modal-specific pseudo queries and shows significant performance gains.",
+        "evidence": [
+          {
+            "evidence_id": "EV031",
+            "section": "Introduction",
+            "quote": "Second, our framework generates high-quality modal-specific pseudo queries and shows significant performance gains.",
+            "role": "method_transition",
+            "page": null
+          }
+        ],
+        "role": "method_transition"
+      }
+    ]
+  },
+  "problem_units": [
+    {
+      "problem_unit_id": "PU1",
+      "macro_problem_id": "EP008",
+      "macro_problem_name": "Boundary Structure and Temporal Precision and Ranking and Selection Failure",
+      "legacy_macro_problem_id": "P_NEW",
+      "legacy_macro_problem_name": "new_or_adjacent",
+      "micro_problem_name": "selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor?",
+      "failure_mode": "selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "root_cause": "2021) settings, and pre-training methods.",
+      "why_existing_methods_fail": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "affected_scenario": "Figure 1: Comparison with different supervision settings in VCMR.",
+      "problem_type": "model",
+      "linked_intro_evidence_ids": [
+        "EV015"
+      ],
+      "linked_example_ids": [
+        "EX1",
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV015",
+          "section": "Introduction",
+          "quote": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "macro_problem_id": "EP001",
+      "macro_problem_name": "Sparse Evidence Discovery in Long Videos and Compositional and Explicit Temporal Reasoning",
+      "legacy_macro_problem_id": "P01",
+      "legacy_macro_problem_name": "Annotation Scarcity and Noisy Supervision",
+      "micro_problem_name": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+      "micro_problem_question": "How can a temporal grounding system overcome the failure that the challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost?",
+      "failure_mode": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+      "root_cause": "To annotate these videos, humans first need to understand the diverse information in the video, and then select the candidate temporal moment and generate corresponding queries.",
+      "why_existing_methods_fail": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+      "affected_scenario": "2) These multimodal videos (e.g., drama or movies) generally contain rich interactions between characters, which widely 7769 --- Page 2 --exist but has rarely been studied in the VCMR task.",
+      "problem_type": "data",
+      "linked_intro_evidence_ids": [
+        "EV017"
+      ],
+      "linked_example_ids": [
+        "EX2"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV017",
+          "section": "Introduction",
+          "quote": "The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost.",
+          "role": "problem",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048"
+    }
+  ],
+  "method_units": [
+    {
+      "method_unit_id": "MU1",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN)",
+      "method_core_mechanism": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+      "method_components": [
+        "Modal-specific Pseudo Query Generation Network (MPGN)",
+        "Modal-specific Pseudo Query Generation Network",
+        "MPGN"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV019"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0137"
+    },
+    {
+      "method_unit_id": "MU2",
+      "macro_method_id": "EM001",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Hard-Negative and Query-Consistent Sampling",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include...",
+      "method_core_mechanism": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+      "method_components": [
+        "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include..."
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV021"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0051"
+    },
+    {
+      "method_unit_id": "MU3",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M01",
+      "legacy_macro_method_name": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "micro_method_name": "generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained imag",
+      "method_core_mechanism": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for the corresponding video frames.",
+      "method_components": [
+        "generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained imag"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text query"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV025"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for the corresponding video frames.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0121"
+    },
+    {
+      "method_unit_id": "MU4",
+      "macro_method_id": "EM002",
+      "macro_method_name": "Structured and Agentic Reasoning Mechanisms and Domain Adaptation Mechanisms",
+      "legacy_macro_method_id": "M_NEW",
+      "legacy_macro_method_name": "new_or_adjacent",
+      "micro_method_name": "has several benefits as follows",
+      "method_core_mechanism": "Our framework has several benefits as follows.",
+      "method_components": [
+        "has several benefits as follows"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "frame features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV029"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Our framework has several benefits as follows.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0055"
+    },
+    {
+      "method_unit_id": "MU5",
+      "macro_method_id": "EM006",
+      "macro_method_name": "Pseudo-Label and Weak-Supervision Mechanisms and Structured and Agentic Reasoning Mechanisms",
+      "legacy_macro_method_id": "M12",
+      "legacy_macro_method_name": "Multi-Modal Fusion and Feature Enhancement",
+      "micro_method_name": "exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the correspondi",
+      "method_core_mechanism": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+      "method_components": [
+        "exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the correspondi"
+      ],
+      "training_or_inference_strategy": "training and inference",
+      "what_is_transferred_or_injected_or_aligned": "task-relevant temporal and cross-modal evidence",
+      "required_inputs": [
+        "video features",
+        "frame features",
+        "text features"
+      ],
+      "output_or_supervision": "temporal localization supervision",
+      "linked_intro_evidence_ids": [
+        "EV030"
+      ],
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+          "role": "method",
+          "page": null
+        }
+      ],
+      "micro_method_cluster_id": "MM0121"
+    }
+  ],
+  "problem_method_links": [
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN) targets selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044",
+      "micro_method_cluster_id": "MM0137",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU1",
+      "method_unit_id": "MU2",
+      "solves_how": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include... targets selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0044",
+      "micro_method_cluster_id": "MM0051",
+      "macro_problem_id": "EP008",
+      "macro_method_id": "EM001"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU5",
+      "solves_how": "exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the correspondi targets The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost. by operating on weak_supervision.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0121",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    },
+    {
+      "problem_unit_id": "PU2",
+      "method_unit_id": "MU1",
+      "solves_how": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN) targets The challenges of this VCMR are two folds: 1) Considering a large number of human annotations are required, an efficient approach is required to reduce the annotation cost. by operating on task-relevant temporal and cross-modal evidence.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+          "role": "link",
+          "page": null
+        }
+      ],
+      "micro_problem_cluster_id": "MP0048",
+      "micro_method_cluster_id": "MM0137",
+      "macro_problem_id": "EP001",
+      "macro_method_id": "EM006"
+    }
+  ],
+  "novelty_axes": [
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN)",
+      "compared_to": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "why_it_matters": "It directly targets selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.."
+    },
+    {
+      "axis": "new_or_adjacent",
+      "what_is_new": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include...",
+      "compared_to": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "why_it_matters": "It directly targets selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.."
+    },
+    {
+      "axis": "Pretraining, Pseudo-Labeling, and Data Generation",
+      "what_is_new": "generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained imag",
+      "compared_to": "Despite such accomplishments, selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.",
+      "why_it_matters": "It directly targets selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.."
+    }
+  ],
+  "transferable_idea_units": [
+    {
+      "unit_name": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN)",
+      "source_method_unit_id": "MU1",
+      "transferable_mechanism": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV019",
+          "section": "Introduction",
+          "quote": "We introduce a novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN).",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include...",
+      "source_method_unit_id": "MU2",
+      "transferable_mechanism": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV021",
+          "section": "Introduction",
+          "quote": "To design our framework, we consider two research questions as follows: 1) What is a good way to select a temporal moment that can include characters’ interactions?",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained imag",
+      "source_method_unit_id": "MU3",
+      "transferable_mechanism": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for the corresponding video frames.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV025",
+          "section": "Introduction",
+          "quote": "For generating a pseudo query, our framework generates two modal-specific pseudo queries as follows: 1) Focusing on visual information, we extract the descriptive captions from a pre-trained image captioning model and the character names1 from subtitles for the corresponding video frames.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "has several benefits as follows",
+      "source_method_unit_id": "MU4",
+      "transferable_mechanism": "Our framework has several benefits as follows.",
+      "can_transfer_to": [
+        "temporal grounding problems with analogous evidence failure"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV029",
+          "section": "Introduction",
+          "quote": "Our framework has several benefits as follows.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    },
+    {
+      "unit_name": "exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the correspondi",
+      "source_method_unit_id": "MU5",
+      "transferable_mechanism": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+      "can_transfer_to": [
+        "cross_modal",
+        "weak_supervision"
+      ],
+      "required_assumption": "The target task exposes compatible inputs and a failure mode addressed by the mechanism.",
+      "risk": "The mechanism may depend on task-specific supervision or representations.",
+      "evidence": [
+        {
+          "evidence_id": "EV030",
+          "section": "Introduction",
+          "quote": "First, our framework exploits multimodal video information to generate visual and textual pseudo queries, reducing the annotation cost for both queries and the corresponding moment intervals.",
+          "role": "method",
+          "page": null
+        }
+      ]
+    }
+  ],
+  "reviewer_risk_points": [
+    {
+      "risk": "Incremental combination risk",
+      "why": "Multiple known modules may appear as engineering aggregation unless the causal link to the micro problem is isolated.",
+      "possible_defense": "Use problem-specific diagnostics and component-wise ablations tied to introduction evidence."
+    },
+    {
+      "risk": "Cross-dataset generalization",
+      "why": "A mechanism may exploit annotation or feature conventions of one benchmark.",
+      "possible_defense": "Verify on at least two datasets or a controlled cross-domain split."
+    }
+  ],
+  "minimum_verification_experiments": [
+    {
+      "experiment_name": "Minimal mechanism test for novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN)",
+      "baseline": "Modal-specific Pseudo Query Generation for Video Corpus Moment Retrieval",
+      "dataset": "QVHighlights and Charades-STA",
+      "module_to_modify": "novel framework to tackle these challenges: Modal-specific Pseudo Query Generation Network (MPGN)",
+      "metric": "R@1 at IoU thresholds, mIoU, and a problem-specific diagnostic",
+      "expected_observation": "Improvement should be concentrated on cases exhibiting selecting a temporal moment in a video (start time, end time) and generating the corresponding query sentence to train such models require overwhelming amounts of human labor.."
+    }
+  ],
+  "datasets": [],
+  "metrics": [
+    "IoU",
+    "MR"
+  ],
+  "sources": {
+    "abstract": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jung_modal-specific-pseudo-query-generation-for-video-corpus-moment-retrieval_e4b5be8191\\abstract.md",
+    "introduction": "D:\\syz_autopaper\\auto_idea\\video moment retrieval\\download_paper\\2022_jung_modal-specific-pseudo-query-generation-for-video-corpus-moment-retrieval_e4b5be8191\\introduction.md",
+    "full_text_fallback_used": false
+  }
+}
