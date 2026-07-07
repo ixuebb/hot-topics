@@ -253,8 +253,8 @@ function renderApp() {
   if (paper) paper.classList.add("hidden");
   if (app) app.classList.remove("hidden");
 
-  // 导航栏：森林+根视图显示，仪表盘和论文页显示
-  if (nav) nav.classList.toggle("hidden", state.mode === "paper" || state.mode === "forest" || state.mode === "root");
+  // 导航栏始终显示，方便切换视图
+  if (nav) nav.classList.remove("hidden");
   document.querySelectorAll(".nav-link").forEach(btn => {
     btn.classList.toggle("active", btn.dataset.nav === state.mode ||
       (state.mode === "root" && btn.dataset.nav === "forest"));
