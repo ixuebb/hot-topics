@@ -1245,11 +1245,16 @@ function renderDashboard() {
 
 function initDashboardCharts() {
   if (state.dashboardChartsReady) return;
+  if (typeof echarts === "undefined") {
+    console.warn("[Dashboard] ECharts CDN not loaded, retrying in 1s...");
+    setTimeout(() => initDashboardCharts(), 1000);
+    return;
+  }
 
+  try {
   const ideas = state.ideas;
   const problems = state.microProblems;
-  const methods = state.microMethods;
-  const allPapers = allPapers();
+  const allPapers_data = allPapers();
 
   // ── 饼图：问题族论文分布 ──
   const pieDom = document.querySelector("#chartPie");
@@ -1284,7 +1289,7 @@ function initDashboardCharts() {
   if (lineDom) {
     const lineChart = echarts.init(lineDom);
     const yearCount = {};
-    allPapers.forEach(p => { const y = p.year; if (y) yearCount[y] = (yearCount[y] || 0) + 1; });
+    allPapers_data.forEach(p => { const y = p.year; if (y) yearCount[y] = (yearCount[y] || 0) + 1; });
     const years = Object.keys(yearCount).sort();
     lineChart.setOption({
       title: { text: "研究趋势 (2021-2026)", left: "center", top: 10, textStyle: { color: "#c9d8ef", fontSize: 14 } },
@@ -1387,6 +1392,10 @@ function initDashboardCharts() {
   }, { once: false });
 
   state.dashboardChartsReady = true;
+  } catch (err) {
+    console.error("[Dashboard] Chart init failed:", err);
+    state.dashboardChartsReady = true;
+  }
 }
 
 // ══════════════════════════════════════════════
