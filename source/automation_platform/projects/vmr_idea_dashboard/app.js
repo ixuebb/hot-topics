@@ -1246,7 +1246,7 @@ function renderDashboard() {
 function initDashboardCharts() {
   if (state.dashboardChartsReady) return;
   if (typeof echarts === "undefined") {
-    console.warn("[Dashboard] ECharts CDN not loaded, retrying in 1s...");
+    console.warn("[Dashboard] ECharts not loaded, retrying in 1s...");
     setTimeout(() => initDashboardCharts(), 1000);
     return;
   }
