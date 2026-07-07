@@ -33,6 +33,7 @@ const state = {
   rootTransform: defaultRootTransform(),
   forestGraph: null,
   rootGraph: null,
+  dashboardChartsReady: false,
 };
 
 async function loadJson(path, fallback = null) {
@@ -242,7 +243,26 @@ function selectedIdea() {
 }
 
 function renderApp() {
+  const app = document.querySelector("#app");
+  const dash = document.querySelector("#dashboardPanel");
+  const paper = document.querySelector("#paperPage");
+  const nav = document.querySelector("#globalNav");
+
+  // 隐藏所有视图
+  if (dash) dash.classList.add("hidden");
+  if (paper) paper.classList.add("hidden");
+  if (app) app.classList.remove("hidden");
+
+  // 导航栏：森林+根视图显示，仪表盘和论文页显示
+  if (nav) nav.classList.toggle("hidden", state.mode === "paper" || state.mode === "forest" || state.mode === "root");
+  document.querySelectorAll(".nav-link").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.nav === state.mode ||
+      (state.mode === "root" && btn.dataset.nav === "forest"));
+  });
+
   if (state.mode === "root") renderRootView();
+  else if (state.mode === "dashboard") renderDashboard();
+  else if (state.mode === "paper") renderPaperPage(state.selectedPaperId);
   else renderForestView();
 }
 
@@ -1142,6 +1162,425 @@ async function init() {
   }
   bindGlobalEvents();
   renderApp();
+}
+
+// ══════════════════════════════════════════════
+// LRU 缓存（任务3：数据存储设计）
+// ══════════════════════════════════════════════
+class LRUCache {
+  constructor(maxSize = 30) {
+    this.maxSize = maxSize;
+    this.cache = new Map();
+  }
+  get(key) {
+    if (!this.cache.has(key)) return undefined;
+    const value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
+  set(key, value) {
+    if (this.cache.has(key)) this.cache.delete(key);
+    else if (this.cache.size >= this.maxSize) {
+      const oldestKey = this.cache.keys().next().value;
+      this.cache.delete(oldestKey);
+    }
+    this.cache.set(key, { data: value, timestamp: Date.now() });
+  }
+  has(key) { return this.cache.has(key); }
+}
+
+// ══════════════════════════════════════════════
+// localStorage 持久化（任务3：数据存储设计）
+// ══════════════════════════════════════════════
+function loadViewState() {
+  try {
+    const raw = localStorage.getItem("vmr_view_state");
+    if (!raw) return null;
+    const state = JSON.parse(raw);
+    if (Date.now() - (state.timestamp || 0) < 24 * 60 * 60 * 1000) return state;
+    return null;
+  } catch { return null; }
+}
+
+function saveViewState() {
+  try {
+    const vs = {
+      last_mode: state.mode,
+      last_idea_id: state.selectedIdeaId,
+      last_paper_id: state.selectedPaperId,
+      forest_transform: state.forestTransform,
+      root_transform: state.rootTransform,
+      root_filter: state.rootFilter,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem("vmr_view_state", JSON.stringify(vs));
+  } catch { /* 静默失败 */ }
+}
+
+function loadPrefs() {
+  try {
+    const raw = localStorage.getItem("vmr_user_prefs");
+    return raw ? JSON.parse(raw) : {};
+  } catch { return {}; }
+}
+
+function savePrefs(prefs) {
+  try { localStorage.setItem("vmr_user_prefs", JSON.stringify(prefs)); } catch { /* 静默 */ }
+}
+
+// ══════════════════════════════════════════════
+// 分析仪表盘（任务1-组件3）
+// ══════════════════════════════════════════════
+function renderDashboard() {
+  const app = document.querySelector("#app");
+  const dash = document.querySelector("#dashboardPanel");
+  if (app) app.classList.add("hidden");
+  if (dash) dash.classList.remove("hidden");
+
+  setTimeout(() => {
+    initDashboardCharts();
+  }, 100);
+}
+
+function initDashboardCharts() {
+  if (state.dashboardChartsReady) return;
+
+  const ideas = state.ideas;
+  const problems = state.microProblems;
+  const methods = state.microMethods;
+  const allPapers = allPapers();
+
+  // ── 饼图：问题族论文分布 ──
+  const pieDom = document.querySelector("#chartPie");
+  if (pieDom) {
+    const pieChart = echarts.init(pieDom);
+    const catMap = {};
+    for (const [pid, mp] of Object.entries(problems)) {
+      const cat = (mp.macro_problem_name || "Other").slice(0, 40);
+      catMap[cat] = (catMap[cat] || 0) + (mp.paper_count || 0);
+    }
+    const pieData = Object.entries(catMap)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name, value]) => ({ name, value }));
+    pieChart.setOption({
+      title: { text: "领域论文分布", left: "center", top: 10, textStyle: { color: "#c9d8ef", fontSize: 14 } },
+      tooltip: { trigger: "item", formatter: "{b}: {c} 篇 ({d}%)" },
+      legend: { bottom: 5, textStyle: { color: "#91a6c6", fontSize: 10 } },
+      series: [{
+        type: "pie", radius: ["40%", "70%"], center: ["50%", "52%"],
+        data: pieData.slice(0, 8),
+        label: { color: "#91a6c6", fontSize: 10 },
+        itemStyle: {
+          color: params => ["#3d8cff", "#7c8aff", "#47e6ff", "#ffc857", "#42d998", "#ff6b6b", "#e879f9", "#fb923c"][params.dataIndex % 8],
+        },
+      }],
+    });
+    state._pieChart = pieChart;
+  }
+
+  // ── 折线图：论文年份趋势 ──
+  const lineDom = document.querySelector("#chartLine");
+  if (lineDom) {
+    const lineChart = echarts.init(lineDom);
+    const yearCount = {};
+    allPapers.forEach(p => { const y = p.year; if (y) yearCount[y] = (yearCount[y] || 0) + 1; });
+    const years = Object.keys(yearCount).sort();
+    lineChart.setOption({
+      title: { text: "研究趋势 (2021-2026)", left: "center", top: 10, textStyle: { color: "#c9d8ef", fontSize: 14 } },
+      tooltip: { trigger: "axis" },
+      xAxis: { type: "category", data: years, axisLabel: { color: "#91a6c6" } },
+      yAxis: { type: "value", name: "论文数", axisLabel: { color: "#91a6c6" } },
+      series: [{
+        type: "line", data: years.map(y => yearCount[y] || 0),
+        smooth: true, areaStyle: { color: "rgba(61, 140, 255, 0.15)" },
+        lineStyle: { color: "#3d8cff", width: 2 },
+        itemStyle: { color: "#47e6ff" },
+      }],
+    });
+    state._lineChart = lineChart;
+  }
+
+  // ── 柱状图：热点问题排名 ──
+  const barDom = document.querySelector("#chartBar");
+  if (barDom) {
+    const barChart = echarts.init(barDom);
+    const sorted = Object.entries(problems)
+      .map(([pid, mp]) => ({ name: (mp.name || pid).slice(0, 40), value: mp.paper_count || 0 }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 10);
+    barChart.setOption({
+      title: { text: "热点问题排名 Top 10", left: "center", top: 10, textStyle: { color: "#c9d8ef", fontSize: 14 } },
+      tooltip: { trigger: "axis", axisPointer: { type: "shadow" } },
+      grid: { left: 120, right: 40, bottom: 10, top: 40 },
+      xAxis: { type: "value", axisLabel: { color: "#91a6c6" } },
+      yAxis: { type: "category", data: sorted.map(i => i.name).reverse(), axisLabel: { color: "#91a6c6", fontSize: 10 }, inverse: true },
+      series: [{
+        type: "bar", data: sorted.map(i => i.value).reverse(),
+        itemStyle: { color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+          { offset: 0, color: "#3d8cff" }, { offset: 1, color: "#47e6ff" }
+        ]), borderRadius: [0, 4, 4, 0] },
+      }],
+    });
+    state._barChart = barChart;
+  }
+
+  // ── 雷达图：五维评分 ──
+  const radarDom = document.querySelector("#chartRadar");
+  if (radarDom) {
+    const radarChart = echarts.init(radarDom);
+    const selected = selectedIdea();
+    const updateRadar = (idea) => {
+      if (!idea) return;
+      radarChart.setOption({
+        title: { text: "Idea 五维评分", left: "center", top: 10, textStyle: { color: "#c9d8ef", fontSize: 14 } },
+        tooltip: {},
+        legend: { bottom: 5, textStyle: { color: "#91a6c6", fontSize: 10 } },
+        radar: {
+          center: ["50%", "56%"], radius: "62%",
+          indicator: [
+            { name: "潜力", max: 100 },
+            { name: "证据", max: 100 },
+            { name: "新颖度", max: 100 },
+            { name: "可验证", max: 100 },
+            { name: "论文支撑", max: 100 },
+          ],
+          axisName: { color: "#91a6c6", fontSize: 10 },
+        },
+        series: [{
+          type: "radar",
+          data: [{
+            name: (idea.title || "").slice(0, 20),
+            value: [
+              Math.round(idea.score * 9.3),
+              idea.evidence,
+              idea.novelty,
+              idea.verifiability,
+              Math.min(100, (idea.raw?.source_papers?.length || 0 + idea.raw?.target_papers?.length || 0) * 25),
+            ],
+            areaStyle: { color: "rgba(61, 140, 255, 0.18)" },
+            lineStyle: { color: "#3d8cff" },
+            itemStyle: { color: "#47e6ff" },
+          }],
+        }],
+      });
+    };
+    updateRadar(selected);
+    // Idea选择器交互
+    const ideaSelector = document.createElement("select");
+    ideaSelector.className = "chart-idea-selector";
+    ideaSelector.innerHTML = ideas.map(i => `<option value="${i.id}" ${i.id === (selected?.id || "") ? "selected" : ""}>${escapeHtml((i.title || "").slice(0, 50))}</option>`).join("");
+    ideaSelector.addEventListener("change", () => {
+      const newIdea = ideas.find(i => i.id === ideaSelector.value);
+      if (newIdea) updateRadar(newIdea);
+    });
+    radarDom.appendChild(ideaSelector);
+    state._radarChart = radarChart;
+  }
+
+  // resize统一处理
+  window.addEventListener("resize", () => {
+    state._pieChart?.resize();
+    state._lineChart?.resize();
+    state._barChart?.resize();
+    state._radarChart?.resize();
+  }, { once: false });
+
+  state.dashboardChartsReady = true;
+}
+
+// ══════════════════════════════════════════════
+// 论文详情页（任务1-组件4）
+// ══════════════════════════════════════════════
+function renderPaperPage(paperId) {
+  const app = document.querySelector("#app");
+  const dash = document.querySelector("#dashboardPanel");
+  const paperPage = document.querySelector("#paperPage");
+  if (app) app.classList.add("hidden");
+  if (dash) dash.classList.add("hidden");
+  if (paperPage) paperPage.classList.remove("hidden");
+
+  if (!paperId) {
+    if (paperPage) paperPage.innerHTML = `<div class="error-screen"><h1>论文ID未指定</h1></div>`;
+    return;
+  }
+
+  const paper = paperById(paperId);
+  if (!paper) {
+    if (paperPage) paperPage.innerHTML = `<div class="error-screen"><h1>论文未找到</h1><p>${escapeHtml(paperId)}</p></div>`;
+    return;
+  }
+
+  const evidence = state.rootGraph?.nodes?.find(n => n.paperId === paperId)?.evidence || collectEvidenceFromCard(paper, 5);
+  const related = findRelatedPapers(paperId, 4);
+
+  const problemUnits = (paper.problem_units || []).slice(0, 4);
+  const methodUnits = (paper.method_units || []).slice(0, 4);
+  const links = (paper.problem_method_links || []).slice(0, 3);
+
+  paperPage.innerHTML = `
+    <div class="paper-page-header">
+      <button class="back-button" type="button" data-back-from-paper>← 返回图谱</button>
+    </div>
+    <h1>${escapeHtml(paper.title || "Untitled")}</h1>
+    <p class="paper-page-meta">
+      <span>${escapeHtml((paper.authors || []).slice(0, 5).join(", "))}</span>
+      <span>${paper.year || ""} · ${escapeHtml(paper.venue_or_source || "")}</span>
+    </p>
+    <div class="paper-page-meta">
+      ${(paper.datasets || []).map(d => `<span class="paper-tag dataset">${escapeHtml(d)}</span>`).join(" ")}
+    </div>
+
+    <div class="paper-page-grid">
+      <div class="paper-page-section">
+        <h3>摘要</h3>
+        <p>${escapeHtml((paper.abstract || paper.introduction || "暂无摘要。").slice(0, 500))}</p>
+      </div>
+      <div class="paper-page-section">
+        <h3>任务与指标</h3>
+        <p>任务范围: ${escapeHtml(paper.task_scope?.primary_task || "N/A")}</p>
+        <p>核心VMR: ${paper.task_scope?.is_core_video_moment_retrieval ? "是" : "否"}</p>
+        <p style="margin-top:8px">指标: ${escapeHtml((paper.metrics || []).join(" / ") || "N/A")}</p>
+      </div>
+
+      <div class="paper-page-section">
+        <h3>研究问题</h3>
+        ${problemUnits.length ? problemUnits.map(pu => `
+          <span class="paper-tag problem">${escapeHtml((pu.name || pu.problem_unit_id || "").slice(0, 60))}</span>
+        `).join("") : "<p class='muted'>暂无问题标注</p>"}
+      </div>
+      <div class="paper-page-section">
+        <h3>提出方法</h3>
+        ${methodUnits.length ? methodUnits.map(mu => `
+          <span class="paper-tag method">${escapeHtml((mu.name || mu.method_unit_id || "").slice(0, 60))}</span>
+        `).join("") : "<p class='muted'>暂无方法标注</p>"}
+      </div>
+
+      ${links.length ? `
+      <div class="paper-page-section full">
+        <h3>问题-方法-效果</h3>
+        ${links.map(l => `<p style="margin-bottom:4px"><b>${escapeHtml(l.problem_unit_id)}</b> → ${escapeHtml(l.method_unit_id)}: ${escapeHtml((l.solves_how || "").slice(0, 150))}</p>`).join("")}
+      </div>` : ""}
+
+      <div class="paper-page-section full">
+        <h3>证据链与来源引用</h3>
+        ${evidence.length ? evidence.map(ev => `
+          <div class="paper-evidence-item">
+            "${escapeHtml(ev.quote)}"
+            <small>${escapeHtml(ev.section || ev.role || "")}</small>
+          </div>
+        `).join("") : "<p class='muted'>暂无可展示证据句。</p>"}
+      </div>
+
+      ${related.length ? `
+      <div class="paper-page-section full">
+        <h3>关联论文推荐</h3>
+        <div class="related-papers-grid">
+          ${related.map(r => `
+            <div class="related-paper-card" data-nav-paper="${escapeHtml(r.paper_id)}">
+              <h4>${escapeHtml(r.title.slice(0, 80))}</h4>
+              <div class="meta">${r.year || ""} · ${escapeHtml(r.venue_or_source || "")}</div>
+              <div class="reason">${escapeHtml(r.relation_type)} · 相似度 ${(r.similarity * 100).toFixed(0)}%</div>
+            </div>
+          `).join("")}
+        </div>
+      </div>` : ""}
+    </div>
+  `;
+}
+
+function findRelatedPapers(paperId, limit = 4) {
+  const paper = paperById(paperId);
+  if (!paper) return [];
+
+  const targetUnits = new Set();
+  for (const pu of (paper.problem_units || [])) targetUnits.add(pu.macro_problem_id || "");
+  for (const mu of (paper.method_units || [])) targetUnits.add(mu.macro_method_id || "");
+  if (targetUnits.size === 0) return [];
+
+  const scored = [];
+  for (const [id, other] of state.paperCards) {
+    if (id === paperId) continue;
+    const otherUnits = new Set();
+    for (const pu of (other.problem_units || [])) otherUnits.add(pu.macro_problem_id || "");
+    for (const mu of (other.method_units || [])) otherUnits.add(mu.macro_method_id || "");
+    if (otherUnits.size === 0) continue;
+    const intersection = [...targetUnits].filter(x => otherUnits.has(x)).length;
+    const union = new Set([...targetUnits, ...otherUnits]).size;
+    const sim = intersection / Math.max(1, union);
+    if (sim > 0) scored.push({ ...other, similarity: sim, relation_type: "共享方法" });
+  }
+  scored.sort((a, b) => b.similarity - a.similarity);
+  return scored.slice(0, limit).map(p => ({
+    paper_id: p.paper_id,
+    title: p.title || "",
+    year: p.year,
+    venue_or_source: p.venue_or_source || "",
+    relation_type: p.relation_type,
+    similarity: p.similarity,
+  }));
+}
+
+// ── 按钮与导航事件扩增 ──
+document.body.addEventListener("click", (event) => {
+  const backFromPaper = event.target.closest("[data-back-from-paper]");
+
+  if (backFromPaper) {
+    state.mode = "root";
+    state.selectedPaperId = null;
+    saveViewState();
+    renderApp();
+  }
+  const navBtn = event.target.closest("[data-nav]");
+  if (navBtn) {
+    const target = navBtn.dataset.nav;
+    if (target === "forest") { state.mode = "forest"; state.selectedPaperId = null; }
+    else if (target === "dashboard") { state.mode = "dashboard"; state.dashboardChartsReady = false; }
+    saveViewState();
+    renderApp();
+  }
+  const relCard = event.target.closest("[data-nav-paper]");
+  if (relCard) {
+    state.selectedPaperId = relCard.dataset.navPaper;
+    state.mode = "paper";
+    saveViewState();
+    renderApp();
+  }
+  // 在树根视图点击paper节点 → 打开独立论文详情页
+  if (state.mode === "root") {
+    const nodeEl = event.target.closest("[data-node]");
+    if (nodeEl) {
+      const item = state.rootGraph?.nodeById?.get(nodeEl.dataset.node);
+      if (item?.type === "paper" && item.paperId) {
+        state.selectedPaperId = item.paperId;
+        state.mode = "paper";
+        saveViewState();
+        renderApp();
+      }
+    }
+  }
+});
+
+// ── 恢复上次浏览状态（任务3） ──
+const savedView = loadViewState();
+if (savedView && savedView.last_mode) {
+  state.mode = savedView.last_mode;
+  if (savedView.last_idea_id) state.selectedIdeaId = savedView.last_idea_id;
+  if (savedView.last_paper_id) state.selectedPaperId = savedView.last_paper_id;
+  if (savedView.forest_transform) state.forestTransform = savedView.forest_transform;
+  if (savedView.root_transform) state.rootTransform = savedView.root_transform;
+  if (savedView.root_filter) state.rootFilter = savedView.root_filter;
+}
+
+// ── URL路由支持 ──
+const urlParams = new URLSearchParams(window.location.search);
+const hashPaper = window.location.hash.startsWith("#paper=") ? window.location.hash.replace("#paper=", "") : null;
+if (hashPaper) {
+  state.selectedPaperId = hashPaper;
+  state.mode = "paper";
+} else if (urlParams.get("paper")) {
+  state.selectedPaperId = urlParams.get("paper");
+  state.mode = "paper";
 }
 
 init().catch((error) => {
